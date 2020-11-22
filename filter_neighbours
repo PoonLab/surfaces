@@ -1,0 +1,34 @@
+    import csv
+    
+    ref_seq = '/Users/sarehchimeh/Data/Human_virus accession.txt'
+    Neighbors = '/Users/sarehchimeh/Data/Neighbours.txt'
+    
+    def parse_accesion(file):
+    #Loop trough table to retrieve accession numbers as a list
+        handle = open(file)
+        accn = []
+        for line in handle:
+            temp = line.strip('\n')  # Remove new line
+            accn.append(temp)
+        return(accn)
+    
+    def main():
+        f= open(Neighbors)
+        title=f.readline()
+        header=f.readline()
+        csv_f = csv.reader(f, delimiter='\t')
+    #opening the Neighbours files as CSV
+        ref_seq_lst = parse_accesion(ref_seq)
+    #Getting the ref seq file as a list
+        for virus in ref_seq_lst:
+            filepath = '/Users/sarehchimeh/Data/Neighbours/{}.txt'.format(virus)
+            #making a file named after the ref_seq accession number
+            with open(filepath, 'w') as f:
+                for row in csv_f:
+                    if virus == row[0]:
+                        print(row[0])
+                        f.writelines (row[1])
+            #its making all the files but its not writting inside them!
+    
+    if __name__ == "__main__":
+        main()
