@@ -1,37 +1,52 @@
-    import csv
+import csv
     
-    ref_seq = '/Users/sarehchimeh/Data/Human_virus accession.txt'
-    Neighbors = '/Users/sarehchimeh/Data/Neighbours.txt'
+ref_seq = '/Users/sarehchimeh/Data/Human_virus accession.txt'
+Neighbors = '/Users/sarehchimeh/Data/Neighbours.txt'
     
-    def parse_accesion(file):
+def parse_accesion(file):
     
-    #Loop trough table to retrieve accession numbers as a list
+#Loop trough table to retrieve accession numbers as a list
     
-        handle = open(file)
+    handle = open(file)
     
-        accn = []
-        for line in handle:
-            temp = line.strip('\n')  # Remove new line
-            accn.append(temp)
+    accn = []
+    for line in handle:
+        temp = line.strip('\n')  # Remove new line
+        accn.append(temp)
     
-        return(accn)
+    return(accn)
+
+def comp_list(list1, list2):
+    """
+    #:param list1: a list of strings
+    #:param list2: a list of strings
+    #:return: true is at least one element in common between list 1 and list 2
+    """
+    common = 0
+    for first in list1:
+        # iterate through the 2nd list
+        for second in list2:
+        # at least one common
+            if first == second:
+                common +=1
     
-    def main():
-        f= open(Neighbors)
-        title=f.readline()
-        header=f.readline()
-        csv_f = csv.reader(f, delimiter='\t')
-    #opening the Neighbours files as CSV
-        ref_seq_lst = parse_accesion(ref_seq)
-    #Getting the ref seq file as a list
-        for virus in ref_seq_lst:
-            filepath = '/Users/sarehchimeh/Data/Neighbours/{}.txt'.format(virus)
-            with open(filepath, 'w+') as f:
-                for row in csv_f:
-                    if virus == row[0]:
-                        print(row[0])
-                        f.writelines (row[1])
-            #its making all the files but its not writting inside them!
+    return common
+    
+def main():
+    # opening the ref file as list
+    ref_seq_lst = parse_accesion(ref_seq)
+    with open (Neighbours, 'r') as n_file:
+        title=n_file.readline()
+        reader = csv.DictReader(n_file, delimiter='\t')
+        columns = ['Representative','Neighbor','Host','Selected lineage','Taxonomy name','Segment name']
+        with open ('/Users/sarehchimeh/Data/filtered_Neighbours.txt','w') as of:
+            of.write(title)
+            writer = csv.DictWriter(of, fieldnames=columns, delimiter='\t')
+            writer.writeheader()
+            for row in reader:
+                rep_lst=row['Representative'].split(',')
+                if comp_list(rep_lst, ref_seq_lst)>=1:
+                    writer.writerow(row)
     
     if __name__ == "__main__":
         main()
