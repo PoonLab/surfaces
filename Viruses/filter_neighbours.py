@@ -3,36 +3,18 @@ import csv
 ref_seq = '/Users/sarehchimeh/Data/Human_virus accession.txt'
 Neighbors = '/Users/sarehchimeh/Data/Neighbours.txt'
 
-
 def parse_accesion(file):
     # Loop trough table to retrieve accession numbers as a list
-
     handle = open(file)
-
     accn = []
     for line in handle:
         temp = line.strip('\n')  # Remove new line
         accn.append(temp)
-
     return (accn)
 
-    def comp_list(list1, list2):
-        """
-        #:param list1: a list of strings
-        #:param list2: a list of strings
-        #:return: true is at least one element in common between list 1 and list 2
-        """
-        common = 0
-        for first in list1:
-            # iterate through the 2nd list
-            for second in list2:
-                # at least one common
-                if first == second:
-                    common += 1
-
-        return common
 
 def main():
+    count = 0
     ref_seq_lst = parse_accesion(ref_seq)
     # Getting the ref seq file as a list
     with open(Neighbours, 'r') as n_file:
@@ -40,14 +22,22 @@ def main():
         reader = csv.DictReader(n_file, delimiter='\t')
         #opening the Neighbours file as a csv
         columns = ['Representative', 'Neighbor', 'Host', 'Selected lineage', 'Taxonomy name', 'Segment name']
-        with open('/Users/sarehchimeh/Data/filtered_Neighbours.txt', 'w') as of:
-            of.write(title)
-            writer = csv.DictWriter(of, fieldnames=columns, delimiter='\t')
-            writer.writeheader()
-            for row in reader:
-                rep_lst = row['Representative'].split(',')
-                if comp_list(rep_lst, ref_seq_lst) >= 1:
-                    writer.writerow(row)
+        for virus in ref_seq_lst:
+            filepath = '/Users/sarehchimeh/Data/Neighbours/{}.txt'.format(virus)
+            print(virus)
+            with open(filepath, 'w') as of:
+                print(filepath)
+                of.write(title)
+                writer = csv.DictWriter(of, fieldnames=columns, delimiter='\t')
+                writer.writeheader()
+                n_file.seek(0)
+                next(n_file)
+                for row in reader:
+                    rep_lst = row['Representative'].split(',')
+                    if virus in rep_lst:
+                        writer.writerow(row)
+                        count += 1
+    print(count)
 
 if __name__ == "__main__":
     main()
