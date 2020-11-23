@@ -3,9 +3,7 @@ from csv import DictWriter
 from time import sleep
 
 Entrez.email = 'sbagher4@uwo.ca'
-#'bioinfo@uwo.ca'
-#accn = 'NC_015932'
-tbl = '/Users/sarehchimeh/PycharmProjects/pythonProject/taxid.nbr'
+tbl = '/Users/sarehchimeh/Data/filtered_neighbours.txt'
 
 def parse_table(tbl):
     """
@@ -56,9 +54,7 @@ def retrieve_record(gid):
 def retrieve_CDS(record):
     """
     Analyze features in Genbank record to extract (1) the number of coding
-    regions (CDS),
-    :param record:
-    :return:
+    regions (CDS)
     """
     cds = [feat for feat in record.features if feat.type=='CDS']
 
@@ -82,10 +78,7 @@ def retrieve_annotations(record):
     return an_dict
 
 def main():
-
-    #orffile = open('orfs.csv', 'w')
-    #orffile.write('accno,product,strand,coords,aaseq\n')
-    handle = open('virus_with_info.csv', 'w')
+    handle = open('/Users/sarehchimeh/Data/virus_info.csv', 'w')
     outfile = DictWriter(handle, delimiter=',',
                                  extrasaction='ignore',
                                  fieldnames=[
@@ -95,15 +88,16 @@ def main():
                                  ])
     outfile.writeheader()
 
-    orffile = open('orfs.csv', 'w')
+    orffile = open('/Users/sarehchimeh/Data/orfs_location.csv', 'w')
     orffile.write('accno,product,strand,coords,start_codon\n')
 
     refsecs = []
     for row in parse_table(tbl):
-        accnos = [row['Representative']]
+        accnos = [row['Neighbor']]
 
         for accn in accnos:
             if accn not in refsecs:
+                # only retrieves unique seqs
                 gid = retrieve_gid(accnos)
 
                 if gid is None:
@@ -111,7 +105,7 @@ def main():
                     continue
 
                 print(row['Taxonomy name'], gid, accn)
-                sleep(1)
+                sleep(3)
 
                 record = retrieve_record(gid)
                 annotation = retrieve_annotations(record)
@@ -124,7 +118,7 @@ def main():
                     parts_str = ';'.join('{}:{}'.format(p[0].position, p[1].position) for p in parts)
                     orffile.write('{},"{}",{},{},{}\n'.format(accn, product[0], strand, parts_str, start_codon))
 
-                sleep(1)
+                sleep(3)
 
 
 if __name__ == "__main__":
