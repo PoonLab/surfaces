@@ -70,7 +70,6 @@ def retrieve_CDS(record):
         aaseq = q.get('translation', [''])
         yield locus, product, cd.strand, parts, q['codon_start'], aaseq
 
-
 def retrieve_annotations(record):
     an = record.annotations
     an_dict = {'Length': len(record.seq) , 'Topology':an['topology'],
@@ -80,48 +79,62 @@ def retrieve_annotations(record):
     return an_dict
 
 def main():
+    virus_count = 0
+    row_count = 0
+    accn_count = 0
     refsecs = []
     for filename in os.listdir(directory):
-        file_path = '/Users/sarehchimeh/Data/Neighbours/{}'.format(filename)
-        handle_one = open('/Users/sarehchimeh/Data/scraper/virus_info_{}.csv'.format(filename), 'w')
-        out_file_1 = DictWriter(handle_one, delimiter=',',
-                                extrasaction='ignore',
-                                fieldnames=[
-                                    'Representative', 'Neighbor', 'Host', 'Selected lineage',
-                                    'Taxonomy name', 'Length', 'Proteins',
-                                    'Topology', 'Taxonomy', 'Molecule', 'Segment name"i'
-                                ])
-        out_file_1.writeheader()
+        if filename.startswith('NC_') and len(filename) == 13:
+            virus_count+=1
+            file_path = '/Users/sarehchimeh/Data/Neighbours/{}'.format(filename)
+            handle_one = open('/Users/sarehchimeh/Data/scraper/virus_info_{}.csv'.format(filename), 'w+')
+            out_file_1 = DictWriter(handle_one, delimiter=',',
+                                 extrasaction='ignore',
+                                 fieldnames=[
+                                     'Representative', 'Neighbor', 'Host', 'Selected lineage',
+                                     'Taxonomy name', 'Length', 'Proteins',
+                                     'Topology', 'Taxonomy', 'Molecule', 'Segment name"i'
+                                 ])
+            out_file_1.writeheader()
 
-        handle_two = open('/Users/sarehchimeh/Data/scraper/orfs_location_{}.csv'.format(filename), 'w')
-        handle_two.write('accno,product,strand,coords,start_codon\n')
+            handle_two = open('/Users/sarehchimeh/Data/scraper/orfs_location_{}.csv'.format(filename), 'w+')
+            handle_two.write('accno,product,strand,coords,start_codon\n')
 
-        for row in parse_table(file_path):
-            accnos = [row['Neighbor']]
-            for accn in accnos:
-                if accn not in refsecs:
-                    # only retrieves unique seqs
-                    gid = retrieve_gid(accnos)
+            for row in parse_table(file_path):
+                accnos = [row['Neighbor']]
+                row_count+=1
+                print('row count is {}'.format(row_count))
 
-                    if gid is None:
-                        print('Warning, failed to retrieve gid for {}'.format(accn))
-                        continue
+                for accn in accnos:
+                    accn_count+=1
+                    print('accn count is {}'.format(accn_count))
 
-                    print(row['Taxonomy name'], gid, accn)
-                    sleep(3)
+                    if accn not in refsecs:
+                        # only retrieves unique seqs
+                        gid = retrieve_gid(accnos)
 
-                    record = retrieve_record(gid)
-                    annotation = retrieve_annotations(record)
-                    final_row = {**row, **annotation}
-                    out_file_1.writerow(final_row)
-                    handle_one.flush()
-                    refsecs.append(accn)
+                        if gid is None:
+                            print('Warning, failed to retrieve gid for {}'.format(accn))
+                            continue
 
-                    for locus, product, strand, parts, start_codon, aaseq in retrieve_CDS(record):
-                        parts_str = ';'.join('{}:{}'.format(p[0].position, p[1].position) for p in parts)
-                        handle_two.write('{},"{}",{},{},{}\n'.format(accn, product[0], strand, parts_str, start_codon))
+                        print(row['Taxonomy name'], gid, accn)
+                        sleep(0.5)
 
-                    sleep(3)
+                        record = retrieve_record(gid)
+                        sleep(1)
+                        annotation = retrieve_annotations(record)
+                        sleep(0.5)
+                        final_row = {**row, **annotation}
+                        out_file_1.writerow(final_row)
+                        handle_one.flush()
+                        refsecs.append(accn)
+
+                        for locus, product, strand, parts, start_codon, aaseq in retrieve_CDS(record):
+                            parts_str = ';'.join('{}:{}'.format(p[0].position, p[1].position) for p in parts)
+                            handle_two.write('{},"{}",{},{},{}\n'.format(accn, product[0], strand, parts_str, start_codon))
+
+                        sleep(0.5)
+    print('virus count is {}'.format(virus_count))
 
 if __name__ == "__main__":
     main()
