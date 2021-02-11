@@ -14,6 +14,7 @@ def get_accn(file):
     """
     Stream through txt file retrieve accns into a list
     :param file:  str, path to file
+    :return: tuple, accession numbers
     """
     lst_accns = []
     with open(file, 'r') as f:
@@ -63,7 +64,6 @@ def main():
         accn_regex = re.compile('[A-Z]{1,3}[0-9]{5,6}.[0-9]')
         with open('{}/Pruned_CDS_{}'.format(args.outdir, accn1), 'w') as out_file:
             pruned_record_count = 0
-            record_count = 0
             
             # construct dict from CDS FASTA
             cds_dict = {}
@@ -71,22 +71,16 @@ def main():
                 for record in SeqIO.parse(cds_path, 'fasta'):
                     this_accn = accn_regex.findall(record.id)[0]
                     cds_dict.update({this_accn, str(record.seq)})
-                
+                    
+            record_count = len(cds_dict)  # number of available sequences
             
-
-                for record in SeqIO.parse(path2, 'fasta'):
-                    record_count += 1
-                    id = []
-                    this_id = record.id
-                    this_accn = re.findall(, this_id)
-                    # accns in a list
-                    for i in x:
-                        if i in accessions:
-                            pruned_record_count +=1
-                            SeqIO.write(record,out_file,'fasta')
+            # transfer sequences to outfile for all accessions in tuple
+            for accn in accessions:
+                out_file.write(">{}\n{}\n".format(accn, cds_dict[accn]))
+                pruned_record_count += 1
+                            
         print('record count: '+ str(record_count))
         print('pruned record count: '+ str(pruned_record_count))
-                                    # write the next line into a file (record sequenc$
 
 if __name__ == "__main__":
     main()
