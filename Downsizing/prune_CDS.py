@@ -1,92 +1,89 @@
 #! /usr/bin/python3
-#prune a fasta file from (Data/CDS nucleotide sequence)
+# prune a fasta file from (Data/CDS nucleotide sequence)
 # to keep only the sequence entries of the accn sequences in Data/pruned_accn
 # input Data/CDS nucleotide sequence & Data/pruned_accn directories
-
-#testing git2
 
 import os
 import re
 from Bio import SeqIO
+from glob import glob
+import argparse
+
 
 def get_accn(file):
     """
     Stream through txt file retrieve accns into a list
+    :param file:  str, path to file
+    :return: tuple, accession numbers
     """
     lst_accns = []
     with open(file, 'r') as f:
         for line in f:
             line = line.strip('\n')
             lst_accns.append(line)
-            a = tuple(lst_accns)
-        return(a)
+    a = tuple(lst_accns)
+    return(a)
 
-# if "accn" in tuple:
+
+def parse_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('accndir', default='/home/sareh/data/pruned_accns', type=str,
+                       help='Directory containing text files of accession numbers from pruned trees.')
+    parser.add_argument('cdsdir', default='/home/sareh/data/CDS_nucleotide_seq', type=str,
+                        help='Directory containing FASTA files of protein coding sequences')
+    parser.add_argument('outdir', default='/home/sareh/data/Pruned_CDS/', type=str,
+                        help='Directory to write outputs.')
+    return parser.parse_args()
+
 
 def main():
-    accn_directory = '/home/sareh/data/pruned_accns2'
-    cds_directory = '/home/sareh/data/CDS_nucleotide_seq2'
-    for filename1 in os.listdir(accn_directory):
+    args = parse_args()
+    accn_files = glob(os.path.join(args.accndir, 'pruned_accn_*'))
+    
+    # iterate through all files listing accessions grouped by virus species
+    for path1 in accn_files:
+        filename1 = os.path.basename(path1)
         print('filename1 is '+ filename1)
         #filename1='pruned_accn_NC_007605'
-        accn1=filename1[12:-3]
+        
+        # retrieve reference accession from file name
+        accn1 = filename1.replace('pruned_accn', '')  # [12:]
         print('accn1 ' + accn1)
-        path1 = '{}/{}'.format(accn_directory, filename1)
-        path2 = '{}/{}.fasta'.format(cds_directory, accn1)
-        print(path2)
+        
+        #path1 = '{}/{}'.format(args.accndir, filename1)
+        # use reference accn to retrieve corresponding CDS FASTA
+        cds_path = os.path.join(args.cdsdir, accn1+'.txt')
+        #path2 = '{}/{}.txt'.format(args.cdsdir, accn1)
+        print(cds_path)
+        
         # filename2='NC_001526.fasta'
-        accessions= get_accn(path1)
+        accessions = get_accn(path1)  # returns tuple of accessions in file
         print(accessions)
-        #all accessions in a tuple
-        with open('/Users/sarehchimeh/Desktop/Pruned_CDS/Pruned_CDS_{}'.format(accn1),'w') as out_file:
+        
+        # all accessions in a tuple
+        accn_regex = re.compile('[A-Z]{1,3}[0-9]{5,6}.[0-9]')
+        with open('{}/Pruned_CDS_{}'.format(args.outdir, accn1), 'w') as out_file:
             pruned_record_count = 0
-            record_count = 0
-            with open(path2,'r') as f2:
-                for record in SeqIO.parse(path2, 'fasta'):
-                    record_count += 1
-                    id = []
-                    a = record.id
-                    x = re.findall('[A-Z]{1,3}[0-9]{5,6}.[0-9]', a)
-                    # accns in a list
-                    for i in x:
-                        if i in accessions:
-                            pruned_record_count +=1
-                            SeqIO.write(record,out_file,'fasta')
+            
+            # construct dict from CDS FASTA
+            cds_dict = {}
+            with open(cds_path, 'r') as f2:
+                for record in SeqIO.parse(cds_path, 'fasta'):
+                    this_accn = accn_regex.findall(record.id)[0]
+                    cds_dict.update({this_accn, str(record.seq)})
+                    
+            record_count = len(cds_dict)  # number of available sequences
+            
+            # transfer sequences to outfile for all accessions in tuple
+            for accn in accessions:
+                out_file.write(">{}\n{}\n".format(accn, cds_dict[accn]))
+                pruned_record_count += 1
+                            
         print('record count: '+ str(record_count))
         print('pruned record count: '+ str(pruned_record_count))
-                                    # write the next line into a file (record sequence)
 
 if __name__ == "__main__":
     main()
-
-
-
-
-"""
-for the server files 
-accn_directory= '/home/sareh/data/pruned_accns2'
-cds_directory = '/home/sareh/data/CDS_nucleotide_seq2'
-
-for desktop test files
-accn_directory= '/Users/sarehchimeh/Desktop/pruned_accns2'
-cds_directory = '/Users/sarehchimeh/Desktop/CDS_nucleotide_seq2'
-"""
-
-#write fasta entry into another file
-                                #or delete it if it dosen't exsist
-                                #use biopython fasta parsing or line
-
-"""
-for line in f2:
-if line.startwith('>'):
-    #'>lcl|AP018018.1_cds_BAX04156.1_4 [protein=gag polyprotein] [protein_id=BAX04156.1] [location=629..1810] [gbkey=CDS]'
-    x = re.findall('[A-Z]{1,3}[0-9]{5,6}.[0-9]', line)
-    #['AP018018.1', 'BAX04156.1', 'BAX04156.1']
-    #compare the list x and accessions
-    #if any of the items in x are present in accessions get next line
-
-"""
-
 
 
 
