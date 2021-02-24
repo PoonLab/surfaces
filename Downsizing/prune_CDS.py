@@ -31,7 +31,7 @@ def parse_args():
                        help='Directory containing text files of accession numbers from pruned trees.')
     parser.add_argument('cdsdir', default='/home/sareh/data/CDS_nucleotide_seq', type=str,
                         help='Directory containing FASTA files of protein coding sequences')
-    parser.add_argument('outdir', default='/home/sareh/data/Pruned_CDS/', type=str,
+    parser.add_argument('outdir', default='/home/sareh/data/Pruned_CDS2/', type=str,
                         help='Directory to write outputs.')
     return parser.parse_args()
 
@@ -47,7 +47,7 @@ def main():
         #filename1='pruned_accn_NC_007605'
         
         # retrieve reference accession from file name
-        accn1 = filename1.replace('pruned_accn', '')  # [12:]
+        accn1 = filename1.replace('pruned_accn_', '')  # [12:]
         print('accn1 ' + accn1)
         
         #path1 = '{}/{}'.format(args.accndir, filename1)
@@ -70,6 +70,7 @@ def main():
             with open(cds_path, 'r') as f2:
                 for record in SeqIO.parse(cds_path, 'fasta'):
                     this_accn = accn_regex.findall(record.id)[0]
+                    print(this_accn)
                     cds_dict.update({this_accn, str(record.seq)})
                     
             record_count = len(cds_dict)  # number of available sequences
