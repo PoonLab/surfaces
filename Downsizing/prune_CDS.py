@@ -31,7 +31,7 @@ def parse_args():
                        help='Directory containing text files of accession numbers from pruned trees.')
     parser.add_argument('cdsdir', default='/home/sareh/data/CDS_nucleotide_seq', type=str,
                         help='Directory containing FASTA files of protein coding sequences')
-    parser.add_argument('outdir', default='/home/sareh/data/Pruned_CDS2/', type=str,
+    parser.add_argument('outdir', default='/home/sareh/data/Pruned_CDS/', type=str,
                         help='Directory to write outputs.')
     return parser.parse_args()
 
@@ -58,7 +58,7 @@ def main():
         
         # filename2='NC_001526.fasta'
         accessions = get_accn(path1)  # returns tuple of accessions in file
-        print(accessions)
+       # print(accessions[0])
         
         # all accessions in a tuple
         accn_regex = re.compile('[A-Z]{1,3}[0-9]{5,6}.[0-9]')
@@ -69,16 +69,21 @@ def main():
             cds_dict = {}
             with open(cds_path, 'r') as f2:
                 for record in SeqIO.parse(cds_path, 'fasta'):
+                    regex_accn = accn_regex.findall(record.id)
+                    print(regex_accn)
+                   #print(record.seq)
+                    #everything runs till here
                     this_accn = accn_regex.findall(record.id)[0]
                     print(this_accn)
-                    cds_dict.update({this_accn, str(record.seq)})
-                    
+                    cds_dict.update({this_accn:str(record.seq)})
+                   # print(cds_dict)
             record_count = len(cds_dict)  # number of available sequences
-            
+           # print(cds_dict)
             # transfer sequences to outfile for all accessions in tuple
             for accn in accessions:
-                out_file.write(">{}\n{}\n".format(accn, cds_dict[accn]))
-                pruned_record_count += 1
+                if accn in cds_dict:
+                    out_file.write(">{}\n{}\n".format(accn, cds_dict[accn]))
+                    pruned_record_count += 1
                             
         print('record count: '+ str(record_count))
         print('pruned record count: '+ str(pruned_record_count))
