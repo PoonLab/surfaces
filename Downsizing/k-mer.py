@@ -83,7 +83,7 @@ def kmer_dist(infile, outfile, header, kernel):
     """
 
     # regular expression to parse sequence headers
-    pat = re.compile('^"([^,]+),([^,]+),(.+),(1|-1),([:;0-9]+)"$')
+   # pat = re.compile('^"([^,]+),([^,]+),(.+),(1|-1),(.+)"$')
 
     # prepare output file
     writer = None
@@ -95,14 +95,16 @@ def kmer_dist(infile, outfile, header, kernel):
     labels = []
     seqs = []
     for h, s in iter_fasta(infile):
-        m = pat.findall(h)
-        desc, accno, gene_name, directn, coords = m[0]
+       # m = pat.findall(h)
+       # desc, accno, gene_name, directn, coords = m[0]
+        m = tuple(h.split(','))
         if writer:
             writer.writerow([
                 desc, accno, gene_name,
                 'TRUE' if directn == '1' else 'FALSE', coords
             ])
-        labels.append('{}.{}.{}'.format(accno, gene_name, coords))
+        print(m)
+        labels.append('{}.{}.{}'.format(m[1], m[2], m[3]))
         seqs.append(s)
 
 

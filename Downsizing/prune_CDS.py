@@ -31,13 +31,14 @@ def parse_args():
                        help='Directory containing text files of accession numbers from pruned trees.')
     parser.add_argument('cdsdir', default='/home/sareh/data/CDS_nucleotide_seq', type=str,
                         help='Directory containing FASTA files of protein coding sequences')
-    parser.add_argument('outdir', default='/home/sareh/data/Pruned_CDS/', type=str,
+    parser.add_argument('outdir', default='/home/sareh/data/Pruned_CDS_test/', type=str,
                         help='Directory to write outputs.')
     return parser.parse_args()
 
 
 def main():
     args = parse_args()
+    #globe(pruned_accn_*) like in bash so don't worry about .files 
     accn_files = glob(os.path.join(args.accndir, 'pruned_accn_*'))
     
     # iterate through all files listing accessions grouped by virus species
@@ -49,6 +50,7 @@ def main():
         # retrieve reference accession from file name
         accn1 = filename1.replace('pruned_accn_', '')  # [12:]
         print('accn1 ' + accn1)
+	#accn1='NC_007605'
         
         #path1 = '{}/{}'.format(args.accndir, filename1)
         # use reference accn to retrieve corresponding CDS FASTA
@@ -67,24 +69,30 @@ def main():
             
             # construct dict from CDS FASTA
             cds_dict = {}
+            id_dict = {}
+            disc_dict = {}
             with open(cds_path, 'r') as f2:
                 for record in SeqIO.parse(cds_path, 'fasta'):
                     regex_accn = accn_regex.findall(record.id)
+                    print(record.id)
                     print(regex_accn)
                    #print(record.seq)
                     #everything runs till here
                     this_accn = accn_regex.findall(record.id)[0]
                     print(this_accn)
                     cds_dict.update({this_accn:str(record.seq)})
+                    id_dict.update({this_accn:str(record.id)})
+                    disc_dict.update({this_accn:str(record.description)})
                    # print(cds_dict)
             record_count = len(cds_dict)  # number of available sequences
            # print(cds_dict)
             # transfer sequences to outfile for all accessions in tuple
             for accn in accessions:
                 if accn in cds_dict:
-                    out_file.write(">{}\n{}\n".format(accn, cds_dict[accn]))
+                    descript = disc_dict[accn].split(' ')
+                    out_file.write(">{}, {}, {}, 1, {}\n{}\n".format(accn1, accn, id_dict[accn][-12:-2], descript[-2], cds_dict[accn]))
+#out_file.write(">{},{},{}\n{}\n".format(accn1 ,accn,(CDS.header), cds_dict[accn]))
                     pruned_record_count += 1
-                            
         print('record count: '+ str(record_count))
         print('pruned record count: '+ str(pruned_record_count))
 
