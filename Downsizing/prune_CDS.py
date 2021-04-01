@@ -27,11 +27,11 @@ def get_accn(file):
 
 def parse_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument('accndir', default='/home/sareh/data/pruned_accns', type=str,
+    parser.add_argument('--accndir', default='/home/sareh/data/pruned_accns', type=str,
                        help='Directory containing text files of accession numbers from pruned trees.')
-    parser.add_argument('cdsdir', default='/home/sareh/data/CDS_nucleotide_seq', type=str,
+    parser.add_argument('--cdsdir', default='/home/sareh/data/CDS_nucleotide_seq', type=str,
                         help='Directory containing FASTA files of protein coding sequences')
-    parser.add_argument('outdir', default='/home/sareh/data/Pruned_CDS/', type=str,
+    parser.add_argument('--outdir', default='/home/sareh/data/Pruned_CDS/', type=str,
                         help='Directory to write outputs.')
     return parser.parse_args()
 
@@ -100,6 +100,7 @@ def main():
                     pruned_record_count += 1
         print('record count: '+ str(record_count))
         print('pruned record count: '+ str(pruned_record_count))
+	break
 
 if __name__ == "__main__":
     main()
