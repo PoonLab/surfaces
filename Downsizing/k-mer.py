@@ -1,4 +1,4 @@
-#! /home/sareh/bin python3 
+#! /usr/bin python3 
 from gotoh2 import *
 import argparse
 import csv
@@ -83,7 +83,10 @@ def kmer_dist(infile, outfile, header, kernel):
     """
 
     # regular expression to parse sequence headers
-   # pat = re.compile('^"([^,]+),([^,]+),(.+),(1|-1),(.+)"$')
+    pat = re.compile('^"([^,]+),([^,]+),(.+),(1|-1),([:;0-9]+)"$')
+    #>"Bat adenovirus 2,NC_015932,E1B 55K,1,1835:3170"
+    #pat = re.compile('^"([^,]+),([^,]+),(.+),(1|-1),([:;0-9]+)"$')
+
 
     # prepare output file
     writer = None
@@ -95,18 +98,15 @@ def kmer_dist(infile, outfile, header, kernel):
     labels = []
     seqs = []
     for h, s in iter_fasta(infile):
-       # m = pat.findall(h)
-       # desc, accno, gene_name, directn, coords = m[0]
-        m = tuple(h.split(','))
+        m = pat.findall(h)
+        desc, accno, gene_name, directn, coords = m[0]
         if writer:
             writer.writerow([
                 desc, accno, gene_name,
                 'TRUE' if directn == '1' else 'FALSE', coords
             ])
-        print(m)
-        labels.append('{}.{}.{}'.format(m[1], m[2], m[3]))
+        labels.append('{}.{}.{}'.format(accno, gene_name, coords))
         seqs.append(s)
-
 
     # pre-calculate k-mer counts
     kmers = {}

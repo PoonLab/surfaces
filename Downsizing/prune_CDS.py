@@ -31,7 +31,7 @@ def parse_args():
                        help='Directory containing text files of accession numbers from pruned trees.')
     parser.add_argument('cdsdir', default='/home/sareh/data/CDS_nucleotide_seq', type=str,
                         help='Directory containing FASTA files of protein coding sequences')
-    parser.add_argument('outdir', default='/home/sareh/data/Pruned_CDS_test/', type=str,
+    parser.add_argument('outdir', default='/home/sareh/data/Pruned_CDS/', type=str,
                         help='Directory to write outputs.')
     return parser.parse_args()
 
@@ -90,7 +90,11 @@ def main():
             for accn in accessions:
                 if accn in cds_dict:
                     descript = disc_dict[accn].split(' ')
-                    out_file.write(">{}, {}, {}, 1, {}\n{}\n".format(accn1, accn, id_dict[accn][-12:-2], descript[-2], cds_dict[accn]))
+                    print(descript)
+                    l = re.findall("([0-9]+)",descript[-2])
+                    print(l)
+                    location = "{}:{}".format(l[0],l[1])
+                    out_file.write(">\"{},{},{},1,{}\"\n{}\n".format(accn1, accn, id_dict[accn][-12:-2], location, cds_dict[accn]))
 #out_file.write(">{},{},{}\n{}\n".format(accn1 ,accn,(CDS.header), cds_dict[accn]))
                     pruned_record_count += 1
         print('record count: '+ str(record_count))
