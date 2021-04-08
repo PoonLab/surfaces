@@ -85,23 +85,22 @@ def main():
         with open('{}/Pruned_CDS_{}'.format(args.outdir, accn1), 'w') as out_file:
             pruned_record_count = 0
             record_count = len(cds_dict)  # number of available sequences
-            # print(cds_dict)
 
-        # transfer sequences to outfile for all accessions in tuple
-        for accn in accessions:
-            records = cds_dict.get(accn, None)
-            for record in records:
-                descript = record['desc'].split(' ')
+            # transfer sequences to outfile for all accessions in tuple
+            for accn in accessions:
+                records = cds_dict.get(accn, None)
+                for record in records:
+                    descript = record['desc'].split(' ')
 
-                # print(descript)
-                l = re.findall("([0-9]+)", descript[-2])
+                    # print(descript)
+                    l = re.findall("([0-9]+)", descript[-2])
 
-                # print(l)
-                location = "{}:{}".format(l[0],l[1])
-                out_file.write(">\"{},{},{},1,{}\"\n{}\n".format(
-                    accn1, accn, record['id'][-12:-2], location, record['seq']
-                ))
-                pruned_record_count += 1
+                    # print(l)
+                    location = "{}:{}".format(l[0],l[1])
+                    out_file.write(">\"{},{},{},1,{}\"\n{}\n".format(
+                        accn1, accn, record['id'][-12:-2], location, record['seq']
+                    ))
+                    pruned_record_count += 1
 
         print('record count: ' + str(record_count))
         print('pruned record count: ' + str(pruned_record_count))
