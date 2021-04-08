@@ -38,26 +38,26 @@ def parse_args():
 
 def main():
     args = parse_args()
-    #globe(pruned_accn_*) like in bash so don't worry about .files 
+    # globe(pruned_accn_*) like in bash so don't worry about .files
     accn_files = glob(os.path.join(args.accndir, 'pruned_accn_*'))
     
     # iterate through all files listing accessions grouped by virus species
     for path1 in accn_files:
         filename1 = os.path.basename(path1)
         print('filename1 is '+ filename1)
-        #filename1='pruned_accn_NC_007605'
+        # filename1='pruned_accn_NC_007605'
         
         # retrieve reference accession from file name
         accn1 = filename1.replace('pruned_accn_', '')  # [12:]
         print('accn1 ' + accn1)
-        #accn1='NC_007605'
-        
-        #path1 = '{}/{}'.format(args.accndir, filename1)
+        # accn1='NC_007605'
+
+        # path1 = '{}/{}'.format(args.accndir, filename1)
         # use reference accn to retrieve corresponding CDS FASTA
         cds_path = os.path.join(args.cdsdir, accn1+'.txt')
-        #path2 = '{}/{}.txt'.format(args.cdsdir, accn1)
+        # path2 = '{}/{}.txt'.format(args.cdsdir, accn1)
         print(cds_path)
-	
+
         # construct dict from CDS FASTA
         accn_regex = re.compile('[A-Z]{1,3}[0-9]{5,6}.[0-9]')
         cds_dict = {}
@@ -88,7 +88,7 @@ def main():
             # print(cds_dict)
 
         # transfer sequences to outfile for all accessions in tuple
-	    for accn in accessions:
+        for accn in accessions:
             records = cds_dict.get(accn, None)
             for record in records:
                 descript = record['desc'].split(' ')
@@ -103,8 +103,8 @@ def main():
                 ))
                 pruned_record_count += 1
 
-        print('record count: '+ str(record_count))
-        print('pruned record count: '+ str(pruned_record_count))
+        print('record count: ' + str(record_count))
+        print('pruned record count: ' + str(pruned_record_count))
       
 
 if __name__ == "__main__":
