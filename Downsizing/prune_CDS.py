@@ -88,7 +88,8 @@ def main():
             # print(cds_dict)
 
             # transfer sequences to outfile for all accessions in tuple
-            for accn, records in cds_dict.items():
+	    for accn in accessions:
+                records = cds_dict.get(accn, None)
                 for record in records:
                     descript = record['desc'].split(' ')
 
