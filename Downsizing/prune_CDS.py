@@ -50,7 +50,7 @@ def main():
         # retrieve reference accession from file name
         accn1 = filename1.replace('pruned_accn_', '')  # [12:]
         print('accn1 ' + accn1)
-	#accn1='NC_007605'
+        #accn1='NC_007605'
         
         #path1 = '{}/{}'.format(args.accndir, filename1)
         # use reference accn to retrieve corresponding CDS FASTA
@@ -87,21 +87,21 @@ def main():
             record_count = len(cds_dict)  # number of available sequences
             # print(cds_dict)
 
-            # transfer sequences to outfile for all accessions in tuple
+        # transfer sequences to outfile for all accessions in tuple
 	    for accn in accessions:
-                records = cds_dict.get(accn, None)
-                for record in records:
-                    descript = record['desc'].split(' ')
+            records = cds_dict.get(accn, None)
+            for record in records:
+                descript = record['desc'].split(' ')
 
-                    # print(descript)
-                    l = re.findall("([0-9]+)", descript[-2])
+                # print(descript)
+                l = re.findall("([0-9]+)", descript[-2])
 
-                    # print(l)
-                    location = "{}:{}".format(l[0],l[1])
-                    out_file.write(">\"{},{},{},1,{}\"\n{}\n".format(
-	    	        accn1, accn, record['id'][-12:-2], location, record['seq']
-                        ))
-                    pruned_record_count += 1
+                # print(l)
+                location = "{}:{}".format(l[0],l[1])
+                out_file.write(">\"{},{},{},1,{}\"\n{}\n".format(
+                    accn1, accn, record['id'][-12:-2], location, record['seq']
+                ))
+                pruned_record_count += 1
 
         print('record count: '+ str(record_count))
         print('pruned record count: '+ str(pruned_record_count))
