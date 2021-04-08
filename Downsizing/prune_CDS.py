@@ -89,6 +89,10 @@ def main():
             # transfer sequences to outfile for all accessions in tuple
             for accn in accessions:
                 records = cds_dict.get(accn, None)
+                if records is None:
+                    print("Failed to retrieve records for accession {}".format(accn))
+                    continue
+                    
                 for record in records:
                     descript = record['desc'].split(' ')
 
