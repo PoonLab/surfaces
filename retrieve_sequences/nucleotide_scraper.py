@@ -4,13 +4,24 @@ input file: all files from the Data/Nucleotide directory
 output file: files in the Data/sequences Directory named nseq_NC_000001.txt
 """
 import os
+import re
 import csv
 from Bio import Entrez, SeqIO, SeqFeature
 from csv import DictWriter
 from time import sleep
+from glob import glob
+import argparse
 
 Entrez.email = 'sbagher4@uwo.ca'
 directory = '/Users/sarehchimeh/Data/Neighbours'
+
+def parse_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--accndir', default='/home/sareh/data/pruned_accns', type=str,
+                       help='Directory containing text files of accession numbers')
+    parser.add_argument('--outdir', default='/home/sareh/data/Pruned_sequence/', type=str,
+                        help='Directory to write outputs.')
+    return parser.parse_args()
 
 def pase_filtered_neighbour_table(table):
     """
@@ -20,12 +31,10 @@ def pase_filtered_neighbour_table(table):
     """
     lst = []
     with open(table, 'r') as f:
-        title = next(f)
-        header = next(f)
-        reader = csv.reader(f, delimiter='\t')
-        for line in reader:
-            lst.append(line[1])
-
+        print(table)
+        for line in f:
+            name = line.split("\n")
+            lst.append(name[1])
     return (lst)
 
 def retrieve_gid(accn):
@@ -49,23 +58,28 @@ def retrieve_record(gid):
     return next(gb)
 
 def main():
-    for filename in os.listdir(directory):
-        outfile = open('/Users/sarehchimeh/Data/sequences/nseq_{}'.format(filename), 'w')
-        file_path = '/Users/sarehchimeh/Data/Neighbours/{}'.format(filename)
-        values = pase_filtered_neighbour_table(file_path)
-
-        for accn in values:
-            gid = retrieve_gid(accn)
-            if gid is None:
-                print('Warning, failed to retrieve gid for {}'.format(accn))
-                continue
-                print(accn + ' ' + gid)
-            sleep(2)  # avoid spamming the server
-            record = retrieve_record(gid)
-            name = record.annotations['organism']
-            seq = record.seq
-            outfile.write('>{},{},\n{}\n'.format(name, accn, seq)
-        sleep(2)
+    args = parse_args()
+    #accndir
+    file_paths = glob(os.path.join(args.accndir, 'pruned_accn_*'))
+    for path in file_paths:
+        filename = os.path.basename(path)
+	print("filename is ' + filename)
+	print("path is ' + path)
+    	values = pase_filtered_neighbour_table(path)
+        accn = filename.replace('pruned_accn_', '')  # [12:]
+        with open('{}/Pruned_nuc_{}'.format(args.outdir, accn.'w') as outfile:
+        	for accn in values:
+            		gid = retrieve_gid(accn)
+            		if gid is None:
+                		print('Warning, failed to retrieve gid for {}'.format(accn))
+                		continue
+                		print(accn + ' ' + gid)
+            		sleep(2)  # avoid spamming the server
+            		record = retrieve_record(gid)
+            		name = record.annotations['organism']
+            		seq = record.seq
+            		outfile.write('>{},{},\n{}\n'.format(name, accn, seq)
+        	sleep(2)
 
 if __name__ == "__main__":
     main()
