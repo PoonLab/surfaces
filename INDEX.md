@@ -3,7 +3,6 @@
 * all files named after ref virus requence accession (NC_0000001) 
 
 order | option1 | option2| option3 | 
-
 1 | pruned(100) | - | - |
 --- | --- | --- | --- | 
 2 | ref | - (Neighbours) | - | 
