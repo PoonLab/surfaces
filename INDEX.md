@@ -14,8 +14,8 @@ order | option1 | option2| option3 |
 6 | gap | - | - |
 
 + ref_genome
-...refseq_NC_002200
-...>NC_001357.1 Human papillomavirus - 18, complete genome
+   refseq_NC_002200
+   >NC_001357.1 Human papillomavirus - 18, complete genome
 
 + genome 
 ...nseq_NC_012959.txt
