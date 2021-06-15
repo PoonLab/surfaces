@@ -1,6 +1,6 @@
-#DATA 
+# DATA 
 
-##File Naming Rules 
+## File Naming Rules 
 
 * all files named after ref virus requence accession (NC_0000001) 
 
