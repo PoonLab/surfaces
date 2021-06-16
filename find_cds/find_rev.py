@@ -1,10 +1,13 @@
-#find_rev.py
+#find_rev.py reverse complement of nucleotide anti-sense seqeucnes 
+#if (-1) in the header then reverse complement of that fasta entry is written out to a fasta file in the rev_directory
+#input directory to fasta file
+
 import os
 import argparse
 from glob import glob
 import subprocess
 
-directory_arg = '/home/sareh/data/nuc_refseq_CDS'
+directory_arg = '/home/sareh/data/ref_cds'
 rev_directory_arg = '/home/sareh/data/rev_nuc_refseq_CDS'
 
 complement_dict = {'A':'T', 'C':'G', 'G':'C', 'T':'A',
