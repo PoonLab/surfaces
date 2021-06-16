@@ -43,17 +43,6 @@ def get_boundaries (str):
 
     return res
 
-def parse_args():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('ref', type=argparse.FileType('r'), 
-                        help="FASTA file with reference sequence to cut out of queries")
-    parser.add_argument('fasta', type=argparse.FileType('r'), 
-                        help="FASTA file containing query sequences")
-    parser.add_argument('outfile', type=argparse.FileType('w'), default=None,
-                        help="path to write output")
-    parser.add_argument('--echo', action='store_true', help="report alignment scores")
-    return parser.parse_args()
-
 
 def mafft(query, ref):
     handle = tempfile.NamedTemporaryFile(delete=False)
@@ -75,30 +64,57 @@ def mafft(query, ref):
     return(trimmed_query)
 
 
-def gotoh(query, ref, echo=False):
+def gotoh(query, ref):
     aref, aquery, ascore = aligner.align(ref, query)
     left, right = get_boundaries(aref)
-    if echo:
-        print(ascore / (right-left))
-        trimmed_query = aquery[left:right]
-        return trimmed_query.replace('-', '')  # remove all gaps
+    ascore = ascore / (right-left))
 
-def cutter():
-    args = parse_args()
-    
+    trimmed_query = aquery[left:right].replace('-', '')  # remove all gaps
+    return trimmed_query, ascore
+
+
+def cutter(ref, fasta, outfile, csvfile):
+    """
+    :param ref:  open stream in read mode to FASTA file containing reference
+                 gene sequence
+    :param fasta:  open stream in read mode to FASTA file containing query
+                   genome sequences
+    :param outfile:  open stream in write mode to output trimmed sequences
+                     in FASTA format
+    :param csvfile:  open stream in write mode to output alignment scores
+    """
     # read reference sequence from file
-    refseq = convert_fasta(args.ref)[0][1]
+    refseq = convert_fasta(ref)[0][1]
 
-    fasta = convert_fasta(args.fasta)
+    csvfile.write('header,align.score\n')
+
+    fasta = convert_fasta(fasta)
     for h, s in fasta:
+        # remove gaps in query before attempting alignment
         query = s.replace('-', '')
+
         #trimmed = mafft(query, refseq)
         genome_ID = h.split(",")[1] 
         print("{}".format(genome_ID)) 
-        #print header with virusID and genomeID
-        #print("{}".format(h)) 
-        trimmed = gotoh(query, refseq, echo=args.echo)
-        args.outfile.write('>{}\n{}\n'.format(h, trimmed))
+
+        trimmed, ascore = gotoh(query, refseq)
+
+        outfile.write('>{}\n{}\n'.format(h, trimmed))
+        csvfile.write('"{}",{}\n'.format(h, ascore))
+
 
 if __name__ == '__main__':
-    cutter()
+    # command line interface
+    parser = argparse.ArgumentParser()
+    parser.add_argument('ref', type=argparse.FileType('r'),
+                        help="FASTA file with reference sequence to cut out of queries")
+    parser.add_argument('fasta', type=argparse.FileType('r'),
+                        help="FASTA file containing query sequences")
+    parser.add_argument('outfile', type=argparse.FileType('w'), default=None,
+                        help="path to write trimmed sequences in FASTA format")
+    parser.add_argument('csvfile', type=argparse.FileType('w'), 
+                        help="path to write alignment scores in CSV format")
+    args = parser.parse_args()
+
+    cutter(args.ref, args.fasta, args.outfile, args.csvfile)
+
