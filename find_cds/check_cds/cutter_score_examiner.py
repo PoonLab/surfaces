@@ -1,77 +1,84 @@
-#cutter_scores
+"""
+cutter_scores:
+header,align.score
+NC_000858,LC210029.1,Human T-cell leukemia virus type I\,4.565891472868217
+writes out a csv file with a row summarizing each file (gene):
+("virus,max,min,zero,one,two,three,four\n")
+"""
+
 import os
 import re
+import csv
 
-directory= "/home/sareh/cutter/cutter_scores"
+directory= "/home/sareh/surfaces/find_cds/cutter_scores"
+outfile_path = '/home/sareh/surfaces/find_cds/check_cds/examine_cutter_scores.csv'
 
 #print("virus,max,min,zero,one,two,three,four")
 
 num_files = 0
 num_alignments = 0
-empty_files = 0 
 all_zero = 0
 all_one = 0
 all_two = 0
-outfile = open('/home/sareh/cutter/examine_cutter_new.csv','w')
+
+outfile = open(outfile_path,'w')
+#Header of csv file
 outfile.write("virus,max,min,zero,one,two,three,four\n")
+
 for file in os.listdir(directory):
-    #print(file)
+    print(file)
     num_files += 1
+    #reading each scores file for each gene
     path =("{}/{}".format(directory,file))
     with open(path, "r") as f:
         total = 0
+        row_count = 0
         four = 0
         three = 0
         two = 0
         one = 0
         zero = 0
         list = []
-        for line in f:
-            if re.match("^[a-zA-Z]", line):
-                continue 
-            else:
-                total += 1
-                line = (line.strip("\n"))
-                list.append(float(line))
-        #print(list)
-
-        if total ==0:
-            print("{} is empty".format(file))
-            empty_files += 1
-            continue
-        else:
-            #print(file)
-            #print("max is {}".format(max(list)))
-            #print("min is {}".format(min(list)))
-            for i in list:
-                num_alignments +=1
-                if i >= 4:
-                    four += 1
-                elif i >= 3:
-                    three += 1
-                elif i >= 2:
-                    two += 1
-                    all_two +=1
-                elif i >= 1 and i<2:
-                    one += 1
-                    all_one +=1
-                elif i < 1:
-                    print(i)
-                    zero += 1
-                    all_zero += 1
-
+        row_count = 0
+        csv_reader = csv.reader(f,delimiter=',')
+        next(csv_reader,None)
+        for row in csv_reader:
+            #print(row)
+            num_alignments += 1
+            s = float(row[1])
+            row_count += 1
+            list.append(s)
+            if s >= 4:
+                four += 1
+            elif s >= 3:
+                three += 1
+            elif s >= 2:
+                two += 1
+                all_two +=1
+            elif s >= 1 and i<2:
+                one += 1
+                all_one +=1
+            elif s < 1:
+                print(row)
+                zero += 1
+                all_zero += 1
+         
+       
             #print("zero is {}".format(zero))
             #print("one is {}".format(one))
             #print("two is {}".format(two))
             #print("three is {}".format(three))
             #print("four is {}".format(four))
 
-            outfile.write("{},{:.1f},{:.2f},{},{},{},{},{}\n".format(file,max(list),min(list),zero,one,two,three,four))
-            #NC_007605_YP_401637.1,5.0,0.59,31,0,0,0,69
+        outfile.write("{},{:.1f},{:.2f},{},{},{},{},{}\n".format(file,max(list),min(list),zero,one,two,three,four))
+        #NC_007605_YP_401637.1,5.0,0.59,31,0,0,0,69
+            
+        break
 
 print("num of files is {}".format(num_files))
 print("num of alignments is {}".format(num_alignments))
 print("all zero {}".format(all_zero))
 print("all one {}".format(all_one))
 print("all two {}".format(all_two))
-print("empty files {}".format(empty_files))
+
+outfile.close
