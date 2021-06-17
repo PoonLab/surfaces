@@ -23,22 +23,23 @@ directory = '/home/sareh/data/ref_cds'
 aligner = Aligner()  # default settings
 
 
-def convert_fasta (handle):
+def convert_fasta (file):
     result = []
     sequence = ''
-    for line in handle:
-        if line.startswith('$'): # skip header line
-            continue
-        elif line.startswith('>') or line.startswith('#'):
-            if len(sequence) > 0:
-                result.append([h,sequence])
-                sequence = ''   # reset
-            h = line.strip('>#\n')
-        else:
-            sequence += line.strip('\n').upper()
+    with open(file,'r') as handle:
+        for line in handle:
+            if line.startswith('$'): # skip header line
+                continue
+            elif line.startswith('>') or line.startswith('#'):
+                if len(sequence) > 0:
+                    result.append([h,sequence])
+                    sequence = ''   # reset
+                h = line.strip('>#\n')
+            else:
+                sequence += line.strip('\n').upper()
             
-    result.append([h,sequence]) # handle last entry
-    return result
+        result.append([h,sequence]) # handle last entry
+        return result
 
 
 def get_boundaries (str):
@@ -96,25 +97,27 @@ def cutter(ref, fasta, outfile, csvfile):
                      in FASTA format
     :param csvfile:  open stream in write mode to output alignment scores
     """
+
     # read reference sequence from file
     refseq = convert_fasta(ref)[0][1]
 
-    csvfile.write('header,align.score\n')
+    with open(outfile,'w+') as out_file:
+        with open(csvfile,'w+') as scorefile:
+            scorefile.write('header,align.score\n')
 
-    fasta = convert_fasta(fasta)
-    for h, s in fasta:
-        # remove gaps in query before attempting alignment
-        query = s.replace('-', '')
+            fasta = convert_fasta(fasta)
+            for h, s in fasta:
+                # remove gaps in query before attempting alignment
+                query = s.replace('-', '')
 
-        #trimmed = mafft(query, refseq)
-        genome_ID = h.split(",")[1] 
-        print("{}".format(genome_ID)) 
+                #trimmed = mafft(query, refseq)
+                genome_ID = h.split(",")[1] 
+                print("{}".format(genome_ID)) 
 
-        trimmed, ascore = gotoh(query, refseq)
+                trimmed, ascore = gotoh(query, refseq)
 
-        outfile.write('>{}\n{}\n'.format(h, trimmed))
-        csvfile.write('"{}",{}\n'.format(h, ascore))
-
+                scorefile.write('{}\,{}\n'.format(h,ascore))
+                out_file.write('>{}\n{}\n'.format(h, trimmed))
 
 if __name__ == '__main__':
     count = 0
@@ -128,10 +131,10 @@ if __name__ == '__main__':
                 if count % total_number == my_number:
                     #print(file) #NC_044047_YP_009679042.1
                     ref = ("{}/{}/{}".format(directory, dir, file))
-                    fasta = ("/home/sareh/data/Pruned_sequence/Pruned_nuc_{}".format(dir))
-                    outfile = ("/home/sareh/cutter/rev_cutter/cutter_cds/rev_cutter_{}".format(file))
-                    score = ("/home/sareh/cutter/rev_cutter/rev_cutter_scores/{}".format(file))
+                    fasta = ("/home/sareh/data/pruned_genome/Pruned_nuc_{}".format(dir))
+                    outfile = ("/home/sareh/surfaces/find_cds/cut_cds/cutter_cds_{}".format(file))
+                    csvfile = ("/home/sareh/surfaces/find_cds/cutter_scores/cutter_scores_{}".format(file))
 
-                    cutter(ref, fasta, outfile, score) 
-                    break
+                    cutter(ref, fasta, outfile, csvfile) 
+                    
 
