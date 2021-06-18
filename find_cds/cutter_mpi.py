@@ -132,15 +132,16 @@ def main():
             path = os.path.join(directory, dir)
             for file in os.listdir(path):
                 count += 1
-                if count % total_number == my_number:
-                    #print(file) #NC_044047_YP_009679042.1
-                    ref = ("{}/{}/{}".format(directory, dir, file))
-                    fasta = ("/home/sareh/data/pruned_genome/Pruned_nuc_{}".format(dir))
-                    outfile = ("/home/sareh/surfaces/find_cds/cut_cds/cutter_cds_{}".format(file))
-                    csvfile = ("/home/sareh/surfaces/find_cds/cutter_scores/cutter_scores_{}".format(file))
-
-                    cutter(ref, fasta, outfile, csvfile) 
-                    file_count += 1
-                    #print("file_count is {}".format(file_count)) 
+                ref = ("{}/{}/{}".format(directory, dir, file))
+                fasta = ("/home/sareh/data/pruned_genome/Pruned_nuc_{}".format(dir))
+                outfile = ("/home/sareh/surfaces/find_cds/cut_cds/cutter_cds_{}".format(file))
+                csvfile = ("/home/sareh/surfaces/find_cds/cutter_scores/cutter_scores_{}".format(file))
+                #os.path.isfile(path) | os.path.exists(path) | path.exists
+                if os.path.isfile(outfile):
+                    continue
+                else:
+                    if count % total_number == my_number:
+                        cutter(ref, fasta, outfile, csvfile)
+                #if os.path.isfile(outfile) and count % total_number == my_number:
 if __name__ == '__main__':
     main()
