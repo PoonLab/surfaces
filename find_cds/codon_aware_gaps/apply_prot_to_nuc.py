@@ -1,13 +1,15 @@
-#takes gaps in the aligned aa sequences and applies that to the nucloetide sequences 
-#aa_directory of aa aligned fasta files 
-#nuc_directory of unaligned/original nuc fasta files 
+"""
+takes gaps in the aligned aa sequences and applies that to the nucloetide sequences 
+aa_directory of aa aligned fasta files 
+nuc_directory of unaligned/original nuc fasta files 
+"""
 
 import re
 import os
 
-aa_directory = "/home/sareh/cutter/rev_cutter/edited_aa_CDS"
-nuc_directory = "/home/sareh/cutter/rev_cutter/edited_nuc_CDS"
-out_directory = "/home/sareh/cutter/rev_cutter/gap_nuc_CDS"
+aa_directory = "/home/sareh/surfaces/find_cds/codon_aware_gaps/aligned_cds"
+nuc_directory = "/home/sareh/surfaces/find_cds/codon_aware_gaps/cut_cds"
+out_directory = "/home/sareh/surfaces/find_cds/codon_aware_gaps/gap_nuc_CDS"
     
 def parse_fasta (handle):
     """

@@ -4,8 +4,11 @@ summarizing how many of the fasta nuc seq entries are divisibile by 3
 Summay of each file in a row on the csv outfile 
 """
 
-directory = "/home/sareh/surfaces/find_cds/cut_cds/"
-out_path = "/home/sareh/surfaces/find_cds/check_cds/is_codon.csv"
+#directory = "/home/sareh/surfaces/find_cds/cut_cds/"
+#out_path = "/home/sareh/surfaces/find_cds/check_cds/is_codon.csv"
+
+directory = "/home/sareh/surfaces/find_cds/check_cds/test/backup_cut_cds/
+out_path = "/home/sareh/surfaces/find_cds/check_cds/test/is_codon.csv
 
 def iter_fasta(handle):
     """

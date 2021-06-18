@@ -13,6 +13,8 @@ import tempfile
 import os
 import re
 import sys
+from datetime import datetime
+
 
 the_world = MPI.COMM_WORLD
 my_number = the_world.Get_rank()
@@ -102,28 +104,38 @@ def cutter(ref, fasta, outfile, csvfile):
     # read reference sequence from file
     refseq = convert_fasta(ref)[0][1]
 
-    with open(outfile,'w+') as out_file:
-        with open(csvfile,'w+') as scorefile:
-            scorefile.write('header,align.score\n')
+    out_file = open(outfile, 'w+')  # append
+    scorefile = open(csvfile, 'w+')
 
-            fasta = convert_fasta(fasta)
-            for h, s in fasta:
-                # remove gaps in query before attempting alignment
-                query = s.replace('-', '')
+    scorefile.write('header,align.score\n')
 
-                #trimmed = mafft(query, refseq)
-                genome_ID = h.split(",")[1] 
-                print("{}".format(genome_ID)) 
+    fasta = convert_fasta(fasta)
+    for h, s in fasta:
+        # remove gaps in query before attempting alignment
+        query = s.replace('-', '')
 
-                trimmed, ascore = gotoh(query, refseq)
+        #trimmed = mafft(query, refseq)
+        genome_ID = h.split(",")[1] 
+        # print("{}".format(genome_ID)) 
+        sys.stdout.write("[{} {}/{}] aligning {}\n".format(
+            datetime.now().isoformat(), my_number, total_number, genome_ID))
+        sys.stdout.flush()
 
-                scorefile.write('{}\,{}\n'.format(h,ascore))
-                out_file.write('>{}\n{}\n'.format(h, trimmed))
+        trimmed, ascore = gotoh(query, refseq)
+
+        scorefile.write('{}\,{}\n'.format(h, ascore))
+        out_file.write('>{}\n{}\n'.format(h, trimmed))
+
+    out_file.close()
+    scorefile.close()
+
 
 def main():
     count = 0
     dir_count = 0
     file_count = 0
+    outdir = '/home/sareh/surfaces/find_cds'
+
     for dir in os.listdir(directory):
         if 'NC_' in dir:
             dir_count += 1
@@ -132,16 +144,26 @@ def main():
             path = os.path.join(directory, dir)
             for file in os.listdir(path):
                 count += 1
+                
                 ref = ("{}/{}/{}".format(directory, dir, file))
                 fasta = ("/home/sareh/data/pruned_genome/Pruned_nuc_{}".format(dir))
-                outfile = ("/home/sareh/surfaces/find_cds/cut_cds/cutter_cds_{}".format(file))
-                csvfile = ("/home/sareh/surfaces/find_cds/cutter_scores/cutter_scores_{}".format(file))
+                outfile = ("{}/cut_cds/cutter_cds_{}".format(outdir, file))
+                csvfile = ("{}/cutter_scores/cutter_scores_{}".format(outdir, file))
+
                 #os.path.isfile(path) | os.path.exists(path) | path.exists
                 if os.path.isfile(outfile):
+                    # output file exists, skip to next job
                     continue
-                else:
-                    if count % total_number == my_number:
-                        cutter(ref, fasta, outfile, csvfile)
+
+                if count % total_number == my_number:
+                    sys.stdout.write("[{} {}/{}] starting job {} {}\n".format(
+                        datetime.now().isoformat(), my_number, total_number, count, file))
+                    sys.stdout.flush()
+
+                    cutter(ref, fasta, outfile, csvfile)
                 #if os.path.isfile(outfile) and count % total_number == my_number:
+
+
 if __name__ == '__main__':
     main()
+

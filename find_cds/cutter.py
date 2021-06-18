@@ -67,7 +67,7 @@ def mafft(query, ref):
 def gotoh(query, ref):
     aref, aquery, ascore = aligner.align(ref, query)
     left, right = get_boundaries(aref)
-    ascore = ascore / (right-left))
+    ascore = ascore / (right-left)
 
     trimmed_query = aquery[left:right].replace('-', '')  # remove all gaps
     return trimmed_query, ascore

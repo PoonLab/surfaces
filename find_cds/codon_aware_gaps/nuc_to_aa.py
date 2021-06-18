@@ -147,7 +147,7 @@ def main ():
     count = 0
     not_tripple = 0
     
-    outdir = '/home/sareh/surfaces/find_cds/aa_cds/
+    outdir = '/home/sareh/surfaces/find_cds/codon_aware_gaps/aa_cds'
     out_name = "aaCDS_" + os.path.basename(args.file) #aaCDS_NC_001436_NP_057863.1
     out_path = os.path.join(outdir, out_name) #"/Users/sareh/Desktop/aaCDS_NC_001436_NP_057863.1"
     #file_path = "/Users/sareh/Desktop/cutter_NC_001436_NP_057863.1"
