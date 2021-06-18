@@ -1,15 +1,24 @@
 """
 translates nucleotide sequences in fasta files in a directory to aa sequences
-standard-out spits out fasta headers of sequences that were not divisible by 3
 functions from ArtPoon/gotoh2_utils.py/gotoh2
-BASH Script to iterate through directory
-
+BASH Script to iterate through directory:
 for f in ./*; do python3 nuc_to_aa.py  $f > triple_$f.txt; done
 """
 
 import re
 import argparse
 import os
+
+def parse_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--file', type=str,
+                       help='path to fasta files with ncleotide sequences')
+    #parser.add_argument('--resolve', default='False', type=str,
+                        #help='param resolve:  if True, attempt to convert ambiguous cod$
+    #parser.add_argument('--outdir', type=str,
+                        #help='path to directory to write outputs.')
+    return parser.parse_args()
+
 
 # conversion from codon triplets to amino acid symbols
 codon_dict = {
@@ -133,41 +142,24 @@ def iter_fasta(handle):
             sequence += line.strip().upper()
     yield h, sequence
 
-
-def parse_args():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--file', type=str,
-                       help='path to fasta files with ncleotide sequences')
-    parser.add_argument('--resolve', default='False', type=str,
-                        help='param resolve:  if True, attempt to convert ambiguous codons into an amino acid')
-    parser.add_argument('--outdir', default='/home/sareh/data', type=str,
-                        help='path to directory to write outputs.')
-    return parser.parse_args()
-
-
 def main ():
     args = parse_args()
     count = 0
     not_tripple = 0
-
+    
+    outdir = '/home/sareh/surfaces/find_cds/aa_cds/
     out_name = "aaCDS_" + os.path.basename(args.file) #aaCDS_NC_001436_NP_057863.1
-    out_path = os.path.join(args.outdir, out_name) #"/Users/sareh/Desktop/aaCDS_NC_001436_NP_057863.1"
+    out_path = os.path.join(outdir, out_name) #"/Users/sareh/Desktop/aaCDS_NC_001436_NP_057863.1"
     #file_path = "/Users/sareh/Desktop/cutter_NC_001436_NP_057863.1"
+
     with open (out_path, 'w') as outfile:
         with open(args.file, 'r') as file:
             for h,sequence in iter_fasta(file):
-                divisible = len(sequence)% 3
-                if divisible != 0:
-                    print("{}|{}".format(divisible,h))
-                    not_tripple += 1
-
                 aa_f = translate_nuc(sequence,False)
                 #aa_t = translate_nuc(sequence,True)
                 outfile.write(">{}\n{}\n".format(h,aa_f))
                 count += 1
     print(count)
-    print(not_tripple)
-
 if __name__ == '__main__':
     main()
 
