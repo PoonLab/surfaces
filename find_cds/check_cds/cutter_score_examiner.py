@@ -13,6 +13,9 @@ import csv
 directory= "/home/sareh/surfaces/find_cds/cutter_scores"
 outfile_path = '/home/sareh/surfaces/find_cds/check_cds/examine_cutter_scores.csv'
 
+#directory= "/home/sareh/surfaces/find_cds/check_cds/test/backup_cutter_scores"
+#outfile_path = '/home/sareh/surfaces/find_cds/check_cds/test/examine_cutter_scores.csv'
+
 #print("virus,max,min,zero,one,two,three,four")
 
 num_files = 0
@@ -45,7 +48,7 @@ for file in os.listdir(directory):
         for row in csv_reader:
             #print(row)
             num_alignments += 1
-            s = float(row[1])
+            s = float(row[3])
             row_count += 1
             list.append(s)
             if s >= 4:
@@ -55,7 +58,7 @@ for file in os.listdir(directory):
             elif s >= 2:
                 two += 1
                 all_two +=1
-            elif s >= 1 and i<2:
+            elif s >= 1 and s<2:
                 one += 1
                 all_one +=1
             elif s < 1:
@@ -73,8 +76,6 @@ for file in os.listdir(directory):
         outfile.write("{},{:.1f},{:.2f},{},{},{},{},{}\n".format(file,max(list),min(list),zero,one,two,three,four))
         #NC_007605_YP_401637.1,5.0,0.59,31,0,0,0,69
             
-        break
-
 print("num of files is {}".format(num_files))
 print("num of alignments is {}".format(num_alignments))
 print("all zero {}".format(all_zero))
