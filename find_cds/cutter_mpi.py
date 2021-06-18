@@ -18,7 +18,8 @@ the_world = MPI.COMM_WORLD
 my_number = the_world.Get_rank()
 total_number = the_world.Get_size()
 
-directory = '/home/sareh/data/ref_cds'
+#directory = '/home/sareh/data/ref_cds'
+directory = '/home/sareh/surfaces/find_cds/corrected_ref_cds'
 
 aligner = Aligner()  # default settings
 
@@ -119,15 +120,18 @@ def cutter(ref, fasta, outfile, csvfile):
                 scorefile.write('{}\,{}\n'.format(h,ascore))
                 out_file.write('>{}\n{}\n'.format(h, trimmed))
 
-if __name__ == '__main__':
+def main():
     count = 0
-
+    dir_count = 0
+    file_count = 0
     for dir in os.listdir(directory):
         if 'NC_' in dir:
+            dir_count += 1
+            #print("dir_count is {}".format(dir_count))
             #path = ("{}/{}".format(directory,dir)) #print(dir) #NC_044047
             path = os.path.join(directory, dir)
             for file in os.listdir(path):
-                count += 1 
+                count += 1
                 if count % total_number == my_number:
                     #print(file) #NC_044047_YP_009679042.1
                     ref = ("{}/{}/{}".format(directory, dir, file))
@@ -136,5 +140,7 @@ if __name__ == '__main__':
                     csvfile = ("/home/sareh/surfaces/find_cds/cutter_scores/cutter_scores_{}".format(file))
 
                     cutter(ref, fasta, outfile, csvfile) 
-                    
-
+                    file_count += 1
+                    #print("file_count is {}".format(file_count)) 
+if __name__ == '__main__':
+    main()
