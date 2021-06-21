@@ -4,7 +4,7 @@ from glob import glob
 ref_gene_files = glob('corrected_ref_cds/NC_006273/NC_006273_*')
 
 # load query genomes
-queries = convert_fasta('../data/pruned_genome/Pruned_nuc_NC_006273')
+queries = convert_fasta('/home/sareh/data/pruned_genome/Pruned_nuc_NC_006273')
 
 
 def pdist(s1, s2):
