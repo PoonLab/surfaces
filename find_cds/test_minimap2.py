@@ -25,7 +25,26 @@ def pdist(s1, s2):
 for rgf in ref_gene_files:
     rgene = convert_fasta(rgf)[0][1]
     for qh, qs in queries:
+        #print(qh)
         qgene = minimap2(query=qs, refseq=rgene)
-        p = pdist(qgene, rgene)
+        ndiff = 0
+        #print(rgene)
+        #print(len(rgene))
+        #print(qgene)
+        #print(len(qgene))
+        for i, nt1 in enumerate(qgene):
+            #print("i is {}".format(i))
+            #print("nt1 is {}".format(nt1))
+            if nt1 in "N-":
+                continue
+            if i < len(rgene):
+                nt2 = rgene[i]
+                #print("rgene[i] is {}".format(nt2))
+                if nt1 != nt2 and nt2 not in "N-":
+                    ndiff += 1 
+        p = ndiff/len(qgene)
+        #print(p)
+        #p = pdist(qgene, rgene)
         print('{},{:1.3f}'.format(qh, 100*p))
+        #break
     break
