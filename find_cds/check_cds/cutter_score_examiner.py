@@ -29,7 +29,7 @@ outfile = open(outfile_path,'w')
 outfile.write("virus,max,min,zero,one,two,three,four\n")
 
 for file in os.listdir(directory):
-    print(file)
+    #print(file)
     num_files += 1
     #reading each scores file for each gene
     path =("{}/{}".format(directory,file))
@@ -72,8 +72,8 @@ for file in os.listdir(directory):
             #print("two is {}".format(two))
             #print("three is {}".format(three))
             #print("four is {}".format(four))
-
-        outfile.write("{},{:.1f},{:.2f},{},{},{},{},{}\n".format(file,max(list),min(list),zero,one,two,three,four))
+        if len(list) > 0:
+            outfile.write("{},{:.1f},{:.2f},{},{},{},{},{}\n".format(file,max(list),min(list),zero,one,two,three,four))
         #NC_007605_YP_401637.1,5.0,0.59,31,0,0,0,69
             
 print("num of files is {}".format(num_files))
