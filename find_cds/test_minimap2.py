@@ -37,11 +37,18 @@ for rgf in ref_gene_files:
             #print("nt1 is {}".format(nt1))
             if nt1 in "N-":
                 continue
-            if i < len(rgene):
+            #if i < len(rgene):
+            try:
                 nt2 = rgene[i]
                 #print("rgene[i] is {}".format(nt2))
                 if nt1 != nt2 and nt2 not in "N-":
-                    ndiff += 1 
+                    ndiff += 1
+                #print(len(qgene)-len(rgene))
+            except Exception as e:
+                print("i {}, nt1 {},nt2 {},qh {} \n {} \n {}".format(i,nt1,nt2,qh,qgene,rgene))
+                print("qgene length:{}".format(len(qgene)))
+                print("rgene length:{}".format(len(rgene)))
+                print("ERROR : "+str(e))
         p = ndiff/len(qgene)
         #print(p)
         #p = pdist(qgene, rgene)
