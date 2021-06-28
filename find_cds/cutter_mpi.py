@@ -24,23 +24,22 @@ total_number = the_world.Get_size()
 aligner = Aligner()  # default settings
 
 
-def convert_fasta (file):
+def convert_fasta (handle):
     result = []
     sequence = ''
-    with open(file, 'r') as handle:
-        for line in handle:
-            if line.startswith('$'): # skip header line
-                continue
-            elif line.startswith('>') or line.startswith('#'):
-                if len(sequence) > 0:
-                    result.append([h,sequence])
-                    sequence = ''   # reset
-                h = line.strip('>#\n')
-            else:
-                sequence += line.strip('\n').upper()
+    for line in handle:
+        if line.startswith('$'): # skip header line
+            continue
+        elif line.startswith('>') or line.startswith('#'):
+            if len(sequence) > 0:
+                result.append([h,sequence])
+                sequence = ''   # reset
+            h = line.strip('>#\n')
+        else:
+            sequence += line.strip('\n').upper()
             
-        result.append([h, sequence])  # handle last entry
-        return result
+    result.append([h, sequence])  # handle last entry
+    return result
 
 
 def get_boundaries (str):
@@ -59,7 +58,7 @@ def get_boundaries (str):
     return res
 
 
-def mafft(query, ref):
+def mafft(query, ref, trim=True):
     handle = tempfile.NamedTemporaryFile(delete=False)
     s = '>ref\n{}\n>query\n{}\n'.format(ref, query)
     handle.write(s.encode('utf-8'))
@@ -73,10 +72,11 @@ def mafft(query, ref):
     aligned_query = result[1][1]
     
     # trim aligned query sequence to extent of reference
-    left, right = get_boundaries(aligned_ref)
-    trimmed_query = aligned_query[left:right]
+    if trim:
+        left, right = get_boundaries(aligned_ref)
+        aligned_query = aligned_query[left:right]
     os.remove(handle.name)  # clean up
-    return(trimmed_query)
+    return(aligned_query)
 
 
 def apply_cigar(seq, cigar):
@@ -171,6 +171,7 @@ def cutter(ref, fasta, outfile, csvfile):
 
     scorefile.write('header,align.score\n')
 
+    
     fasta = convert_fasta(fasta)
     for h, s in fasta:
         # remove gaps in query before attempting alignment
@@ -237,7 +238,8 @@ def main():
             sys.stdout.flush()
 
             # run analysis
-            cutter(ref, fasta, outfile, csvfile)
+            with open(fasta, 'r') as handle:
+                cutter(ref, handle, outfile, csvfile)
             #if os.path.isfile(outfile) and count % total_number == my_number:
 
 
