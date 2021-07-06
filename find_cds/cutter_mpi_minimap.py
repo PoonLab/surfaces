@@ -5,7 +5,6 @@ import tempfile
 import subprocess
 import re
 
-
 #mpi
 from mpi4py import MPI
 the_world = MPI.COMM_WORLD
@@ -146,20 +145,19 @@ def main():
             #Each query header and sequence
             for qh, qs in queries:
                 #print(qh)
-                qgene = minimap2(query=qs, refseq=rgene) #each alignment 
-                ndiff = 0
-                #print(rgene) #print(len(rgene)) 
-                #print(qgene) #print(len(qgene))
-                
                 try:
+                    qgene = minimap2(query=qs, refseq=rgene) #each alignment 
+                    ndiff = 0
+                    #print(rgene) #print(len(rgene)) 
+                    #print(qgene) #print(len(qgene))
                     p = pdist(qgene, rgene)
                     print('{},{:1.3f}'.format(qh, 100*p))
                     
                 except Exception as e:
                     #print("i {}, nt1 {},nt2 {},qh {} \n {} \n {}".format(i,nt1,nt2,qh,qgene,rgene))
                     print(qh)
-                    print("qgene length:{}".format(len(qgene)))
-                    print("rgene length:{}".format(len(rgene)))
+                    print("qgene length:{}\n{}".format(len(qgene),qgene))
+                    print("rgene length:{}\n{}".format(len(rgene),rgene))
                     print("ERROR : "+str(e))
 
                 #print('{},{:1.3f}'.format(qh, 100*p))
