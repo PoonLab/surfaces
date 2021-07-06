@@ -25,6 +25,7 @@ aligner = Aligner()  # default settings
 
 
 def convert_fasta (handle):
+    #takes in opened file handle
     result = []
     sequence = ''
     for line in handle:
@@ -238,9 +239,13 @@ def main():
             sys.stdout.flush()
 
             # run analysis
-            with open(fasta, 'r') as handle:
-                cutter(ref, handle, outfile, csvfile)
+            ref_handle = open(ref)
+            fasta_handle = open(fasta)
+            cutter(ref_handle, fasta_handle, outfile, csvfile)
             #if os.path.isfile(outfile) and count % total_number == my_number:
+            ref_handle.close()
+            fasta_handle.close()
+        #break
 
 
 if __name__ == '__main__':

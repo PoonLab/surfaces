@@ -3,12 +3,13 @@ iterate through directory of fasta files
 summarizing how many of the fasta nuc seq entries are divisibile by 3
 Summay of each file in a row on the csv outfile 
 """
+import os
 
 #directory = "/home/sareh/surfaces/find_cds/cut_cds/"
 #out_path = "/home/sareh/surfaces/find_cds/check_cds/is_codon.csv"
 
-directory = "/home/sareh/surfaces/find_cds/check_cds/test/backup_cut_cds/
-out_path = "/home/sareh/surfaces/find_cds/check_cds/test/is_codon.csv
+directory = "/home/sareh/surfaces/find_cds/cut_cds"
+out_path = "/home/sareh/surfaces/find_cds/check_cds/is_codon.csv"
 
 def iter_fasta(handle):
     """
@@ -30,7 +31,7 @@ def iter_fasta(handle):
 
 
 def main ():
-    args = parse_args()
+    #args = parse_args()
     count = 0
     total_not_tripple=0
     file_count = 0 
@@ -43,14 +44,14 @@ def main ():
             file_count += 1 
             lst_not_tripple = []
             with open(file, 'r') as f:
-            for h,sequence in iter_fasta(f):
-                seq_count += 1 
-                divisible = len(sequence)% 3
-                if divisible != 0:
-                    lst_not_tripple.append(h)
-                    #print("{},{}".format(divisible,h))
-                    not_tripple += 1
-            outfile.write("{},{},{}".format(file,not_tripple,lst_not_tripple))
+                for h,sequence in iter_fasta(f):
+                    seq_count += 1 
+                    divisible = len(sequence)% 3
+                    if divisible != 0:
+                        lst_not_tripple.append(h)
+                        #print("{},{}".format(divisible,h))
+                        not_tripple += 1
+                outfile.write("{},{},{}".format(file,not_tripple,lst_not_tripple))
 
     print(total_not_tripple)
     print(file_count) 
