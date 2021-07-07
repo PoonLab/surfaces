@@ -131,7 +131,15 @@ accession_file = '/home/sareh/surfaces/find_cds/virus_corrected_ref_cds.txt'
 
 def main():
     accns = get_accn(accession_file) #all of the files to examine
+    score = '/home/sareh/surfaces/find_cds/cutter_mpi_minimap_score.txt'
+    error = '/home/sareh/surfaces/find_cds/cutter_mpi_minimap_error.txt'
+    non_query = '/home/sareh/surfaces/find_cds/cutter_mpi_minimap_none.txt'
+    score_handle = open(score,'w')
+    error_handle = open(error,'w')
+    non_handle = open(non_query,'w')
     for accn in accns:
+        worked_count = 0
+        error_count = 0 
         ref_gene_files = glob('/home/sareh/surfaces/find_cds/corrected_ref_cds/{}/{}_*'.format(accn,accn))
         query_file_path = ('/home/sareh/data/pruned_genome/Pruned_nuc_{}'.format(accn))
         #query_file_handle = open(query_file_path)
@@ -141,29 +149,34 @@ def main():
         for rgf in ref_gene_files:
             #rfg_handle = open(rfg)
             rgene = convert_fasta(rgf)[0][1] #the reference cds seqeunce
-            
+            #print(rgene)
             #Each query header and sequence
             for qh, qs in queries:
                 #print(qh)
-                try:
-                    qgene = minimap2(query=qs, refseq=rgene) #each alignment 
-                    ndiff = 0
-                    #print(rgene) #print(len(rgene)) 
-                    #print(qgene) #print(len(qgene))
-                    p = pdist(qgene, rgene)
-                    print('{},{:1.3f}'.format(qh, 100*p))
-                    
-                except Exception as e:
-                    #print("i {}, nt1 {},nt2 {},qh {} \n {} \n {}".format(i,nt1,nt2,qh,qgene,rgene))
-                    print(qh)
-                    print("qgene length:{}\n{}".format(len(qgene),qgene))
-                    print("rgene length:{}\n{}".format(len(rgene),rgene))
-                    print("ERROR : "+str(e))
+                qgene = minimap2(query=qs, refseq=rgene) #each alignment 
+                if qgene != None:
+                    try:
+                        ndiff = 0
+                        #print(rgene) #print(len(rgene)) 
+                        #print(qgene) #print(len(qgene))
+                        p = pdist(qgene, rgene)
+                        score_handle.write('{},{:1.3f}\n'.format(qh, 100*p))
+                        #print('{},{:1.3f}'.format(qh, 100*p))
+                        worked_count += 1 
+                    except Exception as e:
+                        #print("i {}, nt1 {},nt2 {},qh {} \n {} \n {}".format(i,nt1,nt2,qh,qgene,rgene))
+                        print("{},{}".format(qh,(len(rgene)-len(qgene))))
+                        #print("qgene length:{}".format(len(qgene)))
+                        #print("rgene length:{}".format(len(rgene)))
+                        #print("ERROR : "+str(e))
+                        error_count += 1
+                else:
+                   non_handle.write("{}\n".format(qh))
 
                 #print('{},{:1.3f}'.format(qh, 100*p))
-     
+            print("{},{},{}".format(accn,worked_count,error_count))
             #break            
         #break
-  
+
 if __name__ == "__main__":
     main()
