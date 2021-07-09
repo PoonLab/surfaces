@@ -2,7 +2,7 @@ from cutter_mpi import minimap2, convert_fasta
 from glob import glob
 from cutter_mpi import mafft
 
-ref_gene_files = glob('corrected_ref_cds/NC_000858/NC_00858_*')
+ref_gene_files = glob('corrected_ref_cds/NC_000858/NC_000858_*')
 #ref_gene_files = glob('corrected_ref_cds/NC_001414/NC_001414_*')
 # runs with : corrected_ref_cds/NC_006273/NC_006273_*'
 #all scores 0 : 'corrected_ref_cds/NC_001348/NC_001348_*'
@@ -31,17 +31,21 @@ def pdist(s1, s2):
 
 
 for rgf in ref_gene_files:
+    print(rgf)
     handle = open(rgf)
     rgene = convert_fasta(handle)[0][1]
+    print('rgene len {}'.format(len(rgene)))
     for qh, qs in queries:
-        #print(qh)
+        print('header ' + qh)
+        print('query len {}'.format(len(qs)))
+        
         qgene = minimap2(query=qs, refseq=rgene)
-        qgene = mafft(query=qgene, ref=rgene, trim=False)
+        print('qgene len after minimap2 {}'.format(len(qgene)))
+        qgene, rgene = mafft(query=qgene, ref=rgene, trim=False)
         ndiff = 0
-        #print(rgene)
-        #print(len(rgene))
-        #print(qgene)
-        #print(len(qgene))
+        print('qgene len after mafft {}'.format(len(qgene)))
+        print('rgene len after mafft {}'.format(len(rgene)))
+
         for i, nt1 in enumerate(qgene):
             #print("i is {}".format(i))
             #print("nt1 is {}".format(nt1))
@@ -55,15 +59,17 @@ for rgf in ref_gene_files:
                     ndiff += 1
                 #print(len(qgene)-len(rgene))
             except Exception as e:
-                #print("i {}, nt1 {},nt2 {},qh {} \n {} \n {}".format(i,nt1,nt2,qh,qgene,rgene))
-                print("i {}, nt1 {},nt2 {},qh {}".format(i,nt1,nt2,qh))
-                print("qgene length:{}".format(len(qgene)))
-                print("rgene length:{}".format(len(rgene)))
+                print("i {}, nt1 {},nt2 {},qh {}".format(i, nt1, nt2, qh))
+                #print("qgene length:{}".format(len(qgene)))
+                #print("rgene length:{}".format(len(rgene)))
                 print("ERROR : "+str(e))
-        p = ndiff/len(qgene)
+                raise
+            p = ndiff/len(qgene)
+
+        break
         #print(p)
         #p = pdist(qgene, rgene)
-        print('{},{:1.3f}'.format(qh, 100*p))
+        #print('{},{:1.3f}'.format(qh, 100*p))
         #NC_001348,KF853233.1,Human alphaherpesvirus 3,0.000
-        #break
+     #break
     #break

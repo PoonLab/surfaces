@@ -77,7 +77,7 @@ def mafft(query, ref, trim=True):
         left, right = get_boundaries(aligned_ref)
         aligned_query = aligned_query[left:right]
     os.remove(handle.name)  # clean up
-    return(aligned_query)
+    return(aligned_query, aligned_ref)
 
 
 def apply_cigar(seq, cigar):

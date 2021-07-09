@@ -218,6 +218,11 @@ def main():
 
 def test():
 
+    non_count = 0
+    ran_count = 0
+    all_count = 0
+    error_count = 0 
+
     #Directories 
     ref_home_directory = '/home/sareh/surfaces/find_cds/corrected_ref_cds'
     query_directory = '/home/sareh/data/pruned_genome'
@@ -231,9 +236,7 @@ def test():
     error_handle = open(error,'w')
     non_handle = open(non_query,'w')
     for accn in accns:
-        worked_count = 0
-        error_count = 0 
-        ref_gene_files = glob('/home/sareh/surfaces/find_cds/corrected_ref_cds/{}/{}_*'.format(accn,accn))
+        ref_gene_files = glob('/home/sareh/surfaces/find_cds/corrected_ref_cds/{}/{}_*'.format(accn,accn)) 
         query_file_path = ('/home/sareh/data/pruned_genome/Pruned_nuc_{}'.format(accn))
         #query_file_handle = open(query_file_path)
         queries = convert_fasta(query_file_path)
@@ -247,7 +250,9 @@ def test():
             for qh, qs in queries:
                 #print(qh)
                 qgene = minimap2(query=qs, refseq=rgene) #each alignment 
+                all_count += 1
                 if qgene != None:
+                    ran_count += 1
                     try:
                         ndiff = 0
                         #print(rgene) #print(len(rgene)) 
@@ -255,21 +260,21 @@ def test():
                         p = pdist(qgene, rgene)
                         score_handle.write('{},{:1.3f}\n'.format(qh, 100*p))
                         #print('{},{:1.3f}'.format(qh, 100*p))
-                        worked_count += 1 
                     except Exception as e:
                         #print("i {}, nt1 {},nt2 {},qh {} \n {} \n {}".format(i,nt1,nt2,qh,qgene,rgene))
                         print("{},{}".format(qh,(len(rgene)-len(qgene))))
-                        #print("qgene length:{}".format(len(qgene)))
-                        #print("rgene length:{}".format(len(rgene)))
-                        #print("ERROR : "+str(e))
+                        print("qgene length:{}".format(len(qgene)))
+                        print("rgene length:{}".format(len(rgene)))
+                        print("ERROR : "+str(e))
                         error_count += 1
                 else:
                    non_handle.write("{}\n".format(qh))
-
+                   non_count += 1 
                 #print('{},{:1.3f}'.format(qh, 100*p))
-            print("{},{},{}".format(accn,worked_count,error_count))
-            break            
-        #break
-
+            #print("{},{},{}".format(accn,worked_count,error_count))
+    print("non count is {}".format(non_count))
+    print("all count is {}".format(all_count))
+    print("ran count is {}".format(ran_count))
+    print("error count is {}".format(error_count))
 if __name__ == "__main__":
     test()
