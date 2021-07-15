@@ -4,6 +4,7 @@ from glob import glob
 import tempfile
 import subprocess
 import re
+import os
 
 #mpi
 from mpi4py import MPI
@@ -24,26 +25,26 @@ def get_accn(file):
     a = tuple(lst_accns)
     return(a)
 
-def convert_fasta (file):
+def convert_fasta (handle):
     """
-    takes in file path 
+    takes in handel to an open fasta file 
     """
     result = []
     sequence = ''
-    with open(file,'r') as handle:
-        for line in handle:
-            if line.startswith('$'): # skip header line
-                continue
-            elif line.startswith('>') or line.startswith('#'):
-                if len(sequence) > 0:
-                    result.append([h,sequence])
-                    sequence = ''   # reset
-                h = line.strip('>#\n')
-            else:
-                sequence += line.strip('\n').upper()
+    #handle = open(file,'r') 
+    for line in handle:
+        if line.startswith('$'): # skip header line
+            continue
+        elif line.startswith('>') or line.startswith('#'):
+            if len(sequence) > 0:
+                result.append([h,sequence])
+                sequence = ''   # reset
+            h = line.strip('>#\n')
+        else:
+            sequence += line.strip('\n').upper()
             
-        result.append([h,sequence]) # handle last entry
-        return result
+    result.append([h,sequence]) # handle last entry
+    return result
 
 def pdist(s1, s2):
     """
@@ -162,6 +163,25 @@ def cutter_minimap(ref, fasta, outfile, csvfile):
             #print('{},{:1.3f}'.format(qh, 100*p))
             #print("{},{},{}".format(accn,worked_count,error_count))
 
+def mafft(query, ref, trim=True):
+    handle = tempfile.NamedTemporaryFile(delete=False)
+    s = '>ref\n{}\n>query\n{}\n'.format(ref, query)
+    handle.write(s.encode('utf-8'))
+    handle.close()
+    
+    # call MAFFT on temporary file
+    stdout = subprocess.check_output(['mafft', '--quiet', handle.name])
+    stdout = stdout.decode('utf-8')
+    result = convert_fasta(stdout.split('\n'))
+    aligned_ref = result[0][1]
+    aligned_query = result[1][1]
+    
+    # trim aligned query sequence to extent of reference
+    if trim:
+        left, right = get_boundaries(aligned_ref)
+        aligned_query = aligned_query[left:right]
+    os.remove(handle.name)  # clean up
+    return(aligned_query, aligned_ref)
 
 def main():
     count = 0
@@ -235,36 +255,37 @@ def test():
     score_handle = open(score,'w')
     error_handle = open(error,'w')
     non_handle = open(non_query,'w')
+    query_none = []
     for accn in accns:
+        print(accn)
         ref_gene_files = glob('/home/sareh/surfaces/find_cds/corrected_ref_cds/{}/{}_*'.format(accn,accn)) 
         query_file_path = ('/home/sareh/data/pruned_genome/Pruned_nuc_{}'.format(accn))
-        #query_file_handle = open(query_file_path)
-        queries = convert_fasta(query_file_path)
+        query_file_handle = open(query_file_path)
+        queries = convert_fasta(query_file_handle)
         
-        #Each gene files
+        #Looping through the 100 query seqs 
         for rgf in ref_gene_files:
-            #rfg_handle = open(rfg)
-            rgene = convert_fasta(rgf)[0][1] #the reference cds seqeunce
-            #print(rgene)
+            rgf_handle = open(rgf)
+            original_rgene = convert_fasta(rgf_handle)[0][1] #the reference cds seqeunce
+
             #Each query header and sequence
             for qh, qs in queries:
-                #print(qh)
-                qgene = minimap2(query=qs, refseq=rgene) #each alignment 
+                #minimap alignment 
+                qgene_minimap = minimap2(query=qs, refseq=original_rgene) 
                 all_count += 1
-                if qgene != None:
+                ndiff = 0 
+                if qgene_minimap != None:
                     ran_count += 1
                     try:
+                        #mafft alignment 
+                        qgene_mafft, rgene_mafft = mafft(query=qgene_minimap, ref=original_rgene, trim=False)
                         ndiff = 0
-                        #print(rgene) #print(len(rgene)) 
-                        #print(qgene) #print(len(qgene))
-                        p = pdist(qgene, rgene)
+                        #alignment score
+                        p = pdist(qgene_minimap, rgene_mafft)
                         score_handle.write('{},{:1.3f}\n'.format(qh, 100*p))
-                        #print('{},{:1.3f}'.format(qh, 100*p))
+                        print(p)
                     except Exception as e:
                         #print("i {}, nt1 {},nt2 {},qh {} \n {} \n {}".format(i,nt1,nt2,qh,qgene,rgene))
-                        print("{},{}".format(qh,(len(rgene)-len(qgene))))
-                        print("qgene length:{}".format(len(qgene)))
-                        print("rgene length:{}".format(len(rgene)))
                         print("ERROR : "+str(e))
                         error_count += 1
                 else:
@@ -272,9 +293,10 @@ def test():
                    non_count += 1 
                 #print('{},{:1.3f}'.format(qh, 100*p))
             #print("{},{},{}".format(accn,worked_count,error_count))
-    print("non count is {}".format(non_count))
-    print("all count is {}".format(all_count))
-    print("ran count is {}".format(ran_count))
-    print("error count is {}".format(error_count))
+        print("non count is {}".format(non_count))
+        print("all count is {}".format(all_count))
+        print("ran count is {}".format(ran_count))
+        print("error count is {}".format(error_count))
+
 if __name__ == "__main__":
     test()
