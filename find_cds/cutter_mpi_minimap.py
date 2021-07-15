@@ -5,6 +5,9 @@ import tempfile
 import subprocess
 import re
 import os
+import sys
+from datetime import datetime
+
 
 #mpi
 from mpi4py import MPI
@@ -123,46 +126,6 @@ def minimap2(query, refseq, nthread=4, mm2bin='minimap2'):
         aligned = apply_cigar(seq, cigar)  # check if reference gene has insertions
         return query[rpos:(rpos+len(aligned))]
 
-
-def cutter_minimap(ref, fasta, outfile, csvfile):
-    """
-    :param ref:  open stream in read mode to FASTA file containing reference
-                 gene sequence
-    :param fasta:  open stream in read mode to FASTA file containing query
-                   genome sequences
-    :param outfile:  open stream in write mode to output trimmed sequences
-                     in FASTA format
-    :param csvfile:  open stream in write mode to output alignment scores
-    """
-  
-    scorefile.write('header,align.score\n')
-    
-    queries = convert_fasta(fasta)
-    
-    rgene = convert_fasta(ref)[0][1] #the reference cds seqeunce
-    
-    for qh, qs in queries:
-        qgene = minimap2(query=qs, refseq=rgene) #each alignment 
-        if qgene != None:
-            out_file.write('>{}\n{}\n'.format(qh, qgene))
-            try:
-                ndiff = 0
-                #print(rgene) #print(len(rgene)) #print(qgene) #print(len(qgene))
-                p = pdist(qgene, rgene)
-                scorefile.write('{},{:1.3f}\n'.format(qh, 100*p))
-                #print('{},{:1.3f}'.format(qh, 100*p))
-                worked_count += 1 
-            except Exception as e:
-                #print("i {}, nt1 {},nt2 {},qh {} \n {} \n {}".format(i,nt1,nt2,qh,qgene,rgene))
-                sys.stdout.write("{},{}".format(qh,(len(rgene)-len(qgene))))
-                #print("qgene length:{}".format(len(qgene))) #print("rgene length:{}".format(len(rgene)))
-                #print("ERROR : "+str(e))
-                error_count += 1
-        else:
-            sys.stdout.write("{}\n".format(qh))
-            #print('{},{:1.3f}'.format(qh, 100*p))
-            #print("{},{},{}".format(accn,worked_count,error_count))
-
 def mafft(query, ref, trim=True):
     handle = tempfile.NamedTemporaryFile(delete=False)
     s = '>ref\n{}\n>query\n{}\n'.format(ref, query)
@@ -183,11 +146,55 @@ def mafft(query, ref, trim=True):
     os.remove(handle.name)  # clean up
     return(aligned_query, aligned_ref)
 
+
+def cutter_minimap(ref, fasta, outfile, csvfile):
+    """
+    :param ref:  open stream in read mode to FASTA file containing reference
+                 gene sequence
+    :param fasta:  open stream in read mode to FASTA file containing query
+                   genome sequences
+    :param outfile:  open stream in write mode to output trimmed sequences
+                     in FASTA format
+    :param csvfile:  open stream in write mode to output alignment scores
+    """
+  
+    csvfile.write('header,align.score\n')
+    
+    queries = convert_fasta(fasta)
+    
+    original_rgene = convert_fasta(ref)[0][1] #the reference cds seqeunce
+    
+    for qh, qs in queries:
+        #minimap2 alignment
+        qgene_minimap = minimap2(query=qs, refseq=original_rgene) #each alignment 
+        if qgene_minimap != None:
+            outfile.write('>{}\n{}\n'.format(qh, qgene_minimap))
+            try:
+                #mafft alignment 
+                qgene_mafft, rgene_mafft = mafft(query=qgene_minimap, ref=original_rgene, trim=False)
+                #alignment score
+                ndiff = 0
+                #ungapped | original_rgene, qgene_minimap gapped| rgene_mafft, qgene_mafft
+                p = pdist(qgene_minimap, rgene_mafft)
+                csvfile.write('{},{:1.3f}\n'.format(qh, 100*p))
+                #print('{},{:1.3f}'.format(qh, 100*p))
+            except Exception as e:
+                #print("i {}, nt1 {},nt2 {},qh {} \n {} \n {}".format(i,nt1,nt2,qh,qgene,rgene))
+                sys.stdout.write("{},{}".format(qh,(len(original_rgene)-len(qgene_minimap))))
+                #print("qgene length:{}".format(len(qgene))) #print("rgene length:{}".format(len(rgene)))
+                #print("ERROR : "+str(e))
+        else:
+            sys.stdout.write("{}\n".format(qh))
+            #print('{},{:1.3f}'.format(qh, 100*p))
+            #print("{},{},{}".format(accn,worked_count,error_count))
+
+
+
 def main():
     count = 0
     
     #Directories 
-    outdir = '/home/sareh/surfaces/find_cds/minimap' #where all the files would be written into
+    outdir = '/home/sareh/surfaces/find_cds/minimap_cds' #where all the files would be written into
     ref_home_directory = '/home/sareh/surfaces/find_cds/corrected_ref_cds'
     query_directory = '/home/sareh/data/pruned_genome'
     accession_file = '/home/sareh/surfaces/find_cds/virus_pruned_genome.txt'
@@ -225,16 +232,18 @@ def main():
             sys.stdout.flush()
 
             # run analysis
-            out_file = open(outfile, 'w+')  # append
-            scorefile = open(csvfile, 'w+')
+            outfile_handle = open(outfile, 'w+')  # append
+            csvfile_handle = open(csvfile, 'w+')
             ref_handle = open(ref)
             fasta_handle = open(fasta)
-            cutter_minimap(ref, fasta, outfile, csvfile)
+
+            cutter_minimap(ref_handle, fasta_handle, outfile_handle, csvfile_handle)
+
             #if os.path.isfile(outfile) and count % total_number == my_number:
             ref_handle.close()
             fasta_handle.close()
-            out_file.close()
-            scorefile.close()
+            outfile_handle.close()
+            csvfile_handle.close()
 
 def test():
 
@@ -299,4 +308,4 @@ def test():
         print("error count is {}".format(error_count))
 
 if __name__ == "__main__":
-    test()
+    main()
