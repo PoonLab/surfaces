@@ -160,34 +160,36 @@ def cutter_minimap(ref, fasta, outfile, csvfile):
   
     csvfile.write('header,align.score\n')
     
+    # parse query genomes from input FASTA
     queries = convert_fasta(fasta)
     
-    original_rgene = convert_fasta(ref)[0][1] #the reference cds seqeunce
+    # the reference cds seqeunce
+    original_rgene = convert_fasta(ref)[0][1]
     
     for qh, qs in queries:
-        #minimap2 alignment
-        qgene_minimap = minimap2(query=qs, refseq=original_rgene) #each alignment 
-        if qgene_minimap != None:
-            outfile.write('>{}\n{}\n'.format(qh, qgene_minimap))
-            try:
-                #mafft alignment 
-                qgene_mafft, rgene_mafft = mafft(query=qgene_minimap, ref=original_rgene, trim=False)
-                #alignment score
-                ndiff = 0
-                #ungapped | original_rgene, qgene_minimap gapped| rgene_mafft, qgene_mafft
-                p = pdist(qgene_minimap, rgene_mafft)
-                csvfile.write('{},{:1.3f}\n'.format(qh, 100*p))
-                #print('{},{:1.3f}'.format(qh, 100*p))
-            except Exception as e:
-                #print("i {}, nt1 {},nt2 {},qh {} \n {} \n {}".format(i,nt1,nt2,qh,qgene,rgene))
-                sys.stdout.write("{},{}".format(qh,(len(original_rgene)-len(qgene_minimap))))
-                #print("qgene length:{}".format(len(qgene))) #print("rgene length:{}".format(len(rgene)))
-                #print("ERROR : "+str(e))
-        else:
+        # use minimap2 to extract homologous gene in query genome
+        qgene_minimap = minimap2(query=qs, refseq=original_rgene)
+        
+        if qgene_minimap is None:
+            # failed to align reference gene to query genome - no homology?
             sys.stdout.write("{}\n".format(qh))
-            #print('{},{:1.3f}'.format(qh, 100*p))
-            #print("{},{},{}".format(accn,worked_count,error_count))
-
+            continue
+            
+        # pairwise alignment
+        qgene_mafft, rgene_mafft = mafft(query=qgene_minimap, ref=original_rgene, trim=False)
+        
+        # check for gaps in reference gene (insertion in query)
+        qgene_nogap = ""
+        for i, rn in enumerate(rgene_mafft):
+            if rn == '-':
+                # skip insertion relative to reference
+                continue
+            qgene_nogap += qgene_nogap[i]
+        outfile.write(">{}\n{}\n".format(qh, qgene_nogap))
+        
+        # calculate p-distance as a measure of similarity/alignment score
+        p = pdist(qgene_minimap, rgene_mafft)
+        csvfile.write('{},{:1.3f}\n'.format(qh, 100*p))
 
 
 def main():
