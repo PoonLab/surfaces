@@ -5,32 +5,31 @@ treelength: sum of branch lengths in the tree
 
 import os 
 import re
+from Bio import Phylo
 
 #dir = "/home/sareh/data/fasttree_output"
 dir = "/home/sareh/surfaces/find_cds/working/tree_for_fasttree"
-outfile_path = "/home/sareh/data/neighbor_cds/treelength_cds100.csv"
-outfile = open(outfile_path,"w")
-
-pattern = re.compile("^[0-9|.]*")
+outfile_path = "/home/sareh/data/neighbor_cds/treelength2_cds.csv"
+outfile = open(outfile_path,"w+")
 
 for file_name in os.listdir(dir):
-    #virus_name=file_name.replace("FastTree_output","")
-    #virus_name=virus_name.replace(".tre","")
     name = file_name.replace("cutter_cds_","")
-    #print(file_name) #FastTree_outputNC_038889.tre
-    #print(virus_name) #NC_038889
-    #file_path ="/home/sareh/data/fasttree_output/FastTree_outputNC_038889.tre"
+    
     file_path =os.path.join(dir,file_name)
-    file = open(file_path,"r")
-    t = file.readline()
+    
+    # read in tree from file
+    tr = Phylo.read(file_path, 'newick')
+    sys.setrecursionlimit(100000) #idk what this is
 
-    lengths=[]
-    for l in t.split(":"):
-        branch_len = pattern.findall(l)
-        int_list = [lengths.append(i) for i in branch_len]
+    tips = tr.get_terminals()
 
-    lengths = list(filter(None, lengths)) # Taking the empty items out of list 
-    lengths = list(map(float, lengths)) # Turning str to numbers
+    total=0
+    for tip in tips:
+        if tip.branch_length is None:
+            continue
+        total += tip.branch_length
+        print(tip.branch_length)
 
-    outfile.write("{},{}\n".format(name,sum(lengths)))
+    outfile.write("{},{},{}\n".format(name,total,len(tips)))
+    print("total is {}".format(total))
     
