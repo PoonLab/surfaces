@@ -23,4 +23,20 @@ gap_nuc_cds
 	1. find_rev.py -> rev_nuc_refseq_cds 
 	   198 files are (-1)
  
-* Cutter script takes a week to run so need cluster computing   
+* Cutter script takes a week to run so need cluster computing
+	minimap extracts homologous region 
+	mafft pairwise alignment 
+	
+* indels and frameshifts 
+  our approach dosen't handel errors but there shouldnt be reading frames with indel errors in the data set
+  it can be a) genuin, suedo genes, genuin mutations like indels that cause fram shift KO the gene b) can be degenerate genes, seqeunce errors neglected by the autor 
+  - mafft was adding gaps to the ref seqeunce (the ref is no longer a reading frame)
+  Solution: detect that a gap has been inserted to the ref seq and delete the insetion in the query sequence 
+  	    this should reinforce a reading frame 
+  	`qgene_nogap = ""
+        for i, rn in enumerate(rgene_mafft):
+            if rn == '-':
+                # skip insertion relative to reference
+                continue
+            qgene_nogap += qgene_mafft[i]`
+	    
