@@ -1,4 +1,7 @@
-#combine testminimap and cutter_mpi.py
+"""
+Combine testminimap and cutter_mpi.py
+mkdir cut_cds | mkdir cutter_scores | mkdir gapped
+"""
 
 from glob import glob
 import tempfile
@@ -8,8 +11,7 @@ import os
 import sys
 from datetime import datetime
 
-
-#mpi
+# mpi
 from mpi4py import MPI
 the_world = MPI.COMM_WORLD
 my_number = the_world.Get_rank()
@@ -34,7 +36,7 @@ def convert_fasta (handle):
     """
     result = []
     sequence = ''
-    #handle = open(file,'r') 
+    # handle = open(file,'r') 
     for line in handle:
         if line.startswith('$'): # skip header line
             continue
@@ -133,7 +135,7 @@ def mafft(query, ref, trim=True):
     handle.close()
     
     # call MAFFT on temporary file
-    stdout = subprocess.check_output(['mafft', '--quiet', handle.name])
+    stdout = subprocess.check_output(['mafft', '--quiet', handle.name]) #Failed to align Error
     stdout = stdout.decode('utf-8')
     result = convert_fasta(stdout.split('\n'))
     aligned_ref = result[0][1]
@@ -147,7 +149,7 @@ def mafft(query, ref, trim=True):
     return(aligned_query, aligned_ref)
 
 
-def cutter_minimap(ref, fasta, outfile, csvfile):
+def cutter_minimap(ref, fasta, outfile, csvfile, gapped):
     """
     :param ref:  open stream in read mode to FASTA file containing reference
                  gene sequence
@@ -156,9 +158,12 @@ def cutter_minimap(ref, fasta, outfile, csvfile):
     :param outfile:  open stream in write mode to output trimmed sequences
                      in FASTA format
     :param csvfile:  open stream in write mode to output alignment scores
+    
+    :param gapped:  open stream in write mode to output ref seq that mafft inserted gaps into
     """
   
     csvfile.write('header,align.score\n')
+    gapped.write("header,rgene_mafft,qgene_mafft,qgene_nogap,gap_qgene_mafft,gap_rgene_mafft,original_rgene\n")    
     
     # parse query genomes from input FASTA
     queries = convert_fasta(fasta)
@@ -167,46 +172,101 @@ def cutter_minimap(ref, fasta, outfile, csvfile):
     original_rgene = convert_fasta(ref)[0][1]
     
     for qh, qs in queries:
-        # use minimap2 to extract homologous gene in query genome
+        # minimap2 alignment: use minimap2 to extract homologous gene in query genome
         qgene_minimap = minimap2(query=qs, refseq=original_rgene)
-        
+
         if qgene_minimap is None:
             # failed to align reference gene to query genome - no homology?
             sys.stdout.write("{}\n".format(qh))
+            # outfile.write('>{}\n{}\n'.format(qh, qgene_minimap))
             continue
-            
+
         # pairwise alignment
         qgene_mafft, rgene_mafft = mafft(query=qgene_minimap, ref=original_rgene, trim=False)
         
-        # check for gaps in reference gene (insertion in query)
+        # check for gaps in reference gene (insertion in query)       
+               # qgene_nogap = re.sub('-','',qgene_mafft)
+
         qgene_nogap = ""
         for i, rn in enumerate(rgene_mafft):
             if rn == '-':
                 # skip insertion relative to reference
                 continue
-            qgene_nogap += qgene_nogap[i]
+            qgene_nogap += qgene_mafft[i] 
+
         outfile.write(">{}\n{}\n".format(qh, qgene_nogap))
-        
+
+        # Print length of each gene in the gapped outfile 
+        gap_qgene_mafft = qgene_mafft.count("-")
+        gap_rgene_mafft = rgene_mafft.count("-")
+        gapped.write("{},{},{},{},{},{},{}\n".format(qh,str(len(rgene_mafft)),str(len(qgene_mafft)),str(len(qgene_nogap)),str(gap_qgene_mafft),str(gap_rgene_mafft),len(original_rgene)))
+#        print("rgene_mafft" + str(len(rgene_mafft)))
+#        print("qgene_mafft" + str(len(qgene_mafft)))
+#        print("qgene_nogap"  + str(len(qgene_nogap))) 
+#        print("gap_qgene_mafft" + str(gap_qgene_mafft))
+#        print("gap_rgene_mafft" + str(gap_rgene_mafft))str(gap_qgene_mafft)
+
         # calculate p-distance as a measure of similarity/alignment score
-        p = pdist(qgene_minimap, rgene_mafft)
+        p = pdist(qgene_mafft, rgene_mafft)
         csvfile.write('{},{:1.3f}\n'.format(qh, 100*p))
 
+def test():
+    count = 0
+
+    ref_gene_directory = "/home/sareh/hiv/NC_001802"
+    outdir = "/home/sareh/hiv/cds/100"
+
+    # Path to query fasta file with all the full genomes 
+    fasta = "/home/sareh/hiv/prune/100_pruned/pruned_NC_001802.fa"
+
+    for file in os.listdir(ref_gene_directory):
+            count += 1
+            if count % total_number != my_number:
+                continue
+
+            # Path to FASTA with gene sequence from Reference genome
+            ref = os.path.join(ref_gene_directory, file)
+
+            # Path to write FASTA output (cut gene sequences)
+            outfile = ("{}/cut_cds/cutter_cds_{}".format(outdir, file))
+
+            # Path to write CSV output (alignment scores)
+            csvfile = ("{}/cutter_scores/cutter_scores_{}".format(outdir, file))
+
+            #path to write out rgenes where gap was inserted
+            gapped = ("{}/cds_gapped/{}".format(outdir,file))
+
+            # run analysis
+            outfile_handle = open(outfile, 'w+')  # append
+            csvfile_handle = open(csvfile, 'w+')
+            ref_handle = open(ref)
+            fasta_handle = open(fasta)
+            gapped_handle = open(gapped, 'w+')
+
+            cutter_minimap(ref_handle, fasta_handle, outfile_handle, csvfile_handle,gapped_handle)
+
+            ref_handle.close()
+            fasta_handle.close()
+            outfile_handle.close()
+            csvfile_handle.close()
+            gapped_handle.close()
 
 def main():
     count = 0
     
-    #Directories 
-    outdir = '/home/sareh/surfaces/find_cds/minimap_cds' #where all the files would be written into
+    # Directories 
+    outdir = '/home/sareh/data/sequences/cut_cds' # where all the files would be written into
     ref_home_directory = '/home/sareh/surfaces/find_cds/corrected_ref_cds'
-    query_directory = '/home/sareh/data/pruned_genome'
+    query_directory = '/home/sareh/data/sequences/pruned_genome'
     accession_file = '/home/sareh/surfaces/find_cds/virus_pruned_genome.txt'
 
-    accns = get_accn(accession_file) #all of the files to examine
+    accns = get_accn(accession_file) # all of the files to examine
 
     for accn in accns:
         ref_gene_directory = os.path.join(ref_home_directory, accn)
         
         # Path to FASTA with genome sequences to process
+        #fasta = ('{}/Pruned_nuc_{}'.format(query_directory, accn))
         fasta = ('{}/Pruned_nuc_{}'.format(query_directory, accn))
         
         for file in os.listdir(ref_gene_directory):
@@ -223,6 +283,9 @@ def main():
             # Path to write CSV output (alignment scores)
             csvfile = ("{}/cutter_scores/cutter_scores_{}".format(outdir, file))
 
+            #path to write out rgenes where gap was inserted
+            gapped = ("{}/gapped/{}".format(outdir,file))
+
             #os.path.isfile(path) | os.path.exists(path) | path.exists
             if os.path.isfile(outfile):
                 # output file exists, skip to next job
@@ -238,76 +301,16 @@ def main():
             csvfile_handle = open(csvfile, 'w+')
             ref_handle = open(ref)
             fasta_handle = open(fasta)
+            gapped_handle = open(gapped, 'w+')
 
-            cutter_minimap(ref_handle, fasta_handle, outfile_handle, csvfile_handle)
+            cutter_minimap(ref_handle, fasta_handle, outfile_handle, csvfile_handle,gapped_handle)
 
             #if os.path.isfile(outfile) and count % total_number == my_number:
             ref_handle.close()
             fasta_handle.close()
             outfile_handle.close()
             csvfile_handle.close()
-
-def test():
-
-    non_count = 0
-    ran_count = 0
-    all_count = 0
-    error_count = 0 
-
-    #Directories 
-    ref_home_directory = '/home/sareh/surfaces/find_cds/corrected_ref_cds'
-    query_directory = '/home/sareh/data/pruned_genome'
-    accession_file = '/home/sareh/surfaces/find_cds/virus_pruned_genome.txt' 
-
-    accns = get_accn(accession_file) #all of the files to examine
-    score = '/home/sareh/surfaces/find_cds/cutter_mpi_minimap_score.txt'
-    error = '/home/sareh/surfaces/find_cds/cutter_mpi_minimap_error.txt'
-    non_query = '/home/sareh/surfaces/find_cds/cutter_mpi_minimap_none.txt'
-    score_handle = open(score,'w')
-    error_handle = open(error,'w')
-    non_handle = open(non_query,'w')
-    query_none = []
-    for accn in accns:
-        print(accn)
-        ref_gene_files = glob('/home/sareh/surfaces/find_cds/corrected_ref_cds/{}/{}_*'.format(accn,accn)) 
-        query_file_path = ('/home/sareh/data/pruned_genome/Pruned_nuc_{}'.format(accn))
-        query_file_handle = open(query_file_path)
-        queries = convert_fasta(query_file_handle)
-        
-        #Looping through the 100 query seqs 
-        for rgf in ref_gene_files:
-            rgf_handle = open(rgf)
-            original_rgene = convert_fasta(rgf_handle)[0][1] #the reference cds seqeunce
-
-            #Each query header and sequence
-            for qh, qs in queries:
-                #minimap alignment 
-                qgene_minimap = minimap2(query=qs, refseq=original_rgene) 
-                all_count += 1
-                ndiff = 0 
-                if qgene_minimap != None:
-                    ran_count += 1
-                    try:
-                        #mafft alignment 
-                        qgene_mafft, rgene_mafft = mafft(query=qgene_minimap, ref=original_rgene, trim=False)
-                        ndiff = 0
-                        #alignment score
-                        p = pdist(qgene_minimap, rgene_mafft)
-                        score_handle.write('{},{:1.3f}\n'.format(qh, 100*p))
-                        print(p)
-                    except Exception as e:
-                        #print("i {}, nt1 {},nt2 {},qh {} \n {} \n {}".format(i,nt1,nt2,qh,qgene,rgene))
-                        print("ERROR : "+str(e))
-                        error_count += 1
-                else:
-                   non_handle.write("{}\n".format(qh))
-                   non_count += 1 
-                #print('{},{:1.3f}'.format(qh, 100*p))
-            #print("{},{},{}".format(accn,worked_count,error_count))
-        print("non count is {}".format(non_count))
-        print("all count is {}".format(all_count))
-        print("ran count is {}".format(ran_count))
-        print("error count is {}".format(error_count))
+            gapped_handle.close()
 
 if __name__ == "__main__":
-    main()
+    test()
