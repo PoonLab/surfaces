@@ -1,7 +1,7 @@
 """
 Read in Newick files and calculate the tree length 
 treelength: sum of branch lengths in the tree
-Calculate treelength directly from Newick file using regex
+Using Biopython to calculate treelength "tip.branch_length"
 """
 
 import os 
