@@ -1,4 +1,4 @@
-#!/usr/bin/Rscript
+#!/usr/bin Rscript --vanilla
 # Read jason file and save jpg of heatmap of posterior probability 
 
 #this didn't work: Error in file(con, "r") : cannot open the connection
@@ -33,7 +33,6 @@ png(file=outpath,width=600, height=600)
 ggplot(grid.factor, aes(grid.factor$dS, grid.factor$dN, fill= grid.factor$posterior)) +
 geom_tile() + theme(axis.text.x = element_text(angle = 90)) +
   xlab("Synonymous rate") + ylab("Nonsynonymous rate") + labs(fill = "Posterior Mean") +
-ggtitle(name) + theme(plot.title = element_text(lineheight=2, face="bold", size = 10, hjust = 0.5)
-                      + scale_fill_gradient(low = "blue", high = "red")
+ggtitle(name) + theme(plot.title = element_text(lineheight=2, face="bold", size = 10, hjust = 0.5)) + scale_fill_gradient(low = "blue", high = "red")
 dev.off()
 
