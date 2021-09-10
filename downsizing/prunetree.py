@@ -17,9 +17,11 @@ if thrshld > tree_length:
 
 lengths = [(tip.branch_length, tip.name) for tip in phy.get_terminals()]
 lengths.sort()  # ascending order
-for _, tip_name in lengths:
+tbl = phy.total_branch_length()
+for branch_length, tip_name in lengths:
     phy.prune(tip_name)
-    if phy.total_branch_length() < thrshld:
+    tbl -= branch_length  # update total
+    if tbl < thrshld:
         break
 
 print("{},{},{}\n".format(sys.argv[1],phy.count_terminals(),tree_length))
