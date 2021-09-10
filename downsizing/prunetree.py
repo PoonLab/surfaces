@@ -15,15 +15,12 @@ if thrshld > tree_length:
     print("{} Treelength is less than threshold".format(sys.argv[1]))
     sys.exit()
 
-while tree_length >= thrshld:
+while phy.total_branch_length() >= thrshld:
     # find shortest tip
-    lengths = [(tip.branch_length, tip.name) for tip in tips]
+    lengths = [(tip.branch_length, tip.name) for tip in phy.get_terminals()]
     lengths.sort()
     min_length, min_tip = lengths[0]
     phy.prune(min_tip)
-    tree_length = phy.total_branch_length()
-    tips = phy.get_terminals()
-
 
 print("{},{},{}\n".format(sys.argv[1],phy.count_terminals(),tree_length))
 Phylo.write(phy,outpath, 'newick')
