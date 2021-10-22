@@ -4,26 +4,30 @@ import sys
 from Bio import Phylo
 
 phy = Phylo.read(sys.argv[1], 'newick')
-thrshld = float(sys.argv[2])
+thrshld = float(sys.argv[2]) # normalized threshold 
 outpath = sys.argv[3]
 
 tips = phy.get_terminals()
 
-tree_length = phy.total_branch_length()
+tbl = phy.total_branch_length()
+genomes = phy.count_terminals()
+norm_tbl = tbl/genomes
 
-if thrshld > tree_length:
+if thrshld > norm_tbl:
     print("{} Treelength is less than threshold".format(sys.argv[1]))
     sys.exit()
 
-while tree_length >= thrshld:
-    # find shortest tip
-    lengths = [(tip.branch_length, tip.name) for tip in tips]
-    lengths.sort()
-    min_length, min_tip = lengths[0]
-    phy.prune(min_tip)
-    tree_length = phy.total_branch_length()
-    tips = phy.get_terminals()
+for branch_length, tip_name in lengths:
+    print(tip_name)
+    lengths = [(tip.branch_length, tip.name) for tip in tips] 
+    # [(branchlength, Accession),...]
+    lengths.sort() # ascending order 
+    phy.prune(tip_name)
+    tbl -= branch_length # update (tbl) tree length (total branch length)
+    genomes -= 1 # update number of genome
+    norm_tbl = tbl/genomes #normalized threshold 
+    if norm_tbl < thrshld:
+        break
 
-
-print("{},{},{}\n".format(sys.argv[1],phy.count_terminals(),tree_length))
+print("{},{},{},this is printing\n".format(sys.argv[1],genomes,tbl))
 Phylo.write(phy,outpath, 'newick')

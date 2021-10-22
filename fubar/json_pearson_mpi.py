@@ -27,6 +27,7 @@ def main():
     name_lst = file_names(path)
     # get all permuations of the pair of genes (order matters)
     perm = permutations(name_lst, 2)
+    # comb = combinations(name_lst,2) #order dosen't matter
 
     for pair in list(perm):
         count += 1 
@@ -35,6 +36,8 @@ def main():
         run = ("Rscript json_pearsoncor.r {} {}".format(pair[0],pair[1]))
         os.system(run)
         # Rscript json_pearsoncor.r NC_000858_NP_049558.1.clean.FUBAR.json NC_000858_NP_049559.1.clean.FUBAR.json
+
+    print(list(perm))
 
 if __name__ == '__main__':
     main()
