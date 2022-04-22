@@ -11,11 +11,102 @@ import os
 import sys
 from datetime import datetime
 
+
+# ncbi directories
+#outdir ="/home/sareh/2020/sequences/cut_cds"
+outdir = "/home/sareh/2020/sequences/ncbi/test/cutter_mpi_minimap.py/"
+ref_home_directory ="/home/sareh/2020/sequences/ncbi/ncbi_ref_cds/"
+query_directory = "/home/sareh/2020/sequences/ncbi/ncbi_pruned_genome/"
+accession_file ="/home/sareh/2020/sequences/ncbi/ncbi_accn.txt"
+
+"""
+# lin Directories 
+outdir = "/home/sareh/2020/sequences/lin/lin_cut_cds/"    # where all the files would be written into
+ref_home_directory = "/home/sareh/2020/sequences/lin/lin_ref_cds/" #the ref_cds
+query_directory = '/home/sareh/2020/sequences/lin/lin_nuc_genome'
+accession_file = '/home/sareh/2020/sequences/lin/lin_ref_accn.txt'
+
+# TEST Directories 
+outdir = "/home/sareh/2020/sequences/test/cut_cds/outdir"
+ref_home_directory = "/home/sareh/2020/sequences/test/cut_cds/ref_home_directory/"
+query_directory = "/home/sareh/2020/sequences/test/cut_cds/query_dir/"
+accession_file = "/home/sareh/2020/sequences/test/cut_cds/virus_accn.txt"
+ovlp_dir = "/home/sareh/2020/sequences/test/cut_cds/ovlp_out_csv/"
+"""
+
 # mpi
 from mpi4py import MPI
 the_world = MPI.COMM_WORLD
 my_number = the_world.Get_rank()
 total_number = the_world.Get_size()
+
+complement_dict = {'A':'T', 'C':'G', 'G':'C', 'T':'A',
+                    'W':'S', 'R':'Y', 'K':'M', 'Y':'R', 'S':'W', 'M':'K',
+                    'B':'V', 'D':'H', 'H':'D', 'V':'B',
+                    '*':'*', 'N':'N', '-':'-'}
+
+
+def find_ovlp(ref_gene_directory):
+    """
+    run through all ref genes and their locations
+    get a list of all locations and identifiy duplicates as ovlp regions
+    """
+    all_loc = []
+    for file in os.listdir(ref_gene_directory):
+        ref = os.path.join(ref_gene_directory, file)
+        ref_loc = parse_ref_header(ref)
+        for i in ref_loc:
+            a = i.split(":")
+            start = a[0]
+            stop = a[1]
+            for n in range(int(start), int(stop)+1):
+                all_loc.append(n)
+    visited = set()
+    dup = [x for x in all_loc if x in visited or (visited.add(x) or False)]
+    unique_dup = set(dup)
+    return(unique_dup)
+
+def ref_ovlp_index(ref_loc, dup):
+    """
+    return list of dup, 0 index the cds
+    """
+    ref_all = []
+    for i in ref_loc:
+        a = i.split(":")
+        start = a[0]
+        stop = a[1]
+        for n in range(int(start), int(stop)+1):
+            ref_all.append(n)
+
+    #compare ref_all(list) to dup(tuple)
+    no_ovlp=[]
+    for index, all in enumerate(ref_all):
+        if all in dup:
+            continue
+        no_ovlp.append(index)
+    return no_ovlp
+
+def ovlp(handle):
+    all=[]
+    #skip header [accn,prod1,loc1,dir1,prod2,loc2,dir2,seqlen1,seqlen2,overlap,shift]
+    h = handle.readline().split(",")
+    for line in handle:
+        lst = (line.strip("\n")).split(",")
+        all.append(lst)
+    return(all)
+
+def parse_ref_header(ref):
+    h, original_rgene = get_ref(ref)
+    header_lst = h.split(",")
+    ref_loc = header_lst[-1].strip('"')
+    return(ref_loc.split(";"))
+
+def reverse_and_complement(seq):
+    rseq = seq[::-1]
+    rcseq = ''
+    for i in rseq:  # reverse order
+        rcseq += complement_dict[i]
+    return rcseq
 
 def get_accn(file):
     """
@@ -32,11 +123,11 @@ def get_accn(file):
 
 def convert_fasta (handle):
     """
-    takes in handel to an open fasta file 
+    takes in handel to an open fasta file
     """
     result = []
-    sequence = ''
-    # handle = open(file,'r') 
+    sequence = ""
+    h = ""
     for line in handle:
         if line.startswith('$'): # skip header line
             continue
@@ -47,9 +138,17 @@ def convert_fasta (handle):
             h = line.strip('>#\n')
         else:
             sequence += line.strip('\n').upper()
-            
     result.append([h,sequence]) # handle last entry
     return result
+
+def get_ref(ref):
+    ref_handle = open(ref)
+    for line in ref_handle:
+        if line.startswith('>'):
+            h = line.strip('>#\n')
+        else:
+            seq = line.strip('\n').upper()
+    return(h, seq)
 
 def pdist(s1, s2):
     """
@@ -87,7 +186,6 @@ def apply_cigar(seq, cigar):
         elif operation in 'SI':
             left += length  # soft clip
     return aligned
-    
 
 def minimap2(query, refseq, nthread=4, mm2bin='minimap2'):
     """
@@ -126,21 +224,26 @@ def minimap2(query, refseq, nthread=4, mm2bin='minimap2'):
 
         rpos = int(rpos) - 1  # convert to 0-index
         aligned = apply_cigar(seq, cigar)  # check if reference gene has insertions
-        return query[rpos:(rpos+len(aligned))]
+        result = query[rpos:(rpos+len(aligned))]
+        if int(flag) & 16 != 0:
+            # reverse-complement
+            result = reverse_and_complement(result)
+            #result = revcomp(result)
+        return result
 
 def mafft(query, ref, trim=True):
     handle = tempfile.NamedTemporaryFile(delete=False)
     s = '>ref\n{}\n>query\n{}\n'.format(ref, query)
     handle.write(s.encode('utf-8'))
     handle.close()
-    
+
     # call MAFFT on temporary file
     stdout = subprocess.check_output(['mafft', '--quiet', handle.name]) #Failed to align Error
     stdout = stdout.decode('utf-8')
     result = convert_fasta(stdout.split('\n'))
     aligned_ref = result[0][1]
     aligned_query = result[1][1]
-    
+
     # trim aligned query sequence to extent of reference
     if trim:
         left, right = get_boundaries(aligned_ref)
@@ -148,8 +251,7 @@ def mafft(query, ref, trim=True):
     os.remove(handle.name)  # clean up
     return(aligned_query, aligned_ref)
 
-
-def cutter_minimap(ref, fasta, outfile, csvfile, gapped):
+def cutter_minimap(ref, fasta, outfile, out_ovlp, csvfile, no_ovlp_index):
     """
     :param ref:  open stream in read mode to FASTA file containing reference
                  gene sequence
@@ -158,19 +260,18 @@ def cutter_minimap(ref, fasta, outfile, csvfile, gapped):
     :param outfile:  open stream in write mode to output trimmed sequences
                      in FASTA format
     :param csvfile:  open stream in write mode to output alignment scores
-    
+
     :param gapped:  open stream in write mode to output ref seq that mafft inserted gaps into
     """
-  
-    csvfile.write('header,align.score\n')
-    gapped.write("header,rgene_mafft,qgene_mafft,qgene_nogap,gap_qgene_mafft,gap_rgene_mafft,original_rgene\n")    
-    
+
+    csvfile.write('header, align.score, original_refgene, nogap, no_ovlp\n')
+
     # parse query genomes from input FASTA
     queries = convert_fasta(fasta)
-    
+
     # the reference cds seqeunce
-    original_rgene = convert_fasta(ref)[0][1]
-    
+    h, original_rgene = get_ref(ref)
+
     for qh, qs in queries:
         # minimap2 alignment: use minimap2 to extract homologous gene in query genome
         qgene_minimap = minimap2(query=qs, refseq=original_rgene)
@@ -183,134 +284,95 @@ def cutter_minimap(ref, fasta, outfile, csvfile, gapped):
 
         # pairwise alignment
         qgene_mafft, rgene_mafft = mafft(query=qgene_minimap, ref=original_rgene, trim=False)
-        
-        # check for gaps in reference gene (insertion in query)       
-               # qgene_nogap = re.sub('-','',qgene_mafft)
 
+        # remove gaps inserted into ref
         qgene_nogap = ""
         for i, rn in enumerate(rgene_mafft):
-            if rn == '-':
-                # skip insertion relative to reference
+            if rn == '-': # skip insertion relative to reference
                 continue
-            qgene_nogap += qgene_mafft[i] 
-
+            qgene_nogap += qgene_mafft[i]
         outfile.write(">{}\n{}\n".format(qh, qgene_nogap))
 
-        # Print length of each gene in the gapped outfile 
+        # remove ovlp
+        qgene_no_ovlp = ""
+        for i, rn in enumerate(qgene_nogap):
+            if i in no_ovlp_index:
+                qgene_no_ovlp += rn
+        out_ovlp.write(">{}\n{}\n".format(qh, qgene_no_ovlp))
+
+        # Print length of each gene in the gapped outfile
         gap_qgene_mafft = qgene_mafft.count("-")
         gap_rgene_mafft = rgene_mafft.count("-")
-        gapped.write("{},{},{},{},{},{},{}\n".format(qh,str(len(rgene_mafft)),str(len(qgene_mafft)),str(len(qgene_nogap)),str(gap_qgene_mafft),str(gap_rgene_mafft),len(original_rgene)))
-#        print("rgene_mafft" + str(len(rgene_mafft)))
-#        print("qgene_mafft" + str(len(qgene_mafft)))
-#        print("qgene_nogap"  + str(len(qgene_nogap))) 
-#        print("gap_qgene_mafft" + str(gap_qgene_mafft))
-#        print("gap_rgene_mafft" + str(gap_rgene_mafft))str(gap_qgene_mafft)
 
         # calculate p-distance as a measure of similarity/alignment score
         p = pdist(qgene_mafft, rgene_mafft)
-        csvfile.write('{},{:1.3f}\n'.format(qh, 100*p))
-
-def test():
-    count = 0
-
-    ref_gene_directory = "/home/sareh/hiv/NC_001802"
-    outdir = "/home/sareh/hiv/cds/100"
-
-    # Path to query fasta file with all the full genomes 
-    fasta = "/home/sareh/hiv/prune/100_pruned/pruned_NC_001802.fa"
-
-    for file in os.listdir(ref_gene_directory):
-            count += 1
-            if count % total_number != my_number:
-                continue
-
-            # Path to FASTA with gene sequence from Reference genome
-            ref = os.path.join(ref_gene_directory, file)
-
-            # Path to write FASTA output (cut gene sequences)
-            outfile = ("{}/cut_cds/cutter_cds_{}".format(outdir, file))
-
-            # Path to write CSV output (alignment scores)
-            csvfile = ("{}/cutter_scores/cutter_scores_{}".format(outdir, file))
-
-            #path to write out rgenes where gap was inserted
-            gapped = ("{}/cds_gapped/{}".format(outdir,file))
-
-            # run analysis
-            outfile_handle = open(outfile, 'w+')  # append
-            csvfile_handle = open(csvfile, 'w+')
-            ref_handle = open(ref)
-            fasta_handle = open(fasta)
-            gapped_handle = open(gapped, 'w+')
-
-            cutter_minimap(ref_handle, fasta_handle, outfile_handle, csvfile_handle,gapped_handle)
-
-            ref_handle.close()
-            fasta_handle.close()
-            outfile_handle.close()
-            csvfile_handle.close()
-            gapped_handle.close()
+        csvfile.write('{},{:1.3f},{},{},{}\n'.format(qh, 100*p,len(original_rgene), len(qgene_nogap),len(qgene_no_ovlp)))
 
 def main():
     count = 0
-    
-    # Directories 
-    outdir = '/home/sareh/data/sequences/cut_cds' # where all the files would be written into
-    ref_home_directory = '/home/sareh/surfaces/find_cds/corrected_ref_cds'
-    query_directory = '/home/sareh/data/sequences/pruned_genome'
-    accession_file = '/home/sareh/surfaces/find_cds/virus_pruned_genome.txt'
-
     accns = get_accn(accession_file) # all of the files to examine
 
     for accn in accns:
         ref_gene_directory = os.path.join(ref_home_directory, accn)
-        
+
+        dup = find_ovlp(ref_gene_directory)
+
         # Path to FASTA with genome sequences to process
-        #fasta = ('{}/Pruned_nuc_{}'.format(query_directory, accn))
-        fasta = ('{}/Pruned_nuc_{}'.format(query_directory, accn))
-        
+        fasta = os.path.join(query_directory, accn)
+        fasta_handle = open(fasta)
+
+        cds_count = 0
         for file in os.listdir(ref_gene_directory):
             count += 1
             if count % total_number != my_number:
                 continue
 
-            # Path to FASTA with gene sequence from Reference genome
-            ref = os.path.join(ref_gene_directory, file)
-
-            # Path to write FASTA output (cut gene sequences)
-            outfile = ("{}/cut_cds/cutter_cds_{}".format(outdir, file))
-
-            # Path to write CSV output (alignment scores)
-            csvfile = ("{}/cutter_scores/cutter_scores_{}".format(outdir, file))
-
-            #path to write out rgenes where gap was inserted
-            gapped = ("{}/gapped/{}".format(outdir,file))
-
-            #os.path.isfile(path) | os.path.exists(path) | path.exists
+            outfile = os.path.join(outdir, file)
             if os.path.isfile(outfile):
                 # output file exists, skip to next job
                 continue
 
+            # Path to Reference CDS
+            ref = os.path.join(ref_gene_directory, file)
+            ref_handle = open(ref)
+
+            # ref CDS coordinates (417:1546;1545:2132)
+            ref_loc = parse_ref_header(ref)
+
+            # 0 index of ref CDS without ovlp [0,1,2,7,8,9]
+            no_ovlp_index = ref_ovlp_index(ref_loc, dup)
+
+            # remove genes too short after cutting ovlp
+            if len(no_ovlp_index) < 50:
+                continue
+            print(len(no_ovlp_index))
+            cds_count += 1
+
+            # Path to write FASTA output (cut gene sequences)
+            outfile_handle = open(outfile, 'w+')  # append
+
+            # Path to write FASTA output (NO OVLP)
+            n = file+".noovlp"
+            out_ovlp = os.path.join(outdir, n)
+            out_ovlp_handle = open(out_ovlp, 'w+')  # append
+
+            # Path to write CSV output (alignment scores)
+            a = file+".csv"
+            csvfile = os.path.join(outdir, a)
+            csvfile_handle = open(csvfile, 'w+')
+
             # progress monitoring
-            sys.stdout.write("[{} {}/{}] starting job {} {}\n".format(
-                datetime.now().isoformat(), my_number, total_number, count, file))
+            sys.stdout.write("[{} {}/{}] starting job {} {}\n".format(datetime.now().isoformat(), my_number, total_number, count, file))
             sys.stdout.flush()
 
-            # run analysis
-            outfile_handle = open(outfile, 'w+')  # append
-            csvfile_handle = open(csvfile, 'w+')
-            ref_handle = open(ref)
-            fasta_handle = open(fasta)
-            gapped_handle = open(gapped, 'w+')
+            cutter_minimap(ref, fasta_handle, outfile_handle, out_ovlp_handle, csvfile_handle, no_ovlp_index)
 
-            cutter_minimap(ref_handle, fasta_handle, outfile_handle, csvfile_handle,gapped_handle)
-
-            #if os.path.isfile(outfile) and count % total_number == my_number:
             ref_handle.close()
-            fasta_handle.close()
             outfile_handle.close()
+            out_ovlp_handle.close()
             csvfile_handle.close()
-            gapped_handle.close()
+
+        fasta_handle.close()
 
 if __name__ == "__main__":
-    test()
+    main()
