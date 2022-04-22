@@ -1,15 +1,14 @@
 #!/usr/bin Rscript --vanilla
-# Read jason file and save jpg of heatmap of posterior probability 
+# Read jason file and save jpg of heatmap of posterior probability with the auto scale 
 
-#this didn't work: Error in file(con, "r") : cannot open the connection
 args = commandArgs(trailingOnly=TRUE)
 
 json_path <- args[1]
 outpath <- args[2]
 
 #title
-name <- gsub("/home/sareh/re-do/FUBAR/fubar100/json/","",json_path)
-name <- gsub("clean.FUBAR.json","",name)
+name <- gsub("/home/sareh/2020/fubar/json/lin/","",json_path)
+name <- gsub(".noovlp.clean.FUBAR.json","",name)
 
 # Load the package required to read JSON files.
 library("rjson")
@@ -33,6 +32,5 @@ png(file=outpath,width=600, height=600)
 ggplot(grid.factor, aes(grid.factor$dS, grid.factor$dN, fill= grid.factor$posterior)) +
 geom_tile() + theme(axis.text.x = element_text(angle = 90)) +
   xlab("Synonymous rate") + ylab("Nonsynonymous rate") + labs(fill = "Posterior Mean") +
-ggtitle(name) + theme(plot.title = element_text(lineheight=2, face="bold", size = 10, hjust = 0.5)) + scale_fill_gradient(low = "blue", high = "red")
+ggtitle(name) + theme(plot.title = element_text(lineheight=2, face="bold", size = 10, hjust = 0$
 dev.off()
-
