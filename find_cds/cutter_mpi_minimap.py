@@ -10,28 +10,29 @@ import re
 import os
 import sys
 from datetime import datetime
-
+from operator import itemgetter
+from itertools import groupby
 
 # ncbi directories
-#outdir ="/home/sareh/2020/sequences/cut_cds"
-outdir = "/home/sareh/2020/sequences/ncbi/test/cutter_mpi_minimap.py/"
+outdir = "/home/sareh/2020/comp/ncbi_cut_cds_pdist/"
 ref_home_directory ="/home/sareh/2020/sequences/ncbi/ncbi_ref_cds/"
 query_directory = "/home/sareh/2020/sequences/ncbi/ncbi_pruned_genome/"
 accession_file ="/home/sareh/2020/sequences/ncbi/ncbi_accn.txt"
 
 """
-# lin Directories 
-outdir = "/home/sareh/2020/sequences/lin/lin_cut_cds/"    # where all the files would be written into
+# lin Directories
+outdir = "/home/sareh/2020/comp/lin_cut_cds_pdist/"    # where all the files would be written into
 ref_home_directory = "/home/sareh/2020/sequences/lin/lin_ref_cds/" #the ref_cds
-query_directory = '/home/sareh/2020/sequences/lin/lin_nuc_genome'
+query_directory = '/home/sareh/2020/sequences/lin/lin_nuc_genome/'
 accession_file = '/home/sareh/2020/sequences/lin/lin_ref_accn.txt'
+"""
 
-# TEST Directories 
-outdir = "/home/sareh/2020/sequences/test/cut_cds/outdir"
-ref_home_directory = "/home/sareh/2020/sequences/test/cut_cds/ref_home_directory/"
-query_directory = "/home/sareh/2020/sequences/test/cut_cds/query_dir/"
-accession_file = "/home/sareh/2020/sequences/test/cut_cds/virus_accn.txt"
-ovlp_dir = "/home/sareh/2020/sequences/test/cut_cds/ovlp_out_csv/"
+"""
+# TEST Directories
+outdir = "/home/sareh/2020/sequences/ncbi/test/test_json/"
+ref_home_directory ="/home/sareh/2020/sequences/ncbi/ncbi_ref_cds/"
+query_directory = "/home/sareh/2020/sequences/ncbi/ncbi_pruned_genome/"
+accession_file = "/home/sareh/2020/sequences/ncbi/test/test_accn.txt"
 """
 
 # mpi
@@ -45,11 +46,31 @@ complement_dict = {'A':'T', 'C':'G', 'G':'C', 'T':'A',
                     'B':'V', 'D':'H', 'H':'D', 'V':'B',
                     '*':'*', 'N':'N', '-':'-'}
 
+def start_frame_shift(start,stop):
+
+    if start % 3 != 0:
+        s = start - 1
+        if s % 3 != 0:
+            s = s - 1
+        new_start = s
+    else:
+        new_start = start
+
+    if stop + 1 %3 != 0:
+        s = stop + 1
+        if s + 1 %3 != 0:
+            s = s + 1
+        new_stop = s
+    else:
+        new_stop = stop
+
+    return (int(new_start), int(new_stop))
 
 def find_ovlp(ref_gene_directory):
     """
     run through all ref genes and their locations
     get a list of all locations and identifiy duplicates as ovlp regions
+    more_ovlp is a list of indexes to remove to avoid frame shift of ovlp regions
     """
     all_loc = []
     for file in os.listdir(ref_gene_directory):
@@ -57,18 +78,21 @@ def find_ovlp(ref_gene_directory):
         ref_loc = parse_ref_header(ref)
         for i in ref_loc:
             a = i.split(":")
-            start = a[0]
-            stop = a[1]
-            for n in range(int(start), int(stop)+1):
+            start = int(a[0])
+            stop = int(a[1])
+            # account for frame shift
+            new_start, new_stop = start_frame_shift(start,stop)
+            for n in range(int(new_start), int(new_stop)+1):
                 all_loc.append(n)
     visited = set()
     dup = [x for x in all_loc if x in visited or (visited.add(x) or False)]
     unique_dup = set(dup)
-    return(unique_dup)
+
+    return(start, stop, unique_dup)
 
 def ref_ovlp_index(ref_loc, dup):
     """
-    return list of dup, 0 index the cds
+    return list of index with no_ovlp regions, 0 index the cds
     """
     ref_all = []
     for i in ref_loc:
@@ -231,6 +255,21 @@ def minimap2(query, refseq, nthread=4, mm2bin='minimap2'):
             #result = revcomp(result)
         return result
 
+def get_boundaries (str):
+    gap_prefix = re.compile('^[-]+')
+    gap_suffix = re.compile('[-]+$')
+    # return a tuple giving indices of subsequence without gap prefix and suffix
+    res = [0,len(str)]
+    left = gap_prefix.findall(str)
+    right = gap_suffix.findall(str)
+    if left:
+        res[0] = len(left[0])
+
+    if right:
+        res[1] = len(str) - len(right[0])
+
+    return res
+
 def mafft(query, ref, trim=True):
     handle = tempfile.NamedTemporaryFile(delete=False)
     s = '>ref\n{}\n>query\n{}\n'.format(ref, query)
@@ -251,7 +290,8 @@ def mafft(query, ref, trim=True):
     os.remove(handle.name)  # clean up
     return(aligned_query, aligned_ref)
 
-def cutter_minimap(ref, fasta, outfile, out_ovlp, csvfile, no_ovlp_index):
+
+def cutter_minimap(ref, queries, outfile, out_ovlp, csvfile, no_ovlp_index, start, stop):
     """
     :param ref:  open stream in read mode to FASTA file containing reference
                  gene sequence
@@ -264,10 +304,10 @@ def cutter_minimap(ref, fasta, outfile, out_ovlp, csvfile, no_ovlp_index):
     :param gapped:  open stream in write mode to output ref seq that mafft inserted gaps into
     """
 
-    csvfile.write('header, align.score, original_refgene, nogap, no_ovlp\n')
+    csvfile.write('header, p, original_refgene, len_nogap, len_noovlp, P_noovlp\n')
 
     # parse query genomes from input FASTA
-    queries = convert_fasta(fasta)
+    # queries = convert_fasta(fasta) #move to main
 
     # the reference cds seqeunce
     h, original_rgene = get_ref(ref)
@@ -275,15 +315,50 @@ def cutter_minimap(ref, fasta, outfile, out_ovlp, csvfile, no_ovlp_index):
     for qh, qs in queries:
         # minimap2 alignment: use minimap2 to extract homologous gene in query genome
         qgene_minimap = minimap2(query=qs, refseq=original_rgene)
+        if len(qs) < 20:
+            print("TOO SHORT qs " + str(len(qs))) 
+            print(qh)
 
         if qgene_minimap is None:
             # failed to align reference gene to query genome - no homology?
-            sys.stdout.write("{}\n".format(qh))
-            # outfile.write('>{}\n{}\n'.format(qh, qgene_minimap))
-            continue
+            range = len(qs) * 0.1
+            trimmed_query = qs[int(start)-int(range):int(stop)+int(range)]
 
-        # pairwise alignment
-        qgene_mafft, rgene_mafft = mafft(query=qgene_minimap, ref=original_rgene, trim=False)
+            # if minimap fails skip minimap and do mafft pairwise alignment
+            q1, r1 = mafft(query=trimmed_query, ref=original_rgene, trim=True)
+            p1 = pdist(q1, r1)
+
+            # check reverse-complement
+            q2, r2 = mafft(query=reverse_and_complement(trimmed_query), ref=original_rgene, trim=True)
+            p2 = pdist(q2, r2) #proportion of nucleotide differences, higher the more different
+
+            print("p1_pdist: " + str(p1) + " len_q1: " + str(len(q1)) + " len_r1: " + str(len(r1)))
+            print("p2_pdist: " + str(p2)+" len_q2: " + str(len(q2))+" len_r2: " + str(len(r2)))
+
+            if p1 < p2:
+                qgene_mafft = q1
+                rgene_mafft = r1
+            else: 
+                qgene_mafft = q2
+                rgene_mafft = r2
+
+            print("original_rgene: " + str(len(original_rgene)))
+            print("original_query: " + str(len(qs)))
+            print("qgene_mafft: " + str(len(qgene_mafft)))
+            print("rgene_mafft: " + str(len(rgene_mafft)))
+            print("rgene_alpha: " + str(sum(c.isalpha() for c in rgene_mafft)))
+            print("qgene_mafft: " + qgene_mafft)
+            print("rgene_mafft: " + rgene_mafft)
+
+        else:
+            # pairwise alignment
+            qgene_mafft, rgene_mafft = mafft(query=qgene_minimap, ref=original_rgene, trim=False)
+            p = pdist(qgene_mafft, rgene_mafft)
+            sys.stdout.write("minimap: {} {} {}\n".format(len(rgene_mafft),len(qgene_mafft), qh))
+
+        # to avoid out of index error of qgene_nogap += qgene_mafft[i]
+        if len(qgene_mafft) != len(rgene_mafft):
+            continue
 
         # remove gaps inserted into ref
         qgene_nogap = ""
@@ -291,22 +366,37 @@ def cutter_minimap(ref, fasta, outfile, out_ovlp, csvfile, no_ovlp_index):
             if rn == '-': # skip insertion relative to reference
                 continue
             qgene_nogap += qgene_mafft[i]
-        outfile.write(">{}\n{}\n".format(qh, qgene_nogap))
 
-        # remove ovlp
-        qgene_no_ovlp = ""
-        for i, rn in enumerate(qgene_nogap):
-            if i in no_ovlp_index:
-                qgene_no_ovlp += rn
-        out_ovlp.write(">{}\n{}\n".format(qh, qgene_no_ovlp))
+        # remove seq with >50% gap
+        gap_per = qgene_nogap.count("-")/len(qgene_nogap)*100
 
-        # Print length of each gene in the gapped outfile
-        gap_qgene_mafft = qgene_mafft.count("-")
-        gap_rgene_mafft = rgene_mafft.count("-")
+        # remove seq with pdist > 20
+        p_per = pdist(qgene_nogap, rgene_mafft)*100
 
-        # calculate p-distance as a measure of similarity/alignment score
-        p = pdist(qgene_mafft, rgene_mafft)
-        csvfile.write('{},{:1.3f},{},{},{}\n'.format(qh, 100*p,len(original_rgene), len(qgene_nogap),len(qgene_no_ovlp)))
+        if gap_per < 50 and p_per < 20:
+            outfile.write(">{}\n{}\n".format(qh, qgene_nogap))
+
+            # remove ovlp
+            qgene_no_ovlp = ""
+            for i, rn in enumerate(qgene_nogap):
+                if i in no_ovlp_index:
+                    qgene_no_ovlp += rn
+            out_ovlp.write(">{}\n{}\n".format(qh, qgene_no_ovlp))
+
+            rgene_noovlp = ""
+            for i, rn in enumerate(rgene_mafft):
+                if i in no_ovlp_index:
+                    rgene_noovlp += rn
+
+            # Print length of each gene in the gapped outfile
+            gap_qgene_mafft = qgene_mafft.count("-")
+            gap_rgene_mafft = rgene_mafft.count("-")
+
+            # calculate p-distance as a measure of similarity/alignment score
+            p = pdist(qgene_mafft, rgene_mafft)
+            p_noovlp = pdist(qgene_no_ovlp, rgene_noovlp)
+
+            csvfile.write('{},{:1.3f},{},{},{},{:1.3f}\n'.format(qh, 100*p,len(original_rgene), len(qgene_nogap),len(qgene_no_ovlp), 100*p_noovlp))
 
 def main():
     count = 0
@@ -315,11 +405,12 @@ def main():
     for accn in accns:
         ref_gene_directory = os.path.join(ref_home_directory, accn)
 
-        dup = find_ovlp(ref_gene_directory)
+        start, stop, dup = find_ovlp(ref_gene_directory)
 
         # Path to FASTA with genome sequences to process
         fasta = os.path.join(query_directory, accn)
         fasta_handle = open(fasta)
+        queries = convert_fasta(fasta_handle)
 
         cds_count = 0
         for file in os.listdir(ref_gene_directory):
@@ -338,14 +429,12 @@ def main():
 
             # ref CDS coordinates (417:1546;1545:2132)
             ref_loc = parse_ref_header(ref)
-
             # 0 index of ref CDS without ovlp [0,1,2,7,8,9]
             no_ovlp_index = ref_ovlp_index(ref_loc, dup)
 
             # remove genes too short after cutting ovlp
             if len(no_ovlp_index) < 50:
                 continue
-            print(len(no_ovlp_index))
             cds_count += 1
 
             # Path to write FASTA output (cut gene sequences)
@@ -365,7 +454,9 @@ def main():
             sys.stdout.write("[{} {}/{}] starting job {} {}\n".format(datetime.now().isoformat(), my_number, total_number, count, file))
             sys.stdout.flush()
 
-            cutter_minimap(ref, fasta_handle, outfile_handle, out_ovlp_handle, csvfile_handle, no_ovlp_index)
+            # parse query genomes from input FASTA
+            # queries = convert_fasta(fasta_handle)
+            cutter_minimap(ref, queries, outfile_handle, out_ovlp_handle, csvfile_handle, no_ovlp_index, start, stop)
 
             ref_handle.close()
             outfile_handle.close()
