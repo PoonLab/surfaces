@@ -1,9 +1,10 @@
 #!/usr/bin/R
 
 # output csv with mean of each file (csv)  
+# (qh, 100*p,len(original_rgene), len(qgene_nogap),len(qgene_no_ovlp), 100*p_noovlp))
 
 args = commandArgs(trailingOnly=TRUE)
-csv_path <- args[1]
+csv_path <- args[1] # csv file outputed by cut_cds script
 
 name <- gsub(".csv","", csv_path)
 df <- read.csv(csv_path)
