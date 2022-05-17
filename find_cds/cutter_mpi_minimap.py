@@ -14,7 +14,7 @@ from operator import itemgetter
 from itertools import groupby
 
 # ncbi directories
-outdir = "/home/sareh/2020/comp/ncbi_cut_cds_pdist/"
+outdir = "/home/sareh/2020/sequences/ncbi/ncbi_cut_cds/cut_cds/"
 ref_home_directory ="/home/sareh/2020/sequences/ncbi/ncbi_ref_cds/"
 query_directory = "/home/sareh/2020/sequences/ncbi/ncbi_pruned_genome/"
 accession_file ="/home/sareh/2020/sequences/ncbi/ncbi_accn.txt"
@@ -332,23 +332,12 @@ def cutter_minimap(ref, queries, outfile, out_ovlp, csvfile, no_ovlp_index, star
             q2, r2 = mafft(query=reverse_and_complement(trimmed_query), ref=original_rgene, trim=True)
             p2 = pdist(q2, r2) #proportion of nucleotide differences, higher the more different
 
-            print("p1_pdist: " + str(p1) + " len_q1: " + str(len(q1)) + " len_r1: " + str(len(r1)))
-            print("p2_pdist: " + str(p2)+" len_q2: " + str(len(q2))+" len_r2: " + str(len(r2)))
-
             if p1 < p2:
                 qgene_mafft = q1
                 rgene_mafft = r1
             else: 
                 qgene_mafft = q2
                 rgene_mafft = r2
-
-            print("original_rgene: " + str(len(original_rgene)))
-            print("original_query: " + str(len(qs)))
-            print("qgene_mafft: " + str(len(qgene_mafft)))
-            print("rgene_mafft: " + str(len(rgene_mafft)))
-            print("rgene_alpha: " + str(sum(c.isalpha() for c in rgene_mafft)))
-            print("qgene_mafft: " + qgene_mafft)
-            print("rgene_mafft: " + rgene_mafft)
 
         else:
             # pairwise alignment
@@ -370,10 +359,7 @@ def cutter_minimap(ref, queries, outfile, out_ovlp, csvfile, no_ovlp_index, star
         # remove seq with >50% gap
         gap_per = qgene_nogap.count("-")/len(qgene_nogap)*100
 
-        # remove seq with pdist > 20
-        p_per = pdist(qgene_nogap, rgene_mafft)*100
-
-        if gap_per < 50 and p_per < 20:
+        if gap_per < 50:
             outfile.write(">{}\n{}\n".format(qh, qgene_nogap))
 
             # remove ovlp
