@@ -4,10 +4,9 @@
 
 args = commandArgs(trailingOnly=TRUE)
 csv_path <- args[1]
-outpath <- args[2] 
 
-name <- gsub(".csv","", csv_path))
-df <- read.csv(path)
+name <- gsub(".csv","", csv_path)
+df <- read.csv(csv_path)
 
 p_mean = round(mean(df$P), digits = 3)
 p_noovlp = round(mean(df$P_noovlp), digits = 3)
