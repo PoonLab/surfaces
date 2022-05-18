@@ -1,0 +1,5 @@
+* Pearson Correlation 
+run json_pearson_mpi.py from bash which runs json_pearsoncor.r on every pair of genes 
+  1. change stwd of json_pearsoncor.r 
+  2. make a json_names.txt file (just the file names! not path) 
+  
