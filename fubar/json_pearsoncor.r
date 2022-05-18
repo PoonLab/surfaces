@@ -4,6 +4,8 @@
 
 library("rjson")
 
+# Have to change the setwd before running json_pearson_mpi.py
+
 setwd(dir="/home/sareh/data/sequences/new_cds/FUBAR/json/")
 #setwd(dir="/home/sareh/re-do/FUBAR/fubar100/json/")
 
