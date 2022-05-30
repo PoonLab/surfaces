@@ -1,6 +1,7 @@
 """
 Combine testminimap and cutter_mpi.py
 mkdir cut_cds | mkdir cutter_scores | mkdir gapped
+With trimming of the query
 """
 
 from glob import glob
