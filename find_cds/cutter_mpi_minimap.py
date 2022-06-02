@@ -1,7 +1,6 @@
 """
 Combine testminimap and cutter_mpi.py
 mkdir cut_cds | mkdir cutter_scores | mkdir gapped
-With trimming of the query
 """
 
 from glob import glob
@@ -14,19 +13,20 @@ from datetime import datetime
 from operator import itemgetter
 from itertools import groupby
 
+"""
 # ncbi directories
-outdir = "/home/sareh/2020/sequences/ncbi/ncbi_cut_cds/cut_cds/"
+outdir = "/home/sareh/2020/comp/ncbi_no_trim/"
 ref_home_directory ="/home/sareh/2020/sequences/ncbi/ncbi_ref_cds/"
 query_directory = "/home/sareh/2020/sequences/ncbi/ncbi_pruned_genome/"
 accession_file ="/home/sareh/2020/sequences/ncbi/ncbi_accn.txt"
-
 """
+
 # lin Directories
-outdir = "/home/sareh/2020/comp/lin_cut_cds_pdist/"    # where all the files would be written into
+outdir = "/home/sareh/2020/comp/test/"    # where all the files would be written into
 ref_home_directory = "/home/sareh/2020/sequences/lin/lin_ref_cds/" #the ref_cds
 query_directory = '/home/sareh/2020/sequences/lin/lin_nuc_genome/'
-accession_file = '/home/sareh/2020/sequences/lin/lin_ref_accn.txt'
-"""
+accession_file = '/home/sareh/2020/comp/test/lin_test.txt'
+#accession_file = '/home/sareh/2020/sequences/lin/lin_ref_accn.txt'
 
 """
 # TEST Directories
@@ -49,8 +49,8 @@ complement_dict = {'A':'T', 'C':'G', 'G':'C', 'T':'A',
 
 def start_frame_shift(start,stop):
 
-    if start % 3 != 0:
-        s = start - 1
+    if start-1 % 3 != 0:
+        s = start - 2
         if s % 3 != 0:
             s = s - 1
         new_start = s
@@ -292,7 +292,7 @@ def mafft(query, ref, trim=True):
     return(aligned_query, aligned_ref)
 
 
-def cutter_minimap(ref, queries, outfile, out_ovlp, csvfile, no_ovlp_index, start, stop):
+def cutter_minimap(ref, queries, outfile, out_ovlp, csvfile, no_ovlp_index):
     """
     :param ref:  open stream in read mode to FASTA file containing reference
                  gene sequence
@@ -322,8 +322,9 @@ def cutter_minimap(ref, queries, outfile, out_ovlp, csvfile, no_ovlp_index, star
 
         if qgene_minimap is None:
             # failed to align reference gene to query genome - no homology?
-            range = len(qs) * 0.1
-            trimmed_query = qs[int(start)-int(range):int(stop)+int(range)]
+            # range = len(qs) * 0.1
+            # trimmed_query = qs[int(start)-int(range):int(stop)+int(range)]
+            trimmed_query = qs
 
             # if minimap fails skip minimap and do mafft pairwise alignment
             q1, r1 = mafft(query=trimmed_query, ref=original_rgene, trim=True)
@@ -443,7 +444,7 @@ def main():
 
             # parse query genomes from input FASTA
             # queries = convert_fasta(fasta_handle)
-            cutter_minimap(ref, queries, outfile_handle, out_ovlp_handle, csvfile_handle, no_ovlp_index, start, stop)
+            cutter_minimap(ref, queries, outfile_handle, out_ovlp_handle, csvfile_handle, no_ovlp_index)
 
             ref_handle.close()
             outfile_handle.close()
