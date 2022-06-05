@@ -13,20 +13,22 @@ from datetime import datetime
 from operator import itemgetter
 from itertools import groupby
 
-"""
+
 # ncbi directories
-outdir = "/home/sareh/2020/comp/ncbi_no_trim/"
+outdir = "/home/sareh/2020/sequences/ncbi/ncbi_cut_cds"
 ref_home_directory ="/home/sareh/2020/sequences/ncbi/ncbi_ref_cds/"
 query_directory = "/home/sareh/2020/sequences/ncbi/ncbi_pruned_genome/"
 accession_file ="/home/sareh/2020/sequences/ncbi/ncbi_accn.txt"
-"""
 
+
+"""
 # lin Directories
-outdir = "/home/sareh/2020/comp/test/"    # where all the files would be written into
+outdir = "/home/sareh/2020/sequences/lin/lin_cut_cds"  # where all the files would be written into
 ref_home_directory = "/home/sareh/2020/sequences/lin/lin_ref_cds/" #the ref_cds
 query_directory = '/home/sareh/2020/sequences/lin/lin_nuc_genome/'
-accession_file = '/home/sareh/2020/comp/test/lin_test.txt'
-#accession_file = '/home/sareh/2020/sequences/lin/lin_ref_accn.txt'
+#accession_file = '/home/sareh/2020/comp/test/lin_test.txt'
+accession_file = '/home/sareh/2020/sequences/lin/lin_ref_accn.txt'
+"""
 
 """
 # TEST Directories
@@ -81,15 +83,16 @@ def find_ovlp(ref_gene_directory):
             a = i.split(":")
             start = int(a[0])
             stop = int(a[1])
-            # account for frame shift
-            new_start, new_stop = start_frame_shift(start,stop)
-            for n in range(int(new_start), int(new_stop)+1):
-                all_loc.append(n)
+        new_start = start
+        new_stop = stop
+        for n in range(int(new_start), int(new_stop)+1):
+            all_loc.append(n)
+
     visited = set()
     dup = [x for x in all_loc if x in visited or (visited.add(x) or False)]
     unique_dup = set(dup)
 
-    return(start, stop, unique_dup)
+    return(unique_dup)
 
 def ref_ovlp_index(ref_loc, dup):
     """
@@ -103,13 +106,23 @@ def ref_ovlp_index(ref_loc, dup):
         for n in range(int(start), int(stop)+1):
             ref_all.append(n)
 
-    #compare ref_all(list) to dup(tuple)
+    # Alternative
     no_ovlp=[]
-    for index, all in enumerate(ref_all):
-        if all in dup:
+    remove = len(ref_all) % 3
+    end = len(ref_all) - remove + 1
+
+    for index in range(3,end,3):
+        a = index - 3
+        b = index - 2
+        c = index - 1
+
+        if ref_all[a] in dup or ref_all[b] in dup or ref_all[c] in dup:
             continue
-        no_ovlp.append(index)
-    return no_ovlp
+        #add = [a,b,c].sort()
+        else:
+            no_ovlp.extend([a,b,c])
+    no_ovlp.sort()
+    return(no_ovlp)
 
 def ovlp(handle):
     all=[]
@@ -337,9 +350,11 @@ def cutter_minimap(ref, queries, outfile, out_ovlp, csvfile, no_ovlp_index):
             if p1 < p2:
                 qgene_mafft = q1
                 rgene_mafft = r1
+                p = p1
             else: 
                 qgene_mafft = q2
                 rgene_mafft = r2
+                p = p2
 
         else:
             # pairwise alignment
@@ -350,6 +365,9 @@ def cutter_minimap(ref, queries, outfile, out_ovlp, csvfile, no_ovlp_index):
         # to avoid out of index error of qgene_nogap += qgene_mafft[i]
         if len(qgene_mafft) != len(rgene_mafft):
             continue
+
+        #if P > 0.5:  # P-distance threshold
+        #    continue 
 
         # remove gaps inserted into ref
         qgene_nogap = ""
@@ -393,7 +411,7 @@ def main():
     for accn in accns:
         ref_gene_directory = os.path.join(ref_home_directory, accn)
 
-        start, stop, dup = find_ovlp(ref_gene_directory)
+        dup = find_ovlp(ref_gene_directory)
 
         # Path to FASTA with genome sequences to process
         fasta = os.path.join(query_directory, accn)
