@@ -11,21 +11,19 @@ import os
 import re
 from Bio import Phylo
 
-dir = sys.argv[1] #/home/sareh/re-do/all_neighbors/fasttree_genome
-outfile_path = sys.argv[2] #/home/sareh/re-do/treelength/treelength.csv
+file_path = sys.argv[1] #/home/sareh/re-do/all_neighbors/fasttree_genome
 
-outfile = open(outfile_path,"w+")
+# read in tree from file
+phy = Phylo.read(file_path, 'newick')
 
-for file_name in os.listdir(dir):
-    
-    file_path =os.path.join(dir,file_name)
-    
-    # read in tree from file
-    phy = Phylo.read(file_path, 'newick')
+total = phy.count_terminals() # Total number of nodes 
+tree_length = phy.total_branch_length() # Total branch length
 
-    total = phy.count_terminals()   
+result <- paste(name,total,tree_length)
 
-    tree_length = phy.total_branch_length()
+# Writing it out to a file 
+output.file <- file("./gene_treelength.csv", "a")
+cat(result, file=output.file, append=TRUE, sep = "\n")
+close(output.file)
 
-    outfile.write("{},{},{}\n".format(name,total,tree_length))
-    print("total is {}".format(total))
+print("total is {}".format(total))
