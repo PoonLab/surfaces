@@ -4,7 +4,7 @@
 library(seqinr)
 require(seqinr)
 
-setwd(dir="/home/sareh/new_cds/hyphyclean_cds")
+#setwd(dir="/home/sareh/new_cds/hyphyclean_cds")
 
 args = commandArgs(trailingOnly=TRUE)
 msa.path <- args[1]
