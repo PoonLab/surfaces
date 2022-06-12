@@ -7,8 +7,7 @@ library("ggplot2")
 # input arguments 
 args = commandArgs(trailingOnly=TRUE)
 json_path <- args[1]
-
-outpath = "./all_posterior_prob.csv"
+outpath <- args[2]
 
 # Give the input file name to the function.
 result <- fromJSON(file = json_path)
@@ -23,15 +22,7 @@ grid.factor <- grid.df
 grid.factor$dN<- as.factor(round(grid.factor$dN,digits = 2))
 grid.factor$dS <- as.factor(round(grid.factor$dS,digits = 2))
 
-grid.factor$posterior <- log10(grid.factor$posterior)
+grid.factor$log <- log10(grid.factor$posterior)
 
-# Read in the csv file
-all <- read.csv(outpath, sep=",")
-
-# Appending new columns of posterior prob
-all$json_path <- grid.factor$posterior
-names(all)[names(all) == 'json_path'] <- json_path
-
-# Write the new dataframe in the file
-write.table(all, outpath, sep = ",", row.names = FALSE)
-
+# writing out the data frame (appending each to the bottom)
+write.table(grid.factor, outpath, sep = ",", append = T, col.names = FALSE, row.names = FALSE, quote = FALSE)
