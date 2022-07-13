@@ -1,0 +1,251 @@
+# 1.Sequences
+Retrieving_sequences
+
+**Virus Accessions**
+Getting the virus accessions 
+Automate this from 
+https://www.ncbi.nlm.nih.gov/genomes/GenomesGroup.cgi?taxid=10239&host=human
+https://www.ncbi.nlm.nih.gov/genomes/GenomesGroup.cgi?taxid=151341
+
+2022
+		Viruses - 11553 complete genomes
+		filtered by host 'human': 527 genomes
+
+		Download
+		1* table (taxid.tbl) 
+			[/Users/sareh/surfaces/r_surfaces/INDEX/virus_info/raw_ncbi_Human_virus.tbl]
+      ## Complete genomes: Viruses (taxid 10239) filtered by host 'human'
+			"Genome"	"Accession"	"RefSeq type"	"Source information"	"Number of segments"	"Genome length"	"Number of proteins"	"Genome        "Neighbors"	"Host"	"Date completed"	"Date updated"
+		2* Genome neighbours data (taxid.nbr)
+			## Neighbors data for complete genomes: Viruses (taxid 10239)
+			## Columns:	"Representative"	"Neighbor"	"Host"	"Selected lineage"	"Taxonomy name"	"Segment name"
+      
+# raw donwloaded files (2020)
+  taxid.tbl <- "./virus_info/taxid10239.tbl"
+    # 935 total lines 
+    # 408 segmented (start with space)
+    # 515 lines not starting with space [ncbi.csv]
+    408 + 515 = 923 
+    **WHY 923 != 935** 
+
+  taxid.nbr <- "./virus_info/taxid10239.nbr"
+
+Parsed separatly 
+SEG | non-SEG | polyprotein 
+
+## non-seg
+
+  Get rid of the lines starting with tab (expandable rows on the website)
+  read in raw_ncbi_Human_virus.tbl (as downloaded from ncbi)
+  write out ncbi_Human_virus.tbl without segmented viruses 
+  
+  ```{python}
+  path_Human_virus = "./virus_info/raw_ncbi_Human_virus.tbl"
+  output = "./virus_info/ncbi_Human_virus.tbl"
+  with open(output, "w") as outfile:
+      with open (path_Human_virus, 'r') as file:
+          for line in file:
+              if line.startswith("    "):
+                  continue
+              else:
+                  outfile.write(line)
+  ```
+  
+  OR
+  
+  ```{bash}
+  #lines that don't start with spaces (remove segmented viruses)
+  grep "^[A-Z]" taxid10239.tbl > ncbi.tbl
+  #remove "," host includes , between invertabrate and human 
+  sed 's/,/ /g' ncbi.tbl > ncbi2.tbl
+  # tab separated to comma separated file 
+  sed 's/\t/,/g' ncbi2.tbl > ncbi.csv
+  ```
+  ## ncbi.tbl | non-segmented viruses only 
+  ```{r}
+  ncbi.tbl <- read.table("/Users/sareh/surfaces/r_surfaces/INDEX/virus_info/ncbi.csv", fill = TRUE, sep=",")
+  colnames(ncbi.tbl) <- c("Accession","RefSeq.type","source.information","segm","length","protein","Neighbors","host","created","updated","empty")
+  ncbi.tbl$Neighbors <- as.numeric(ncbi.tbl$Neighbors)
+  ncbi.tbl$protein <- as.numeric(ncbi.tbl$protein)
+  dim(ncbi.tbl) #[1] 457  11
+  View(ncbi.tbl)
+  ```
+  
+  ## Subsetting 
+  ```{r}
+  #remove segmented viruses 
+  ncbi.tbl1 <- ncbi.tbl[ncbi.tbl$Accession!= "-", ]
+  dim(ncbi.tbl1) #[1] 368  11
+  View(ncbi.tbl1)
+
+  #remove incomplete seq viruses 
+  ncbi.tbl2 <- ncbi.tbl1[ncbi.tbl1$RefSeq.type == "complete",]
+  dim(ncbi.tbl2) #[1] 365  11
+  View(ncbi.tbl2)
+
+  #viruses > 100 neighbours 
+  ncbi.tbl3 <- ncbi.tbl2[ncbi.tbl2$Neighbors >= 100, ]
+  dim(ncbi.tbl3) #[1] 167  11
+  View(ncbi.tbl3) #this included Neighbors == NA 
+  ncbi.tbl3 <- ncbi.tbl3[!is.na(ncbi.tbl3$Accession),] #[1] 83  11
+
+  #viruses > 3 proteins 
+  ncbi.tbl4 <- ncbi.tbl3[ncbi.tbl3$protein >= 3,  ]
+  dim(ncbi.tbl4) #[1] 48 11
+  View(ncbi.tbl4)
+
+  #saving the file (non-empty)
+  ncbi.viruses <- ncbi.tbl4[!is.na(ncbi.tbl4$Accession), ]
+  dim(ncbi.tbl) #[1] 48 11
+  View(ncbi.tbl)
+  
+  #Saving the subsetted file 
+  #Each row is a virus
+  write.csv(ncbi.viruses,"/Users/sareh/surfaces/r_surfaces/INDEX/virus_info/ncbi.subsetted.csv" )
+
+  ```
+
+## seg
+  taxid.tbl = raw_ncbi_Human_virus.tbl
+  ```{bash}
+  taxid.tbl <- "/Users/sareh/surfaces/r_surfaces/INDEX/virus_info/taxid10239.tbl"
+  #grab lines starting with spaces
+  grep "^    " taxid10239.tbl > segmented1.tbl
+  #remove empty spaces in begning of each line 
+  sed -e 's/^[ \t]*//' segmented1.tbl > segmented2.tbl
+  #change 5 spaces to , sep file 
+  sed 's/     /,/g' segmented2.tbl > segment.tbl
+  ```
+  
+  Only segmented viruses 
+  ```{r}
+  path <- "./virus_info/segment.tbl"
+  seg <- read.csv(path,fill = TRUE, header = F, stringsAsFactors = TRUE)
+  dim(seg) #[1] 389   5
+
+  # remove rows with empty neighbour numbers 
+  seg <- seg[!(is.na(seg$V5) | seg$V5==""), ]
+
+  seg$V6 <-  gsub("neighbors:","",seg$V5)
+  seg$V7 <-  gsub("proteins:","",seg$V4)
+
+  seg$V6 <- as.numeric(seg$V6)
+  seg$V7 <- as.numeric(seg$V7)
+  colnames(seg) <- c("name","length","Accn","V4","V5","neighbours","protein")
+
+  View(seg)
+  dim(seg) #[1] 313   5
+  ```
+
+  **[each row is a segment]**
+  seg viruses would have multiple rows while non-segmented viruses would only have one
+  Segmented Viruses with >3 protein & >100 neighbours for every segment 
+ 
+  ```{r}
+  library(dplyr)
+
+  #Viruses with all segments > 100 Neighbours available 
+  mean.neibour <- seg%>%group_by(name)%>%summarise(Average=mean(neighbours))
+  neibour.100 <- mean.neibour[mean.neibour$Average>100,] 
+  #neibour.100$name #15 viruses
+
+  seg.viruses <- seg[seg$name %in% neibour.100$name,] 
+
+  dim(seg) #[1] 313   7
+  dim(seg.viruses) #[1] 56  7
+
+  length(unique(seg.viruses$Accn)) #[1] 56 (accns for every segment)
+  length(unique(seg.viruses$name)) #[1] 15 (virus species)
+
+  #Viruses with >3 proteins 
+  sum.protein <- seg.viruses%>%group_by(name)%>%summarise(sum=sum(protein))
+  protein.3 <- sum.protein[sum.protein$sum>3,]
+  protein.3$name #12 viruses 
+
+  seg.viruses <- seg[seg$name %in% protein.3$name,] 
+  dim(seg.viruses) #[1] 48  7
+
+  View(seg.viruses)
+  
+  length(seg.viruses$Accn) #48
+  length(unique(seg.viruses$Accn)) #48
+  length(seg.viruses$name) # 48
+  length(unique(seg.viruses$name)) #12 (12 viruses)
+  
+  #table [each row a segment]
+  write.csv(seg.viruses, "/Users/sareh/surfaces/r_surfaces/INDEX/virus_info/segmented.viruses.csv")
+
+  #Accns 
+  write.csv(seg.viruses$Accn,"/Users/sareh/surfaces/r_surfaces/INDEX/virus_info/segmented.accn.csv", quote=F, row.names = F)
+  ```
+  
+  Prepare segmented viruses 
+  
+  ```{r}
+  seg.viruses$length <- gsub("nt|\\(|\\)","",seg.viruses$length)
+
+  name <- unique(seg.viruses$name)
+
+  mat = matrix(ncol = 0, nrow = 0)
+  df <- as.data.frame(mat)
+  df <- rbind(c("name","Accession","length(nt)","protein","Neighbour"))
+
+  for (a in name) {
+    row <- c()
+    row <- c(row,a)
+    b <- seg.viruses[grepl(a, seg.viruses$name, fixed = TRUE),]
+    length = sum(as.integer(b$length))
+    protien = sum(as.integer(b$protein))
+    nbr <- mean(as.integer(b$neighbours))
+    accn <- list(b$Accn)
+    row <- c(row,accn,length,protien,nbr)
+    df <- rbind(df, row)
+
+  }
+
+  colnames(df)<- c("name","Accession","length(nt)","protein","Neighbour")
+  df <- as.data.frame(df[-1,])
+
+  df$source <- "NA"
+  df$updated <- "NA"
+  df$created <- "NA"
+  df$segment <- "TRUE"
+
+  seg.virus.name <- df
+
+  View(seg.virus.name)
+
+  for saving the df in csv
+
+  seg.virus.name$Accession <- as.character(seg.virus.name$Accession)
+  seg.virus.name$name <- as.character(seg.virus.name$name)
+  seg.virus.name$`length(nt)`<- as.character(seg.virus.name$`length(nt)`)
+  seg.virus.name$protein <- as.character(seg.virus.name$protein)
+  seg.virus.name$Neighbour <- as.character(seg.virus.name$Neighbour)
+
+  # **Save the segmented viruses**
+  
+  #table [each row a virus]
+  write.csv(seg.virus.name, "/Users/sareh/surfaces/r_surfaces/INDEX/virus_info/seg.virus.name.csv")
+  ```
+
+# combine seg + non-seg viruses info
+  ```{r}
+  seg.virus.name$host <- "human"
+
+  colnames(seg.virus.name)<-c("x","name","Accession","length.nt","protein","neighbors","source","updated","created","segment" )
+  colnames(ncbi.viruses.32)<-c("name","Accession","RefSeq.type","source","segment","length.nt","protein","neighbors","host","created","updated","empty")
+
+  seg.virus <- seg.virus.name[,c("name","Accession","length.nt","protein","neighbors","updated","created","segment")]
+  nonseg.virus <- ncbi.viruses.32[,c("name","Accession","length.nt","protein","neighbors","updated","created","segment")]
+
+  nonseg.virus$length.nt <- gsub("(nt)","",nonseg.virus$length.nt)
+
+  virus_info <- rbind(seg.virus,nonseg.virus)
+  View(virus_info)
+
+  write.csv(virus_info, "/Users/sareh/surfaces/r_surfaces/INDEX/virus_info/virus_seg-nonseg.csv")
+  ```
+
+
+
