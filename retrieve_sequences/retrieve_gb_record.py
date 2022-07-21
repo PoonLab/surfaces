@@ -1,3 +1,10 @@
+
+"""
+retrieves genbank record from NCBI Accession
+--acc : text file name of accns (each line is an accn) 
+--dir : director that the text file is in and where output file goes
+"""
+
 import os
 import re
 import csv
@@ -8,12 +15,14 @@ from glob import glob
 import argparse
 
 Entrez.email = 'sbagher4@uwo.ca'
-directory = '/Users/sarehchimeh/Data/Neighbours'
+#directory = '/home/sareh/2020/segm_virus/seg.one.accn.csv'
 
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--accns', type=str,
                        help='text files of accession numbers')
+    parser.add_argument('--dir', type=str,
+                       help='directory')
     return parser.parse_args()
 
 def get_accns(file):
@@ -51,7 +60,8 @@ def retrieve_record(gid):
 
 def main():
     args = parse_args()
-    values = get_accns(args.accns)
+    accn_path = os.path.join(args.dir, args.accns)
+    values = get_accns(accn_path)
 
     for accn in values:
        print(accn)
@@ -69,7 +79,7 @@ def main():
        handle  = Entrez.efetch(db="nuccore", id=gid, rettype="gb",retmode="text")
        text_gb = handle.read()
 
-       out_path = os.path.join("./gb_record",accn)
+       out_path = os.path.join(args.dir, "gen_record")
 
        out_file = open(out_path ,"w")
        out_file.write(text_gb)
@@ -77,3 +87,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+
