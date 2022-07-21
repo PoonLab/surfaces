@@ -79,7 +79,7 @@ def main():
        handle  = Entrez.efetch(db="nuccore", id=gid, rettype="gb",retmode="text")
        text_gb = handle.read()
 
-       out_path = os.path.join(args.dir, "gen_record")
+       out_path = os.path.join(args.dir, "gen_record/", accn)
 
        out_file = open(out_path ,"w")
        out_file.write(text_gb)
