@@ -1,11 +1,22 @@
 from Bio import SeqIO
 import os
+import argparse
 
-dir = "/home/sareh/2020/polyprotein/gb_record/"
-outpath = "/home/sareh/2020/polyprotein/poly_loc.csv"
+def parse_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--out', type=str,
+                       help='text files of genbank record')
+    parser.add_argument('--dir', type=str,
+                       help='directory')
+    return parser.parse_args()
 
-for file in os.listdir(dir):
-  file_path = os.path.join(dir,file)
+#dir = "/home/sareh/2020/polyprotein/gb_record/"
+#outpath = "/home/sareh/2020/polyprotein/poly_loc2.csv"
+
+args = parse_args()
+
+for file in os.listdir(args.dir):
+  file_path = os.path.join(args.dir,file)
 
   record = SeqIO.read(file_path, "gb")
 
@@ -19,8 +30,9 @@ for file in os.listdir(dir):
            #print(feature)
         except:
            print("issue")
+           print(record.id)
            print(feature)
         if count > 1:
-           outfile = open(outpath, 'a')
+           outfile = open(args.out, 'a')
            line = "{},{},{}\n".format(record.id, prot_accn, loc)
            outfile.write(line)
