@@ -1,8 +1,10 @@
 **Downsizing**
+
 nuc_genome -> pruned_genome(100)
 
-	   genome file [/home/sareh/2020/sequences/nuc_genome]
-           (only ncbi viruses need pruning)
+genome file [/home/sareh/2020/sequences/nuc_genome]
+
+(only ncbi viruses need pruning)
 
         a. nuc_genome -> msa_genome
            $python3 minimap2.py -o minimap_alignment.fa --ref NC_001802.fa NC_001802 -f -a
