@@ -25,6 +25,14 @@ fasttree -nt -gtr -gamma [msa] > [output]
 6. FUBAR 
 hyphy fubar --alignment  --tree
 
+7. heatmap 
+/home/sareh/surfaces/fubar/json_heatmap.r
+json_path <- args[1]
+outpath <- args[2]
+/re-do/FUBAR/fubar100/json$
+for f in *; do Rscript json_heatmap.r $f /home/sareh/re-do/FUBAR/heatmap100/$f; done
+
+8. pearsoncorrelations 
 
 
 
