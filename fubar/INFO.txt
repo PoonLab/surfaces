@@ -1,3 +1,35 @@
+
+cut_cds output 
+
+1. Remove genes with less than 40 sequences 
+
+2. CleanStopCodon.bf
+alignment: file with all the paths 
+/home/sareh/re-do/FUBAR/hyphy_clean
+alignments.txt (path to each file)
+code: hyphy batch_clean.bf
+alignments.txt is a plain text file where each line contains a path to each input file (FASTA)
+stdin is an associative list that contains user responses to HyPhy batch file queries
+You need to replace F_ST.bf with CleanStopCodons.bf
+
+
+3. Shorten the header for fasttree
+[for f in *;do sed '/^>/s/[_].*//' $f > outdir/$f; done]
+
+4. MSA 
+minimap2.py -o  --ref [fasta] -f -a
+
+5. Phylogenetic Tree
+fasttree -nt -gtr -gamma [msa] > [output]
+
+6. FUBAR 
+hyphy fubar --alignment  --tree
+
+
+
+
+
+
 * Pearson Correlation 
 run json_pearson_mpi.py from bash which runs json_pearsoncor.r on every pair of genes 
   1. change stwd of json_pearsoncor.r 
