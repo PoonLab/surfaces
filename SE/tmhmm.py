@@ -1,18 +1,37 @@
-import subprocess
+import os
 import biolib
+import argparse
 from IPython.display import Image
 
-fasta_path = argv[1]
+#out_dir = "/home/sareh/all/tmhmm"
 
-deeptmhmm = biolib.load('DTU/DeepTMHMM')
+def parse_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--indir', type=str,
+                       help='directory of aa fasta files')
+    parser.add_argument('--outdir', type=str,
+                        help='tmhmm output')
+    return parser.parse_args()
 
-input = "--fasta {}".format(fasta_path)
+args = parse_args()
 
-deeptmhmm_res = deeptmhmm.cli(args=input)
+for accn in os.listdir(args.indir):
+    infile = os.path.join(args.indir, accn)
+    print(infile)
+    outfile = os.path.join(args.outdir, accn)
+    print(outfile)
 
-outfile = "{}_tmhmm/".format(fasta_path)
-deeptmhmm_res.save_files(outfile)
+    deeptmhmm = biolib.load('DTU/DeepTMHMM')
+    # Run DeepTMHMM
+    tmhmm = "--fasta " + infile
+    print(tmhmm)
+    deeptmhmm_res = deeptmhmm.cli(args=tmhmm)
 
-plot = "{}.png".format(fasta_path)
-plot_path = os.path.join(outfile, plot)
-Image(filename=plot_path)
+    print(deeptmhmm_res)
+
+    # Save the results
+    deeptmhmm_res.save_files(outfile)
+
+# Error with the image file
+#png_out = os.path.join(out_dir,"plot",accn)
+#Image(filename=png_out)
