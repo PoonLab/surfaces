@@ -18,8 +18,8 @@ decoder = Decoder()
 
 def parse_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--infa', type=str,
-                       help='path to fasta files')
+    parser.add_argument('--indir', type=str,
+                       help='dir to aa fasta files')
     parser.add_argument('--outdir', type=str,
                        help='path to directory to write outfile')                   
     return parser.parse_args()
@@ -114,76 +114,67 @@ def write_tabular(output_file, proteins, predictions, pred_map):
                 of.write(f'{aa}\t{prd}\t{probs}\n')
 
 def main():
-
     args = parse_args()
-
-    output_file = os.path.join(args.outdir,args.infa)
+    for file in os.listdir(args.indir):
+        infile = os.path.join(args.indir, file)
+        outfile = os.path.join(args.outdir, file)
     
-    proteins = read_fasta(args.infa)
+        proteins = read_fasta(infile)
+        encoder.to_cuda()
+        device = encoder.device()
 
+        for i in range(len(models)):
+            models[i] = models[i].to(device)
 
+        predictions = dict()
 
+        sorted_proteins = sorted(proteins, key=lambda protein: protein.length)
 
+        batches = make_batches(sorted_proteins, batch_size=4000)
 
-    encoder.to_cuda()
+        with tqdm(total=len(sorted_proteins), leave=True) as progress:
+            for a, b in batches:
+                batch = sorted_proteins[a:b]
 
-    device = encoder.device()
+                lengths = [protein.length for protein in batch]
+                sequences = [protein.sequence for protein in batch]
 
-    for i in range(len(models)):
-        models[i] = models[i].to(device)
+                embeddings = encoder.embed(sequences)
 
-    predictions = dict()
+                embeddings = embeddings.to(device)
+                embeddings = embeddings.to(dtype=torch.float32)
 
-    sorted_proteins = sorted(proteins, key=lambda protein: protein.length)
+                mask = make_mask(embeddings, lengths)
 
-    batches = make_batches(sorted_proteins, batch_size=4000)
+                probabilities = predict_sequences(models, embeddings, mask)
 
-    with tqdm(total=len(sorted_proteins), leave=True) as progress:
-        for a, b in batches:
-            batch = sorted_proteins[a:b]
+                mask = mask.cpu()
+                probabilities = probabilities.cpu()
 
-            lengths = [protein.length for protein in batch]
-            sequences = [protein.sequence for protein in batch]
+                prediction = decoder(probabilities, mask).byte()
 
-            embeddings = encoder.embed(sequences)
+                probabilities = probabilities.permute(0, 2, 1)
 
-            embeddings = embeddings.to(device)
-            embeddings = embeddings.to(dtype=torch.float32)
+                for idx, protein in enumerate(batch):
+                    length = protein.length
+                    seq_hash = protein.seq_hash
+                    predictions[seq_hash] = (prediction[idx, :length],
+                                             probabilities[idx, :length])
 
-            mask = make_mask(embeddings, lengths)
+                progress.update(b - a)
 
-            probabilities = predict_sequences(models, embeddings, mask)
+        encoder.to_cpu()
 
-            mask = mask.cpu()
-            probabilities = probabilities.cpu()
+        for i in range(len(models)):
+            models[i] = models[i].cpu()
 
-            prediction = decoder(probabilities, mask).byte()
+        torch.cuda.empty_cache()
 
-            probabilities = probabilities.permute(0, 2, 1)
+        # --out-format 0 or 2
+        pred_map = {0: 'B', 1: 'b', 2: 'H', 3: 'h', 4: 'S', 5: '.', 6: '.'}
 
-            for idx, protein in enumerate(batch):
-                length = protein.length
-                seq_hash = protein.seq_hash
-                predictions[seq_hash] = (prediction[idx, :length],
-                                         probabilities[idx, :length])
-
-            progress.update(b - a)
-
-    encoder.to_cpu()
-
-    for i in range(len(models)):
-        models[i] = models[i].cpu()
-
-    torch.cuda.empty_cache()
-
-    # --out-format 0 or 2
-    pred_map = {0: 'B', 1: 'b', 2: 'H', 3: 'h', 4: 'S', 5: '.', 6: '.'}
-
-    # --out-format 0 or 1
-    write_3_line(output_file, proteins, predictions, pred_map)
-
-
-
+        # --out-format 0 or 1
+        write_3_line(output_file, proteins, predictions, pred_map)
 
 if __name__ == "__main__":
     main()
