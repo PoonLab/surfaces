@@ -12,25 +12,28 @@ import sys
 from datetime import datetime
 from operator import itemgetter
 from itertools import groupby
+from pathlib import Path
 
-
-# ncbi directories
-outdir = "/home/sareh/2020/sequences/ncbi/ncbi_cut_cds"
-ref_home_directory ="/home/sareh/2020/sequences/ncbi/ncbi_ref_cds/"
-query_directory = "/home/sareh/2020/sequences/ncbi/ncbi_pruned_genome/"
-accession_file ="/home/sareh/2020/sequences/ncbi/ncbi_accn.txt"
-
+# all dir
+outdir = "/home/sareh/93/cut_cds_pruned_nbr_genome"
+ref_home_directory ="/home/sareh/93/ref_cds/"
+query_directory = "/home/sareh/93/pruned_nbr_genome/"
+accession_file ="/home/sareh/93/ref_accns93.txt"
 
 """
+# ncbi directories
+outdir = "/home/sareh/2020/july/cut_cds/"
+ref_home_directory ="/home/sareh/2020/july/ref_cut_cds/"
+query_directory = "/home/sareh/2020/july/pruned_nbr_genome/"
+accession_file ="/home/sareh/2020/july/pruned_ref_accn.txt"
+
 # lin Directories
 outdir = "/home/sareh/2020/sequences/lin/lin_cut_cds"  # where all the files would be written into
 ref_home_directory = "/home/sareh/2020/sequences/lin/lin_ref_cds/" #the ref_cds
 query_directory = '/home/sareh/2020/sequences/lin/lin_nuc_genome/'
 #accession_file = '/home/sareh/2020/comp/test/lin_test.txt'
 accession_file = '/home/sareh/2020/sequences/lin/lin_ref_accn.txt'
-"""
 
-"""
 # TEST Directories
 outdir = "/home/sareh/2020/sequences/ncbi/test/test_json/"
 ref_home_directory ="/home/sareh/2020/sequences/ncbi/ncbi_ref_cds/"
@@ -136,8 +139,19 @@ def ovlp(handle):
 def parse_ref_header(ref):
     h, original_rgene = get_ref(ref)
     header_lst = h.split(",")
+    #>"NC_005300,NP_950235.1,glycoprotein precursor,1,92:5147"
+    # ['NC_005300', 'NP_950235.1', 'glycoprotein precursor', '1', '92:5147']
+    #>"NC_005219,NP_941987.1,envelope glycoprotein G2 (see comment),1,[94:1801](+)"
+    # ['NC_005219', 'NP_941988.1', 'envelope glycoprotein G2 (see comment)', '1', '[1984:3418](+)']
     ref_loc = header_lst[-1].strip('"')
-    return(ref_loc.split(";"))
+    lst = ref_loc.split(";") ##567:1147;1231:1440
+    clean_lst = []
+    for i in lst:
+         a = re.search("[0-9]+\:[0-9]+",i) #to deal with ['[1984:3418](+)']
+         b = a.group()
+         clean_lst.append(b)
+
+    return(clean_lst)
 
 def reverse_and_complement(seq):
     rseq = seq[::-1]
@@ -330,7 +344,7 @@ def cutter_minimap(ref, queries, outfile, out_ovlp, csvfile, no_ovlp_index):
         # minimap2 alignment: use minimap2 to extract homologous gene in query genome
         qgene_minimap = minimap2(query=qs, refseq=original_rgene)
         if len(qs) < 20:
-            print("TOO SHORT qs " + str(len(qs))) 
+            print("TOO SHORT qs " + str(len(qs)))
             print(qh)
 
         if qgene_minimap is None:
@@ -351,7 +365,7 @@ def cutter_minimap(ref, queries, outfile, out_ovlp, csvfile, no_ovlp_index):
                 qgene_mafft = q1
                 rgene_mafft = r1
                 p = p1
-            else: 
+            else:
                 qgene_mafft = q2
                 rgene_mafft = r2
                 p = p2
@@ -367,7 +381,7 @@ def cutter_minimap(ref, queries, outfile, out_ovlp, csvfile, no_ovlp_index):
             continue
 
         #if P > 0.5:  # P-distance threshold
-        #    continue 
+        #    continue
 
         # remove gaps inserted into ref
         qgene_nogap = ""
@@ -402,74 +416,91 @@ def cutter_minimap(ref, queries, outfile, out_ovlp, csvfile, no_ovlp_index):
             p = pdist(qgene_mafft, rgene_mafft)
             p_noovlp = pdist(qgene_no_ovlp, rgene_noovlp)
 
-            csvfile.write('{},{:1.3f},{},{},{},{:1.3f}\n'.format(qh, 100*p,len(original_rgene), len(qgene_nogap),len(qgene_no_ovlp), 100*p_noovlp))
+            csvfile.write('{},{},{:1.3f},{},{},{},{:1.3f}\n'.format(qh, gap_per, 100*p,len(original_rgene), len(qgene_nogap),len(qgene_no_ovlp), 100*p_noovlp))
 
 def main():
     count = 0
     accns = get_accn(accession_file) # all of the files to examine
 
     for accn in accns:
+        print(accns)
         ref_gene_directory = os.path.join(ref_home_directory, accn)
-
-        dup = find_ovlp(ref_gene_directory)
 
         # Path to FASTA with genome sequences to process
         fasta = os.path.join(query_directory, accn)
+
+        # if the ref_cds directory of the accn dosen't exsist skip
+        if os.path.exists(ref_gene_directory) == False or os.path.exists(fasta) == False:
+            continue
+
+        # examine function find_ovlp (to print steps out)
+        for file in os.listdir(ref_gene_directory):
+            ref = os.path.join(ref_gene_directory, file)
+            h, original_rgene = get_ref(ref)
+            ref_loc = parse_ref_header(ref)
+
+        dup = find_ovlp(ref_gene_directory)
+
+        # FASTA with genome sequences to process
         fasta_handle = open(fasta)
         queries = convert_fasta(fasta_handle)
 
         cds_count = 0
         for file in os.listdir(ref_gene_directory):
-            count += 1
-            if count % total_number != my_number:
-                continue
 
-            outfile = os.path.join(outdir, file)
-            if os.path.isfile(outfile):
-                # output file exists, skip to next job
-                continue
+            try:
+                count += 1
+                if count % total_number != my_number:
+                    continue
 
-            # Path to Reference CDS
-            ref = os.path.join(ref_gene_directory, file)
-            ref_handle = open(ref)
+                outfile = os.path.join(outdir, file)
+                if os.path.isfile(outfile):
+                    # output file exists, skip to next job
+                    continue
 
-            # ref CDS coordinates (417:1546;1545:2132)
-            ref_loc = parse_ref_header(ref)
-            # 0 index of ref CDS without ovlp [0,1,2,7,8,9]
-            no_ovlp_index = ref_ovlp_index(ref_loc, dup)
+                # Path to Reference CDS
+                ref = os.path.join(ref_gene_directory, file)
+                ref_handle = open(ref)
 
-            # remove genes too short after cutting ovlp
-            if len(no_ovlp_index) < 50:
-                continue
-            cds_count += 1
+                # ref CDS coordinates (417:1546;1545:2132)
+                ref_loc = parse_ref_header(ref)
+                # 0 index of ref CDS without ovlp [0,1,2,7,8,9]
+                no_ovlp_index = ref_ovlp_index(ref_loc, dup)
 
-            # Path to write FASTA output (cut gene sequences)
-            outfile_handle = open(outfile, 'w+')  # append
+                # remove genes too short after cutting ovlp
+                if len(no_ovlp_index) < 50:
+                    continue
+                cds_count += 1
 
-            # Path to write FASTA output (NO OVLP)
-            n = file+".noovlp"
-            out_ovlp = os.path.join(outdir, n)
-            out_ovlp_handle = open(out_ovlp, 'w+')  # append
+                # Path to write FASTA output (cut gene sequences)
+                outfile_handle = open(outfile, 'w+')  # append
 
-            # Path to write CSV output (alignment scores)
-            a = file+".csv"
-            csvfile = os.path.join(outdir, a)
-            csvfile_handle = open(csvfile, 'w+')
+                # Path to write FASTA output (NO OVLP)
+                n = file+".noovlp"
+                out_ovlp = os.path.join(outdir, n)
+                out_ovlp_handle = open(out_ovlp, 'w+')  # append
 
-            # progress monitoring
-            sys.stdout.write("[{} {}/{}] starting job {} {}\n".format(datetime.now().isoformat(), my_number, total_number, count, file))
-            sys.stdout.flush()
+                # Path to write CSV output (alignment scores)
+                a = file+".csv"
+                csvfile = os.path.join(outdir, a)
+                csvfile_handle = open(csvfile, 'w+')
 
-            # parse query genomes from input FASTA
-            # queries = convert_fasta(fasta_handle)
-            cutter_minimap(ref, queries, outfile_handle, out_ovlp_handle, csvfile_handle, no_ovlp_index)
+                # progress monitoring
+                sys.stdout.write("[{} {}/{}] starting job {} {}\n".format(datetime.now().isoformat(), my_number, total_number, count, file))
+                sys.stdout.flush()
 
-            ref_handle.close()
-            outfile_handle.close()
-            out_ovlp_handle.close()
-            csvfile_handle.close()
+                # parse query genomes from input FASTA
+                # queries = convert_fasta(fasta_handle)
+                cutter_minimap(ref, queries, outfile_handle, out_ovlp_handle, csvfile_handle, no_ovlp_index)
 
-        fasta_handle.close()
+                ref_handle.close()
+                outfile_handle.close()
+                out_ovlp_handle.close()
+                csvfile_handle.close()
+
+            except:
+                continue 
+
 
 if __name__ == "__main__":
     main()
