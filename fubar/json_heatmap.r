@@ -35,17 +35,22 @@ grid.df$name <- name
 # Heatmap 
 png(file=outpath,width=800, height=700)
 ggplot(grid.factor, aes(grid.factor$dS, grid.factor$dN, fill= grid.factor$log)) +
-geom_tile() + theme(axis.text.x = element_text(angle = 90), axis.text=element_text(size=13),axis.title=element_text(size=16,face="bold")) +
-  xlab("Synonymous rate (dS)") + ylab("Nonsynonymous rate (dN)") + labs(fill = "Posterior Mean") +
-ggtitle(name) + theme(plot.title = element_text(lineheight=2, face="bold", size = 20, hjust = 0.5)) +  
-  
-scale_fill_gradient2('posterior', low = "blue", mid = "white", high = "red",midpoint = mid_range, limits= prob_range + coord_fixed() +
-  
-  guides(fill = guide_colourbar(barwidth = 2,
+geom_tile() + ggtitle(name) +
+  xlab("Synonymous rate (dS)") + 
+ylab("Nonsynonymous rate (dN)") + 
+labs(fill = "Posterior Mean") +
+theme(axis.text.x = element_text(angle = 90), 
+      axis.text = element_text(size=13),
+      axis.title = element_text(size=16,face="bold"),
+      plot.title = element_text(lineheight=2, 
+                                face="bold", size = 20, hjust = 0.5)) + 
+scale_fill_gradient2('posterior', low = "blue", mid = "white", high = "red", 
+                     midpoint = mid_range, limits= prob_range + coord_fixed() +
+                     guides(fill = guide_colourbar(barwidth = 2,
                                 barheight = 40,
                                 title = "Posterior Mean",
-                                ticks = FALSE))
-
+                                ticks = FALSE)) +
+coord_fixed()
 dev.off()
 
 
