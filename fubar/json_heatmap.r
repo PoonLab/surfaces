@@ -4,8 +4,9 @@ library("rjson")
 library("ggplot2")
 
 ### INPUT 
-mid_range = -2.235
-prob_range = c(-4.1633,-0.3067)
+midpoint =-5.14635
+limits=c(-9.5864, -0.7063)
+
 # log default : midpoint =-5.14635, limits=c(-9.5864, -0.7063))
 # log 10 : midpoint =-2.235, limits=c(-4.1633, -0.3067))
 
@@ -23,13 +24,15 @@ result <- fromJSON(file = json_path)
 #grid as df
 grid.matix <- matrix(unlist(result$grid),ncol=3,byrow=TRUE)
 grid.df <- as.data.frame(grid.matix)
-colnames(grid.df) <- c("dN","dS","posterior")
+### colnames(grid.df) <- c("dN","dS","posterior") # according to the documentation
+colnames(grid.df) <- c("dS","dN","posterior") # confirmed this is the right lables with Art 
 
 #as factor 
 grid.factor <- grid.df
 grid.factor$dN<- as.factor(round(grid.factor$dN,digits = 3))
 grid.factor$dS <- as.factor(round(grid.factor$dS,digits = 3))
-grid.factor$log <- log(grid.factor$posterior,10) # plot log transformed posterior probability
+grid.factor$log <- log(grid.factor$posterior) # plot log transformed posterior probability base e
+grid.factor$log10 <- log(grid.factor$posterior,10) # plot log transformed posterior probability base 10
 grid.df$name <- name
 
 # Heatmap 
@@ -45,33 +48,33 @@ theme(axis.text.x = element_text(angle = 90),
       plot.title = element_text(lineheight=2, 
                                 face="bold", size = 20, hjust = 0.5)) + 
 scale_fill_gradient2('posterior', low = "blue", mid = "white", high = "red", 
-                     midpoint = mid_range, limits= prob_range + coord_fixed() +
+                     midpoint = mid_range, limits= prob_range + 
+                     coord_fixed() +
                      guides(fill = guide_colourbar(barwidth = 2,
                                 barheight = 40,
                                 title = "Posterior Mean",
-                                ticks = FALSE)) +
-coord_fixed()
+                                ticks = FALSE))
 dev.off()
+
+
 
 
 """
 # Writing it out to a file all_posterior_prob.csv
-output.file <- file("./all_posterior-prob.csv", "a")
-grid.df$log <- log(grid.df$posterior)
-colnames(grid.df) <- c("dN","dS","posterior","log")
-write.table(grid.df, output.file, sep = ",", append = T)
-close(output.file)
+#output.file <- file("./all_posterior-prob.csv", "a")
+#grid.df$log <- log(grid.df$posterior)
+#colnames(grid.df) <- c("dN","dS","posterior","log")
+#write.table(grid.df, output.file, sep = ",", append = T)
+#close(output.file)
 
 # max & min 
-max_min <- paste(name,max(grid.df$posterior),min(grid.df$posterior))
-max.output.file <- file("./max.min.pearson_cor.csv", "a")
-cat(max_min, file=max.output.file, append=TRUE, sep = "\n")
-close(max.output.file)
+#max_min <- paste(name,max(grid.df$posterior),min(grid.df$posterior))
+#max.output.file <- file("./max.min.pearson_cor.csv", "a")
+#cat(max_min, file=max.output.file, append=TRUE, sep = "\n")
+#close(max.output.file)
 """
-                     
-                     
-                     
-                     
+                                          
+                              
 ### INFO
 # Read jason file and save jpg of heatmap of posterior probability with set range
 # old_ncbi: midpoint = -5.175, limits=c(-9.59, -0.76))
