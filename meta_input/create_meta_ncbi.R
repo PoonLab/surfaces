@@ -1,28 +1,5 @@
 library(dplyr)
 
-
-
-#1. ncbi or lin
-data_set = "lin"
-
-#2. with_ovlp, no_olvp, pruned, all 
-name = "all_no_ovlp" 
-
-##### dir ####
-
-dir_base = "/Users/sareh/Desktop/surface"
-
-dir_data = file.path(dir_base,"results",data_set)
-
-dir = file.path(dir_data, name)
-  
-dir_plot = file.path(dir, "plot")
-
-dir_meta_in <- file.path (dir_data, "meta_input") 
-dir_meta_out <- file.path (dir_data, "meta_output") 
-
-mle_path <- file.path(dir,"all_mle.csv")
-
 ##################### META #####################
 dir <- "/Users/sareh/Desktop/surface"
 dir_meta <- file.path (dir, "meta_info") 
@@ -34,6 +11,8 @@ dir_ncbi <- file.path(dir, "raw_ncbi_files")
 ##### INPUT #######
 
 #### 1. (all.mle) mle  #####
+mle_path <- file.path(dir_meta_in,"all_mle_no_ovlp.csv")
+
 all.mle <- read.csv(mle_path, sep=" ", header = FALSE)
 all.mle$V1<- gsub(".clean", "",all.mle$V1)
 colnames(all.mle) <- c("name","codon", "mean.dN", "mean.dS", 
@@ -55,7 +34,7 @@ names(all.mle)[names(all.mle) == 'codon'] <- 'codon_no_ovlp'
 
 
 # to get the codon length with ovlp 
-mle_withovlp_path = file.path(dir_data,"all_with_ovlp","all_mle.csv")
+mle_withovlp_path = file.path(dir_meta_in, "all_mle_with_ovlp.csv")
 
 mle_withovlp <- read.csv(mle_withovlp_path, sep=" ", header = FALSE)
 
@@ -99,23 +78,15 @@ fltr.nbr_path <- file.path(dir_ncbi, "fltr_nbr.csv")
 
 # 4. (uni) uniport download ####  
 # raw downloaded tabular data from UNIPORT
-#raw_uni_path <- file.path(dir_meta_in,"lin_uniprot.tab")
 raw_uni_path <- file.path(dir_meta,"uniprot_downloaded2022.tsv")
-  
+uniport_path <- file.path(dir_meta_in,"uni_clean.csv")
+
 uni <- read.csv(raw_uni_path, sep = "\t", header=TRUE)
 
-uni <- uni[,c("Name","Entry","Entry.name","Protein.names",
-              "Gene.names","Organism","Length","Organism.ID",
-              "Taxonomic.lineage..ALL.","Virus.hosts",
-              "Gene.ontology..biological.process.",
-              "Gene.ontology..cellular.component.",
-              "Gene.ontology..GO.","Gene.ontology.IDs")]
-
-uniport_path <- file.path(dir_meta_in,"uni_clean.csv")
 # clean up uni
-#uni <- uni[,c("gene","Entry","Entry.Name","Protein.names","Gene.Names","Organism","Length","Organism..ID.","Taxonomic.lineage","Virus.hosts","Gene.Ontology..biological.process.","Gene.Ontology..cellular.component.","Gene.Ontology..GO.","Gene.Ontology.IDs")]
-#names(uni)[names(uni) == "From"] <- "gene"
-names(uni)[names(uni) == "Name"] <- "gene"
+uni <- uni[,c("From","Entry","Entry.Name","Protein.names","Gene.Names","Organism","Length","Organism..ID.","Taxonomic.lineage","Virus.hosts","Gene.Ontology..biological.process.","Gene.Ontology..cellular.component.","Gene.Ontology..GO.","Gene.Ontology.IDs")]
+names(uni)[names(uni) == "From"] <- "gene"
+#names(uni)[names(uni) == "Name"] <- "gene"
 names(uni)[names(uni) == 'Length'] <- 'length_uniport'
 #View(uni) # [1] 1060   14
 
@@ -135,7 +106,7 @@ names(uni)[names(uni) == 'Length'] <- 'length_uniport'
                               "class","order","family","genus","species",
                               "V1","V2","V3","V4")]
       
-      write.table(for_python, file.path(dir_meta_in,"for_python_uni_taxonomy.csv"), quote = FALSE, sep = ",",row.names = FALSE)
+#write.table(for_python, file.path(dir_meta_in,"for_python_uni_taxonomy.csv"), quote = FALSE, sep = ",",row.names = FALSE)
 
 # 5. (edited_uni_tax) taxonomy ####
 # edit it in virus_info_table.py -> python_edited_uni_tax.csv
@@ -189,13 +160,8 @@ View(manual_family_dna)
 manual_family_path <- file.path(dir_meta_in,"family_manual.csv")
 manual_family<- read.csv(manual_family_path)
 
-names(manual_family)[names(manual_family) == 'family'] <- 'manual_family'
+colnames(manual_family) <- c("name_ncbi",'manual_family','manual_genus','manual_order')
 manual_family$manual_family <- gsub(" ", "", manual_family$manual_family)
-
-
-# LIN: all virus_info
-
-
 
 # Confounders #####
 
@@ -437,10 +403,10 @@ meta$per_pos_neg_sites <- meta$pos_neg_sites / meta$codon_no_ovlp
 meta$len_ovlp <- meta$codon_with_ovlp - meta$codon_no_ovlp
 
 ###### clean ####
-1. YP_009505610.1
-2. YP_009505617.1
-3. "NP_054708.1"
-4. "NP_777383.1"
+#1. YP_009505610.1
+#2. YP_009505617.1
+#3. "NP_054708.1"
+#4. "NP_777383.1"
 
 # remove 2 na (poly genes without mattpeptide entries)
 meta <- meta[!is.na(meta$SE),] # 676
@@ -460,14 +426,14 @@ meta$genus <- ifelse(is.na(meta$genus_nbr),
                      meta$genus_uniport, meta$genus_nbr)
 #a <- meta[,c("family_nbr","family_uniport", "family","manual_family")]
 
+
 View(meta)
+
+
 
 ##### SAVE META ####
 # ncbi 
 meta_path <- "/Users/sareh/Desktop/surface/results/ncbi/meta.csv"
-
-#lin 
-# meta_path <- "/Users/sareh/Desktop/surface/results/lin/meta.csv"
 
 #meta_path <- file.path(dir_meta_out,"meta.csv")
 write.table(meta, meta_path, quote = FALSE, sep = "\t", row.names = FALSE)
@@ -795,8 +761,27 @@ dev.off()
 
 
 
+# random 
+a <- meta[!is.na(meta$Gene.Ontology.IDs),]
+aF <- a[a$enveloped == "FALSE",]
+aT <- a[a$enveloped == "TRUE",]
+
+# env
+aT$GOIDSE <- grepl(paste(env_surface.id, collapse = "|"), 
+                   aT$Gene.Ontology.IDs)
+# non-env
+aF$GOIDSE <- grepl(paste(non_env_surface.id, collapse = "|"),
+                   aF$Gene.Ontology.IDs)
+
+all_go <- rbind(aT,aF)
 
 
+### POLY COUNT ####
+poly_path <- file.path(dir_meta_in, "poly_gene.txt")
+poly_gene <- read.csv(poly_path, header = FALSE)
+
+a <- poly_gene$V1 %in% meta$gene
+table(a)
 
 
 
