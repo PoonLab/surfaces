@@ -1,0 +1,160 @@
+gene,SE,manual_name
+NP_040313.1,FALSE,E2 protien 
+YP_002213765.1,FALSE,control protein E1A
+YP_002213766.1,FALSE,control protein E1B 19K
+YP_002213767.1,FALSE,control protein E1B 55K
+YP_002213768.1,TRUE ,capsid protein IX
+YP_002213771.1,FALSE,protein 13.6K possibly RNA metabolism and transport
+YP_002213772.1,TRUE ,encapsidation protein 52K DNA encapsidation capsid morphogenesis
+YP_002213773.1,TRUE ,capsid protein precursor pIIIa capsid morphogenesis
+YP_002213774.1,TRUE ,penton base cell attachment apsid morphogenesis cell entry
+YP_002213775.1,TRUE ,core protein precursor pVII capsid morphogenesis
+YP_002213776.1,FALSE,core protein V capsid morphogenesis
+YP_002213777.1,TRUE ,core protein precursor pX putative type 2 membrane protein; product Mu
+YP_002213778.1,TRUE ,capsid protein precursor pVI
+YP_002213779.1,TRUE ,hexon capsid morphogenesis
+YP_002213780.1,FALSE,protease
+YP_002213782.1,TRUE ,hexon assembly protein 100K capsid morphogenesis translational regulation
+YP_002213783.1,FALSE,protein 33K RNA splicing
+YP_002213784.1,TRUE ,encapsidation protein 22K capsid morphogenesis transcriptional control
+YP_002213785.1,TRUE ,capsid protein precursor pVIII
+YP_002213786.1,FALSE,control protein E3 12.5K
+YP_002213787.1,TRUE ,membrane glycoprotein E3 CR1-alpha
+YP_002213788.1,TRUE ,membrane glycoprotein E3 gp19K
+YP_002213789.1,TRUE ,membrane glycoprotein E3 CR1-beta
+YP_002213790.1,TRUE ,membrane glycoprotein E3 CR1-gamma
+YP_002213792.1,TRUE ,membrane protein E3 RID-alpha 
+YP_002213793.1,TRUE ,membrane protein E3 RID-beta
+YP_002213794.1,FALSE,control protein E3 14.7K apoptosis
+YP_002213830.1,TRUE ,encapsidation protein IVa2 capsid morphogenesis DNA encapsidation
+YP_002213831.1,FALSE,DNA polymerase
+YP_002213832.1,FALSE,terminal protein precursor pTP
+YP_002213833.1,FALSE,single-stranded DNA-binding protein
+YP_002213835.1,FALSE,control protein E4orf6/7
+YP_002213836.1,FALSE,control protein E4 34K
+YP_002213837.1,FALSE,control protein E4orf4
+YP_002213838.1,FALSE,control protein E4orf3
+YP_002213839.1,FALSE,control protein E4orf2
+YP_002213840.1,FALSE,control protein E4orf1
+YP_009505610.1,NA,polyprotein [Human rhinovirus NAT001]
+YP_009505617.1,NA,polyprotein [Human parechovirus 1]
+YP_392464.1,FALSE,RNA-directed RNA polymerase (EC 2.7.7.48) (Protein VP1)
+YP_392486.1,FALSE,Non-structural protein 3 (NSP3) (NCVP4) (Non-structural RNA-binding protein 34) (NS34) [Cleaved into: p38; p8]
+YP_392488.1,FALSE,Non-structural protein 2 (NSP2) (EC 3.6.4.-) (NCVP3) (Non-structural RNA-binding protein 35) (NS35)
+YP_392489.1,FALSE,Inner capsid protein VP2
+YP_392511.1,FALSE,Non-structural protein 5 (NSP5) (NS26)
+YP_392512.1,FALSE,Intermediate capsid protein VP6
+YP_392513.1,TRUE,Outer capsid glycoprotein VP7
+YP_392514.1,TRUE,Outer capsid protein VP4 (Hemagglutinin) [Cleaved into: Outer capsid protein VP8*; Outer capsid protein VP5*]
+YP_392515.1,FALSE,Non-structural glycoprotein 4 (NSP4) (NCVP5) (NS28)
+YP_392516.1,FALSE,Protein VP3 [Includes: mRNA guanylyltransferase (EC 2.7.7.50); mRNA (guanine-N(7))-methyltransferase (EC 2.1.1.56)]
+NP_040312.1,FALSE,Replication protein E1
+NP_043508.1,FALSE,Agnoprotein
+NP_043509.1,FALSE,Minor capsid protein
+NP_043512.1,FALSE,Large T antigen (LT) (LT-AG) (EC 3.6.4.-)
+NP_043513.1,FALSE,Small t antigen (ST) (ST-AG)
+NP_056773.1,FALSE,Dual specificity protein phosphatase VP2
+NP_056779.1,FALSE,Non-structural polyprotein pORF1
+NP_056788.1,FALSE,Secreted protein ORF2
+NP_595041.1,FALSE,NA
+NP_740553.1,FALSE,2A mature peptide
+NP_740554.1,FALSE,2B mature peptide
+NP_740555.1,FALSE,2C mature peptide
+NP_740556.1,FALSE,3A mature peptide
+NP_740558.1,FALSE,3C mature peptide
+NP_740559.1,FALSE,3D mature peptide
+NP_758520.1,FALSE,Genome polyprotein
+NP_937956.1,FALSE,Replication-associated protein (ATP-dependent helicase Rep) (RepP)
+YP_001974422.1,FALSE,control protein E1A
+YP_001974423.1,FALSE,E1B H648_40378gpE1B H648_40386gpE1B
+YP_001974425.1,FALSE,encapsidation protein IVa2
+YP_001974426.1,FALSE,DNA polymerase
+YP_001974427.1,FALSE,single-stranded DNA-binding protein
+YP_001974432.1,FALSE,control protein E3 12.5K
+YP_001974446.1,FALSE,E1B H648_40378gpE1B
+YP_001974448.1,FALSE,encapsidation protein 52K
+YP_001974450.1,FALSE,core protein precursor pVII
+YP_001974451.1,FALSE,core protein V
+YP_001974452.1,FALSE,core protein precursor pX
+YP_001974454.1,FALSE,protease
+YP_001974455.1,FALSE,protein 33K
+YP_001974456.1,FALSE,encapsidation protein 22K
+YP_001974458.1,FALSE,membrane glycoprotein E3 CR1-alpha
+YP_001974459.1,FALSE,membrane glycoprotein E3 gp19K
+YP_001974460.1,FALSE,membrane glycoprotein E3 CR1-beta
+YP_001974461.1,FALSE,membrane glycoprotein E3 CR1-gamma
+YP_001974462.1,FALSE,membrane protein E3 RID-alpha
+YP_001974463.1,FALSE,membrane protein E3 RID-beta
+YP_001974464.1,FALSE,control protein E3 14.7K
+YP_001974467.1,FALSE,protein 13.6K
+YP_001974468.1,FALSE,terminal protein precursor pTP
+YP_001974469.1,FALSE,control protein E4orf6/7
+YP_001974470.1,FALSE,control protein E4 34K
+YP_001974471.1,FALSE,control protein E4orf4
+YP_001974472.1,FALSE,control protein E4orf3
+YP_001974473.1,FALSE,control protein E4orf2
+YP_001974474.1,FALSE,control protein E4orf1
+YP_002213798.1,FALSE,control protein E1A
+YP_002213799.1,FALSE,control protein E1B 19K
+YP_002213800.1,FALSE,
+YP_002213804.1,FALSE,protein 13.6K
+YP_002213805.1,FALSE,encapsidation protein 52K
+YP_002213808.1,FALSE,core protein precursor pVII
+YP_002213809.1,FALSE,core protein V
+YP_002213810.1,FALSE,core protein precursor pX
+YP_002213813.1,FALSE,protease
+YP_002213816.1,FALSE,protein 33K
+YP_002213817.1,FALSE,encapsidation protein 22K
+YP_002213819.1,FALSE,control protein E3 12.5K
+YP_002213826.1,FALSE,control protein E3 14.7K
+YP_002213841.1,FALSE,encapsidation protein IVa2
+YP_002213842.1,FALSE,NA polymerase
+YP_002213843.1,FALSE,terminal protein precursor pTP
+YP_002213846.1,FALSE,control protein E4orf6/7
+YP_002213847.1,FALSE,control protein E4 34K
+YP_002213848.1,FALSE,control protein E4orf4
+YP_002213849.1,FALSE,control protein E4orf3
+YP_002213850.1,FALSE,control protein E4orf2
+YP_002213851.1,FALSE,control protein E4orf1
+YP_002213852.1,FALSE,single-stranded DNA-binding protein
+YP_002302220.1,FALSE,Non-structural protein 3
+YP_002302221.1,FALSE,Non-structural protein 2
+YP_002302223.1,FALSE,Non-structural glycoprotein 4 (NSP4) (NCVP5) (NS28)
+YP_002302224.1,FALSE,NSP5
+YP_002302226.1,FALSE,Inner capsid protein VP2
+YP_002302227.1,FALSE,RNA-directed RNA polymerase (EC 2.7.7.48) (Protein VP1)
+YP_002302228.1,FALSE,
+YP_002302229.1,FALSE,Intermediate capsid protein VP6
+YP_717936.1,FALSE,Agnoprotein (Agno)
+YP_717937.1,FALSE,Minor capsid protein VP2 (Minor structural protein VP2)
+YP_717940.1,FALSE,Large T antigen (LT) (LT-AG) (EC 3.6.4.-)
+YP_717941.1,FALSE,Small t antigen
+NP_040316.1,TRUE,Minor capsid protein L2
+NP_040317.1,TRUE,Major capsid protein L1
+NP_043511.1,TRUE,Major capsid protein VP1 (Major structural protein VP1)
+NP_056775.1,TRUE,Capsid protein (CA1)
+NP_740550.1,TRUE,1B VP2 mature peptide
+NP_740551.1,TRUE,1C VP3 mature peptide
+NP_740552.1,TRUE,1D VP1 mature peptide
+NP_937957.1,TRUE,Capsid (Capsid protein)
+YP_001974424.1,TRUE,capsid protein IX
+YP_001974428.1,TRUE,penton base
+YP_001974429.1,TRUE,capsid protein precursor pVI
+YP_001974431.1,TRUE,hexon assembly protein 100K
+YP_001974434.1,TRUE,fiber
+YP_001974449.1,TRUE,capsid protein precursor pIIIa
+YP_001974453.1,TRUE,hexon
+YP_001974457.1,TRUE,capsid protein precursor pVIII
+YP_002213806.1,TRUE,capsid protein precursor pIIIa
+YP_002213807.1,TRUE,penton base
+YP_002213811.1,TRUE,capsid protein precursor pVI
+YP_002213812.1,TRUE,hexon
+YP_002213815.1,TRUE,hexon assembly protein 100K
+YP_002213818.1,TRUE,capsid protein precursor pVIII
+YP_002213821.1,TRUE,membrane glycoprotein E3 gp19K
+YP_002213822.1,TRUE,membrane glycoprotein E3 CR1-beta
+YP_002213823.1,TRUE,membrane glycoprotein E3 CR1-gamma
+YP_002213824.1,TRUE,membrane protein E3 RID-alpha
+YP_002302222.1,TRUE,Outer capsid glycoprotein VP7
+YP_002302230.1,TRUE,Outer capsid protein VP4 (Hemagglutinin) 
+YP_717939.1,TRUE,Major capsid protein VP1 (Major structural protein VP1)

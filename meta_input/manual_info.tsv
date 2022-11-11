@@ -1,0 +1,140 @@
+name	virus	env 
+Crimean-Congo hemorrhagic fever orthonairovirus	NC_005301	T
+Crimean-Congo hemorrhagic fever orthonairovirus	NC_005300	T
+Crimean-Congo hemorrhagic fever orthonairovirus	NC_005302	T
+Hantaan orthohantavirus	NC_005218	T
+Hantaan orthohantavirus	NC_005222	T
+Hantaan orthohantavirus	NC_005219	T
+Human mastadenovirus B	NC_011202	F
+Human mastadenovirus B	NC_011203	F
+Human orthopneumovirus	NC_038235	T
+Human orthopneumovirus	NC_001781	T
+Infectious bronchitis virus	NC_048213	T
+Infectious bronchitis virus	NC_001451	T
+Lassa mammarenavirus	NC_004296	T
+Lassa mammarenavirus	NC_004297	T
+Norovirus GI	NC_044853	T
+Norovirus GI	NC_044856	T
+Norovirus GI	NC_001959	T
+Norovirus GI	NC_044854	T
+Norovirus GII	NC_040876	T
+Norovirus GII	NC_044932	F
+Norovirus GII	NC_039477	F
+Norovirus GIV	NC_029647	F
+Norovirus GIV	NC_044855	T
+Norovirus GIV	NC_045762	T
+Rift Valley fever virus	NC_014397	T
+Rift Valley fever virus	NC_014396	T
+Rift Valley fever virus	NC_014395	T
+Rotavirus A	NC_011504	F
+Rotavirus A	NC_011503	F
+Rotavirus A	NC_011502	F
+Rotavirus A	NC_011501	F
+Rotavirus A	NC_011509	F
+Rotavirus A	NC_011500	F
+Rotavirus A	NC_011510	F
+Rotavirus A	NC_011508	F
+Rotavirus A	NC_011506	F
+Rotavirus A	NC_011507	F
+Rotavirus A	NC_011505	F
+Rotavirus C	NC_007546	F
+Rotavirus C	NC_007547	F
+Rotavirus C	NC_007543	F
+Rotavirus C	NC_007544	F
+Rotavirus C	NC_007571	F
+Rotavirus C	NC_007545	F
+Rotavirus C	NC_007573	F
+Rotavirus C	NC_007569	F
+Rotavirus C	NC_007572	F
+Rotavirus C	NC_007570	F
+Rotavirus C	NC_007574	F
+SFTS virus HB29	NC_018137	T
+SFTS virus HB29	NC_018138	T
+SFTS virus HB29	NC_018136	T
+West Nile virus	NC_009942	T
+West Nile virus	NC_001563	T
+Zika virus	NC_012532	T
+Zika virus	NC_035889	T
+Alphapapillomavirus 7	NC_001357	F
+Betacoronavirus England 1	NC_038294	T
+Bovine coronavirus	NC_003045	T
+Bovine leukemia virus	NC_001414	T
+Bovine viral diarrhea virus 1	NC_001461	T
+Bovine viral diarrhea virus 2	NC_039237	T
+Chicken anemia virus	NC_001427	F
+Chikungunya virus	NC_004162	T
+Cowden I virus	NC_000940	T
+Coxsackievirus A2	NC_038306	F
+Coxsackievirus B3	NC_038307	F
+Dengue virus 1	NC_001477	T
+Dengue virus 2	NC_001474	T
+Dengue virus 3	NC_001475	T
+Dengue virus 4	NC_002640	T
+Duck coronavirus	NC_048214	T
+Eastern equine encephalitis virus	NC_003899	T
+Enterovirus A	NC_001612	T
+Enterovirus B	NC_001472	T
+Enterovirus C	NC_002058	T
+Enterovirus D	NC_001430	T
+Hepatitis B virus	NC_003977	T
+Hepatitis C virus (isolate H77)	NC_038882	T
+Hepatitis C virus genotype 1	NC_004102	T
+Hepatitis C virus genotype 2	NC_009823	T
+Hepatitis C virus genotype 3	NC_009824	T
+Hepatitis C virus genotype 4	NC_009825	T
+Hepatitis C virus genotype 5	NC_009826	T
+Hepatitis C virus genotype 6	NC_009827	T
+Hepatitis C virus genotype 7	NC_030791	T
+Hepatitis delta virus	NC_001653	T
+Hepatovirus A	NC_001489	F
+Human T-cell leukemia virus type I	NC_001436	T
+Human adenovirus 54	NC_012959	T
+Human alphaherpesvirus 3	NC_001348	T
+Human betaherpesvirus 5	NC_006273	T
+Human coronavirus OC43	NC_006213	T
+Human gammaherpesvirus 4	NC_007605	T
+Human herpesvirus 4 type 2	NC_009334	T
+Human immunodeficiency virus 1	NC_001802	T
+Human mastadenovirus D	NC_010956	F
+Human metapneumovirus	NC_039199	T
+Human papillomavirus type 16	NC_001526	T
+Human papillomavirus type 53	NC_001593	T
+Human papillomavirus type 6b	NC_001355	T
+Human parechovirus 1	NC_038319	F
+Human polyomavirus 1	NC_001538	F
+Human respirovirus 3	NC_001796	T
+Human rhinovirus NAT001	NC_038878	F
+JC polyomavirus	NC_001699	F
+Japanese encephalitis virus	NC_001437	T
+Measles morbillivirus	NC_001498	T
+Middle East respiratory syndrome-related coronavirus	NC_019843	T
+Mumps orthorubulavirus	NC_002200	T
+Norovirus GI/Hu/JP/2007/GI.P3_GI.3/Shimizu/KK2866	NC_039897	F
+Norovirus GII.17	NC_039475	F
+Norovirus GII.2	NC_039476	F
+Norovirus GII/Hu/JP/2007/GII.P15_GII.15/Sapporo/HK299	NC_044045	F
+Norovirus GII/Hu/JP/2011/GII/Yuzawa/Gira2HS	NC_044046	F
+Norovirus GIII	NC_029645	F
+Norovirus GV	NC_008311	F
+Norovirus dog/GVI.1/HKU_Ca026F/2007/HKG	NC_044047	F
+Norwalk-like virus	NC_029646	F
+Orthohepevirus A	NC_001434	F
+Parechovirus A	NC_001897	F
+Peste des petits ruminants virus	NC_006383	T
+Porcine circovirus 2	NC_005148	F
+Porcine enterovirus 9	NC_004441	F
+Primate T-lymphotropic virus 1	NC_000858	T
+Rabies lyssavirus	NC_001542	T
+Rhinovirus A	NC_001617	F
+Rhinovirus C	NC_009996	F
+SARS coronavirus Tor2	NC_004718	T
+Sapovirus C12	NC_006554	F
+Sapovirus Hu/Dresden/pJG-Sap01/DE	NC_006269	F
+Sapovirus Hu/Nagoya/NGY-1/2012/JPN	NC_027026	F
+Sapovirus Mc10	NC_010624	F
+Severe acute respiratory syndrome coronavirus 2	NC_045512	T
+Simian Agent 10	NC_038270	T
+Simian immunodeficiency virus	NC_001549	T
+Simian immunodeficiency virus SIV-mnd 2	NC_004455	T
+Sindbis virus	NC_001547	T
+Tembusu virus	NC_015843	T
