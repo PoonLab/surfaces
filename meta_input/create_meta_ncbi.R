@@ -99,8 +99,8 @@ fltr.nbr_path <- file.path(dir_ncbi, "fltr_nbr.csv")
 
 # 4. (uni) uniport download ####  
 # raw downloaded tabular data from UNIPORT
-raw_uni_path <- file.path(dir_meta_in,"lin_uniprot.tab")
-#raw_uni_path <- file.path(dir_meta,"uniprot_downloaded2022.tsv")
+#raw_uni_path <- file.path(dir_meta_in,"lin_uniprot.tab")
+raw_uni_path <- file.path(dir_meta,"uniprot_downloaded2022.tsv")
   
 uni <- read.csv(raw_uni_path, sep = "\t", header=TRUE)
 
