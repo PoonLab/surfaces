@@ -35,91 +35,43 @@ def accn_to_list(handle):
     for line in handle:
         name = line.split("\n")
         lst.append(name[0])
-    return (lst)
+    return lst
 
 
-def retrieve_gid(accn):
-    """
-    Find records according to genbank accession number
-    """
-    handle = Entrez.esearch(db='nucleotide', term=accn, retmax=1)
-    response = Entrez.read(handle)
-    if response['Count'] == '0':
-        # retry query
-        handle = Entrez.esearch(db='nucleotide', term=accn, retmax=1)
+def retrieve_record(accession_number):
+    with Entrez.esearch(db="nucleotide", term=accession_number, retmax=1) as handle:
         response = Entrez.read(handle)
-        if response['Count'] == '0':
-            return None
+        gid = response['IdList'][0]
 
-    return response['IdList'][0]
+    with Entrez.efetch(db="nuccore", id=gid, rettype="gb", retmode="text") as handle:
+        record = SeqIO.read(handle, "genbank")
 
-
-def retrieve_genbank(gid):
-    #handle = Entrez.efetch(db='nucleotide', rettype='gb', retmode='text', id=gid)
-    handle  = Entrez.efetch(db="nuccore", id=gid, rettype="gb",retmode="text")
-    gb = SeqIO.parse(handle, format='genbank')
-    return next(gb)
+    return record
 
 
-def retrieve_record(accn):
-    gid = retrieve_gid(accn)
-    #sleep(1)
-    if gid is None:
-        print('Warning, failed to retrieve gid for {}'.format(accn))
-        #continue
-    record = retrieve_genbank(gid)
-    #sleep(1) # don't spam, add more if it's a big file
-    return(record)
+def extract_coding_sequences(genbank_record, accession_number):
+    coding_sequences = []
+    for feature in genbank_record.features:
+        if feature.type == "CDS":
+            feature_dict = {}
+            qualifiers = feature.qualifiers
 
+            parts_list = []
+            for part in feature.location.parts:
+                parts_list.append((part.start, part.end))
+                parts = ';'.join(f'{item[0].position}:{item[1].position}' for item in parts_list)
 
-def retrieve_cds(accn, record):
-    """
-    input: accn = ncbi accn
-    input: record = genbank file SeqIO.read
-    input: dir = directory to write out cds
-    return list of dictionary {accn},{protein_accn},{product},{strand},{parts_str}"\n{gene_sequence}
-    output: [{'accn': 'NC_005300', 'protein_accn': 'NP_950235.1', 'product': 'glycoprotein precursor', 'strand': 1, 'parts_str': '92:5147', 'gene_sequence': Seq('ATGCATATATCATTAATGTATGCAATCCTTTGCCTACAGCTGTGTGGTCTGGGA...TAG')}]
-    """
-    # retrieve each CDS
-    cds = [feat for feat in record.features if feat.type == "CDS"]  # [SeqFeature(FeatureLocation(ExactPosition(154), ExactPosition(544), strand=1), type='CDS'), SeqFeature(FeatureLocation(ExactPosition(570), ExactPosition(897), strand=-1), type='CDS'), SeqFeature(FeatureLocation(ExactPosition(1115), ExactPosition(1832), strand=1), type='CDS')
+            feature_dict["parts"] = parts
+            feature_dict["accession"] = accession_number
+            feature_dict["protein_accession"] = qualifiers.get('protein_id', [''])[0]
+            feature_dict["strand"] = feature.strand
+            feature_dict["product"] = qualifiers.get('product', [''])[0]
+            feature_dict["gene_sequence"] = feature.extract(genbank_record.seq)
+            feature_dict["start"] = qualifiers['codon_start']
 
-    # dict of cds
-    list_cds_dict = []
+            coding_sequences.append(feature_dict)
 
-    for cd in cds:
-        d = {}
-        q = cd.qualifiers  # OrderedDict([('gene', ['ORF 0']), ('codon_start', ['1']), ('product', ['ORF 0']), ('protein_id', ['AHJ09141.1']), ('translation', ['MATVHYSRRPGTPPVTLTSSPGMDDVATPIPYLPTYAEAVADAPPPYRSRESLVFSPPLFPHVENGTTQQSYDCLDCAYDGIHRLQLAFLRIRKCCVPAFLILFGILTLTAVVVAIVAVFPEEPPNSTT'])])
-        proteinID = q.get('protein_id', [''])  # ['AHJ09212.1']
-        protein_accn = proteinID[0]  # AHJ09141.1
-        product = q.get('product', [''])[0]  # ORF 0
-        locus = q.get('locus_tag', '')  # empty
-        strand = cd.strand  # 1 or -1
-        start = q['codon_start']  # ['1']
-        seq = record.seq  # full nucleotide seqeunce
-        name = record.annotations['organism']
-        gene_sequence = cd.extract(record.seq)
-
-        parts = []  # [(ExactPosition(154), ExactPosition(544))]
-        for part in cd.location.parts:  # [154:544](+)
-            parts.append((part.start, part.end))
-            parts_str = ';'.join('{}:{}'.format(p[0].position, p[1].position) for p in parts)
-
-        d["accn"] = accn
-        d["protein_accn"] = protein_accn
-        d["product"] = product
-        d["strand"] = strand
-        d["parts_str"] = parts_str
-        d["gene_sequence"] = gene_sequence
-        d["start"] = start
-        #outfile = open('{}/{}_{}'.format(dir, accn, protein_accn), 'w')
-        #outfile.write(f'>"{accn},{protein_accn},{product},{strand},{parts_str}"\n{gene_sequence}\n')
-
-        list_cds_dict.append(d)
-
-        ### NEED to loop through and return all ###
-        sleep(1)
-
-    return(list_cds_dict)
+    return coding_sequences
 
 
 def retrieve_poly_genes(record):
@@ -189,14 +141,14 @@ def retrieve_ref_cds_poly(accn_path, # File with all the ncbi accns
         record = retrieve_record(accn) # seqIO record
         #print(record)
 
-        dict = retrieve_poly_genes(record) # dict of genbank info
+        info = retrieve_poly_genes(record) # dict of genbank info
         #print(dict)
 
-        cds_lst = retrieve_cds(accn, record) # #outfile name: '{}/{}_{}'.format(dir, accn, protein_accn)
+        cds_lst = extract_coding_sequences(accn, record) # #outfile name: '{}/{}_{}'.format(dir, accn, protein_accn)
         #print(cds_lst)
 
         # if its a polyprotien
-        if dict["poly"] == "TRUE":
+        if info["poly"] == "TRUE":
             cds_d = cds_lst[0] # should only be one CDS listed for polyproteins
             # dict : {accn,cds_d["protein_accn"],cds_d["product"],cds_d["strand"],cds_d["parts_str"], cds_d["gene_sequence"]}
 
@@ -204,7 +156,7 @@ def retrieve_ref_cds_poly(accn_path, # File with all the ncbi accns
             ref_start = cds_d["start"][0]
 
             # every mature peptide
-            for p in dict["protein_id"]:
+            for p in info["protein_id"]:
                 prot_id = p[0] #NP_740469.1
                 accn_full = accn
                 accn = re.sub("\.[1-9]","",accn_full) #NC_002058: remove version
@@ -227,7 +179,7 @@ def retrieve_ref_cds_poly(accn_path, # File with all the ncbi accns
 		# fasta output
                 outfile = open('{}/{}_{}'.format(dir_accn, accn, prot_id), 'w')
                 #>"NC_007545,YP_392488.1,nonstructural protein 2,1,42:981"
-                outfile.write(f'>"{accn},{prot_id},{dict["product"]},{cds_d["strand"]},{location}"\n{all_cut}\n')
+                outfile.write(f'>"{accn},{prot_id},{info["product"]},{cds_d["strand"]},{location}"\n{all_cut}\n')
                 print("poly " + accn + " " + prot_id)
 
 	# not a polyprotein: d["poly"] = "FALSE"
@@ -271,37 +223,6 @@ def retrieve_CDS(record):
         yield locus, product, cd.strand, parts, q['codon_start'], aaseq
 
 
-def scrape_protien(in_fasta='protein_scraper.fasta',
-                   table='/Users/sarehchimeh/script/Laura Overlapping/input-protein_scraper.py.txt'
-                   ):
-
-    # Protein file
-    orffile = open(in_fasta, 'w')
-    #orffile.write('name,accno,product,strand,coords,aaseq\n')
-    values = parse_table(table)
-
-    for accn in values:
-
-        gid = retrieve_gid(accn)
-        if gid is None:
-            print('Warning, failed to retrieve gid for {}'.format(accn))
-            continue
-
-        print(accn)
-        sleep(2)  # avoid spamming the server
-
-        record = retrieve_record(gid)
-
-        for locus, product, strand, parts, start, aaseq in retrieve_CDS(record):
-            parts_str = ';'.join('{}:{}'.format(p[0].position, p[1].position) for p in parts)
-            name = record.annotations['organism']
-            product = product[0]
-            aaseq = aaseq[0]
-            orffile.write(f'>"{name},{accn},{product},{strand},{parts_str}"\n{aaseq}\n')
-
-        sleep(2)
-
-
 def pase_filtered_neighbour_table(table):
     """
     #:param table: filtered_Neighbours.txt
@@ -318,36 +239,6 @@ def pase_filtered_neighbour_table(table):
     return(lst)
 
 
-def scrape_cds(in_fasta='/Users/sarehchimeh/Data/lara_protein_scraper.fasta',
-               table='/Users/sarehchimeh/Data/filtered_Neighbours.txt'):
-
-    # Protein file
-    orffile = open(in_fasta, 'w')
-    #orffile.write('name,accno,product,strand,coords,aaseq\n')
-    values = pase_filtered_neighbour_table(table)
-
-    for accn in values:
-
-        gid = retrieve_gid(accn)
-        if gid is None:
-            print('Warning, failed to retrieve gid for {}'.format(accn))
-            continue
-
-        print(accn)
-        sleep(2)  # avoid spamming the server
-
-        record = retrieve_record(gid)
-
-        for locus, product, strand, parts, start, aaseq in retrieve_CDS(record):
-            parts_str = ';'.join('{}:{}'.format(p[0].position, p[1].position) for p in parts)
-            name = record.annotations['organism']
-            product = product[0]
-            seq = seq[0]
-            orffile.write(f'>"{name},{accn},{product},{strand},{parts_str}"\n{aaseq}\n')
-
-        sleep(2)
-
-
 def retrieve_annotations(record):
     an = record.annotations
     an_dict = {'Length': len(record.seq) , 'Topology':an['topology'],
@@ -355,3 +246,9 @@ def retrieve_annotations(record):
                 'Proteins': len(record.features)
                 }
     return an_dict
+
+
+if __name__ == '__main__':
+    accession_number = "KF853231"
+    genbank_record = retrieve_record(accession_number)
+    coding_sequences = extract_coding_sequences(genbank_record)
