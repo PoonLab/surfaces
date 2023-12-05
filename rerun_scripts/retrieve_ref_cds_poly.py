@@ -1,23 +1,9 @@
-"""
-handles polyproteins and non-polyproteins
-takes in a text file with ncbi accns
-output fasta files with all ref cds
-
-FASTA HEADER: >"NC_010956,YP_001974451.1,core protein V,1,15696:16701"
-
-FOR TESTING: 
-accn_lst = ["NC_001526","NC_001451","NC_005300","NC_005222"]
-dir = "/home/sareh/learning/test/cds/"
-"""
-
 import os
 import re
-import csv
-from Bio import Entrez, SeqIO, SeqFeature
-from csv import DictWriter
-from time import sleep
-from glob import glob
+from Bio import Entrez
 import argparse
+
+from utils import *
 
 Entrez.email = 'sbagher4@uwo.ca'
 
@@ -29,117 +15,12 @@ total_number = the_world.Get_size()
 
 def parse_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--accn', type=str,
-                       help='IN: file of accns (each line is an ncbi accn)')
-    parser.add_argument('--dir', type=str,
-                       help='OUT: directory to write out ref CDS')
+    parser.add_argument('--infile', type=str,
+                        help='IN: file of accns (each line is an ncbi accn)')
+    parser.add_argument('--outdir', type=str,
+                        help='OUT: directory to write out ref CDS')
     return parser.parse_args()
 
-
-def parse_loc(item):
-    """
-    item : [949:1765](+)
-    item = "join{[12312:12354](+), [12353:15131](+)}"
-    item_normal = "[949:1765](+)"
-    """
-    loc = item.replace("(+)","").replace('[','').replace(']','')
-    cord = loc.split(":")
-    start = cord[0].strip(" ")
-    stop = cord[1].strip(" ")
-    return(start, stop)
-
-def accn_to_list(handle):
-    """
-    input: handle to open file of accns separated by "\n"
-    return: list of all the accessions
-    ex.['KF853231', 'DQ479956', 'JN704703']
-    """
-    lst = []
-    next(handle)
-    for line in handle:
-        name = line.split("\n")
-        lst.append(name[0])
-    return (lst)
-
-def retrieve_gid(accn):
-    """
-    Find records according to genbank accession number
-    """
-    handle = Entrez.esearch(db='nucleotide', term=accn, retmax=1)
-    response = Entrez.read(handle)
-    if response['Count'] == '0':
-        # retry query
-        handle = Entrez.esearch(db='nucleotide', term=accn, retmax=1)
-        response = Entrez.read(handle)
-        if response['Count'] == '0':
-            return None
-
-    return response['IdList'][0]
-
-def retrieve_genbank(gid):
-    #handle = Entrez.efetch(db='nucleotide', rettype='gb', retmode='text', id=gid)
-    handle  = Entrez.efetch(db="nuccore", id=gid, rettype="gb",retmode="text")
-    gb = SeqIO.parse(handle, format='genbank')
-    return next(gb)
-
-def retrieve_record(accn):
-    gid = retrieve_gid(accn)
-    #sleep(1)
-    if gid is None:
-        print('Warning, failed to retrieve gid for {}'.format(accn))
-        #continue
-    record = retrieve_genbank(gid)
-    #sleep(1) # don't spam, add more if it's a big file
-    return(record)
-
-def retrieve_cds(accn, record):
-    """
-    input: accn = ncbi accn
-    input: record = genbank file SeqIO.read
-    input: dir = directory to write out cds
-    return list of dictionary {accn},{protein_accn},{product},{strand},{parts_str}"\n{gene_sequence}
-    output: [{'accn': 'NC_005300', 'protein_accn': 'NP_950235.1', 'product': 'glycoprotein precursor', 'strand': 1, 'parts_str': '92:5147', 'gene_sequence': Seq('ATGCATATATCATTAATGTATGCAATCCTTTGCCTACAGCTGTGTGGTCTGGGA...TAG')}]
-    """
-    # retrieve each CDS
-    cds = [feat for feat in record.features if feat.type == "CDS"]  # [SeqFeature(FeatureLocation(ExactPosition(154), ExactPosition(544), strand=1), type='CDS'), SeqFeature(FeatureLocation(ExactPosition(570), ExactPosition(897), strand=-1), type='CDS'), SeqFeature(FeatureLocation(ExactPosition(1115), ExactPosition(1832), strand=1), type='CDS')
-
-    # dict of cds
-    list_cds_dict = []
-
-    for cd in cds:
-        d = {}
-        q = cd.qualifiers  # OrderedDict([('gene', ['ORF 0']), ('codon_start', ['1']), ('product', ['ORF 0']), ('protein_id', ['AHJ09141.1']), ('translation', ['MATVHYSRRPGTPPVTLTSSPGMDDVATPIPYLPTYAEAVADAPPPYRSRESLVFSPPLFPHVENGTTQQSYDCLDCAYDGIHRLQLAFLRIRKCCVPAFLILFGILTLTAVVVAIVAVFPEEPPNSTT'])])
-        proteinID = q.get('protein_id', [''])  # ['AHJ09212.1']
-        protein_accn = proteinID[0]  # AHJ09141.1
-        product = q.get('product', [''])[0]  # ORF 0
-        locus = q.get('locus_tag', '')  # empty
-        strand = cd.strand  # 1 or -1
-        start = q['codon_start']  # ['1']
-        seq = record.seq  # full nucleotide seqeunce
-        name = record.annotations['organism']
-        gene_sequence = cd.extract(record.seq)
-
-        parts = []  # [(ExactPosition(154), ExactPosition(544))]
-        for part in cd.location.parts:  # [154:544](+)
-            parts.append((part.start, part.end))
-            parts_str = ';'.join('{}:{}'.format(p[0].position, p[1].position) for p in parts)
-
-        d["accn"] = accn
-        d["protein_accn"] = protein_accn
-        d["product"] = product
-        d["strand"] = strand
-        d["parts_str"] = parts_str
-        d["gene_sequence"] = gene_sequence
-        d["start"] = start
-        #outfile = open('{}/{}_{}'.format(dir, accn, protein_accn), 'w')
-        #outfile.write(f'>"{accn},{protein_accn},{product},{strand},{parts_str}"\n{gene_sequence}\n')
-
-        list_cds_dict.append(d)
-
-        ### NEED to loop through and return all ###
-        sleep(1)
-
-    return(list_cds_dict)
 
 def retrieve_poly_genes(record):
     """
@@ -147,134 +28,85 @@ def retrieve_poly_genes(record):
     so need to get the mature peptides (each a gene)
     retrun a dictionary [id:ncbi_accn, poly:boolean, seg:boolean, protien_id:[], CDS:[]]
     """
-    d = {} # a new dicts for every accn
-    d["id"] = record.id
-    d["poly"] = "FALSE"
-    d["seg"] = "FALSE"
-    d["protein_id"] = []
-    d["product"] = []
+    poly_genes = {} # a new dict for every accn
+    poly_genes["id"] = record.id
+    poly_genes["poly"] = False
+    poly_genes["seg"] = False
+    poly_genes["protein_id"] = []
+    poly_genes["product"] = []
 
     for feature in record.features:
-        # check if segmented
-        if feature.type == "source" and 'segment' in feature.qualifiers:
-            d["seg"] = "TRUE"
+        poly_genes["seg"] = feature.type == "source" and 'segment' in feature.qualifiers
+        poly_genes["poly"] = feature.type == 'mat_peptide'
 
-        # check if its a polyprotein
-        if feature.type == 'mat_peptide':
-            d["poly"] = "TRUE"
-
+        if poly_genes["poly"]:
             try:
-                #loc 
-                loc = feature.location
-                #protein ID
-                prot_accn = feature.qualifiers['protein_id'][0]
-                #protein name
-                product = feature.qualifiers['product'][0]
-                d["protein_id"].append((prot_accn,str(loc),product))
-
-                """
-                #csv file only for polyprotein
-                line = "{},{},{}\n".format(record.id, prot_accn, loc)
-                loc_handle = open(args.loc, 'a')
-                loc_handle.write(line)
-                """
-
+                loc = feature.location #loc 
+                prot_accn = feature.qualifiers['protein_id'][0] # protein ID
+                product = feature.qualifiers['product'][0] # protein name
+                poly_genes["protein_id"].append((prot_accn,str(loc),product))
             except:
-                # skip viruses with missing record ID
                 print("issue: " + record.id)
-    return(d)
+
+    return poly_genes
 
 
-def main():
-
-    args = parse_args()
-    count = 0 # for mpi run
+def retrieve_ref_cds(accn_path, accn_outdir):
+    mpi_count = 0 # for mpi run
     ref_accn_count = 0
-    ref_poly_count = 0
-    ref_gene_count = 0 
     poly_genes = []
-
-    accn_path = args.accn # File with all the ncbi accns
-
-    # list of accns
+    
     accn_handle = open(accn_path, "r")
-    accn_lst = accn_to_list(accn_handle)
-    #sleep(1)
+    accessions = get_accessions(accn_handle)
 
-    for accn in accn_lst:
+    for accession in accessions:
         ref_accn_count += 1
-        # mpi
-        count += 1
-        if count % total_number != my_number:
-            #sleep(1)
+        mpi_count += 1
+        if mpi_count % total_number != my_number:
             continue
 
-        dir_accn = os.path.join(args.dir,accn)
+        outdir = os.path.join(accn_outdir, accession)
 
-        # if directory exsists skip 
-        if os.path.exists(dir_accn) == True:
+        if os.path.exists(outdir):
             continue
 
-        os.mkdir(dir_accn) # make a directory for each virus
+        os.mkdir(outdir)
+        record = retrieve_record(accession)
+        genbank_info = retrieve_poly_genes(record)
+        cds_lst = retrieve_cds(accession, record)
 
-        record = retrieve_record(accn) # seqIO record
-        #print(record)
-
-        dict = retrieve_poly_genes(record) # dict of genbank info
-        #print(dict)
-
-        cds_lst = retrieve_cds(accn, record) # outfile name: '{}/{}_{}'.format(dir, accn, protein_accn)
-        #print(cds_lst)
-
-        # if its a polyprotien
-        if dict["poly"] == "TRUE":
-            #print("polyprotein " + accn)
-            #print("record ID " + dict["id"])
+        if genbank_info["poly"]:
             cds_d = cds_lst[0] # should only be one CDS listed for polyproteins
-            # dict : {accn,cds_d["protein_accn"],cds_d["product"],cds_d["strand"],cds_d["parts_str"], cds_d["gene_sequence"]}
-
-            # ref locations
             ref_start = cds_d["start"][0]
 
             # every mature peptide
-            for p in dict["protein_id"]:
-                prot_id = p[0] #NP_740469.1
+            for protein in genbank_info["protein_id"]:
+                prot_id, location, prot_name = protein
                 poly_genes.append(prot_id)
-                accn_full = accn
-                accn = re.sub("\.[1-9]","",accn_full) #NC_002058: remove version
-                location = p[1] #[949:1765](+)
-                prot_name = p[2]
+                accession = re.sub("\.[1-9]", "", accession)
 
                 location = location.replace("join","").replace("{","").replace("}","")
                 loc_lst = location.split(",")
 
-                #ISSUE: join{[12312:12354](+), [12353:15131](+)}
                 all_cut = ""
                 for loc in loc_lst:
-                    start,stop = parse_loc(loc) #poly start/stop
-
-                    # cutting it out
+                    start, stop = parse_loc(loc)
                     cut_start = int(start) - int(ref_start)
                     cut_stop = int(stop) - int(ref_start) + 1
                     cut = record.seq[cut_start:cut_stop]
-                    all_cut += str(cut) #add the string
+                    all_cut += str(cut)
 
-		# fasta output
-                outfile = open('{}/{}_{}'.format(dir_accn, accn, prot_id), 'w')
-                #>"NC_007545,YP_392488.1,nonstructural protein 2,1,42:981"
-                outfile.write(f'>"{accn},{prot_id},{prot_name},{cds_d["strand"]},{location}"\n{all_cut}\n')
-                #print("poly " + accn + " " + prot_id)
+                outfile = open(f'{outdir}/{accession}_{prot_id}', 'w')
+                outfile.write(f'>"{accession},{prot_id},{prot_name},{cds_d["strand"]},{location}"\n{all_cut}\n')
 
-	# not a polyprotein: d["poly"] = "FALSE"
         else:
             for cds_d in cds_lst:
-		# write out all cds
-                outfile = open('{}/{}_{}'.format(dir_accn, accn, cds_d["protein_accn"]), 'w')
-                #>"NC_007545,YP_392488.1,nonstructural protein 2,1,42:981"
-                outfile.write(f'>"{accn},{cds_d["protein_accn"]},{cds_d["product"]},{cds_d["strand"]},{cds_d["parts_str"]}"\n{cds_d["gene_sequence"]}\n')
-                #print("not poly " + accn + " " + cds_d["protein_accn"])
+                outfile = open('{}/{}_{}'.format(outdir, accession, cds_d["protein_accession"]), 'w')
+                outfile.write(f'>"{accession},{cds_d["protein_accession"]},{cds_d["product"]},{cds_d["strand"]},{cds_d["parts"]}"\n{cds_d["gene_sequence"]}\n')
 
     print(poly_genes)
 
+
 if __name__ == "__main__":
-    main()
+    args = parse_args()
+    retrieve_ref_cds(args.infile, args.outdir)
