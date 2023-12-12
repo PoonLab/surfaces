@@ -12,10 +12,6 @@ from tmbed.utils import seed_all, read_fasta, make_batches, collate_batch, make_
 #sys.path.append('/content/tmbed/')
 #seed_all(101)
 
-models = load_models(Path('/home/sareh/tmbed/tmbed/models/cnn/'))
-encoder = load_encoder(Path('/home/sareh/tmbed/tmbed/models/t5/'))
-decoder = Decoder()
-
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--indir', type=str,
@@ -115,6 +111,10 @@ def write_tabular(output_file, proteins, predictions, pred_map):
 
 def main():
     args = parse_args()
+    models = load_models(Path('/mnt/qnap/sareh/tmbed/tmbed/models/cnn/'))
+    encoder = load_encoder(Path('/mnt/qnap/sareh/tmbed/tmbed/models/t5/'))
+    decoder = Decoder()
+
     for file in os.listdir(args.indir):
         infile = os.path.join(args.indir, file)
         outfile = os.path.join(args.outdir, file)
@@ -174,7 +174,7 @@ def main():
         pred_map = {0: 'B', 1: 'b', 2: 'H', 3: 'h', 4: 'S', 5: '.', 6: '.'}
 
         # --out-format 0 or 1
-        write_3_line(output_file, proteins, predictions, pred_map)
+        write_3_line(outfile, proteins, predictions, pred_map)
 
 if __name__ == "__main__":
     main()
