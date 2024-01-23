@@ -1,0 +1,152 @@
+# Retrieve medatada, CDSs, and full genome from accession numbers
+# Modified from: https://github.com/PoonLab/ProtClust/blob/main/scripts/protein_scraper.py#L100
+from Bio import Entrez, SeqIO, SeqFeature
+from time import sleep
+import csv
+import sys
+
+import argparse
+
+
+def get_args(parser):
+    # Required arguments
+    parser.add_argument(
+        'table',
+        help='Path to the file containing list of accession numbers'
+    )
+    parser.add_argument(
+        'email',
+        help='email name to be identified in NCBI'
+    )
+
+    # Optional
+    parser.add_argument(
+        '--outfile', default=None, help='Path to fasta file with amino acid sequences'
+    )
+
+    return parser.parse_args()
+
+def parse_table(tbl):
+    """
+    Loop trough table file to retrieve accession numbers as a list
+    :param tbl: list with accession numbers
+    """
+    handle = open(tbl)
+
+    values = []
+    for line in handle:
+        temp = line.strip('\n')  # Remove new line
+        values.append(temp)
+
+    return(values)
+
+def retrieve_gid(accn):
+    """
+    Find records according to genbank accession number
+    :param accn: NCBI accession number
+    :returns: GenInfo Identifier (GI) associated with the accession number
+    """
+    handle = Entrez.esearch(db='nucleotide', term=accn, retmax=1)
+    response = Entrez.read(handle)
+    if response['Count'] == '0':
+        # retry query
+        handle = Entrez.esearch(db='nucleotide', term=accn, retmax=1)
+        response = Entrez.read(handle)
+        if response['Count'] == '0':
+            return None
+
+    return response['IdList'][0]
+
+def retrieve_record(gid):
+    """
+    Using Entrez, fetch SeqRecord object from NCBI using GI number
+    :param gid: GenInfo Identifier (GI) assigned to a record proccesed by NCBI 
+    :returns: SeqRecord object 
+    """
+    handle = Entrez.efetch(db='nucleotide', rettype='gb', retmode='text', id=gid)
+    # handle = Entrez.efetch(db='nuccore', id=gid, rettype='gb', retmode='text')
+    gb = SeqIO.parse(handle, format='genbank')
+    return next(gb)
+
+
+def retrieve_CDS(record):
+    """
+    Analyze features in Genbank record to extract (1) the number of coding regions (CDS)
+    :param record: SeqRecord object (used in BioPython to hold a sequence and sequence information)
+    """
+    cds = [feat for feat in record.features if feat.type=='CDS']
+    for cd in cds:
+        q = cd.qualifiers
+        parts = []
+        for part in cd.location.parts:
+            parts.append((part.start, part.end))
+        locus = q.get('locus_tag', '')
+        product = q.get('product', [''])
+        cd_seq=cd.location.extract(record).seq
+        yield locus, product, cd.strand, parts, q['codon_start'], cd_seq
+
+def get_metadata(accn):
+    handle = Entrez.efetch(db='nuccore', id=accn, rettype='gb', retmode='text')
+    records = SeqIO.parse(handle, 'gb')
+    
+    for rec in records:
+        taxon = ':'.join(rec.annotations["taxonomy"])
+        source = list(filter(lambda f: f.type=='source', rec.features))
+        quals = source[0].qualifiers
+        iso = quals.get('isolate', [''])[0],
+        host = quals.get('host', [''])[0],
+        loc = quals.get('country', [''])[0],
+        coldate = quals.get('collection_date', [''])[0]
+        organism = quals.get('organism', [''])[0]
+        yield rec.id, taxon, iso, host, loc, coldate, rec.seq, organism
+
+
+def main():
+
+    parser = argparse.ArgumentParser(
+        description='From list of accession numbers, retrieve amino acid sequences as fasta file'
+    )
+    
+    args = get_args(parser)
+    accn_table = args.table
+    Entrez.email = args.email
+    filename = args.outfile if args.outfile else f'{accn_table}'
+    
+    cds_file = open(f'{filename}_CDSs.fasta', 'w')
+    md_file = open(f'{filename}_md.csv', 'w')
+    md_writer = csv.writer(md_file)
+    md_writer.writerow(['accn', 'taxonomy', 'isolate', 'host', 'country', 'coldate'])
+    values = parse_table(accn_table)
+    full_gen_file = open(f'{filename}_full_gen.fasta', 'w')
+
+    for accn in values:
+
+        gid = retrieve_gid(accn)
+        if gid is None:
+            print('Warning, failed to retrieve gid for {}'.format(accn))
+            continue
+
+        sleep(1)  # avoid spamming the server
+
+        record = retrieve_record(gid)
+
+        # Get medatada and store full genomes
+        for id, taxon, iso, host, loc, coldate, full_seq, organism in get_metadata(accn):
+            md_writer.writerow([id, taxon, iso, host, loc, coldate])
+            full_gen_file.write(f'>{id}-{organism}-{host}-{coldate}\n{full_seq}\n')
+
+
+        # get sequences
+        for locus, product, strand, parts, start, cd_seq in retrieve_CDS(record):
+            parts_str = ';'.join('{}:{}'.format(p[0].position, p[1].position) for p in parts)
+            name = record.annotations['organism']
+            product = product[0]
+            cds_file.write(f'>{accn}-{name}-{product}-{strand}-{parts_str}\n{cd_seq}\n')
+
+        print(accn)
+        sleep(1)
+
+    print(f'\n>>> DONE <<<\n')
+
+if __name__ == "__main__":
+    main()
