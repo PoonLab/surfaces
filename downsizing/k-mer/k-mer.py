@@ -38,7 +38,7 @@ def kmer(seq):
             word = seq[i:(i+k)]
             if word not in d:
                 d.update({word: 0})
-                d[word] += 1
+            d[word] += 1
     return d
 
 
