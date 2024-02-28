@@ -3,37 +3,20 @@ set.seed(5)
 ########################################
 # Import k-mer distance
 ########################################
-setwd('/home/laura/Projects/ProtClust/scripts')
-km <- read.csv('measles_distance_filtered.csv', header=F, row.names=1)
+setwd('/Users/Laura/Projects/surfaces')
+km <- read.csv('measles_feb27_kmerdist.csv', header=F, row.names=1)
 n.prots <- 8 # number of proteins per genome
-km <- 1-as.matrix(km)
+km <- as.matrix(km)
 
 ########################################
-# t-SNE and Hierarchical Clustering
+# Hierarchical Clustering
 ########################################
 # t-stochastic neighbour embedding results in more consistent cluster
-# sizes
-require(Rtsne)
-res <- Rtsne(km, is_distance=T, verbose=T, dims=2)
-hc2 <- hclust(dist(res$Y), method='ward.D2')
-clusters <- cutree(hc2, n.prots)
-#diagnostics.hclust(hc2, x=seq(30, 100, length.out=20))
-
-########################################
-# Function to generate color palettes
-########################################
-gg2.cols <- function(n) {
-  hues = seq(15, 375, length = n + 1)
-  hcl(h = hues, l = 65, c = 100)[1:n]
-}
-
-########################################
-# Plot clustering results
-########################################
-pal <- gg2.cols(n=max(clusters))
-par(mfrow=c(1,1))
-plot(res$Y, type='n')
-text(res$Y, label=clusters, col=pal[clusters], cex=0.8)
+kd <- 1-km
+hc <- hclust(as.dist(kd))
+plot(hc, labels=F)
+clus <- cutree(hc, h=0.4)
+table(clus)
 
 ########################################
 # Save clustering results as .csv file
@@ -60,9 +43,8 @@ info <- data.frame('name'=row.names(km),
                    'accession'=acc,
                    'coords' = loc,
                    'gene.name' = gene.name,
-                   'clusters'= clusters)
+                   'clusters'= as.integer(clus))
 
-
-write.csv(info, 'measles_protein-clusters-info.csv')
+write.csv(info, 'feb28measles_protein-clusters-info.csv')
 
 
