@@ -139,7 +139,7 @@ def main():
 
         # get sequences
         for locus, product, strand, parts, start, cd_seq, aa_seq in retrieve_CDS(record):
-            parts_str = ';'.join('{}:{}'.format(p[0].position, p[1].position) for p in parts)
+            parts_str = ';'.join(f'{p[0].position}:{p[1].position}' for p in parts)
             name = record.annotations['organism']
             product = product[0]
             cds_file.write(f'>{accn}-{name}-{product}-{strand}-{parts_str}\n{cd_seq}\n')
