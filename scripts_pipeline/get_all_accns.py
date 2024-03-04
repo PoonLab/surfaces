@@ -18,10 +18,14 @@ def get_args(parser):
         'email',
         help='email name to be identified in NCBI'
     )
-
     # Optional
     parser.add_argument(
-        '--outfile', default=None, help='Path to fasta file with amino acid sequences'
+        '--outfile', default=None, 
+        help='<Optional> Path to fasta file with amino acid sequences'
+    )
+    parser.add_argument(
+        '--poly', action = 'store_true', default = False, 
+        help='<Optional> true if virus encodes a polyprotein'
     )
 
     return parser.parse_args()
@@ -68,13 +72,15 @@ def retrieve_record(gid):
     gb = SeqIO.parse(handle, format='genbank')
     return next(gb)
 
-
-def retrieve_CDS(record):
+def retrieve_CDS(record, poly):
     """
     Analyze features in Genbank record to extract (1) the number of coding regions (CDS)
     :param record: SeqRecord object (used in BioPython to hold a sequence and sequence information)
     """
-    cds = [feat for feat in record.features if feat.type=='CDS']
+    if poly:
+        cds = cds = [feat for feat in record.features if feat.type=="mat_peptide"] 
+    else:
+        cds = [feat for feat in record.features if feat.type=='CDS']
     for cd in cds:
         q = cd.qualifiers
         parts = []
@@ -82,9 +88,9 @@ def retrieve_CDS(record):
             parts.append((part.start, part.end))
         locus = q.get('locus_tag', '')
         product = q.get('product', [''])
-        cd_seq=cd.location.extract(record).seq
-        aaseq = q.get('translation', [''])[0]
-        yield locus, product, cd.strand, parts, q['codon_start'], cd_seq, aaseq
+        cd_seq = cd.location.extract(record).seq
+        aaseq = q.get('translation')[0] if not poly else cd_seq.translate(cds=False)
+        yield locus, product, cd.strand, parts, cd_seq, aaseq
 
 def get_metadata(accn):
     handle = Entrez.efetch(db='nuccore', id=accn, rettype='gb', retmode='text')
@@ -112,6 +118,7 @@ def main():
     accn_table = args.table
     Entrez.email = args.email
     filename = args.outfile if args.outfile else f'{accn_table}'
+    poly = args.poly
     
     cds_file = open(f'{filename}_CDSs.fasta', 'w')
     aa_file = open(f'{filename}_aa.fasta', 'w')
@@ -129,17 +136,16 @@ def main():
             continue
 
         sleep(1)  # avoid spamming the server
-
         record = retrieve_record(gid)
-
+        
         # Get medatada and store full genomes
         for id, taxon, iso, host, loc, coldate, full_seq, organism in get_metadata(accn):
             md_writer.writerow([id, taxon, iso, host, loc, coldate])
             # full_gen_file.write(f'>{id}-{organism}-{host}-{coldate}\n{full_seq}\n')
 
         # get sequences
-        for locus, product, strand, parts, start, cd_seq, aa_seq in retrieve_CDS(record):
-            parts_str = ';'.join(f'{p[0].position}:{p[1].position}' for p in parts)
+        for locus, product, strand, parts, cd_seq, aa_seq in retrieve_CDS(record, poly):
+            parts_str = ';'.join('{}:{}'.format(p[0], p[1]) for p in parts)
             name = record.annotations['organism']
             product = product[0]
             cds_file.write(f'>{accn}-{name}-{product}-{strand}-{parts_str}\n{cd_seq}\n')
