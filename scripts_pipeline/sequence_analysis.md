@@ -71,3 +71,6 @@ Use `selection_by_cluster.py` to divide your CDS data into multiple fasta files 
 ```console
 python3 selection_by_cluster.py measles-protein-clusters-info.csv measles_CDSs.fasta --label measles --n_prots 8 --run_sel
 ```
+
+## 6. Plot selection grid
+Use `dnds_grid_plot.R` to visualize your selection estimates for each cluster of proteins
