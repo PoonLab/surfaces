@@ -1,5 +1,5 @@
 # Analyse FUBAR results for multiple CDSs in a virus
-setwd("/Users/Laura/Projects/surfaces/clust_data_measles")
+setwd("/home/laura/Projects/surfaces_data")
 library(plyr)
 require(jsonlite)
 
@@ -34,24 +34,34 @@ res <- lapply(master, function(d) {
   return(site.stats)
 })
 
-breaks <- c(0, 0.1, 0.5, 1, 1.6, 2.5, 5)
-par(mfrow=c(2,4)) # 6 rows, 2 columns
-
+##################################
+# Load metadata
+##################################
+md<-read.csv("feb28measles_protein-clusters-info.csv")
+tab<-table(md$gene.name,md$clusters)
+prot.name<-c()
+for(i in 1:8){
+  m <- which.max(tab[,i])
+  prot.name<-append(prot.name,names(m))
+}
 ##################################
 # Plot grid for all proteins
 ##################################
 
+breaks <- c(0, 0.1, 0.5, 1, 1.6, 2.5, 5)
+par(mfrow=c(2,4)) # 6 rows, 2 columns
 for (i in 1:length(res)){
-  dnds <- res[[i]]
-  
-  x <- findInterval(dnds$alpha, vec=breaks)
+  # name <- strsplit(names(res[i]), "[.]")[[1]][1]
+  # dnds <- res[[i]]
+
+    x <- findInterval(dnds$alpha, vec=breaks)
   y <- findInterval(dnds$beta, vec=breaks)
   tab <- table(x, y)
   
   par(mar=c(5,5,1,1))
   plot(NA, xlim=c(0,7), ylim=c(0,7), type='n', bty='n',
        xaxt='n', yaxt='n', xlab="Synonymous rates",
-       ylab="Nonsynonymous rates")
+       ylab="Nonsynonymous rates", main=prot.name[i])
   axis(side=1, at=0:7, labels=c(breaks, 10), cex.axis=0.8)
   axis(side=2, at=0:7, labels=c(breaks, 10), cex.axis=0.8, las=1)
   for (i in 1:dim(tab)[1]) {
@@ -65,7 +75,4 @@ for (i in 1:length(res)){
     }
   }
   abline(a=0, b=1, lty=2)
-
-
 }
-
