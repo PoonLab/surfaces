@@ -38,10 +38,10 @@ res <- lapply(master, function(d) {
 # Load metadata
 ##################################
 md<-read.csv("feb28measles_protein-clusters-info.csv")
-tab<-table(md$gene.name,md$clusters)
+g.n<-table(md$gene.name,md$clusters)
 prot.name<-c()
 for(i in 1:8){
-  m <- which.max(tab[,i])
+  m <- which.max(g.n[,i])
   prot.name<-append(prot.name,names(m))
 }
 ##################################
@@ -52,9 +52,9 @@ breaks <- c(0, 0.1, 0.5, 1, 1.6, 2.5, 5)
 par(mfrow=c(2,4)) # 6 rows, 2 columns
 for (i in 1:length(res)){
   # name <- strsplit(names(res[i]), "[.]")[[1]][1]
-  # dnds <- res[[i]]
+  dnds <- res[[i]]
 
-    x <- findInterval(dnds$alpha, vec=breaks)
+  x <- findInterval(dnds$alpha, vec=breaks)
   y <- findInterval(dnds$beta, vec=breaks)
   tab <- table(x, y)
   
