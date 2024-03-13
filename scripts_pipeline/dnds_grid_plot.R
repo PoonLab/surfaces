@@ -76,3 +76,47 @@ for (i in 1:length(res)){
   }
   abline(a=0, b=1, lty=2)
 }
+
+##################################
+# Calculate cosine distance
+##################################
+library(magrittr)
+library(Hmisc)
+
+# Function cut2: https://rdrr.io/cran/Hmisc/src/R/cut2.s
+cuts.alpha <- cut2(clust.2$alpha, g = 6, onlycuts = T) # determine cuts based on df1
+cuts.beta <-  cut2(clust.2$beta, g = 6, onlycuts = T) # determine cuts based on df1
+
+cut2(df1$x, cuts = cuts) %>% table
+cut2(df2$x, cuts = cuts) %>% table*2 # multiplied by two for better comparison
+
+cut()
+
+breaks <- c(0, 0.1, 0.5, 1, 1.6, 2.5, 5)
+c.a <- cuts.alpha
+c.b <- cuts.beta
+
+sel.matrix <- function(x, ca, cb){
+  ds <- findInterval(x$alpha, vec=c.a) # cuts based on alpha dist
+  dn <- findInterval(x$beta, vec=c.b) # cuts based on beta dist
+  # Fingerprint: frequency of dn and ds in a grid
+  tab <- table(ds, dn)
+  return(as.matrix(tab))
+}
+
+clust.1 <- res[[1]]
+sel.1 <- sel.matrix(clust.1, cuts.alpha, cuts.beta)
+clust.2 <- res[[2]]
+sel.2 <- sel.matrix(clust.2, cuts.alpha, cuts.beta)
+
+
+cosineSimilarity <- function(x,y) {
+  sim <- x %*% t(y)/(sqrt(rowSums(x^2) %*% t(rowSums(y^2))))
+  return(sim)
+}
+
+cos.sim <- cosineSimilarity(sel.1, sel.2)
+cos.dis <- 1 - cos.sim
+pca <- prcomp(cos.dis)
+
+plot(pca$x[,1], pca$x[,2])
