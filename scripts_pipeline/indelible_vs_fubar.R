@@ -1,0 +1,54 @@
+# Create random tree with 100 tips
+require(ape)
+require(jsonlite)
+setwd("/home/laura/Projects/surfaces/scripts_pipeline")
+r.tree <- rtree(100, rooted = TRUE,
+                tip.label = NULL)
+write.tree(r.tree, file = "random_tree_100.nwk", append = FALSE,
+           digits = 10, tree.names = FALSE)
+
+# Read fubar
+files <- Sys.glob("*.FUBAR.json")
+names(files) <- files  # so master list has filenames as names
+master <- lapply(files, function(f) read_json(f, simplifyVector=TRUE))
+names(master)
+
+# Returns MLE estimates for each dataset as list of data frames
+# Data frame res[[1]] includes alpha, beta, alpha=beta, LRT, P-value, Total branch length, codon.pos and dnds
+res <- lapply(master, function(d) {
+  stats <- d$MLE
+  site.stats <- as.data.frame(stats$content[[1]][,1:6])
+  names(site.stats) <- stats$headers[,1]
+  site.stats$codon.pos<-row.names(site.stats)
+  site.stats$dnds<- site.stats$beta/site.stats$alpha
+  return(site.stats)
+})
+
+sel <- res[[1]]
+omegas <- c(
+  0.0510204, 0.1530612, 0.2551020, 0.3571428, 0.4591836, 0.5612244, 0.6632652, 0.7653060, 0.8673468,
+  0.9693876, 1.0714284, 1.1734692, 1.2755100, 1.3775508, 1.4795916, 1.5816324, 1.6836732, 1.7857140,
+  1.8877548, 1.9897956, 2.0918364, 2.1938772, 2.2959180, 2.3979588, 2.4999996, 2.6020404, 2.7040812,
+  2.8061220, 2.9081628, 3.0102036, 3.1122444, 3.2142852, 3.3163260, 3.4183668, 3.5204076, 3.6224484,
+  3.7244892, 3.8265300, 3.9285708, 4.0306116, 4.1326524, 4.2346932, 4.3367340, 4.4387748, 4.5408156,
+  4.6428564, 4.7448972, 4.8469380, 4.9489788, 5.0510196)
+prop <- c( 
+  1.063764e-01, 1.464867e-01, 1.401630e-01, 1.223917e-01, 1.023007e-01, 8.333079e-02, 6.673162e-02, 
+  5.279576e-02, 4.139382e-02, 3.222714e-02, 2.495008e-02, 1.922789e-02, 1.476163e-02, 1.129629e-02,
+  8.620596e-03, 6.562952e-03, 4.985996e-03, 3.780965e-03, 2.862470e-03, 2.163923e-03, 1.633688e-03,
+  1.231906e-03, 9.279287e-04, 6.982665e-04, 5.249686e-04, 3.943506e-04, 2.960034e-04, 2.220245e-04,
+  1.664245e-04, 1.246710e-04, 9.333909e-05, 6.984377e-05, 5.223631e-05, 3.904912e-05, 2.917804e-05,
+  2.179306e-05, 1.627075e-05, 1.214322e-05, 9.059520e-06, 6.756626e-06, 5.037501e-06, 3.754636e-06,
+  2.797655e-06, 2.084012e-06, 1.551998e-06, 1.155507e-06, 8.600995e-07, 6.400653e-07, 4.762155e-07
+)
+
+rates <- read.csv("output_file_RATES.txt", sep="\t")
+
+diff<-rates$omegas - sel$dnds
+
+par(mfrow=c(1,2)) # 6 rows, 2 columns
+plot(diff)
+hist(diff, breaks = 100)
+
+par(mar=c(6,5,2,1)) #(bottom, left, top, right)
+  
