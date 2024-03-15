@@ -78,62 +78,55 @@ for (i in 1:length(res)){
 }
 
 ##################################
-# Function to create fingerprints
+# Create fingerprint
 ##################################
 
 get_fingerprint <- function(x, breaks){
-  ds <- findInterval(x$alpha, vec=breaks)
-  dn <- findInterval(x$beta, vec=breaks)
-  fp <- table(dn,ds) # Fingerprint
+  n <- length(breaks)
+  ds <- factor(findInterval(x$alpha, vec=breaks), levels=1:n)
+  dn <- factor(findInterval(x$beta, vec=breaks), levels=1:n)
+  fp <- table(dn, ds) # Fingerprint
   return(fp)
+}
+
+##################################
+# Measure fingerprint similarity
+##################################
+
+cosine <- function(x,y) {
+  sum(x*y) / sqrt(as.numeric(sum(x*x)) * as.numeric(sum(y*y)))
 }
 
 ##################################
 # Calculate cosine distance
 ##################################
-library(magrittr)
-library(Hmisc)
+
+breaks <- c(0, 0.1, 0.5, 1, 1.6, 2.5, 5)
+
+clust.1 <- res[[1]]
+clust.2 <- res[[2]]
 
 fp1 <- get_fingerprint(clust.1, breaks = breaks)
 fp2 <- get_fingerprint(clust.2, breaks = breaks)
+sim <- cosine(fp1, fp2)
 
-clust.1 <- res[[1]]
-clust.2 <- res[[2]]
+###################################
+# cosine distance for all proteins
+###################################
+prot.sim <- matrix(NA, length(res), length(res))
 
-# Function cut2: https://rdrr.io/cran/Hmisc/src/R/cut2.s
-cuts.alpha <- cut2(clust.2$alpha, g = 6, onlycuts = T) # determine cuts based on df1
-cuts.beta <-  cut2(clust.2$beta, g = 6, onlycuts = T) # determine cuts based on df1
-
-cut2(df1$x, cuts = cuts) %>% table
-cut2(df2$x, cuts = cuts) %>% table*2 # multiplied by two for better comparison
-
-cut()
-
-breaks <- c(0, 0.1, 0.5, 1, 1.6, 2.5, 5)
-c.a <- cuts.alpha
-c.b <- cuts.beta
-
-sel.matrix <- function(x, ca, cb){
-  ds <- findInterval(x$alpha, vec=c.a) # cuts based on alpha dist
-  dn <- findInterval(x$beta, vec=c.b) # cuts based on beta dist
-  # Fingerprint: frequency of dn and ds in a grid
-  tab <- table(ds, dn)
-  return(as.matrix(tab))
+for (i in 1:length(res)){
+  c1 <- res[[i]]
+  fp1 <- get_fingerprint(c1, breaks = breaks)
+  
+  for (j in 1:length(res)) {
+    c2 <- res[[j]]
+    fp2 <- get_fingerprint(c2, breaks = breaks)
+    sim <- cosine(fp1, fp2)
+    prot.sim[i,j] <- sim
+  }
 }
 
-clust.1 <- res[[1]]
-sel.1 <- sel.matrix(clust.1, cuts.alpha, cuts.beta)
-clust.2 <- res[[2]]
-sel.2 <- sel.matrix(clust.2, cuts.alpha, cuts.beta)
-
-
-cosineSimilarity <- function(x,y) {
-  sim <- x %*% t(y)/(sqrt(rowSums(x^2) %*% t(rowSums(y^2))))
-  return(sim)
-}
-
-cos.sim <- cosineSimilarity(sel.1, sel.2)
-cos.dis <- 1 - cos.sim
+cos.dis <- 1 - prot.sim
 pca <- prcomp(cos.dis)
-
 plot(pca$x[,1], pca$x[,2])
