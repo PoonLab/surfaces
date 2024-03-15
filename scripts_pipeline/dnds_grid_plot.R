@@ -78,10 +78,27 @@ for (i in 1:length(res)){
 }
 
 ##################################
+# Function to create fingerprints
+##################################
+
+get_fingerprint <- function(x, breaks){
+  ds <- findInterval(x$alpha, vec=breaks)
+  dn <- findInterval(x$beta, vec=breaks)
+  fp <- table(dn,ds) # Fingerprint
+  return(fp)
+}
+
+##################################
 # Calculate cosine distance
 ##################################
 library(magrittr)
 library(Hmisc)
+
+fp1 <- get_fingerprint(clust.1, breaks = breaks)
+fp2 <- get_fingerprint(clust.2, breaks = breaks)
+
+clust.1 <- res[[1]]
+clust.2 <- res[[2]]
 
 # Function cut2: https://rdrr.io/cran/Hmisc/src/R/cut2.s
 cuts.alpha <- cut2(clust.2$alpha, g = 6, onlycuts = T) # determine cuts based on df1
