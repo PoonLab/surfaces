@@ -60,36 +60,36 @@ def run_selection_pipeline(alignment, cleaned_file, tree_file, out_name):
     p = subprocess.run(['hyphy', 'fubar', cleaned_file, tree_file, '--output', out_name],
     stdout=subprocess.DEVNULL)
 
+if __name__=="__main__":
+    args = parse_args()
+    seqs = {rec.description: rec.seq for rec in SeqIO.parse(args.ff, "fasta")}
+    reader = csv.DictReader(args.clusters)
+    clus_seqs = {}  # clustered sequences
 
-args = parse_args()
-seqs = {rec.description: rec.seq for rec in SeqIO.parse(args.ff, "fasta")}
-reader = csv.DictReader(args.clusters)
-clus_seqs = {}  # clustered sequences
+    # Read clustering results
+    for row in reader:
+        cluster = row['clusters']
+        label = row['name']
+        if cluster not in clus_seqs:
+            clus_seqs[cluster] = []
+        clus_seqs[cluster].append(label)
 
-# Read clustering results
-for row in reader:
-    cluster = row['clusters']
-    label = row['name']
-    if cluster not in clus_seqs:
-        clus_seqs[cluster] = []
-    clus_seqs[cluster].append(label)
+    # Divide CDSs into different files based on clustering
+    for cluster in clus_seqs:
+        if int(cluster) > args.n_prots:
+            continue
 
-# Divide CDSs into different files based on clustering
-for cluster in clus_seqs:
-    if int(cluster) > args.n_prots:
-        continue
+        print(f"\nProcesing cluster: {cluster}")
+        f_name = f"{args.label}_{cluster}"
+        file = open(f"{f_name}.fa", "w")
+        for name in clus_seqs[cluster]:
+            file.write(f'>{name}\n{seqs[name]}\n')
+        file.close()
 
-    print(f"\nProcesing cluster: {cluster}")
-    f_name = f"{args.label}_{cluster}"
-    file = open(f"{f_name}.fa", "w")
-    for name in clus_seqs[cluster]:
-        file.write(f'>{name}\n{seqs[name]}\n')
-    file.close()
-
-    # Measure selection with FUBAR
-    if args.run_sel:
-        run_selection_pipeline( f"{f_name}.fa",
-                                f"{f_name}.cleaned.fa",
-                                f"{f_name}.cleaned.tree", 
-                                f"{f_name}.FUBAR.json")
+        # Measure selection with FUBAR
+        if args.run_sel:
+            run_selection_pipeline( f"{f_name}.fa",
+                                    f"{f_name}.cleaned.fa",
+                                    f"{f_name}.cleaned.tree", 
+                                    f"{f_name}.FUBAR.json")
 
