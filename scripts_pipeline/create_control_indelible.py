@@ -12,14 +12,15 @@ import os
 def get_args(parser):
 # Arguments of input and output
     parser.add_argument('tree', help='Input the tree')
-    parser.add_argument('-c', '--control', help='Output file path', default = 'control.txt')
+    parser.add_argument('-co', '--control', help='Output file path', default = 'control.txt')
     parser.add_argument('-o', '--out', help='Output name', default = 'indelible.out')
-    parser.add_argument('-s', '--scaling_factor', type = int, default=20,
+    parser.add_argument('-s', '--scaling_factor', type = float, default=20,
                             help='Scaling factor to define tree length')
+    parser.add_argument('-rep', '--replicates', type=int, default=1, help='Number of replicates')
     parser.add_argument('-r', '--run', action = 'store_true', help='Run indelible from control file')
     return parser.parse_args()
 
-def create_control(control, prop, kappa, omegas, scaling_factor, tree_string, n_sites, outname):
+def create_control(control, prop, kappa, omegas, scaling_factor, tree_string, n_sites, outname, reps):
     """
     Create control file to run indelible
     :param output: str, name of output file
@@ -49,7 +50,7 @@ def create_control(control, prop, kappa, omegas, scaling_factor, tree_string, n_
         handle.write('[PARTITIONS] partitionname\n')
         handle.write(f'  [bigtree M3 {n_sites}]\n')  # treename name rootlength
         #handle.write("  [bigtree M3 HIV-pol-KC169753.txt]\n")
-        handle.write(f'[EVOLVE] partitionname 1 {outname} \n' ) 
+        handle.write(f'[EVOLVE] partitionname {reps} {outname} \n' ) 
         print(f'Control file at: {control}')
         print(f'output name: {outname}')
 
@@ -113,7 +114,7 @@ if __name__=="__main__":
     kappa = 8.0 
 
     # Create file
-    create_control(control, prop, kappa, omegas, scaling_factor, tree_string, n_sites, outname)
+    create_control(control, prop, kappa, omegas, scaling_factor, tree_string, n_sites, outname, args.replicates)
     if args.run:
         run_indelible(control)
  
