@@ -1,8 +1,13 @@
 # Retrieve and cluster proteins from a single virus
-Follow these steps in the surfaces Project to consistently analyse our data
+Follow these steps in the surfaces Project to consistently analyse our data. 
+
 
 ## 1. Data collection: complete genomes, amino acid sequences, and CDSs
-From a list of accession numbers, use `get_all_accns.py` to create three files:
+To get accession numbers, search your virus from the `taxonomy` browser in NCBI. 
+Click your virus species and filter genomes by length (based on the length of your genome).
+This should give you accession numbers of entries properly classified as your virus species, that are complete genomes.
+
+From the list of accession numbers, use `get_all_accns.py` to create three files:
 - `_md.csv`: metadata
 - `_aa.fa`: amino acid sequences
 - `_CDS.fa`: coding sequences (CDSs)
@@ -10,8 +15,8 @@ From a list of accession numbers, use `get_all_accns.py` to create three files:
 $ python3 get_all_accns.py measles_accns.seq aleatorios.lauram@gmail.com --outfile measles_feb27
 ```
 **Notes:** 
-- We will use the amino acid sequences to cluster the more similar proteins, but the selection analysis will be performed on the CDSs
 - If your virus genome encodes a polyprotein, you can use the argument `--poly` to get features of `map_peptides` instead of `CDS`
+- We will use the amino acid sequences to cluster the more similar proteins, but the selection analysis will be performed on the CDSs
 
 ## 2. Calculate k-mer distances between amino acid sequences
 From the multi fasta file with all the amino acid sequences from all CDSs of your virus of interest, calculate a k-mer distance between proteins using `kmer.py`. 
@@ -109,7 +114,7 @@ output_file.fas  # sequences from indelible
 random_tree100.nwk  # tree from ape
 ```
 
-## Run 2 and 3 in a single script for multiple tree lengths
+## Alternativelyu: run 2 and 3 in a single script for multiple tree lengths
 To run indelible and measure selection, all at once, use the script `indelible_plus_selection.py`.
 This script uses the function `run_selection_pipeline` from `selection_by_cluster.py`.
 ```
@@ -157,4 +162,9 @@ Site	Class	Partition	Inserted?
 Now I need to map each site to the omega value it corresponds to, and then I can compare site by site against fubar output
 
 **Note:** HyPhy doesn't like INDELible output when `indel rate = 0`, so I re-aligned the file with `mafft` and now it runs properly.
+
+**Note:** To import the `RATES.txt` files to R from the INDELible outpit, we need to remove the first 9 lines with information about the simulation:
+```
+sed -i '1,9d' *_RATES.txt 
+``` 
 
