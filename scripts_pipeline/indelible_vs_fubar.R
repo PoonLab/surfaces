@@ -1,20 +1,28 @@
-# Create random tree with 100 tips
 require(ape)
 require(jsonlite)
 setwd("/home/laura/Projects/surfaces/scripts_pipeline")
+
+##################################
+# Create a random tree
+##################################
 r.tree <- rtree(100, rooted = TRUE,
                 tip.label = NULL)
 write.tree(r.tree, file = "random_tree_100.nwk", append = FALSE,
            digits = 10, tree.names = FALSE)
 
-# Read fubar
+##################################
+# Read FUBAR results
+##################################
+setwd("/home/laura/Projects/surfaces/data_find_tree_length")
 files <- Sys.glob("*.FUBAR.json")
 names(files) <- files  # so master list has filenames as names
 master <- lapply(files, function(f) read_json(f, simplifyVector=TRUE))
 names(master)
 
 # Returns MLE estimates for each dataset as list of data frames
-# Data frame res[[1]] includes alpha, beta, alpha=beta, LRT, P-value, Total branch length, codon.pos and dnds
+# Data frame res[[1]] includes alpha, beta, alpha=beta, LRT, P-value, 
+# Total branch length, codon.pos and dnds
+
 res <- lapply(master, function(d) {
   stats <- d$MLE
   site.stats <- as.data.frame(stats$content[[1]][,1:6])
@@ -24,7 +32,10 @@ res <- lapply(master, function(d) {
   return(site.stats)
 })
 
-sel <- res[[1]]
+##################################
+# Import indelible run information
+##################################
+
 omegas <- c(
   0.0510204, 0.1530612, 0.2551020, 0.3571428, 0.4591836, 0.5612244, 0.6632652, 0.7653060, 0.8673468,
   0.9693876, 1.0714284, 1.1734692, 1.2755100, 1.3775508, 1.4795916, 1.5816324, 1.6836732, 1.7857140,
@@ -42,13 +53,72 @@ prop <- c(
   2.797655e-06, 2.084012e-06, 1.551998e-06, 1.155507e-06, 8.600995e-07, 6.400653e-07, 4.762155e-07
 )
 
-rates <- read.csv("output_file_RATES.txt", sep="\t")
+r.files <- Sys.glob("*_RATES.txt")
+rates <- lapply(r.files, function(f) read.csv(f, sep="\t"))
+rates<- lapply(rates, function(f) {
+  # print(length(f$Class))
+  f$omegas <- omegas[f$Class+1]
+  return(f)
+  })
+names(rates) <- r.files
 
-diff<-rates$omegas - sel$dnds
+#####################################
+# Calculate RSME for all tree lengths
+#####################################
+out <- matrix(ncol = 3, nrow=length(res))
 
-par(mfrow=c(1,2)) # 6 rows, 2 columns
-plot(diff)
-hist(diff, breaks = 100)
-
-par(mar=c(6,5,2,1)) #(bottom, left, top, right)
+for(i in 1:length(res)){
+  name <- names(res)[[i]]
+  sel <- res[[i]]
+  sim.rates <- rates[[i]]
   
+  # --- get tree length from name ---- 
+  spl <- strsplit(name, "_")[[1]]
+  tree.l <- spl[2]
+  
+  # --- calculate RSME ---- 
+  rsme <- sqrt(mean(sim.rates$omegas - sel$dnds)^2)
+  
+  # --- store info ---- 
+  out[i,1] <-as.numeric(tree.l)
+  out[i,2] <-as.numeric(rsme)
+  out[i,3] <-as.numeric(spl[3])
+} 
+
+out <- as.data.frame(out)
+colnames(out) <- c("tree.length", "rmse", "rep")
+
+out <- out[order(out$tree.length),]
+
+#####################################
+# Plot RMSE
+#####################################
+
+pal <- c("#001219", "#005f73", "#0a9396", 
+         "#94d2bd", "#e9d8a6", "#ee9b00",
+         "#ca6702", "#bb3e03", "#ae2012",
+         "#ae2012")
+
+plot(out$tree.length, out$rmse, 
+     col=add.alpha(pal[as.numeric(out$rep)+1], 0.6),
+     pch=19)
+
+fit <- loess(rmse ~ tree.length, data = out)
+lines(out$tree.length, predict(fit, out),
+      col="darkgray", lwd=2, lty=2)
+
+# --- unused---- 
+abline(h=0.1, col="gray", lwd=2, lty=2)
+abline(v=1, col="gray", lwd=2, lty=2)
+  
+######################################################
+# Unused: Get matching names for rates and fubar files
+######################################################
+# tree.l <- unlist(
+#   regmatches(str,
+#              gregexpr("{0,1}[[:digit:]]+\\.{0,1}[[:digit:]]*",str)
+#              )
+#           )
+
+#   gregexpr("[-]{0,1}[[:digit:]]+\\.{0,1}[[:digit:]]*",str))
+# ))
