@@ -82,6 +82,41 @@ python3 selection_by_cluster.py measles-protein-clusters-info.csv measles_CDSs.f
 ## 6. Plot selection grid
 Use `dnds_grid_plot.R` to visualize your selection estimates for each cluster of proteins
 
+## 7. Measure treee length and store results
+In `dnds_grid_plot.R` there is a section to extract the most common name of the proteins in each cluster by loading the `clusters-info.csv` file:
+
+```R
+md<-read.csv("feb28measles_protein-clusters-info.csv")
+g.n<-table(md$gene.name,md$clusters)
+prot.name<-c()
+for(i in 1:8){
+  m <- which.max(g.n[,i])
+  prot.name<-append(prot.name,names(m))
+}
+```
+
+Additionally, we can use the following code to calculate the length of the trees from all your proteins (`.tree` created with `selection_by_cluster.py`):
+```R
+require(ape)
+phy.files <- Sys.glob("*.tree")
+all.trees <- lapply(phy.files, function(f) read.tree(f))
+t.l <- lapply(all.trees, function(t) sum(t$edge.length))
+```
+Finally, store the information about the proteins in all our clusters in a final table, that we can edit and use as an input for our analysis with all proteins from all viruses:
+
+```R
+prot.d <- data.frame(
+              virus = rep("measles", length(phy.files)),
+              cluster = c(1:length(phy.files)),
+              prot.name = prot.name,
+              tree.length = unlist(t.l),
+              is.surface = rep(NA, length(phy.files))
+                   ) 
+
+write.csv(prot.d, "measles-surfaces-info.csv", row.names = FALSE)
+```
+**Note:** we will need to manually edit the column `is.surface` as `TRUE` or `FALSE` based on the knowledge of the virus.
+
 # Determining number of sequences and time scale
 
 ## 1. Simulate a random tree with 100 tips:

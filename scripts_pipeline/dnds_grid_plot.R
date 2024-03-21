@@ -44,6 +44,7 @@ for(i in 1:8){
   m <- which.max(g.n[,i])
   prot.name<-append(prot.name,names(m))
 }
+
 ##################################
 # Plot grid for all proteins
 ##################################
@@ -97,9 +98,9 @@ cosine <- function(x,y) {
   sum(x*y) / sqrt(as.numeric(sum(x*x)) * as.numeric(sum(y*y)))
 }
 
-##################################
-# Calculate cosine distance
-##################################
+################################################
+# Calculate cosine distance between two clusters
+################################################
 
 breaks <- c(0, 0.1, 0.5, 1, 1.6, 2.5, 5)
 
@@ -130,3 +131,25 @@ for (i in 1:length(res)){
 cos.dis <- 1 - prot.sim
 pca <- prcomp(cos.dis)
 plot(pca$x[,1], pca$x[,2])
+
+###################################
+# Get tree lengths
+###################################
+require(ape)
+phy.files <- Sys.glob("*.tree")
+all.trees <- lapply(phy.files, function(f) read.tree(f))
+t.l <- lapply(all.trees, function(t) sum(t$edge.length))
+
+############################################
+# Merge protein information into a dataframe
+############################################
+prot.d <- data.frame(
+              virus = rep("measles", length(phy.files)),
+              cluster = c(1:length(phy.files)),
+              prot.name = prot.name,
+              tree.length = unlist(t.l),
+              is.surface = rep(NA, length(phy.files))
+                   ) 
+
+write.csv(prot.d, "measles-surfaces-info.csv", row.names = FALSE)
+
