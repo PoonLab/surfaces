@@ -42,6 +42,10 @@ In RStudio, modify the first few lines to set your working directory and read th
 setwd('/home/laura/surfaces/data/measles')
 km <- read.csv('measles_distance_filtered.csv', header=F, row.names=1)
 ```
+Modify the number of proteins anticipated per genome
+```R
+n.prots <- 10 # number of proteins per genome
+```
 Additionally, modify the last line to specify the name of your output file:
 ```R
 write.csv(info, 'measles_protein-clusters-info.csv')
