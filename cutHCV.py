@@ -1,3 +1,11 @@
+"""
+For a virus genome that encodes a single polyprotein, we want to partition 
+this sequence up into individual gene products (mature peptides).
+This script will probably not work for viruses with gene products that 
+result from spliced transcripts (joined from different intervals of the 
+genome sequence).  For example, HIV-1 rev.
+"""
+
 from Bio import SeqIO
 import sys
 import subprocess
@@ -10,7 +18,7 @@ if len(sys.argv) != 2:
     print("Usage: python3 cutHCV.py <infile>")
     sys.exit()
 
-
+# codon to amino acid conversion
 codon_dict = {'TTT':'F', 'TTC':'F', 'TTA':'L', 'TTG':'L',
                 'TCT':'S', 'TCC':'S', 'TCA':'S', 'TCG':'S',
                 'TAT':'Y', 'TAC':'Y', 'TAA':'*', 'TAG':'*',
@@ -109,7 +117,8 @@ def mafft(query, ref, binpath="mafft"):
     :param binpath:  str, path to MAFFT executable file
     :return:
     """
-    tquery = translate_nuc(query, 0)  # aa translation
+    # translate input nucleotide sequence into amino acids
+    tquery = translate_nuc(query, 0)
 
     handle = tempfile.NamedTemporaryFile(delete=False)
     s = f'>ref\n{ref}\n>query\n{tquery}\n'
@@ -129,11 +138,14 @@ def mafft(query, ref, binpath="mafft"):
     # cut corresponding interval from nucleotide sequence
     return query[(3*left):(3*right)]
 
+#####################
+# main routine
 handle = open(sys.argv[1])
 
-# handle reference
+# handle reference - this should be a Genbank record with `mat_peptide` annotation
 ref = SeqIO.read(open("h77.gb"), "genbank")
 
+# extract mature peptide sequences from reference
 proteins = {}
 for feat in ref.features:
     if feat.type != 'mat_peptide':
@@ -142,21 +154,21 @@ for feat in ref.features:
     product = feat.qualifiers['product'][0]
     proteins.update({product: aaseq})
 
-
-records = SeqIO.parse(handle, 'fasta')
-#aligned = dict([(p, {}) for p in proteins])
+# prepare separate output FASTA files for different genes/proteins
 outfiles = {}
 for p in proteins:
     pname = re.sub("[ /.,:]", "_", p)
-    print(pname)
+    print(pname)  # debugging
     outfile = open(f"{pname}.fasta", 'w')
     outfiles.update({p: outfile})
 
+# load the input FASTA file
+records = SeqIO.parse(handle, 'fasta')
 for record in records:
-    query = str(record.seq)
+    query = str(record.seq)  # CDS file contains entire polyprotein sequences (in-frame!)
     print(record.name)
     for protein, refseq in proteins.items():
-        result = mafft(query=query, ref=refseq)
+        result = mafft(query=query, ref=refseq)  # part of nucleotide sequence
         if len(result) == 0:
             continue
         outfiles[protein].write(f">{record.description}\n{result}\n")
