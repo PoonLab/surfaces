@@ -34,22 +34,11 @@ def parse_args():
         help = 'Run selection pipeline for all clustered sequences'
     )
     parser.add_argument(
-        '--pn',  type=str, default=False, 
-        help = 'Prune tree'
+        '--prune',  type=str, default=False, 
+        help = '<optional> Target length for prunning the trees'
     )
 
     return parser.parse_args()
-
-def run_prunetree(phy, aln):
-    """
-    Function from PoonLab/Bioplus/prunetree.py
-    Progressively remove the shortest terminal branches in the tree until
-    we reach a target tree length.
-    :param phy:  Bio.Phylo object
-    :param aln:  Sequence alignment
-    """
-    pruned = subprocess.run['python3', 'prunetree.py', phy, '--mode treelen', '-t 0.5', f'--seq {aln}', f'--outfile {aln}.pruned']
-    return pruned
 
 def prune_length(phy, target):
     """
@@ -58,7 +47,7 @@ def prune_length(phy, target):
     we reach a target tree length.
     :param phy:  Bio.Phylo object
     :param target:  float, target tree length to prune to
-    :return:  Bio.Phylo object
+    :return: Bio.Phylo object after prunning 
     """
     tlen = phy.total_branch_length()
     if target >= tlen:
@@ -92,11 +81,11 @@ def run_mafft(alignment):
     # cmd = f"mafft --quiet {alignment} > {alignment}.mafft"
     # subprocess.call(cmd, shell=True)
 
-def run_selection_pipeline(alignment, cleaned_file, tree_file, out_name):
+def run_selection_pipeline(alignment, tree_file, cleaned_file, out_name):
     """
-    :param alignment: file, nucleotide alignment of a CDS
+    :param alignment: fasta file, nucleotide alignment of a CDS
+    :param tree_file: newick file built from the alignment file
     :param cleaned_file: str, name for the cleaned file
-    :param tree_file: str, name of file for CDS tree
     :out_name: str, name and location for FUBAR json file 
     """
 
@@ -111,13 +100,15 @@ def run_selection_pipeline(alignment, cleaned_file, tree_file, out_name):
 
 if __name__=="__main__":
     args = parse_args()
-    seqs = {rec.description: rec.seq for rec in SeqIO.parse(args.ff, "fasta")}
+    seqs = {rec.name: rec.seq for rec in SeqIO.parse(args.ff, "fasta")}
     reader = csv.DictReader(args.clusters)
     clus_seqs = {}  # clustered sequences
-
+            
     # Read clustering results
     for row in reader:
         cluster = row['clusters']
+        # Plain name: we need to keep entire header
+        # Fastree keeps header before first space
         label = row['name']
         if cluster not in clus_seqs:
             clus_seqs[cluster] = []
@@ -129,9 +120,13 @@ if __name__=="__main__":
     for cluster in clus_seqs:
         if int(cluster) > n_prots:
             continue
-
+        
         print(f"\nProcesing cluster: {cluster}")
-        af_name = f"{args.label}_{cluster}.fa"
+        # Label for files related to a cluster
+        cluster_label = f"{args.label}_{cluster}"
+        
+        # Create an independent file with sequences in the cluster
+        af_name = f"{cluster_label}.fa"
         file = open(af_name, "w")
         for name in clus_seqs[cluster]:
             file.write(f'>{name}\n{seqs[name]}\n')
@@ -142,28 +137,42 @@ if __name__=="__main__":
 
         # Build tree
         tree = run_fasttree(align)
-
         handle = StringIO(tree.stdout.decode("utf-8"))
         phy = Phylo.read(handle, "newick")
+
+        # Get tree info
+        tip_names = set([tip.name for tip in phy.get_terminals()])
         tlen = phy.total_branch_length()
-        print(f"Tree length: {phy.total_branch_length()}")
         
-        if args.pn:
+        # Prune tree 
+        if args.prune:
             target = float(tlen)
             if target <= tlen:
                 sys.stderr.write(f"Starting tree length: {tlen}\n")
-                sys.exit()
-            pruned = prune_length(phy, target=target)
-            
+                pruned = prune_length(phy, target=target)
+                af_pruned_name = f"{cluster_label}.pruned.fa"
+                
+                # write resulting sequences to output file
+                for tip in pruned.get_terminals():
+                    print(tip.name)
+                    record = seqs[tip.name]
+                    # _ = SeqIO.write(record, af_pruned_name, "fasta")
+            else: 
+                sys.stderr.write(f"ERROR: Target length ({target}) \
+                                 is smaller than tree length ({tlen})\n")
+                pruned = phy
+                af_pruned_name = af_name
         
+        Phylo.write(pruned, f"{cluster_label}.tree", 'newick')
+        
+        # Measure selection with FUBAR
+        if args.run_sel:
+            run_selection_pipeline( af_pruned_name,
+                                    f"{cluster_label}.tree",
+                                    f"{cluster_label}.cleaned.mafft.fa", 
+                                    f"{cluster_label}.FUBAR.json")
         
         sys.exit()
         
 
-        # # Measure selection with FUBAR
-        # if args.run_sel:
-        #     run_selection_pipeline( f"{f_name}.fa",
-        #                             f"{f_name}.cleaned.fa",
-        #                             f"{f_name}.cleaned.tree", 
-        #                             f"{f_name}.FUBAR.json")
 

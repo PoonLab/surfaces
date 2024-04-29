@@ -5,6 +5,7 @@ import math
 import csv
 import pandas
 import sys
+import re
 
 import numpy as np
 import seaborn as sns
@@ -178,8 +179,10 @@ def get_info(handle):
             loc = row['coords'].strip().split(';')
             # Create as many proteins as splicing fragments and store them on the protein list
             for splice in loc:
-                start, end = splice.split(':')
+                start, end = splice.split('_')
                 #new_prot = Protein(name, genome, location, int(start), int(end), cluster)
+                start = re.sub("[^0-9]", "", start)
+                end = re.sub("[^0-9]", "", end)
                 new_prot = Protein(row['gene.name'], row['accession'], row['coords'], int(start), int(end), row['clusters'])
                 protein_list.append(new_prot)
 
