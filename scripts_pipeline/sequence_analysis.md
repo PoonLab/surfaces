@@ -5,18 +5,38 @@ Follow these steps in the surfaces Project to consistently analyse our data.
 ## 1. Data collection: complete genomes, amino acid sequences, and CDSs
 To get accession numbers, search your virus from the `taxonomy` browser in NCBI. 
 Click your virus species and filter genomes by length (based on the length of your genome).
-This should give you accession numbers of entries properly classified as your virus species, that are complete genomes.
+This should give you accession numbers of entries properly classified as your virus species that are complete or close to complete genomes.
+In the right pannel, click `Send to`, `Complete Record`. Destination should be `File` and then chose the format `Accession List` and click `Create File`
 
-From the list of accession numbers, use `get_all_accns.py` to create three files:
+Use `get_all_accns.py` to dowload the information associated with your genomes
+
+### Inputs:
+- List with accesion numbers
+- Email
+
+For example:
+```
+KU728743.1
+KU728742.1
+MN125030.1
+MN125029.1
+```
+### Outputs: 
 - `_md.csv`: metadata
 - `_aa.fa`: amino acid sequences
 - `_CDS.fa`: coding sequences (CDSs)
+
+### Example:
 ```
 $ python3 get_all_accns.py measles_accns.seq aleatorios.lauram@gmail.com --outfile measles_feb27
 ```
 **Notes:** 
 - If your virus genome encodes a polyprotein, you can use the argument `--poly` to get features of `map_peptides` instead of `CDS`
 - We will use the amino acid sequences to cluster the more similar proteins, but the selection analysis will be performed on the CDSs
+- Headers should have the format: accession number, organism name, protein product, strand, and location separated by dashes (`-`) with no spaces.
+
+Header example: `KU728743.1-Measles_virus_genotype_D8-nucleoprotein-1-97_1675`
+
 
 ## 2. Calculate k-mer distances between amino acid sequences
 From the multi fasta file with all the amino acid sequences from all CDSs of your virus of interest, calculate a k-mer distance between proteins using `kmer.py`. 
@@ -24,8 +44,14 @@ From the multi fasta file with all the amino acid sequences from all CDSs of you
 **Note:** Even though your search should only contain accession numbers that correspond to full genomes, it could happen that you end up with some partial sequences. 
 Use the option `--filter` to analyze only those genomes with at least `mean-2` proteins, where mean is the mean number of proteins per genome in your dataset. 
 
-- Input: Fasta file with amino acid sequences
-- Output: csv file with kmer distance between sequences
+### Inputs:
+- Fasta file with amino acid sequences
+- Name of your ourput file
+
+### Output:
+- csv file with kmer distance between sequences
+
+### Example:
 
 ```console
 $ python3 kmer.py measles_feb27_aa.fasta measles_feb27_kmerdist_filtered.csv --filter
@@ -34,19 +60,19 @@ $ python3 kmer.py measles_feb27_aa.fasta measles_feb27_kmerdist_filtered.csv --f
 ## 3. Extract clusters of homology
 Use `hclust.R` to cluster your amino acid sequences based on the kmer distances.
 
-- Input: csv file with kmer distance between sequences
-- Output: csv file with proteins assigned to clusters
+### Input:
+- csv file with kmer distance between sequences
 
-In RStudio, modify the first few lines to set your working directory and read the kmer distance file
+In RStudio, modify the first few lines to set your working directory and read the kmer distance file:
 ```R
 setwd('/home/laura/surfaces/data/measles')
 km <- read.csv('measles_distance_filtered.csv', header=F, row.names=1)
 ```
-Modify the number of proteins anticipated per genome
-```R
-n.prots <- 10 # number of proteins per genome
-```
-Additionally, modify the last line to specify the name of your output file:
+
+### Output:
+- csv file with cluster classification for each protein
+
+Modify the last line to specify the name of your output file:
 ```R
 write.csv(info, 'measles_protein-clusters-info.csv')
 ```
@@ -56,9 +82,13 @@ Use `plot-genome.py` to check your clustering results.
 Each line on the plot correspond to a genome, and the different fragments correspond to genes within the genome. 
 If the process worked properly, you should see a plot with columns coloured conssitently across all genomes. 
 
-- Input: csv file sith proteins assigned to clusters
-- Output: pdf with genomes colored based on cluster classification
+### Input:
+- csv file sith proteins assigned to clusters
 
+### Output:
+- pdf with genomes colored based on cluster classification
+
+### Example
 ```console
 python3 plot-genome.py measles-protein-clusters-info.csv --outfile measles-genome
 ```
@@ -66,21 +96,27 @@ python3 plot-genome.py measles-protein-clusters-info.csv --outfile measles-genom
 ## 5. Separate proteins and measure selection
 Use `selection_by_cluster.py` to divide your CDS data into multiple fasta files with coding sequences that correspond to the same protein. 
 
-**Caution:** If you use the the tag `--run_sel` a lot of files with be generated!! 
-
-- Inputs: 
+### Inputs: 
 1. csv file sith proteins assigned to clusters
 2. Fasta file with all CDSs from all genomes
-- Outputs (per cluster):
-1. `.fa`, fasta file with CDSs classified into the same cluster
-2. `.fa.mafft`, fasta file of `mafft` aligned sequences
-3. `.cleaned.fa`, fasta file with STOP codons removed by`hyphy`
-4. `.cleaned.tree`, newick file created with `fasttree`
-5. `FUBAR.json`, json file with selection measurments 
 
-**Note:** Use the tag `--label` to provide the path and name of your files. Use the tag `--no_prots` to decide the maximum number of clusters to analyze (should be the same as the number of proteins in your genome)
+There are four options in this script to consider:
+- `--prune`: Prune your trees to reduce their length. For consistency in our analysis we are setting the tree length to `0.5`. The files `.final.mafft.fa` and `.tree` should contain only those sequences that were NOT pruned. 
+- `--label`: To provide the path and name of your files. 
+- `--no_prots` to decide the maximum number of clusters to analyze (should be the same as the number of proteins in your genome). 
+- `--run_sel`: Under this tag the script will measure selection in all clusters of CDSs from your pruned alignments and trees. Note that when this tag is used, the following files will be generated:
+
+### Outputs (per cluster):
+1. `.fa`, fasta file with CDSs classified into the same cluster
+2. `.final.mafft.fa`, fasta file of `mafft` aligned sequences (after prunning)
+3. `.cleaned.mafft.fa`, fasta of `mafft` aligned sequences with STOP codons removed by`hyphy`
+4. `.tree`, newick file created with `fasttree` (after prunning if `--prune` was used)
+5. `FUBAR.json`, json file with selection measurments 
+6. `.cleaned.mafft.fa.FUBAR.cache`, cache file created during `hyphy` runs
+
+### Example:
 ```console
-python3 selection_by_cluster.py measles-protein-clusters-info.csv measles_CDSs.fasta --label measles --n_prots 8 --run_sel
+python3 selection_by_cluster.py measles-protein-clusters-info.csv measles_CDSs.fasta ---prune 0.5 --run_sel --label scripts_pipeline/temp_measles/measles --n_prots 8
 ```
 
 ## 6. Plot selection grid

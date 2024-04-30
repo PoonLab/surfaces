@@ -3,9 +3,8 @@ set.seed(5)
 ########################################
 # Import k-mer distance
 ########################################
-setwd('/Users/Laura/Projects/surfaces')
-km <- read.csv('measles_feb27_kmerdist.csv', header=F, row.names=1)
-n.prots <- 8 # number of proteins per genome
+setwd('/home/laura/Projects/surfaces')
+km <- read.csv('measles_kmerdist.csv', header=F, row.names=1)
 km <- as.matrix(km)
 
 ########################################
@@ -45,6 +44,4 @@ info <- data.frame('name'=row.names(km),
                    'gene.name' = gene.name,
                    'clusters'= as.integer(clus))
 
-write.csv(info, 'feb28measles_protein-clusters-info.csv')
-
-
+write.csv(info, 'measles_clusters_info.csv')
