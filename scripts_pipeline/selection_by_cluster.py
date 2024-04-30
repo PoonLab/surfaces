@@ -75,28 +75,26 @@ def run_fasttree(aln):
     
 def run_mafft(alignment):
     # Align nucleotide sequences
-    stdout = subprocess.Popen(['mafft', '--quiet', alignment], stdout=subprocess.PIPE)
+    aligned = subprocess.Popen(['mafft', '--quiet', alignment], stdout=subprocess.PIPE)
     # stdout = stdout.decode('utf-8')
-    return(stdout)
+    return(aligned)
     # cmd = f"mafft --quiet {alignment} > {alignment}.mafft"
     # subprocess.call(cmd, shell=True)
 
 def run_selection_pipeline(alignment, tree_file, cleaned_file, out_name):
     """
-    :param alignment: fasta file, nucleotide alignment of a CDS
+    :param alignment: str nucleotide alignment of a CDS
     :param tree_file: newick file built from the alignment file
     :param cleaned_file: str, name for the cleaned file
     :out_name: str, name and location for FUBAR json file 
     """
 
     # Clean stop codons from alignment
-    subprocess.run(['hyphy', 'cln', 'Universal', f"{alignment}.mafft", 'No/Yes', cleaned_file],
-    stdout=subprocess.DEVNULL)
+    subprocess.run(['hyphy', 'cln', 'Universal', alignment, 'No/Yes', cleaned_file])
 
     # Run FUBAR
     print(f">>> Running FUBAR for: {out_name}")
-    p = subprocess.run(['hyphy', 'fubar', cleaned_file, tree_file, '--output', out_name],
-    stdout=subprocess.DEVNULL)
+    p = subprocess.run(['hyphy', 'fubar', cleaned_file, tree_file, '--output', out_name])
 
 if __name__=="__main__":
     args = parse_args()
@@ -128,7 +126,7 @@ if __name__=="__main__":
         # Create an independent file with sequences in the cluster
         af_name = f"{cluster_label}.fa"
         file = open(af_name, "w")
-        for name in clus_seqs[cluster]:
+        for name in clus_seqs[cluster]:  
             file.write(f'>{name}\n{seqs[name]}\n')
         file.close()
 
@@ -138,6 +136,7 @@ if __name__=="__main__":
         # Build tree
         tree = run_fasttree(align)
         handle = StringIO(tree.stdout.decode("utf-8"))
+        print(handle)
         phy = Phylo.read(handle, "newick")
 
         # Get tree info
@@ -146,33 +145,46 @@ if __name__=="__main__":
         
         # Prune tree 
         if args.prune:
-            target = float(tlen)
+            target = float(args.prune)
             if target <= tlen:
                 sys.stderr.write(f"Starting tree length: {tlen}\n")
                 pruned = prune_length(phy, target=target)
                 af_pruned_name = f"{cluster_label}.pruned.fa"
+                pruned_file = open(af_pruned_name, "w")
                 
-                # write resulting sequences to output file
+                # write sequences after pruning to new fasta file
                 for tip in pruned.get_terminals():
-                    print(tip.name)
-                    record = seqs[tip.name]
-                    # _ = SeqIO.write(record, af_pruned_name, "fasta")
+                    sequence = seqs[tip.name]
+                    pruned_file.write(f'>{tip.name}\n{sequence}\n')
+                
+                pruned_file.close()
+
+                # Align sequences
+                pruned_align = run_mafft(af_pruned_name)
+
             else: 
-                sys.stderr.write(f"ERROR: Target length ({target}) \
-                                 is smaller than tree length ({tlen})\n")
+                print(f"ERROR: Target length ({target}) \
+                        is smaller than tree length ({tlen})\n")
                 pruned = phy
-                af_pruned_name = af_name
-        
+                pruned_align = align
+    
+        print(f"Final tree length: {pruned.total_branch_length()}")
+        print(f"Tree file at: {cluster_label}.tree")
         Phylo.write(pruned, f"{cluster_label}.tree", 'newick')
         
+        # Store alignment so it can be read by hyphy
+        final_aln, err = pruned_align.communicate()
+        with open(f"{cluster_label}.final.mafft.fa", "w") as a_f:
+            a_f.write(final_aln.decode("utf-8"))
+
+        # print(pruned_align.decode("utf-8"))
         # Measure selection with FUBAR
         if args.run_sel:
-            run_selection_pipeline( af_pruned_name,
+            run_selection_pipeline( f"{cluster_label}.final.mafft.fa",
                                     f"{cluster_label}.tree",
                                     f"{cluster_label}.cleaned.mafft.fa", 
                                     f"{cluster_label}.FUBAR.json")
         
-        sys.exit()
         
 
 

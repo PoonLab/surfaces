@@ -176,7 +176,7 @@ def get_info(handle):
         clusters = []
         for row in records:
             # Find start and end position for each protein
-            loc = row['coords'].strip().split(';')
+            loc = row['coords'].strip().split('.')
             # Create as many proteins as splicing fragments and store them on the protein list
             for splice in loc:
                 start, end = splice.split('_')
