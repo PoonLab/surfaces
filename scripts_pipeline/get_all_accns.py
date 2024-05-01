@@ -77,6 +77,7 @@ def retrieve_CDS(record, poly):
     Analyze features in Genbank record to extract (1) the number of coding regions (CDS)
     :param record: SeqRecord object (used in BioPython to hold a sequence and sequence information)
     """
+
     if poly:
         cds = cds = [feat for feat in record.features if feat.type=="mat_peptide"] 
     else:
@@ -89,8 +90,18 @@ def retrieve_CDS(record, poly):
         locus = q.get('locus_tag', '')
         product = q.get('product', [''])
         cd_seq = cd.location.extract(record).seq
-        aaseq = q.get('translation')[0] if not poly else cd_seq.translate(cds=False)
-        yield locus, product, cd.strand, parts, cd_seq, aaseq
+        if cd_seq[0:3] == "ATG":
+            aaseq = cd_seq.translate(cds=True)
+            yield locus, product, cd.strand, parts, cd_seq, aaseq
+        else:
+            aaseq = cd_seq.translate(cds=False)
+            if "*" in aaseq:
+                print(f"\nSkipping record {record.name}")
+                print(f"CDS with stop codons:")
+                print(aaseq, "\n")
+                break
+            else:
+                yield locus, product, cd.strand, parts, cd_seq, aaseq
 
 def get_metadata(accn):
     handle = Entrez.efetch(db='nuccore', id=accn, rettype='gb', retmode='text')
