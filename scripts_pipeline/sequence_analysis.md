@@ -107,12 +107,11 @@ There are four options in this script to consider:
 - `--run_sel`: Under this tag the script will measure selection in all clusters of CDSs from your pruned alignments and trees. Note that when this tag is used, the following files will be generated:
 
 ### Outputs (per cluster):
-1. `.fa`, fasta file with CDSs classified into the same cluster
-2. `.final.mafft.fa`, fasta file of `mafft` aligned sequences (after prunning)
-3. `.cleaned.mafft.fa`, fasta of `mafft` aligned sequences with STOP codons removed by`hyphy`
-4. `.tree`, newick file created with `fasttree` (after prunning if `--prune` was used)
-5. `FUBAR.json`, json file with selection measurments 
-6. `.cleaned.mafft.fa.FUBAR.cache`, cache file created during `hyphy` runs
+1. `.codon_aln.mafft.fasta`, codon-aware aligned classified into the same cluster (after prunning if `--prune` was used)
+2. `.cleaned.mafft.fa`, fasta of `mafft` aligned sequences with STOP codons removed by`hyphy`
+3. `.tree`, newick file created with `fasttree` (after prunning if `--prune` was used)
+4. `FUBAR.json`, json file with selection measurments 
+5. `.cleaned.mafft.fa.FUBAR.cache`, cache file created during `hyphy` runs
 
 ### Example:
 ```console

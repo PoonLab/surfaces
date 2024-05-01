@@ -2,6 +2,9 @@ import csv
 import argparse
 import sys
 import subprocess
+import tempfile
+import os
+
 from Bio import SeqIO, Phylo
 from io import StringIO
 
@@ -40,6 +43,44 @@ def parse_args():
 
     return parser.parse_args()
 
+def align_amino(records, bin='mafft'):
+    """
+    Function from Bioplus/codon_align.py
+    """
+    handle = tempfile.NamedTemporaryFile(delete=False)
+    for record in records:
+        aaseq = record.seq.translate()
+        line = f">{record.name}\n{aaseq}\n"
+        handle.write(line.encode('utf-8'))
+    handle.close()
+
+    stdout = subprocess.check_output([bin, '--quiet', handle.name])
+    stdout = stdout.decode('utf-8')
+    os.remove(handle.name)  # delete temp file
+    return SeqIO.parse(StringIO(stdout), "fasta")
+
+def apply_aln(records, aln):
+    """
+    Function from Bioplus/codon_align.py
+    Apply the alignment of translated amino acid sequences to the nucleotide
+    sequences to yield a codon-aware alignment.
+    :param records:  list, SeqRecord objects representing unaligned nucleotide
+                     sequences
+    :param aln:  SeqIO iterable object from align_amino()
+    :yield:  tuple, sequence name and codon-aligned nucleotide sequence
+    """
+    for i, aaseq in enumerate(aln):
+        nucseq = records[i].seq  # original nucleotide sequence
+        newseq = ''
+        pos = 0
+        for aa in aaseq:
+            if aa == '-':
+                newseq += '---'
+                continue
+            newseq += nucseq[pos:(pos+3)]
+            pos += 3
+        yield records[i].name, newseq
+
 def prune_length(phy, target):
     """
     From PoonLab/Bioplus/prunetree.py
@@ -63,19 +104,46 @@ def prune_length(phy, target):
         tips = tips[1:]  # update list
     return phy
 
-
 def run_fasttree(aln):
     # Create a tree from cleaned a nucleotide alignment
-    tree = subprocess.run(['fasttree', '-nt'], stdout=subprocess.PIPE, 
-                            stderr=subprocess.DEVNULL, stdin=aln.stdout)
-    # t = open(tree_file, 'w')
+    p = subprocess.Popen(['fasttree', '-nt', aln], 
+                            stdout=subprocess.PIPE)
+    
+    tree, err = p.communicate()
+
+    # tree = subprocess.run(['fasttree', '-nt'], stdout=subprocess.PIPE, 
+    #                         stderr=subprocess.DEVNULL, stdin=aln)
+    # # t = open(tree_file, 'w')
     # t.write(tree.stdout.decode("utf-8"))
     # t.close()
     return(tree)
+
+def align_codon_aware(cluster_seqs):
+    """
+    Align sequences that belong to the same cluster
+    :param seqs: dict, key by sequence label, values are nt sequences
+    :return codon_cluster_aln: StringIO object with aligned sequences 
+    """
+    seqs_string = ""  
+    for header, seq in cluster_seqs.items():
+        line = f">{header}\n{seq}\n"
+        seqs_string += line
+
+    # load records into memory because we need to iterate twice
+    seqs_cluster = list(SeqIO.parse(StringIO(seqs_string), "fasta"))
+    cluster_aln = align_amino(seqs_cluster)
     
+    # Store output as StrinIO object
+    codon_cluster_aln = StringIO()
+    for label, codseq in apply_aln(seqs_cluster, cluster_aln):
+        codon_cluster_aln.write(f">{label}\n{codseq}\n")
+
+    return(codon_cluster_aln)
+
 def run_mafft(alignment):
     # Align nucleotide sequences
-    aligned = subprocess.Popen(['mafft', '--quiet', alignment], stdout=subprocess.PIPE)
+    aligned = subprocess.Popen(['mafft', '--quiet', alignment], 
+                               stdout=subprocess.PIPE)
     # stdout = stdout.decode('utf-8')
     return(aligned)
     # cmd = f"mafft --quiet {alignment} > {alignment}.mafft"
@@ -99,92 +167,82 @@ def run_selection_pipeline(alignment, tree_file, cleaned_file, out_name):
 if __name__=="__main__":
     args = parse_args()
     seqs = {rec.name: rec.seq for rec in SeqIO.parse(args.ff, "fasta")}
-    reader = csv.DictReader(args.clusters)
-    clus_seqs = {}  # clustered sequences
+    n_prots = args.n_prots
             
     # Read clustering results
+    reader = csv.DictReader(args.clusters)
+    # Separate sequences from clustering results
+    all_clus_seqs = {} 
     for row in reader:
         cluster = row['clusters']
-        # Plain name: we need to keep entire header
-        # Fastree keeps header before first space
-        label = row['name']
-        if cluster not in clus_seqs:
-            clus_seqs[cluster] = []
-        clus_seqs[cluster].append(label)
-    
-    n_prots = args.n_prots if args.n_prots else len(clus_seqs)
+        label = row['name']  
+        if n_prots:
+            if int(cluster) > n_prots:
+                print(f" Skipping {label} from cluster: {cluster}")
+                continue
 
-    # Divide CDSs into different files based on clustering
-    for cluster in clus_seqs:
-        if int(cluster) > n_prots:
-            continue
-        
+        if cluster not in all_clus_seqs:
+            all_clus_seqs[cluster] = {}
+        all_clus_seqs[cluster][label] = seqs[label]
+
+    # Align, make tree, prune tree, measure selection
+    for cluster in all_clus_seqs:
+         
         print(f"\nProcesing cluster: {cluster}")
-        # Label for files related to a cluster
-        cluster_label = f"{args.label}_{cluster}"
+        clust_seqs = all_clus_seqs[cluster]
         
-        # Create an independent file with sequences in the cluster
-        af_name = f"{cluster_label}.fa"
-        file = open(af_name, "w")
-        for name in clus_seqs[cluster]:  
-            file.write(f'>{name}\n{seqs[name]}\n')
-        file.close()
-
-        # Align sequences
-        align = run_mafft(af_name)
+        # Codon-aware sequence alignment
+        codon_cluster_aln = align_codon_aware(clust_seqs)
+        
+        # Store alignment file so fasttree can process it
+        cluster_label = f"{args.label}_{cluster}"
+        aln_name = f"{cluster_label}.codon_aln.mafft.fasta"
+        with open(aln_name, 'w') as file:
+            file.write(codon_cluster_aln.getvalue())
 
         # Build tree
-        tree = run_fasttree(align)
-        handle = StringIO(tree.stdout.decode("utf-8"))
-        print(handle)
+        tree = run_fasttree(aln_name)
+        handle = StringIO(tree.decode())
         phy = Phylo.read(handle, "newick")
 
         # Get tree info
         tip_names = set([tip.name for tip in phy.get_terminals()])
         tlen = phy.total_branch_length()
-        
+
         # Prune tree 
         if args.prune:
             target = float(args.prune)
             if target <= tlen:
                 sys.stderr.write(f"Starting tree length: {tlen}\n")
-                pruned = prune_length(phy, target=target)
-                af_pruned_name = f"{cluster_label}.pruned.fa"
-                pruned_file = open(af_pruned_name, "w")
+                # Prune tree
+                pruned_tree = prune_length(phy, target=target)
+ 
+                # Get sequences after prunning
+                pruned_seqs = {}
+                for tip in pruned_tree.get_terminals():
+                    pruned_seqs[tip.name] = clust_seqs[tip.name]
                 
-                # write sequences after pruning to new fasta file
-                for tip in pruned.get_terminals():
-                    sequence = seqs[tip.name]
-                    pruned_file.write(f'>{tip.name}\n{sequence}\n')
+                # Re-align sequences on tips
+                pruned_aln = align_codon_aware(pruned_seqs)
                 
-                pruned_file.close()
-
-                # Align sequences
-                pruned_align = run_mafft(af_pruned_name)
+                # Overwrite alignment with pruned_tree sequences
+                with open(aln_name, 'w') as file:
+                    file.write(pruned_aln.getvalue())
 
             else: 
                 print(f"ERROR: Target length ({target}) \
                         is smaller than tree length ({tlen})\n")
-                pruned = phy
-                pruned_align = align
-    
-        print(f"Final tree length: {pruned.total_branch_length()}")
-        print(f"Tree file at: {cluster_label}.tree")
-        Phylo.write(pruned, f"{cluster_label}.tree", 'newick')
-        
-        # Store alignment so it can be read by hyphy
-        final_aln, err = pruned_align.communicate()
-        with open(f"{cluster_label}.final.mafft.fa", "w") as a_f:
-            a_f.write(final_aln.decode("utf-8"))
+                pruned_tree = phy
 
+    
+        print(f"Final tree length: {pruned_tree.total_branch_length()}")
+        print(f"Tree file at: {cluster_label}.tree")
+        Phylo.write(pruned_tree, f"{cluster_label}.tree", 'newick')
+        
         # print(pruned_align.decode("utf-8"))
         # Measure selection with FUBAR
         if args.run_sel:
-            run_selection_pipeline( f"{cluster_label}.final.mafft.fa",
+            run_selection_pipeline( aln_name,
                                     f"{cluster_label}.tree",
                                     f"{cluster_label}.cleaned.mafft.fa", 
                                     f"{cluster_label}.FUBAR.json")
-        
-        
-
-
