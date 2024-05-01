@@ -76,6 +76,16 @@ Modify the last line to specify the name of your output file:
 ```R
 write.csv(info, 'measles_protein-clusters-info.csv')
 ```
+**Note**: From line `18`, you should be able to get the number of sequences per cluster. For example:
+```R
+> table(clus)
+clus
+  1   2   3   4   5   6   7   8   9  10 
+703 699 447 473 698 704 703 703   3   2 
+```
+From this output, you can notice that clusters `9` and `10` are outliers.
+Thus, in step 5 you can ommit the selection analysis for these clusters by setting the number of proteins (`--n_prots`) to `8`. 
+
 
 ## 4. Visualize the cluster classification on your genome
 Use `plot-genome.py` to check your clustering results.
