@@ -96,6 +96,7 @@ def prune_length(phy, target):
                          f"({tlen}<={target}")
     tips = phy.get_terminals()
     while tlen > target:
+        # print(f"\n>>>> len: {tlen}, number of tips: {len(tips)}")
         # we have to re-sort every time because removing a branch
         # will lengthen another branch
         tips = sorted(tips, key=lambda x: x.branch_length)
@@ -149,20 +150,32 @@ def run_mafft(alignment):
     # cmd = f"mafft --quiet {alignment} > {alignment}.mafft"
     # subprocess.call(cmd, shell=True)
 
-def run_selection_pipeline(alignment, tree_file, cleaned_file, out_name):
+def run_selection_pipeline(alignment, label):
     """
     :param alignment: str nucleotide alignment of a CDS
-    :param tree_file: newick file built from the alignment file
-    :param cleaned_file: str, name for the cleaned file
-    :out_name: str, name and location for FUBAR json file 
+    :param label: str, label for the output files
     """
 
     # Clean stop codons from alignment
-    subprocess.run(['hyphy', 'cln', 'Universal', alignment, 'No/Yes', cleaned_file])
+    clean_aln = subprocess.run(['hyphy', 'cln', 'Universal', alignment, 
+                                'No/Yes', f"{label}.hyphy.cleaned.fasta"], 
+                                stdout=subprocess.PIPE)
 
+    # Re create tree: hyphy modify aln headers, sequences might not match tree anymore
+    tree = subprocess.run(['fasttree', '-nt', f"{label}.hyphy.cleaned.fasta"], 
+                            stdout=subprocess.PIPE, 
+                            stderr=subprocess.DEVNULL)
+    
+    # Write tree file
+    with open(f"{label}.hyphy.tree", 'w') as t_f:
+        t_f.write(tree.stdout.decode("utf-8"))
+    
     # Run FUBAR
-    print(f">>> Running FUBAR for: {out_name}")
-    p = subprocess.run(['hyphy', 'fubar', cleaned_file, tree_file, '--output', out_name])
+    print(f"--- Running FUBAR for: {label} ---")
+    p = subprocess.run(['hyphy', 'fubar', f"{label}.hyphy.cleaned.fasta",
+                         f"{label}.hyphy.tree", '--output', f"{label}.FUBAR.json"])
+    
+    # TO DO: How can we skip generating all this files!!
 
 if __name__=="__main__":
     args = parse_args()
@@ -188,7 +201,7 @@ if __name__=="__main__":
     # Align, make tree, prune tree, measure selection
     for cluster in all_clus_seqs:
          
-        print(f"\nProcesing cluster: {cluster}")
+        print(f"\n>>>> Procesing cluster: {cluster} <<<<\n")
         clust_seqs = all_clus_seqs[cluster]
         
         # Codon-aware sequence alignment
@@ -200,10 +213,14 @@ if __name__=="__main__":
         with open(aln_name, 'w') as file:
             file.write(codon_cluster_aln.getvalue())
 
+    
+        with open(f"{cluster_label}_before_prun.fasta", 'w') as file:
+            file.write(codon_cluster_aln.getvalue())
         # Build tree
         tree = run_fasttree(aln_name)
         handle = StringIO(tree.decode())
         phy = Phylo.read(handle, "newick")
+        Phylo.write(phy, f"{cluster_label}.before_prun.tree", 'newick')
 
         # Get tree info
         tip_names = set([tip.name for tip in phy.get_terminals()])
@@ -212,7 +229,10 @@ if __name__=="__main__":
         # Prune tree 
         if args.prune:
             target = float(args.prune)
-            if target <= tlen:
+            if target < tlen:
+                print(tlen)
+                print(type(tlen))
+
                 sys.stderr.write(f"Starting tree length: {tlen}\n")
                 # Prune tree
                 pruned_tree = prune_length(phy, target=target)
@@ -224,14 +244,14 @@ if __name__=="__main__":
                 
                 # Re-align sequences on tips
                 pruned_aln = align_codon_aware(pruned_seqs)
-                
+                # sys.exit()
                 # Overwrite alignment with pruned_tree sequences
                 with open(aln_name, 'w') as file:
                     file.write(pruned_aln.getvalue())
+                
 
             else: 
-                print(f"ERROR: Target length ({target}) \
-                        is smaller than tree length ({tlen})\n")
+                print(f"\n>> Target length ({target}) is shorter than tree length ({round(tlen, 3)})\n")
                 pruned_tree = phy
 
     
@@ -242,7 +262,8 @@ if __name__=="__main__":
         # print(pruned_align.decode("utf-8"))
         # Measure selection with FUBAR
         if args.run_sel:
-            run_selection_pipeline( aln_name,
-                                    f"{cluster_label}.tree",
-                                    f"{cluster_label}.cleaned.mafft.fa", 
-                                    f"{cluster_label}.FUBAR.json")
+            run_selection_pipeline(aln_name,
+                                   cluster_label)
+        
+        # At the end of for loop, delete alignment from memory
+        codon_cluster_aln.close
