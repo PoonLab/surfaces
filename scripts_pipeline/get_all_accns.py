@@ -95,7 +95,8 @@ def retrieve_CDS(record, poly):
             yield locus, product, cd.strand, parts, cd_seq, aaseq
         else:
             aaseq = cd_seq.translate(cds=False)
-            if "*" in aaseq:
+            stop_count = aaseq.count("*")
+            if stop_count > 3:  # More than three stop codons in the amino acid seq
                 print(f"\nSkipping record {record.name}")
                 print(f"CDS with stop codons:")
                 print(aaseq, "\n")
