@@ -79,7 +79,7 @@ def retrieve_CDS(record, poly):
     """
 
     if poly:
-        cds = cds = [feat for feat in record.features if feat.type=="mat_peptide"] 
+        cds = [feat for feat in record.features if feat.type=="mat_peptide"] 
     else:
         cds = [feat for feat in record.features if feat.type=='CDS']
     for cd in cds:
@@ -90,7 +90,7 @@ def retrieve_CDS(record, poly):
         locus = q.get('locus_tag', '')
         product = q.get('product', [''])
         cd_seq = cd.location.extract(record).seq
-        if cd_seq[0:3] == "ATG":
+        if cd_seq[0:3] == "ATG" and not poly:
             aaseq = cd_seq.translate(cds=True)
             yield locus, product, cd.strand, parts, cd_seq, aaseq
         else:
