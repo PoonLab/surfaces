@@ -287,7 +287,6 @@ if __name__=="__main__":
         
         # Measure selection with FUBAR
         if args.run_sel:
-            continue
             run_selection_pipeline(aln_name,
                                    cluster_label)
         
