@@ -198,10 +198,11 @@ if __name__=="__main__":
             all_clus_seqs[cluster] = {}
         all_clus_seqs[cluster][label] = seqs[label]
 
+    bad_trees = []  # Clusters with tree errors    
     # Align, make tree, prune tree, measure selection
     for cluster in all_clus_seqs:
-         
-        print(f"\n>>>> Procesing cluster: {cluster} <<<<\n")
+        
+        print(f"\n>>>> Processing cluster: {cluster} <<<<\n")
         clust_seqs = all_clus_seqs[cluster]
         
         # Codon-aware sequence alignment
@@ -230,13 +231,34 @@ if __name__=="__main__":
         if args.prune:
             target = float(args.prune)
             if target < tlen:
-                print(tlen)
-                print(type(tlen))
 
-                sys.stderr.write(f"Starting tree length: {tlen}\n")
-                # Prune tree
-                pruned_tree = prune_length(phy, target=target)
- 
+                sys.stderr.write(f"\nStarting tree length: {tlen}\n")
+
+                try:
+                    # Prune tree
+                    pruned_tree = prune_length(phy, target=target)
+    
+                except Exception as e:
+                    print(f"\n-----------------------------------------------")
+                    print(f"\tError while prunning tree of cluster {cluster}:")
+                    print(f"\t'{e}'")
+                    print(f"\tConsider removing sequences from longest branches")
+                    print(f"-------------------------------------------------\n")
+                    bad_trees.append(cluster)
+                    continue
+                
+                # Pruned tree is now too short
+                if pruned_tree.total_branch_length() < (target - 0.05):
+                    new_l = pruned_tree.total_branch_length()
+                    n_seqs = len(pruned_tree.get_terminals())
+                    print(f"\n-----------------------------------------------")
+                    print(f"\tError after prunning tree of cluster {cluster}")
+                    print(f"\tPruned tree length = {new_l}, number of sequences = {n_seqs}")
+                    print(f"\tConsider removing sequences from longest branches")
+                    print(f"-------------------------------------------------\n")
+                    bad_trees.append(cluster)
+                    continue
+
                 # Get sequences after prunning
                 pruned_seqs = {}
                 for tip in pruned_tree.get_terminals():
@@ -244,26 +266,32 @@ if __name__=="__main__":
                 
                 # Re-align sequences on tips
                 pruned_aln = align_codon_aware(pruned_seqs)
-                # sys.exit()
+
                 # Overwrite alignment with pruned_tree sequences
                 with open(aln_name, 'w') as file:
                     file.write(pruned_aln.getvalue())
-                
-
+                    
             else: 
-                print(f"\n>> Target length ({target}) is shorter than tree length ({round(tlen, 3)})\n")
+                print(f"\n>> Target length ({target}) is shorter than tree length ({round(tlen, 3)})\n")       
                 pruned_tree = phy
+        
+        else: 
+            pruned_tree = phy
 
-    
-        print(f"Final tree length: {pruned_tree.total_branch_length()}")
-        print(f"Tree file at: {cluster_label}.tree")
+        print(f"\n-------------------------------------------------")
+        print(f"\tFinal tree length: {pruned_tree.total_branch_length()}")
+        print(f"\tNumber of sequences: {len(pruned_tree.get_terminals())}")
+        print(f"\tTree file at: {cluster_label}.tree")
+        print(f"-------------------------------------------------\n")
         Phylo.write(pruned_tree, f"{cluster_label}.tree", 'newick')
         
-        # print(pruned_align.decode("utf-8"))
         # Measure selection with FUBAR
         if args.run_sel:
+            continue
             run_selection_pipeline(aln_name,
                                    cluster_label)
         
         # At the end of for loop, delete alignment from memory
         codon_cluster_aln.close
+    
+    print(f"\n>>> Unsuccesful analysis for clusters: {bad_trees}\n")
