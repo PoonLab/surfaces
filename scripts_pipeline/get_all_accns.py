@@ -72,37 +72,32 @@ def retrieve_record(gid):
     gb = SeqIO.parse(handle, format='genbank')
     return next(gb)
 
-def retrieve_CDS(record, poly):
+def retrieve_CDS(record):
     """
     Analyze features in Genbank record to extract (1) the number of coding regions (CDS)
     :param record: SeqRecord object (used in BioPython to hold a sequence and sequence information)
     """
-
-    if poly:
-        cds = [feat for feat in record.features if feat.type=="mat_peptide"] 
-    else:
-        cds = [feat for feat in record.features if feat.type=='CDS']
+    cds = [feat for feat in record.features if feat.type=='CDS']
     for cd in cds:
         q = cd.qualifiers
         parts = []
+        
+        # return cds annotation
         for part in cd.location.parts:
             parts.append((part.start, part.end))
-        locus = q.get('locus_tag', '')
         product = q.get('product', [''])
         cd_seq = cd.location.extract(record).seq
-        if cd_seq[0:3] == "ATG" and not poly:
-            aaseq = cd_seq.translate(cds=True)
-            yield locus, product, cd.strand, parts, cd_seq, aaseq
-        else:
-            aaseq = cd_seq.translate(cds=False)
-            stop_count = aaseq.count("*")
-            if stop_count > 3:  # More than three stop codons in the amino acid seq
-                print(f"\nSkipping record {record.name}")
-                print(f"CDS with stop codons:")
-                print(aaseq, "\n")
-                break
-            else:
-                yield locus, product, cd.strand, parts, cd_seq, aaseq
+        
+        # translate aa sequence
+        aaseq = cd_seq.translate(cds=False)
+        stop_count = aaseq.count("*")
+        if stop_count > 3:  # More than three stop codons in the amino acid seq
+            print(f"\nSkipping record {record.name}")
+            print(f"CDS with {stop_count} stop codons:")
+            print(aaseq, "\n")
+            break
+
+        yield product, cd.strand, parts, cd_seq, aaseq
 
 def get_metadata(accn):
     handle = Entrez.efetch(db='nuccore', id=accn, rettype='gb', retmode='text')
@@ -123,7 +118,8 @@ def get_metadata(accn):
 def main():
 
     parser = argparse.ArgumentParser(
-        description='From list of accession numbers, retrieve amino acid sequences as fasta file'
+        description="""From list of accession numbers, 
+          retrieve amino acid sequences as fasta file"""
     )
     
     args = get_args(parser)
@@ -132,8 +128,12 @@ def main():
     filename = args.outfile if args.outfile else f'{accn_table}'
     poly = args.poly
     
-    cds_file = open(f'{filename}_CDSs.fasta', 'w')
-    aa_file = open(f'{filename}_aa.fasta', 'w')
+    if poly:
+        cds_file = open(f'{filename}_CDSs_polyprot.fasta', 'w')
+    else:
+        cds_file = open(f'{filename}_CDSs.fasta', 'w')
+        aa_file = open(f'{filename}_aa.fasta', 'w')
+    
     md_file = open(f'{filename}_md.csv', 'w')
     md_writer = csv.writer(md_file)
     md_writer.writerow(['accn', 'taxonomy', 'isolate', 'host', 'country', 'coldate'])
@@ -156,16 +156,20 @@ def main():
             # full_gen_file.write(f'>{id}-{organism}-{host}-{coldate}\n{full_seq}\n')
 
         # get sequences
-        for locus, product, strand, parts, cd_seq, aa_seq in retrieve_CDS(record, poly):
+        for product, strand, parts, cd_seq, aa_seq in retrieve_CDS(record):
             location = '.'.join('{}_{}'.format(p[0], p[1]) for p in parts)
             organism_name = record.annotations['organism'].replace(" ", "_")
             product = product[0].replace(" ", "_")
             cds_file.write(f'>{accn}-{organism_name}-{product}-{strand}-{location}\n{cd_seq}\n')
-            aa_file.write(f'>{accn}-{organism_name}-{product}-{strand}-{location}\n{aa_seq}\n')
-
+            if not poly:
+                aa_file.write(f'>{accn}-{organism_name}-{product}-{strand}-{location}\n{aa_seq}\n')
+            
         print(accn)
         sleep(1)
-
+    # close files
+    cds_file.close()
+    if not poly:
+        aa_file.close()
     print(f'\n>>> DONE <<<\n')
 
 if __name__ == "__main__":
