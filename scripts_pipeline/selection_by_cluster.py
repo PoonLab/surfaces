@@ -7,6 +7,7 @@ import os
 
 from Bio import SeqIO, Phylo
 from io import StringIO
+from glob import glob
 
 description = """\
 Create separate fasta file based on cluster classification.
@@ -19,14 +20,16 @@ def parse_args():
         description="Create multiple fasta, one for each cluster of proteins"
     )
     parser.add_argument(
-        'clusters', type=argparse.FileType('r'),
+        'cds_file', 
+        help = 'Path to fasta file with CDSs'
+    )
+    parser.add_argument(
+        '--clusters_info', type=argparse.FileType('r'), default=False,
         help='Path to file containing cluster output in csv format'
     )
     parser.add_argument(
-        'ff', default = None, help = 'Path to fasta file with CDSs'
-    )
-    parser.add_argument(
-        '--label', type=str, default='cluster', help = 'label for CDSs files'
+        '--label', type=str, default='cluster',
+        help = 'label for CDSs files'
     )
     parser.add_argument(
         '--n_prots', type=int, default=False, 
@@ -39,6 +42,14 @@ def parse_args():
     parser.add_argument(
         '--prune',  type=str, default=False, 
         help = '<optional> Target length for prunning the trees'
+    )
+    parser.add_argument(
+        '--alns',  type=str, default=False, 
+        help = 'Provide one or multiple alignments to measure selection'
+    )
+    parser.add_argument(
+        '-sb', '--save_before', action='store_true', 
+        help = 'Save alignment before prunning the tree'
     )
 
     return parser.parse_args()
@@ -107,7 +118,8 @@ def prune_length(phy, target):
 
 def run_fasttree(aln):
     # Create a tree from cleaned a nucleotide alignment
-    p = subprocess.Popen(['fasttree', '-nt', aln], 
+    print(f"Creating tree from: {aln}")
+    p = subprocess.Popen(['fasttree', '-quiet','-nt', aln], 
                             stdout=subprocess.PIPE)
     
     tree, err = p.communicate()
@@ -177,13 +189,92 @@ def run_selection_pipeline(alignment, label):
     
     # TO DO: How can we skip generating all this files!!
 
-if __name__=="__main__":
-    args = parse_args()
-    seqs = {rec.name: rec.seq for rec in SeqIO.parse(args.ff, "fasta")}
+def align_and_build_tree(clust_seqs, aln_name):
+    """
+    Perform a codon-aware alignment of nucleotide sequences with mafft
+    Create a phylogenic tree from the alignment with fasttree
+    :param clust_seqs: dict, keyed by header, 
+                             values are sequences of CDSs encoding the same protein
+    :aln_name: str, name of the file to store the alignment so fastree can read it
+    """
+    # Codon-aware sequence alignment
+    before_prune_aln = align_codon_aware(clust_seqs)
+
+    # Store alignment file so fasttree can process it
+    with open(aln_name, 'w') as file:
+            file.write(before_prune_aln.getvalue())
+    file.close
+    
+    # Build tree
+    tree = run_fasttree(aln_name)
+    handle = StringIO(tree.decode())
+    before_prune_phy = Phylo.read(handle, "newick")
+
+    return(before_prune_aln, before_prune_phy)
+    
+def prune(clust_seqs, before_prune_phy, target):
+    """
+    Pruned the tree to a given length, build a new codon-aware alignment and tree
+    :param clust_seqs: dict, keyed by header, 
+                             values are sequences of CDSs encoding the same protein
+    :param before_prune_phy: Phylo object, tree built from before_pruned_aln
+    :param target: str, limit for the length of your tree
+    """
+
+    target = float(target)
+    # Get tree info
+    # tip_names = set([tip.name for tip in phy.get_terminals()])
+    tlen = before_prune_phy.total_branch_length()
+
+    # Prune tree 
+    if target < tlen:
+        
+        # Prune tree
+        try:
+            pruned_tree = prune_length(before_prune_phy, target=target)
+
+        # Error in pruned tree
+        except Exception as e:
+            # It is usually not root found
+            raise Exception(f"{e}")
+        
+        # Pruned tree is now too short
+        if pruned_tree.total_branch_length() < (target - 0.05):
+            new_l = pruned_tree.total_branch_length()
+            n_seqs = len(pruned_tree.get_terminals())
+            raise Exception(f"Pruned tree is too short: {new_l}long, {n_seqs} seqs")
+
+        # Get sequences after prunning
+        pruned_seqs = {}
+        for tip in pruned_tree.get_terminals():
+            pruned_seqs[tip.name] = clust_seqs[tip.name]
+        
+        # Re-align sequences on tips
+        pruned_aln = align_codon_aware(pruned_seqs)
+
+    else: 
+        raise Exception(f"""\n>> Target length ({target}) 
+                is shorter than tree length 
+                ({round(tlen, 3)})\n""")
+
+    return (pruned_aln, pruned_tree)
+
+def separate_clustered_seqs(sequences, clusters_info, n_prots):
+    """
+    Separate sequences based on their cluster asignment
+    :param sequences: fasta file with CDSs
+    :param clus_info: csv file with sequence header and cluster classification
+    :param n_prots: number of proteins to analyse
+    :return all_clus_seqs: dict, keyed by cluster, 
+                                 values are dicts of sequences in cluster
+                                 (header:sequence)
+    """
+    seqs = {rec.name: rec.seq for rec in SeqIO.parse(sequences, "fasta")}
     n_prots = args.n_prots
             
     # Read clustering results
-    reader = csv.DictReader(args.clusters)
+    reader = csv.DictReader(clusters_info)
+    
     # Separate sequences from clustering results
     all_clus_seqs = {} 
     for row in reader:
@@ -198,99 +289,81 @@ if __name__=="__main__":
             all_clus_seqs[cluster] = {}
         all_clus_seqs[cluster][label] = seqs[label]
 
+    return all_clus_seqs
+
+if __name__=="__main__":
+    args = parse_args()
+
+    # Sequences were clustered with kmer dist and hclust
+    if args.clusters_info:
+        grouped_seqs = separate_clustered_seqs(args.cds_file,
+                                               args.clusters_info, 
+                                               args.n_prots)
+
+    # Sequences have been previously grouped
+    else:
+        cds_files = glob(args.cds_file)
+        grouped_seqs = {}
+        for file in cds_files:
+            file_name = os.path.basename(file)
+            print(file_name)
+            grouped_seqs[file_name] = {rec.name: rec.seq for rec in SeqIO.parse(file, "fasta")}
+
+
     bad_trees = []  # Clusters with tree errors    
     # Align, make tree, prune tree, measure selection
-    for cluster in all_clus_seqs:
+    for cluster in grouped_seqs:
         
         print(f"\n>>>> Processing cluster: {cluster} <<<<\n")
-        clust_seqs = all_clus_seqs[cluster]
+        clust_seqs = grouped_seqs[cluster]
         
-        # Codon-aware sequence alignment
-        codon_cluster_aln = align_codon_aware(clust_seqs)
-        
-        # Store alignment file so fasttree can process it
+        # Define a name for alignment file
         cluster_label = f"{args.label}_{cluster}"
         aln_name = f"{cluster_label}.codon_aln.mafft.fasta"
-        with open(aln_name, 'w') as file:
-            file.write(codon_cluster_aln.getvalue())
+        
+        # Get codon aware alignment with mafft and tree with fasttree
+        before_prune_aln, before_prune_phy = align_and_build_tree(clust_seqs, aln_name)       
+        print(f"\nStarting tree length: {before_prune_phy.total_branch_length()}\n")
 
-    
-        with open(f"{cluster_label}_before_prun.fasta", 'w') as file:
-            file.write(codon_cluster_aln.getvalue())
-        # Build tree
-        tree = run_fasttree(aln_name)
-        handle = StringIO(tree.decode())
-        phy = Phylo.read(handle, "newick")
-        Phylo.write(phy, f"{cluster_label}.before_prun.tree", 'newick')
+        # Save phylogeny and codon aware alignment before prunning for debugging
+        if args.save_before:
+            with open(f"{cluster_label}_before_prun.fasta", 'w') as file:
+                file.write(before_prune_aln.getvalue())
+            file.close()
+            Phylo.write(before_prune_phy, f"{cluster_label}.before_prun.tree", 'newick')
 
-        # Get tree info
-        tip_names = set([tip.name for tip in phy.get_terminals()])
-        tlen = phy.total_branch_length()
-
-        # Prune tree 
+        # Prune tree
         if args.prune:
-            target = float(args.prune)
-            if target < tlen:
-
-                sys.stderr.write(f"\nStarting tree length: {tlen}\n")
-
-                try:
-                    # Prune tree
-                    pruned_tree = prune_length(phy, target=target)
-    
-                except Exception as e:
-                    print(f"\n-----------------------------------------------")
-                    print(f"\tError while prunning tree of cluster {cluster}:")
-                    print(f"\t'{e}'")
-                    print(f"\tConsider removing sequences from longest branches")
-                    print(f"-------------------------------------------------\n")
-                    bad_trees.append(cluster)
-                    continue
+            try:
+                pruned_aln, pruned_tree = prune(clust_seqs,
+                                                before_prune_phy, 
+                                                args.prune)
                 
-                # Pruned tree is now too short
-                if pruned_tree.total_branch_length() < (target - 0.05):
-                    new_l = pruned_tree.total_branch_length()
-                    n_seqs = len(pruned_tree.get_terminals())
-                    print(f"\n-----------------------------------------------")
-                    print(f"\tError after prunning tree of cluster {cluster}")
-                    print(f"\tPruned tree length = {new_l}, number of sequences = {n_seqs}")
-                    print(f"\tConsider removing sequences from longest branches")
-                    print(f"-------------------------------------------------\n")
-                    bad_trees.append(cluster)
-                    continue
-
-                # Get sequences after prunning
-                pruned_seqs = {}
-                for tip in pruned_tree.get_terminals():
-                    pruned_seqs[tip.name] = clust_seqs[tip.name]
+                print(f"\n-------------------------------------------------")
+                print(f"\tFinal tree length: {pruned_tree.total_branch_length()}")
+                print(f"\tNumber of sequences: {len(pruned_tree.get_terminals())}")
+                print(f"\tTree file at: {cluster_label}.tree")
+                print(f"-------------------------------------------------\n")
                 
-                # Re-align sequences on tips
-                pruned_aln = align_codon_aware(pruned_seqs)
-
+                # Save phylogeny
+                Phylo.write(pruned_tree, f"{cluster_label}.tree", 'newick')
                 # Overwrite alignment with pruned_tree sequences
                 with open(aln_name, 'w') as file:
                     file.write(pruned_aln.getvalue())
-                    
-            else: 
-                print(f"\n>> Target length ({target}) is shorter than tree length ({round(tlen, 3)})\n")       
-                pruned_tree = phy
-        
-        else: 
-            pruned_tree = phy
+                
+            # Error in pruned tree
+            except Exception as e:
+                print(f"\n-----------------------------------------------")
+                print(f"\tError while prunning tree of cluster {cluster}:")
+                print(f"\t'{e}'")
+                print(f"\tConsider removing sequences from longest branches")
+                print(f"-------------------------------------------------\n") 
+                bad_trees.append(cluster)
+                continue
 
-        print(f"\n-------------------------------------------------")
-        print(f"\tFinal tree length: {pruned_tree.total_branch_length()}")
-        print(f"\tNumber of sequences: {len(pruned_tree.get_terminals())}")
-        print(f"\tTree file at: {cluster_label}.tree")
-        print(f"-------------------------------------------------\n")
-        Phylo.write(pruned_tree, f"{cluster_label}.tree", 'newick')
-        
         # Measure selection with FUBAR
         if args.run_sel:
             run_selection_pipeline(aln_name,
                                    cluster_label)
-        
-        # At the end of for loop, delete alignment from memory
-        codon_cluster_aln.close
     
     print(f"\n>>> Unsuccesful analysis for clusters: {bad_trees}\n")
