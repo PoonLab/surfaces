@@ -20,11 +20,11 @@ def parse_args():
         description="Create multiple fasta, one for each cluster of proteins"
     )
     parser.add_argument(
-        'cds_file', 
+        'cds_file', nargs='*',
         help = 'Path to fasta file with CDSs'
     )
     parser.add_argument(
-        '--clusters_info', type=argparse.FileType('r'), default=False,
+        '--clusters_info', '-ci', type=argparse.FileType('r'), default=False,
         help='Path to file containing cluster output in csv format'
     )
     parser.add_argument(
@@ -296,16 +296,16 @@ if __name__=="__main__":
 
     # Sequences were clustered with kmer dist and hclust
     if args.clusters_info:
-        grouped_seqs = separate_clustered_seqs(args.cds_file,
+        cds_file = args.cds_file[0]
+        grouped_seqs = separate_clustered_seqs(cds_file,
                                                args.clusters_info, 
                                                args.n_prots)
 
     # Sequences have been previously grouped
     else:
-        cds_files = glob(args.cds_file)
         grouped_seqs = {}
-        for file in cds_files:
-            file_name = os.path.basename(file)
+        for file in args.cds_file:
+            file_name = os.path.basename(file).split('.')[0]
             print(file_name)
             grouped_seqs[file_name] = {rec.name: rec.seq for rec in SeqIO.parse(file, "fasta")}
 
