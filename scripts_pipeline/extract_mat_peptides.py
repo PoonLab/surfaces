@@ -13,6 +13,7 @@ import tempfile
 import re
 import argparse
 from io import StringIO
+import pprint
 
 # codon to amino acid conversion
 codon_dict = {'TTT':'F', 'TTC':'F', 'TTA':'L', 'TTG':'L',
@@ -204,17 +205,22 @@ if __name__=="__main__":
 
     # load the input FASTA file
     records = SeqIO.parse(polyprots, 'fasta')
+    not_found = {}
     for record in records:
         query = str(record.seq)  # CDS file contains entire polyprotein sequences (in-frame!)
         name_parts = record.name.split("-")
- 
+        not_found[name_parts[0]] = []
         # Search each protein in reference genome
         for protein, refseq in proteins.items():
             name_parts[2] = re.sub("[ /.,:]", "_", protein)
             result = mafft(query=query, ref=refseq)  # part of nucleotide sequence
             # print(result)
             if len(result) == 0:
-                print(f"\n>>>>>no result for protein {protein} in {name_parts[0]}<<<<<\n")
+                # print(f"\n>>>>> no result for protein {protein} in {name_parts[0]}<<<<<\n")
+                not_found[name_parts[0]].append(protein)
                 continue
             header = "-".join(name_parts)
             outfiles[protein].write(f">{record.name}\n{result}\n")
+    
+    print("Not found proteins:")
+    pprint.pprint(not_found)
