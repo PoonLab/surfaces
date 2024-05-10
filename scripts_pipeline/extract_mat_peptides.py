@@ -171,7 +171,7 @@ def get_reference_proteins(ref_genome):
                             values are amino acid sequences
     """
     proteins = {}
-    for feat in ref.features:
+    for feat in ref_genome.features:
         if feat.type != 'mat_peptide':
             continue
         aaseq = str(feat.translate(ref).seq)
