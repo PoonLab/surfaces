@@ -208,8 +208,9 @@ There are four options in this script to consider:
 
 - `--no_prots` to decide the maximum number of clusters to analyze (should be the same as the number of proteins in your genome).
 
-- `--run_sel`: Under this tag the script will measure selection in all clusters of CDSs from your pruned alignments and trees. Note that when this tag is used, the following files will be generated:
+- `--save_before`: For debbuding purposes, safe the codon-aware alignment and phylogeny before pruning.
 
+- `--run_sel`: Under this tag the script will measure selection in all clusters of CDSs from your pruned alignments and trees. Note that when this tag is used, the following files will be generated:
 ### Outputs (per cluster):
 
 1. `.codon_aln.mafft.fasta`, codon-aware aligned classified into the same cluster (after pruning if `--prune` was used)
@@ -224,14 +225,16 @@ There are four options in this script to consider:
 
   
 
-### Example:
+### Example if CDSs where clustered with `hclust.R`:
 
 ```console
-
-python3 selection_by_cluster.py measles-protein-clusters-info.csv measles_CDSs.fasta ---prune 0.5 --run_sel --label scripts_pipeline/temp_measles/measles --n_prots 8
-
+python3 selection_by_cluster.py temp_mumps/mumps_CDSs.fasta -ci temp_mumps/mumps_clusters_info.csv --label temp_mumps/mumps --n_prot 9 --run_sel --prune 0.5 -sb
 ```
 
+### Example if CDSs where grouped with `extract_mat_peptide.py`:
+```console
+python3 selection_by_cluster.py temp_hepa/*.fasta --label temp_hepa/ --prune 0.5 -sb --run_sel
+```
   
 
 ## 6. Plot selection grid
