@@ -28,7 +28,7 @@ def parse_args():
         help='Path to file containing cluster output in csv format'
     )
     parser.add_argument(
-        '--label', type=str, default='cluster',
+        '--label', '-l' , type=str, default='cluster',
         help = 'label for CDSs files'
     )
     parser.add_argument(
@@ -36,16 +36,12 @@ def parse_args():
         help = 'Maximum number of clusters allowed'
     )
     parser.add_argument(
-        '--run_sel', action='store_true',
+        '--run_sel', '-s', action='store_true',
         help = 'Run selection pipeline for all clustered sequences'
     )
     parser.add_argument(
-        '--prune',  type=str, default=False, 
+        '--prune', '-p', type=str, default=False, 
         help = '<optional> Target length for prunning the trees'
-    )
-    parser.add_argument(
-        '--alns',  type=str, default=False, 
-        help = 'Provide one or multiple alignments to measure selection'
     )
     parser.add_argument(
         '-sb', '--save_before', action='store_true', 
