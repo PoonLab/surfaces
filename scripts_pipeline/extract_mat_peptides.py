@@ -56,6 +56,15 @@ def get_args(parser):
         help='<Optional> Path to output files with CDS and \
                 amino acid sequences of mature peptides'
     )
+    parser.add_argument(
+        '--rf', default=1, type=int ,
+        help='<Optional> reading frames to evaluate. Can be 1, 2 or 3'
+    )
+    parser.add_argument(
+        '--gt', default=0.5, type=float,
+        help='<Optional> gap threshold: maximum percentage of internal gaps\
+              allowed in the refseq when aligning amino acids'
+    )
 
     return parser.parse_args()
 
@@ -121,20 +130,23 @@ def translate_nuc(seq, offset, resolve=False, return_list=False):
     return aa_seq
 
 
-def mafft(query, ref, binpath="mafft"):
+def mafft(query, ref, binpath="mafft", rf=1, gap_threshold = 0.5):
     """
     Align translation of query sequence to a reference protein
     and use the resulting alignment to cut the corresponding region
     in the original nucleotide sequence of the query.
 
-    :param query:  str, nucleotide sequence (polyprotein)
-    :param ref:  str, reference sequence (amino acid)
-    :param binpath:  str, path to MAFFT executable file
+    :param query: str, nucleotide sequence (polyprotein)
+    :param ref: str, reference sequence (amino acid)
+    :param binpath: str, path to MAFFT executable file
+    :param rf: int, number of reading frames for protein translation (i.e. 1, 2 or 3)
+    :param gap_percent: int, number of reading frames for protein translation
     :return:
     """
     # translate input nucleotide sequence into amino acids
-    nuc_seq = ''
-    for rf in range(0, 3):
+    aln_scores = {}
+    nt_seq_rf = {}
+    for rf in range(0, rf):
         
         tquery = translate_nuc(query, rf)
 
@@ -147,21 +159,39 @@ def mafft(query, ref, binpath="mafft"):
         stdout = subprocess.check_output([binpath, '--quiet', handle.name])
         stdout = stdout.decode('utf-8')
         result = list(SeqIO.parse(StringIO(stdout), "fasta"))
-        
         aref = str(result[0].seq)
-        aquery = str(result[1].seq)  # Why are we not using aquery?
+        aquery = str(result[1].seq)
 
-        # Extract coordinates in reference?
+        # Extract coordinates in reference
         left = len(aref) - len(aref.lstrip('-'))
-        right = len(aref) - len(aref.rstrip('-'))
-        nuc_seq = query[(3*left):(3*right)] # ARE WE DOING THIS WITH RESPECT TO REFERENCE?
-        
-        if len(nuc_seq) != 0:
-            # if rf !=0:
-            #     print(f"I found it in a different READING FRAME {rf}")
-            break
-    
-    return nuc_seq
+        right = len(aref.rstrip('-'))
+        refseq = aref[left:right]
+        nuc_seq = query[(3*left):(3*right)] 
+
+        # score = No of matches - number of gaps within refseq
+        int_gaps = refseq.count('-')  # internal gaps
+        score = len(aref.replace('-', '')) - refseq.count('-')
+
+        # Store nucleotide sequences bellow gap threshold
+        if (int_gaps/len(refseq)) < gap_threshold:
+            aln_scores[rf] = score
+            nt_seq_rf[rf] = nuc_seq
+        # else:
+        #     print(f"\n>>>>>>>>>> refseq with many gaps:")
+        #     print(refseq)
+        #     print(f"\nFrom nucleotide sequence:")
+        #     print(nuc_seq)
+        #     print()        
+        #     sys.exit()
+            
+    if aln_scores:
+        # Find the best alignment 
+        best_rf = max(aln_scores, key=aln_scores.get)
+        max_nt_seq = nt_seq_rf[best_rf]
+    else:
+        max_nt_seq = ''
+
+    return max_nt_seq
 
 def get_reference_proteins(ref_genome):
     """
@@ -209,15 +239,18 @@ if __name__=="__main__":
     for record in records:
         query = str(record.seq)  # CDS file contains entire polyprotein sequences (in-frame!)
         name_parts = record.name.split("-")
-        not_found[name_parts[0]] = []
+        prot_name = name_parts[0]
+
         # Search each protein in reference genome
         for protein, refseq in proteins.items():
             name_parts[2] = re.sub("[ /.,:]", "_", protein)
-            result = mafft(query=query, ref=refseq)  # part of nucleotide sequence
-            # print(result)
+            # Get the part of nucleotide sequence
+            result = mafft(query=query, ref=refseq, rf=args.rf, gap_threshold=args.gt)
             if len(result) == 0:
-                # print(f"\n>>>>> no result for protein {protein} in {name_parts[0]}<<<<<\n")
-                not_found[name_parts[0]].append(protein)
+                # print(f"\n>>>>> no result for protein {protein} in {prot_name}<<<<<\n")
+                if prot_name not in not_found.keys():
+                    not_found[prot_name] = []
+                not_found[prot_name].append(protein)
                 continue
             header = "-".join(name_parts)
             outfiles[protein].write(f">{record.name}\n{result}\n")
