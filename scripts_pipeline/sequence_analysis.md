@@ -64,7 +64,7 @@ $ python3 get_all_accns.py data/potyvitus_accn.seq user@gmail.com --outfile data
 
 ```
 
-If you want to obtain the CDs of a virus that codes for a polyprotein, run the following command in the terminal
+If you want to obtain the CDS of a virus that encoding by a polyprotein, run the following command in the terminal
 Example:
 ``` console
 $ python3  extract_mat_peptides.py  data/dengue_1_genome_reference.gb  data/dengue1_CDS_polyprot.fasta 
@@ -75,6 +75,8 @@ $ python3  extract_mat_peptides.py  data/dengue_1_genome_reference.gb  data/deng
 
 **Note:** Headers should have the format: accession number, organism name, protein product, strand, and location separated by dashes (`-`) with no spaces.
 Header example: `KU728743.1-Measles_virus_genotype_D8-nucleoprotein-1-97_1675`
+
+**Note:**  If you want to obtain the CDS of a virus that encoding by a polyprotein, is necessary to download the archive gbK of genone reference from NCBI  https://www.ncbi.nlm.nih.gov/labs/virus/vssi/#/
 
 
 ## 2. Grouping homologous coding sequences
