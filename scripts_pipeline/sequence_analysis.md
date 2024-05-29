@@ -76,7 +76,7 @@ $ python3  extract_mat_peptides.py  data/dengue_1_genome_reference.gb  data/deng
 **Note:** Headers should have the format: accession number, organism name, protein product, strand, and location separated by dashes (`-`) with no spaces.
 Header example: `KU728743.1-Measles_virus_genotype_D8-nucleoprotein-1-97_1675`
 
-**Note:**  If you want to obtain the CDS of a virus that encoding by a polyprotein, is necessary to download the archive gbK of genone reference from NCBI  https://www.ncbi.nlm.nih.gov/labs/virus/vssi/#/
+**Note:**  If you want to obtain the CDS of a virus that encoding by a polyprotein, is necessary to download the archive gbk of genome reference from NCBI  https://www.ncbi.nlm.nih.gov/labs/virus/vssi/#/
 
 
 ## 2. Grouping homologous coding sequences
