@@ -88,28 +88,36 @@ def apply_aln(records, aln):
             pos += 3
         yield records[i].name, newseq
 
-def prune_length(phy, target):
+def prune_length(phy, target, range):
     """
     From PoonLab/Bioplus/prunetree.py
     Progressively remove the shortest terminal branches in the tree until
     we reach a target tree length.
     :param phy:  Bio.Phylo object
     :param target:  float, target tree length to prune to
-    :return: Bio.Phylo object after prunning 
+    :param range: float, in case users want more flexibility 
+                        so the pruned tree could be a bit longer than target
+    :return: Bio.Phylo object after pruning 
     """
     tlen = phy.total_branch_length()
     if target >= tlen:
         sys.stderr.write(f"prune_length: requirement already met "
                          f"({tlen}<={target}")
     tips = phy.get_terminals()
-    while tlen > target:
+    
+    count = 0  # Alternate by removing shorter and longer branches
+    while tlen > target+range:
         # print(f"\n>>>> len: {tlen}, number of tips: {len(tips)}")
         # we have to re-sort every time because removing a branch
         # will lengthen another branch
-        tips = sorted(tips, key=lambda x: x.branch_length)
+        if count % 2 == 0 :
+            tips = sorted(tips, key=lambda x: x.branch_length, reverse=True)
+        else:
+            tips = sorted(tips, key=lambda x: x.branch_length)
         _ = phy.prune(tips[0])
         tlen -= tips[0].branch_length
         tips = tips[1:]  # update list
+        count += 1
     return phy
 
 def run_fasttree(aln):
@@ -207,8 +215,36 @@ def align_and_build_tree(clust_seqs, aln_name):
     before_prune_phy = Phylo.read(handle, "newick")
 
     return(before_prune_aln, before_prune_phy)
+
+def filter_seqs(grouped_seqs):
+    """
+    Filter sequences?
+    """
+    filtered = {}
+    # Sequences from long branches in hepatoviruses
+    temp = ["KX420952.1", "MG18943.1", "KT229612.1", "OM451167.1", 
+            "KT229611.1", "OR45340.1", "OR452344.1", "OR452343.1", 
+            "OQ559662.1", "KT819575.1", "EU140838.1", "D00924.1"]
+
+    # For each protein
+    for protein, seqs in grouped_seqs.items():
+        print(protein)
+        seq_headers = list(seqs)
+        res = []
+        # Loop trough all the headers looking for bad accns
+        for header in seq_headers:
+            match = [header for ele in temp if(ele in header)]
+            if match:
+                res.extend(match)
+        final_headers = [header for header in seq_headers if header not in res]
+        print(res)
+        print(len(seq_headers))
+        print(len(final_headers))
+        filtered[protein] = {header: grouped_seqs[protein][header] for header in final_headers}
     
-def prune(clust_seqs, before_prune_phy, target):
+    return filtered
+    
+def prune(clust_seqs, before_prune_phy, target, range=0.1):
     """
     Pruned the tree to a given length, build a new codon-aware alignment and tree
     :param clust_seqs: dict, keyed by header, 
@@ -227,7 +263,7 @@ def prune(clust_seqs, before_prune_phy, target):
         
         # Prune tree
         try:
-            pruned_tree = prune_length(before_prune_phy, target=target)
+            pruned_tree = prune_length(before_prune_phy, target=target, range=range)
 
         # Error in pruned tree
         except Exception as e:
@@ -235,7 +271,7 @@ def prune(clust_seqs, before_prune_phy, target):
             raise Exception(f"{e}")
         
         # Pruned tree is now too short
-        if pruned_tree.total_branch_length() < (target - 0.05):
+        if pruned_tree.total_branch_length() < (target - range):
             new_l = pruned_tree.total_branch_length()
             n_seqs = len(pruned_tree.get_terminals())
             raise Exception(f"Pruned tree is too short: {new_l}long, {n_seqs} seqs")
@@ -302,11 +338,11 @@ if __name__=="__main__":
         grouped_seqs = {}
         for file in args.cds_file:
             file_name = os.path.basename(file).split('.')[0]
-            print(file_name)
             grouped_seqs[file_name] = {rec.name: rec.seq for rec in SeqIO.parse(file, "fasta")}
+    
 
-
-    bad_trees = []  # Clusters with tree errors    
+    bad_trees = []  # Clusters with tree errors
+    finished_analysis = []
     # Align, make tree, prune tree, measure selection
     for cluster in grouped_seqs:
         
@@ -347,6 +383,8 @@ if __name__=="__main__":
                 with open(aln_name, 'w') as file:
                     file.write(pruned_aln.getvalue())
                 
+                finished_analysis.append(cluster)
+                
             # Error in pruned tree
             except Exception as e:
                 print(f"\n-----------------------------------------------")
@@ -362,4 +400,5 @@ if __name__=="__main__":
             run_selection_pipeline(aln_name,
                                    cluster_label)
     
-    print(f"\n>>> Unsuccesful analysis for clusters: {bad_trees}\n")
+    print(f"\n>>> Unsuccessful analysis for clusters: {bad_trees}")
+    print(f">>> Successful analysis for clusters: {finished_analysis}\n")
