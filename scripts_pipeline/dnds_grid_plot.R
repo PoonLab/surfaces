@@ -40,8 +40,11 @@ res <- lapply(master, function(d) {
 md<-read.csv("feb28measles_protein-clusters-info.csv")
 g.n<-table(md$gene.name,md$clusters)
 prot.name<-c()
+len.clus <-c()
 for(i in 1:8){
   m <- which.max(g.n[,i])
+  l <- sum(g.n[,6])
+  len.clus <- append(len.clus,l)
   prot.name<-append(prot.name,names(m))
 }
 
@@ -139,6 +142,7 @@ require(ape)
 phy.files <- Sys.glob("*.tree")
 all.trees <- lapply(phy.files, function(f) read.tree(f))
 t.l <- lapply(all.trees, function(t) sum(t$edge.length))
+t.t <- lapply(all.trees, function(t) length(t$tip.label))
 
 ############################################
 # Merge protein information into a dataframe
@@ -146,8 +150,10 @@ t.l <- lapply(all.trees, function(t) sum(t$edge.length))
 prot.d <- data.frame(
               virus = rep("measles", length(phy.files)),
               cluster = c(1:length(phy.files)),
+              clus.length = len.clus,
               prot.name = prot.name,
               tree.length = unlist(t.l),
+              tree.tips = unlist(t.t),
               is.surface = rep(NA, length(phy.files))
                    ) 
 
