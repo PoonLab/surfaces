@@ -56,7 +56,7 @@ $ python3 get_all_accns.py data/measles_accns.seq user@gmail.com --outfile data/
 
 - `_CDSs.fasta`: coding sequences (CDSs)
 
-Note: We will extract the protein encoding sequences by aligning the CDS from the polyprotein to a reference genome with `extract_mat_peptides.py`.
+Note: We will extract the protein encoding sequences by aligning the CDS from the polyprotein to a reference genome in gbk format  with `extract_mat_peptides.py`.
 
 Example:
 ``` console
