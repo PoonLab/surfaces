@@ -13,7 +13,7 @@ write.tree(r.tree, file = "random_tree_100.nwk", append = FALSE,
 ##################################
 # Read FUBAR results
 ##################################
-setwd("/home/laura/Projects/surfaces/data_find_tree_length")
+setwd("/home/laura/Projects/surfaces/data_find_tree_length/march21_all")
 files <- Sys.glob("*.FUBAR.json")
 names(files) <- files  # so master list has filenames as names
 master <- lapply(files, function(f) read_json(f, simplifyVector=TRUE))
@@ -67,6 +67,7 @@ names(rates) <- r.files
 #####################################
 out <- matrix(ncol = 3, nrow=length(res))
 
+# From: 
 for(i in 1:length(res)){
   name <- names(res)[[i]]
   sel <- res[[i]]
@@ -94,13 +95,17 @@ out <- out[order(out$tree.length),]
 # Plot RMSE
 #####################################
 
-pal <- c("#001219", "#005f73", "#0a9396", 
+pal <- c("#001219", "#005f73", "#0a9396",
          "#94d2bd", "#e9d8a6", "#ee9b00",
          "#ca6702", "#bb3e03", "#ae2012",
          "#ae2012")
+ 
+# plot(out$tree.length, out$rmse,
+#      col=add.alpha(pal[as.numeric(out$rep)+1], 0.6),
+#      pch=19)
 
-plot(out$tree.length, out$rmse, 
-     col=add.alpha(pal[as.numeric(out$rep)+1], 0.6),
+plot(out$tree.length, out$rmse,
+     col=add.alpha(pal[2], 0.6),
      pch=19)
 
 fit <- loess(rmse ~ tree.length, data = out)
@@ -109,8 +114,7 @@ lines(out$tree.length, predict(fit, out),
 
 # --- unused---- 
 abline(h=0.1, col="gray", lwd=2, lty=2)
-abline(v=1, col="gray", lwd=2, lty=2)
-  
+abline(v=0.5, col="gray", lwd=2, lty=2)
 ######################################################
 # Unused: Get matching names for rates and fubar files
 ######################################################
