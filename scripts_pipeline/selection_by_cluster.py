@@ -36,16 +36,20 @@ def parse_args():
         help = 'Maximum number of clusters allowed'
     )
     parser.add_argument(
-        '--run_sel', '-s', action='store_true',
+        '-s', '--run_sel', action='store_true',
         help = 'Run selection pipeline for all clustered sequences'
     )
     parser.add_argument(
-        '--prune', '-p', type=str, default=False, 
+        '-p', '--prune', type=str, default=False,
         help = '<optional> Target length for prunning the trees'
     )
     parser.add_argument(
-        '-sb', '--save_before', action='store_true', 
+        '-aln', '--save_before', action='store_true',
         help = 'Save alignment before prunning the tree'
+    )
+    parser.add_argument(
+        '-sp', '--save_prune_res', action='store_true',
+        help = 'Store cluster size and tree length before and after prunning in table'
     )
 
     return parser.parse_args()
@@ -104,7 +108,7 @@ def prune_length(phy, target, range):
         sys.stderr.write(f"prune_length: requirement already met "
                          f"({tlen}<={target}")
     tips = phy.get_terminals()
-    
+
     count = 0  # Alternate by removing shorter and longer branches
     while tlen > target+range:
         # print(f"\n>>>> len: {tlen}, number of tips: {len(tips)}")
@@ -244,9 +248,9 @@ def filter_seqs(grouped_seqs):
     
     return filtered
     
-def prune(clust_seqs, before_prune_phy, target, range=0.1):
+def prune_align_build_tree(clust_seqs, before_prune_phy, target, range=0.05):
     """
-    Pruned the tree to a given length, build a new codon-aware alignment and tree
+    Prune a phylogenetic tree to a target length, build a new codon-aware alignment and tree
     :param clust_seqs: dict, keyed by header, 
                              values are sequences of CDSs encoding the same protein
     :param before_prune_phy: Phylo object, tree built from before_pruned_aln
@@ -311,17 +315,23 @@ def separate_clustered_seqs(sequences, clusters_info, n_prots):
     all_clus_seqs = {} 
     for row in reader:
         cluster = row['clusters']
-        label = row['name']  
+        label = row['name']
+        clus_name = row['clus.name']
         if n_prots:
             if int(cluster) > n_prots:
                 print(f" Skipping {label} from cluster: {cluster}")
                 continue
 
-        if cluster not in all_clus_seqs:
-            all_clus_seqs[cluster] = {}
-        all_clus_seqs[cluster][label] = seqs[label]
+        if clus_name not in all_clus_seqs:
+            all_clus_seqs[clus_name] = {}
+        all_clus_seqs[clus_name][label] = seqs[label]
 
     return all_clus_seqs
+
+def create_report():
+    report = {}
+
+    return report
 
 if __name__=="__main__":
     args = parse_args()
@@ -344,6 +354,7 @@ if __name__=="__main__":
     bad_trees = []  # Clusters with tree errors
     finished_analysis = []
     # Align, make tree, prune tree, measure selection
+    result = {}  # Store prunning results
     for cluster in grouped_seqs:
         
         print(f"\n>>>> Processing cluster: {cluster} <<<<\n")
@@ -357,6 +368,15 @@ if __name__=="__main__":
         before_prune_aln, before_prune_phy = align_and_build_tree(clust_seqs, aln_name)       
         print(f"\nStarting tree length: {before_prune_phy.total_branch_length()}\n")
 
+        # Store results for cluster analysis
+        result[cluster] = {'cluster': cluster, 
+                           'initial_seqs': len(clust_seqs),
+                           'pruned': False, 
+                           'inital_tree_lenght': round(before_prune_phy.total_branch_length(), 3),
+                           'final_seqs': 'NA',
+                           'final_tree_length':'NA'}
+        ks = result[cluster].keys()
+        
         # Save phylogeny and codon aware alignment before prunning for debugging
         if args.save_before:
             with open(f"{cluster_label}_before_prun.fasta", 'w') as file:
@@ -367,15 +387,9 @@ if __name__=="__main__":
         # Prune tree
         if args.prune:
             try:
-                pruned_aln, pruned_tree = prune(clust_seqs,
+                pruned_aln, pruned_tree = prune_align_build_tree(clust_seqs,
                                                 before_prune_phy, 
                                                 args.prune)
-                
-                print(f"\n-------------------------------------------------")
-                print(f"\tFinal tree length: {pruned_tree.total_branch_length()}")
-                print(f"\tNumber of sequences: {len(pruned_tree.get_terminals())}")
-                print(f"\tTree file at: {cluster_label}.tree")
-                print(f"-------------------------------------------------\n")
                 
                 # Save phylogeny
                 Phylo.write(pruned_tree, f"{cluster_label}.tree", 'newick')
@@ -383,12 +397,17 @@ if __name__=="__main__":
                 with open(aln_name, 'w') as file:
                     file.write(pruned_aln.getvalue())
                 
+                # Update results when prune successfully
+                result[cluster]['pruned'] = True
+                result[cluster]['final_seqs'] = len(pruned_tree.get_terminals())
+                result[cluster]['final_tree_length'] = round(pruned_tree.total_branch_length(), 3)
+
                 finished_analysis.append(cluster)
                 
             # Error in pruned tree
             except Exception as e:
                 print(f"\n-----------------------------------------------")
-                print(f"\tError while prunning tree of cluster {cluster}:")
+                print(f"\tError while pruning tree of cluster {cluster}:")
                 print(f"\t'{e}'")
                 print(f"\tConsider removing sequences from longest branches")
                 print(f"-------------------------------------------------\n") 
@@ -400,5 +419,16 @@ if __name__=="__main__":
             run_selection_pipeline(aln_name,
                                    cluster_label)
     
+    # Save prunning results in report file 
+    if args.save_prune_res:
+        header = list(result[list(result.keys())[0]].keys())
+        with open(f'{args.label}.report.csv', 'w') as csvfile:
+            fieldnames = header
+            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+            
+            writer.writeheader()
+            for clust in result.values():
+                writer.writerow(clust)
+
     print(f"\n>>> Unsuccessful analysis for clusters: {bad_trees}")
     print(f">>> Successful analysis for clusters: {finished_analysis}\n")
