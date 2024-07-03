@@ -44,12 +44,16 @@ def parse_args():
         help = '<optional> Target length for prunning the trees'
     )
     parser.add_argument(
-        '-aln', '--save_before', action='store_true',
+        '-b', '--save_before_prune', action='store_true',
         help = 'Save alignment before prunning the tree'
     )
     parser.add_argument(
-        '-sp', '--save_prune_res', action='store_true',
+        '-sr', '--save_prune_report', action='store_true',
         help = 'Store cluster size and tree length before and after prunning in table'
+    )
+    parser.add_argument(
+        '-alt', '--alternate', type=int, default=False,
+        help = 'wheter to prune tree by alternating branch removal between long and short branches'
     )
 
     return parser.parse_args()
@@ -92,7 +96,7 @@ def apply_aln(records, aln):
             pos += 3
         yield records[i].name, newseq
 
-def prune_length(phy, target, range):
+def prune_length(phy, target, range, alt):
     """
     From PoonLab/Bioplus/prunetree.py
     Progressively remove the shortest terminal branches in the tree until
@@ -101,12 +105,15 @@ def prune_length(phy, target, range):
     :param target:  float, target tree length to prune to
     :param range: float, in case users want more flexibility 
                         so the pruned tree could be a bit longer than target
+    :param count: int, how often trim long branches
     :return: Bio.Phylo object after pruning 
     """
     tlen = phy.total_branch_length()
+    
     if target >= tlen:
         sys.stderr.write(f"prune_length: requirement already met "
-                         f"({tlen}<={target}")
+                         f"({tlen}<={target})\n")
+        
     tips = phy.get_terminals()
 
     count = 0  # Alternate by removing shorter and longer branches
@@ -114,14 +121,28 @@ def prune_length(phy, target, range):
         # print(f"\n>>>> len: {tlen}, number of tips: {len(tips)}")
         # we have to re-sort every time because removing a branch
         # will lengthen another branch
-        if count % 2 == 0 :
-            tips = sorted(tips, key=lambda x: x.branch_length, reverse=True)
-        else:
+        if alt:  # Alternate between long and short branch removal
+            if count % alt == 0 :  # Remove longest branch
+                tips = sorted(tips, key=lambda x: x.branch_length, reverse=True)
+            else:  # Remove shortest branch
+                tips = sorted(tips, key=lambda x: x.branch_length)
+            
+            count += 1
+        else:  # Just remove short branches
             tips = sorted(tips, key=lambda x: x.branch_length)
-        _ = phy.prune(tips[0])
-        tlen -= tips[0].branch_length
+        
+        tip = tips[0]
+        new_len = tlen - tip.branch_length
+
+        # If pruning the tree creates a tree that is too short
+        if new_len < (target-range):
+            print("Returning previous to last tree")
+            return phy
+        
+        _ = phy.prune(tip)
+        tlen -= tip.branch_length
         tips = tips[1:]  # update list
-        count += 1
+    
     return phy
 
 def run_fasttree(aln):
@@ -248,13 +269,17 @@ def filter_seqs(grouped_seqs):
     
     return filtered
     
-def prune_align_build_tree(clust_seqs, before_prune_phy, target, range=0.05):
+def prune_align_build_tree(clust_seqs, before_prune_phy, target, alt, range=0.05):
     """
     Prune a phylogenetic tree to a target length, build a new codon-aware alignment and tree
     :param clust_seqs: dict, keyed by header, 
                              values are sequences of CDSs encoding the same protein
     :param before_prune_phy: Phylo object, tree built from before_pruned_aln
     :param target: str, limit for the length of your tree
+    :param alt: int, wheter to prune tree by alternating branch removal
+                                 between long and short branches
+    :return pruned_aln:
+    :return pruned_tree:
     """
 
     target = float(target)
@@ -262,12 +287,13 @@ def prune_align_build_tree(clust_seqs, before_prune_phy, target, range=0.05):
     # tip_names = set([tip.name for tip in phy.get_terminals()])
     tlen = before_prune_phy.total_branch_length()
 
-    # Prune tree 
+    pruned_tree = prune_length(before_prune_phy, target=target, 
+                                    range=range, alt=alt)
+
     if target < tlen:
-        
-        # Prune tree
-        try:
-            pruned_tree = prune_length(before_prune_phy, target=target, range=range)
+        try:  # Prune tree
+            pruned_tree = prune_length(before_prune_phy, target=target, 
+                                       range=range, alt=alt)
 
         # Error in pruned tree
         except Exception as e:
@@ -378,7 +404,7 @@ if __name__=="__main__":
         ks = result[cluster].keys()
         
         # Save phylogeny and codon aware alignment before prunning for debugging
-        if args.save_before:
+        if args.save_before_prune:
             with open(f"{cluster_label}_before_prun.fasta", 'w') as file:
                 file.write(before_prune_aln.getvalue())
             file.close()
@@ -389,7 +415,7 @@ if __name__=="__main__":
             try:
                 pruned_aln, pruned_tree = prune_align_build_tree(clust_seqs,
                                                 before_prune_phy, 
-                                                args.prune)
+                                                args.prune, args.alternate)
                 
                 # Save phylogeny
                 Phylo.write(pruned_tree, f"{cluster_label}.tree", 'newick')
@@ -420,7 +446,7 @@ if __name__=="__main__":
                                    cluster_label)
     
     # Save prunning results in report file 
-    if args.save_prune_res:
+    if args.save_prune_report:
         header = list(result[list(result.keys())[0]].keys())
         with open(f'{args.label}.report.csv', 'w') as csvfile:
             fieldnames = header

@@ -237,7 +237,7 @@ There are four options in this script to consider:
   
 
 ### Example if CDSs where clustered with `hclust.R`:
-
+**Note:** On your first attempt running this script, you will always find some problems with prunning the tree, use the tag `--save_before` to save your tree and your alignment before prunning to identify the target sequences to remove from long branches
 ```console
 python3 selection_by_cluster.py temp_mumps/mumps_CDSs.fasta -ci temp_mumps/mumps_clusters_info.csv --label temp_mumps/mumps --n_prot 9 --run_sel --prune 0.5 -sb
 ```
