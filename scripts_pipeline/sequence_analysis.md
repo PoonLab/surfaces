@@ -119,38 +119,50 @@ Use `hclust.R` to cluster your amino acid sequences based on the k-mer distances
 
 - csv file with k-mer distance between sequences
 
-In RStudio, modify the first few lines to set your working directory and read the k-mer distance file:
+In RStudio, provide your working directory, name of file with your k-mer distance, and name of your outpur file by modify the first few lines:
 
 ```R
-
-setwd('/home/laura/surfaces/data/measles')
-
-km  <-  read.csv('measles_distance_filtered.csv', header=F, row.names=1)
-
+########################################
+# Modify your filenames
+########################################
+wd <- '/home/laura/Projects/surfaces'
+# input file: .csv file with kmer distances, rownames should be fasta headers
+kmer.filename <- 'scripts_pipeline/temp_measles/measles_kmerdist.csv'  #input
+info.filename <- 'scripts_pipeline/temp_measles/measles_info2.csv'  # output
 ```
 
 #### Output:
 
-- csv file with cluster classification for each protein
+- csv file with cluster classification for each protein and name of the clusters for each protein
 
-Modify the last line to specify the name of your output file:
-
-```R
-write.csv(info, 'measles_protein-clusters-info.csv')
-```
-**Note**: From line `18`, you should be able to get the number of sequences per cluster. For example:
+**Note**: You can look at succesfully clustered proteins and outliers by counting the number of proteins per cluster with `table(info$clusters)`:
 
 ```R
->  table(clus)
+>  table(info$clusters)
 clus
 1  2  3  4  5  6  7  8  9  10
 703  699  447  473  698  704  703  703  3  2
 ```
 
-From this output, you can notice that clusters `9` and `10` are outliers.
-Thus, when measuring selection you can omit analysis for these clusters by setting the number of proteins (`--n_prots`) to `8`.
+From this output, you can notice that clusters `9` and `10` only have 3 and 2 proteins assigned, therefore we can consider them outliers.
+The number of clusters should be equal to the number of proteins your genome encodes. For mumps, that number is 8. 
 
-### C. (Optional) Visualize the cluster classification on your genome  
+### C. Separate sequences in a cluster into independent fasta files
+Once you have clustered your data, you can create multiple CDSs with the sequences assigned to the same cluster using `split_CDS_by_cluster.py`
+#### Inputs:
+- fasta file with all CDSs from all genomes
+- `-ci`: csv file with information about proteins assigned to clusters
+- `-n`: number of proteins (to decide the maximum number of clusters to analyze --- should be the same as the number of proteins in your genome).
+- `-l`: location of your ouput files
+
+Example
+```
+python3 split_CDS_by_cluster.py temp_mumps/info/mumps_CDSs.fasta -ci temp_mumps/info/mumps_info2.csv -l temp_mumps/info/
+```
+#### Outputs:
+- (n) number of fasta files of CDSs assigned to the same cluster
+
+### D. (Optional) Visualize the cluster classification on your genome  
 
 Use `plot-genome.py` to check your clustering results.
 Each line on the plot correspond to a genome, and the different fragments correspond to genes within the genome.
@@ -201,14 +213,6 @@ The script `selection_by_cluster.py` incorporates the following steps:
 
 ### Inputs:
 
-**From protein clustered with `hclust.R`:**
-
-- csv file with proteins assigned to clusters
-
-- fasta file with all CDSs from all genomes
-
-**From CDSs with already grouped proteins:**
-
 - fasta files with grouped CDSs
 
 There are four options in this script to consider:
@@ -217,9 +221,7 @@ There are four options in this script to consider:
 
 - `--label`: To provide the path and name of your files.
 
-- `--no_prots` to decide the maximum number of clusters to analyze (should be the same as the number of proteins in your genome).
-
-- `--save_before`: For debbuding purposes, safe the codon-aware alignment and phylogeny before pruning.
+- `--save_before_prune`: For debbuding purposes, safe the codon-aware alignment and phylogeny before pruning.
 
 - `--run_sel`: Under this tag the script will measure selection in all clusters of CDSs from your pruned alignments and trees. Note that when this tag is used, the following files will be generated:
 ### Outputs (per cluster):
