@@ -24,16 +24,8 @@ def parse_args():
         help = 'Path to fasta file with CDSs'
     )
     parser.add_argument(
-        '--clusters_info', '-ci', type=argparse.FileType('r'), default=False,
-        help='Path to file containing cluster output in csv format'
-    )
-    parser.add_argument(
         '--label', '-l' , type=str, default='cluster',
         help = 'label for CDSs files'
-    )
-    parser.add_argument(
-        '--n_prots', type=int, default=False, 
-        help = 'Maximum number of clusters allowed'
     )
     parser.add_argument(
         '-s', '--run_sel', action='store_true',
@@ -137,7 +129,7 @@ def prune_length(phy, target, range, alt):
         # If pruning the tree creates a tree that is too short
         if new_len < (target-range):
             print("Returning previous to last tree")
-            return phy
+            break
         
         _ = phy.prune(tip)
         tlen -= tip.branch_length
@@ -269,7 +261,7 @@ def filter_seqs(grouped_seqs):
     
     return filtered
     
-def prune_align_build_tree(clust_seqs, before_prune_phy, target, alt, range=0.05):
+def prune_align_build_tree(clust_seqs, before_prune_phy, target, alt, range=1):
     """
     Prune a phylogenetic tree to a target length, build a new codon-aware alignment and tree
     :param clust_seqs: dict, keyed by header, 
@@ -321,38 +313,6 @@ def prune_align_build_tree(clust_seqs, before_prune_phy, target, alt, range=0.05
 
     return (pruned_aln, pruned_tree)
 
-def separate_clustered_seqs(sequences, clusters_info, n_prots):
-    """
-    Separate sequences based on their cluster asignment
-    :param sequences: fasta file with CDSs
-    :param clus_info: csv file with sequence header and cluster classification
-    :param n_prots: number of proteins to analyse
-    :return all_clus_seqs: dict, keyed by cluster, 
-                                 values are dicts of sequences in cluster
-                                 (header:sequence)
-    """
-    seqs = {rec.name: rec.seq for rec in SeqIO.parse(sequences, "fasta")}
-    n_prots = args.n_prots
-            
-    # Read clustering results
-    reader = csv.DictReader(clusters_info)
-    
-    # Separate sequences from clustering results
-    all_clus_seqs = {} 
-    for row in reader:
-        cluster = row['clusters']
-        label = row['name']
-        clus_name = row['clus.name']
-        if n_prots:
-            if int(cluster) > n_prots:
-                print(f" Skipping {label} from cluster: {cluster}")
-                continue
-
-        if clus_name not in all_clus_seqs:
-            all_clus_seqs[clus_name] = {}
-        all_clus_seqs[clus_name][label] = seqs[label]
-
-    return all_clus_seqs
 
 def create_report():
     report = {}
@@ -362,19 +322,11 @@ def create_report():
 if __name__=="__main__":
     args = parse_args()
 
-    # Sequences were clustered with kmer dist and hclust
-    if args.clusters_info:
-        cds_file = args.cds_file[0]
-        grouped_seqs = separate_clustered_seqs(cds_file,
-                                               args.clusters_info, 
-                                               args.n_prots)
-
-    # Sequences have been previously grouped
-    else:
-        grouped_seqs = {}
-        for file in args.cds_file:
-            file_name = os.path.basename(file).split('.')[0]
-            grouped_seqs[file_name] = {rec.name: rec.seq for rec in SeqIO.parse(file, "fasta")}
+    # Parse each fasta file as SeqIO object
+    grouped_seqs = {}
+    for file in args.cds_file:
+        file_name = os.path.basename(file).split('.')[0]
+        grouped_seqs[file_name] = {rec.name: rec.seq for rec in SeqIO.parse(file, "fasta")}
     
 
     bad_trees = []  # Clusters with tree errors
