@@ -221,7 +221,7 @@ There are four options in this script to consider:
 
 - `--label`: To provide the path and name of your files.
 
-- `--save_before_prune`: For debbuding purposes, safe the codon-aware alignment and phylogeny before pruning.
+- `--save_before_prune`: For debugging purposes, safe the codon-aware alignment and phylogeny before pruning.
 
 - `--run_sel`: Under this tag the script will measure selection in all clusters of CDSs from your pruned alignments and trees. Note that when this tag is used, the following files will be generated:
 ### Outputs (per cluster):
