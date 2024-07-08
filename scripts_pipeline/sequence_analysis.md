@@ -23,7 +23,7 @@ MN125029.1
 
 ### 1.2 Download coding sequences
 
-Use `get_all_accns.py` to dowload the information associated with your genomes.
+Use `get_all_accns.py` to download the information associated with your genomes.
 #### Inputs:
 - List with accession numbers
 - Email
@@ -119,7 +119,7 @@ Use `hclust.R` to cluster your amino acid sequences based on the k-mer distances
 
 - csv file with k-mer distance between sequences
 
-In RStudio, provide your working directory, name of file with your k-mer distance, and name of your outpur file by modify the first few lines:
+In RStudio, provide your working directory, name of file with your k-mer distance, and name of your output file by modify the first few lines:
 
 ```R
 ########################################
@@ -135,11 +135,10 @@ info.filename <- 'scripts_pipeline/temp_measles/measles_info2.csv'  # output
 
 - csv file with cluster classification for each protein and name of the clusters for each protein
 
-**Note**: You can look at succesfully clustered proteins and outliers by counting the number of proteins per cluster with `table(info$clusters)`:
+**Note**: You can look at successfully clustered proteins and outliers by counting the number of proteins per cluster with `table(info$clusters)`:
 
 ```R
 >  table(info$clusters)
-clus
 1  2  3  4  5  6  7  8  9  10
 703  699  447  473  698  704  703  703  3  2
 ```
@@ -153,7 +152,7 @@ Once you have clustered your data, you can create multiple CDSs with the sequenc
 - fasta file with all CDSs from all genomes
 - `-ci`: csv file with information about proteins assigned to clusters
 - `-n`: number of proteins (to decide the maximum number of clusters to analyze --- should be the same as the number of proteins in your genome).
-- `-l`: location of your ouput files
+- `-l`: location of your output files
 
 Example
 ```
@@ -221,7 +220,7 @@ There are four options in this script to consider:
 
 - `--label`: To provide the path and name of your files.
 
-- `--save_before_prune`: For debbuding purposes, safe the codon-aware alignment and phylogeny before pruning.
+- `--save_before_prune`: For debugging purposes, safe the codon-aware alignment and phylogeny before pruning.
 
 - `--run_sel`: Under this tag the script will measure selection in all clusters of CDSs from your pruned alignments and trees. Note that when this tag is used, the following files will be generated:
 ### Outputs (per cluster):
@@ -238,17 +237,66 @@ There are four options in this script to consider:
 
   
 
-### Example if CDSs where clustered with `hclust.R`:
-**Note:** On your first attempt running this script, you will always find some problems with prunning the tree, use the tag `--save_before` to save your tree and your alignment before prunning to identify the target sequences to remove from long branches
+### 3.1 Explore your data
+Before we run the selection analysis, we need to get familiar with our datasets by exploring the alignments and trees associated to each dataset. 
+You can run `selection_by_cluster` using the options `--save_before_prune` and `--save_prune_report` to check whether you can reduce your datasets to a tree with a length around a given target:
 ```console
-python3 selection_by_cluster.py temp_mumps/mumps_CDSs.fasta -ci temp_mumps/mumps_clusters_info.csv --label temp_mumps/mumps --n_prot 9 --run_sel --prune 0.5 -sb
+python3 selection_by_cluster.py temp_measles/cdss/*.fasta --label temp_mumps/results/measles --prune 1.0 --save_before_prune --save_prune_report
+```
+The `.report.csv` file should give you an idea of the length of your trees and whether or not they can be pruned to your target length:
+|cluster                 |initial_seqs|pruned|inital_tree_lenght|final_seqs|final_tree_length|selection|
+|------------------------|------------|------|------------------|----------|-----------------|---------|
+|C_protein               |473         |False |0.539             |NA        |NA               |False    |
+|fusion_protein          |704         |False |0.796             |NA        |NA               |False    |
+|hemagglutinin_protein   |703         |False |0.89              |NA        |NA               |False    |
+|large_polymerase_protein|703         |False |0.808             |NA        |NA               |False    |
+|matrix_protein          |703         |False |1.094             |NA        |NA               |False    |
+|nucleocapsid_protein    |703         |False |0.883             |NA        |NA               |False    |
+|phosphoprotein          |699         |False |0.793             |NA        |NA               |False    |
+|V_protein               |447         |False |0.726             |NA        |NA               |False    |
+
+
+### 3.2 Look at your trees and your codon-aware alignments
+The former command you will create, for each CDS, a codon aware alignment and a phylogenetic tree:
+```
+temp_mumps/results$ ls -la *.tree
+36 -rw-rw-r-- 1 laura laura 33969 Jul  8 10:22 measles_C_protein.before_prun.tree
+56 -rw-rw-r-- 1 laura laura 55303 Jul  8 10:22 measles_fusion_protein.before_prun.tree
+60 -rw-rw-r-- 1 laura laura 58134 Jul  8 10:23 measles_hemagglutinin_protein.before_prun.tree
+64 -rw-rw-r-- 1 laura laura 63656 Jul  8 10:23 measles_large_polymerase_protein.before_prun.tree
+56 -rw-rw-r-- 1 laura laura 54595 Jul  8 10:24 measles_matrix_protein.before_prun.tree
+56 -rw-rw-r-- 1 laura laura 56937 Jul  8 10:24 measles_nucleocapsid_protein.before_prun.tree
+60 -rw-rw-r-- 1 laura laura 58365 Jul  8 10:24 measles_phosphoprotein.before_prun.tree
+36 -rw-rw-r-- 1 laura laura 33342 Jul  8 10:24 measles_V_protein.before_prun.tree
 ```
 
-### Example if CDSs where grouped with `extract_mat_peptide.py`:
-```console
-python3 selection_by_cluster.py temp_hepa/*.fasta --label temp_hepa/ --prune 0.5 -sb --run_sel
 ```
-  
+/temp_measles/results$ ls -la *.codon_aln.mafft.fasta
+-rw-rw-r-- 1 laura laura  292902 Jul  8 10:22 measles_C_protein.codon_aln.mafft.fasta
+-rw-rw-r-- 1 laura laura 1275172 Jul  8 10:22 measles_fusion_protein.codon_aln.mafft.fasta
+-rw-rw-r-- 1 laura laura 1358016 Jul  8 10:22 measles_hemagglutinin_protein.codon_aln.mafft.fasta
+-rw-rw-r-- 1 laura laura 4657977 Jul  8 10:23 measles_large_polymerase_protein.codon_aln.mafft.fasta
+-rw-rw-r-- 1 laura laura  784046 Jul  8 10:24 measles_matrix_protein.codon_aln.mafft.fasta
+-rw-rw-r-- 1 laura laura 1154527 Jul  8 10:24 measles_nucleocapsid_protein.codon_aln.mafft.fasta
+-rw-rw-r-- 1 laura laura 1151802 Jul  8 10:24 measles_phosphoprotein.codon_aln.mafft.fasta
+-rw-rw-r-- 1 laura laura  463642 Jul  8 10:24 measles_V_protein.codon_aln.mafft.fasta
+```
+
+Use `figtree` and `Aliview` or any other programs to visualize the trees identify unusually long branches, and alignments to identify possible frame shifts or other unusual events:
+```
+temp_measles/results$ figtree measles_V_protein.before_prun.tree 
+temp_measles/results$ aliview measles_V_protein.before_prun.tree 
+```
+### 3.3 Remove potentially problematic sequences from original CDS files
+From exploring the trees and codon-aware alignments you will now have an idea of your problematic sequences. 
+Use `Aliview` to visualize each one of your CDS files (inputs on step `3.1`) and remove sequences that created long branches on the tree, incomplete sequences, or sequences with a lot of `N` characters in the middle. 
+
+### 3.4 Measure selection
+Now that you have manually cleaned your CDS files, you can now proceed to measure selection in all your alignments with the `--run_sel` option on `selection_by_cluster`:
+
+```
+python3 selection_by_cluster.py temp_mumps/*.fasta --label temp_mumps/temp/bad --prune 1.0 --save_prune_report --run_sel
+```
 
 ## 6. Plot selection grid
 
