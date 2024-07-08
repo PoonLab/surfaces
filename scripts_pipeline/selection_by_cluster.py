@@ -33,15 +33,19 @@ def parse_args():
     )
     parser.add_argument(
         '-p', '--prune', type=str, default=False,
-        help = '<optional> Target length for prunning the trees'
+        help = '<optional> Target length for pruning the trees'
     )
     parser.add_argument(
         '-b', '--save_before_prune', action='store_true',
-        help = 'Save alignment before prunning the tree'
+        help = 'Save alignment before pruning the tree'
     )
     parser.add_argument(
         '-sr', '--save_prune_report', action='store_true',
-        help = 'Store cluster size and tree length before and after prunning in table'
+        help = 'Store cluster size and tree length before and after pruning in table'
+    )
+    parser.add_argument(
+        '-mt', '--min_target', type=float, default=0.5,
+        help = 'Store cluster size and tree length before and after pruning in table'
     )
 
     return parser.parse_args()
@@ -289,11 +293,10 @@ if __name__=="__main__":
         file_name = os.path.basename(file).split('.')[0]
         grouped_seqs[file_name] = {rec.name: rec.seq for rec in SeqIO.parse(file, "fasta")}
     
-
     bad_trees = []  # Clusters with tree errors
     finished_analysis = []
     # Align, make tree, prune tree, measure selection
-    result = {}  # Store prunning results
+    result = {}  # Store pruning results
     for cluster in grouped_seqs:
         
         print(f"\n>>>> Processing cluster: {cluster} <<<<\n")
@@ -311,13 +314,13 @@ if __name__=="__main__":
         result[cluster] = {'cluster': cluster, 
                            'initial_seqs': len(clust_seqs),
                            'pruned': False, 
-                           'inital_tree_lenght': round(before_prune_phy.total_branch_length(), 3),
+                           'initial_tree_length': round(before_prune_phy.total_branch_length(), 3),
                            'final_seqs': 'NA',
                            'final_tree_length':'NA',
                            'selection': False}
         ks = result[cluster].keys()
         
-        # Save phylogeny and codon aware alignment before prunning for debugging
+        # Save phylogeny and codon aware alignment before pruning for debugging
         if args.save_before_prune:
             with open(f"{cluster_label}_before_prun.fasta", 'w') as file:
                 file.write(before_prune_aln.getvalue())
@@ -332,7 +335,7 @@ if __name__=="__main__":
             try:
                 pruned_tree = prune_length(before_prune_phy,
                                           target = float(args.prune))
-                # Get sequences after prunning
+                # Get sequences after pruning
                 pruned_seqs = {}
                 for tip in pruned_tree.get_terminals():
                     pruned_seqs[tip.name] = clust_seqs[tip.name]
@@ -351,14 +354,13 @@ if __name__=="__main__":
                 result[cluster]['final_seqs'] = len(pruned_tree.get_terminals())
                 result[cluster]['final_tree_length'] = round(pruned_tree.total_branch_length(), 3)
 
-                finished_analysis.append(cluster)
                 print(f"Final tree length: {round(pruned_tree.total_branch_length(), 3)}\n")
                 
             # Error in pruned tree
             except Exception as e:
                 tlen =  before_prune_phy.total_branch_length()
                 # If tree is too small
-                if not tlen > 0.5:
+                if not tlen > args.min_target:
                     measure_selection = False
                     result[cluster]['selection'] = measure_selection
                     bad_trees.append(cluster)
@@ -384,7 +386,7 @@ if __name__=="__main__":
             except:
                 print(f"Could not measure selection on {cluster}")
     
-    # Save prunning results in report file 
+    # Save pruning results in report file
     if args.save_prune_report:
         header = list(result[list(result.keys())[0]].keys())
         with open(f'{args.label}.report.csv', 'w') as csvfile:
