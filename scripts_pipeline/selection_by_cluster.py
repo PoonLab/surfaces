@@ -113,9 +113,11 @@ def prune_length(phy, target):
         new_len = tlen - tip.branch_length
 
         # If pruning the tree creates a tree that is too short
-        if new_len < (target-range):
-            print("Returning previous to last tree")
-            break
+        if new_len <= (target):
+            print(f"\n-----------------------------------------------\n")
+            print (f"Returning previous to last tree. Length={round(phy.total_branch_length(), 3)}")
+            print(f"\n-----------------------------------------------\n")
+            return(phy)
         
         _ = phy.prune(tip)
         tlen -= tip.branch_length
@@ -322,13 +324,13 @@ if __name__=="__main__":
             file.close()
             Phylo.write(before_prune_phy, f"{cluster_label}.before_prun.tree", 'newick')
 
-        # Label to decidde whether to run selection
+        # Label to decide whether to run selection
         measure_selection = True
         
         # Prune tree
         if args.prune:
             try:
-                prune_tree = prune_length(before_prune_phy, 
+                pruned_tree = prune_length(before_prune_phy,
                                           target = float(args.prune))
                 # Get sequences after prunning
                 pruned_seqs = {}
@@ -350,6 +352,7 @@ if __name__=="__main__":
                 result[cluster]['final_tree_length'] = round(pruned_tree.total_branch_length(), 3)
 
                 finished_analysis.append(cluster)
+                print(f"Final tree length: {round(pruned_tree.total_branch_length(), 3)}\n")
                 
             # Error in pruned tree
             except Exception as e:
@@ -366,7 +369,7 @@ if __name__=="__main__":
                     continue
                 else: 
                     print(f"\n-----------------------------------------------")
-                    print(f"\tPrunning not required for {cluster}:")
+                    print(f"\tPruning not required for {cluster}:")
                     print(f"\t'{e}'")
                     print(f"-------------------------------------------------\n")
 
