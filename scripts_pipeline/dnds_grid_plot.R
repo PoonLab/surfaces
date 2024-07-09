@@ -1,7 +1,8 @@
 # Analyse FUBAR results for multiple CDSs in a virus
-setwd("/home/laura/Projects/surfaces_data")
+setwd("/home/laura/Projects/surfaces/scripts_pipeline/all_jsons")
 library(plyr)
 require(jsonlite)
+library(dplyr)
 
 ######################################################
 # Function for transparency on plots
@@ -34,26 +35,34 @@ res <- lapply(master, function(d) {
   return(site.stats)
 })
 
-##################################
-# Load metadata
-##################################
-md<-read.csv("feb28measles_protein-clusters-info.csv")
-g.n<-table(md$gene.name,md$clusters)
-prot.name<-c()
-len.clus <-c()
-for(i in 1:8){
-  m <- which.max(g.n[,i])
-  l <- sum(g.n[,6])
-  len.clus <- append(len.clus,l)
-  prot.name<-append(prot.name,names(m))
+###############################################
+# distribution of dN and dS for all proteins
+###############################################
+par(mfrow=c(5,5)) # 6 rows, 2 columns
+
+# Plot all dn and ds for each protein
+for (i in 1:length(res)){
+  c1 <- res[[i]]
+  prot <- names(res)[[i]]
+  header <- gsub(".FUBAR.json", "", prot)
+  plot(c1$alpha, main = header, col="dodgerblue", pch=19)
+  points(c1$beta, main = header, col="orange", pch=19)
 }
+
+par(mfrow=c(1,2)) # 6 rows, 2 columns
+
+# Extract dn ds for all proteins into a single dataframe
+all.dn <- unlist(lapply(res, function(d){d$beta}))
+all.ds <- unlist(lapply(res, function(d){d$alpha}))
+summary(cbind(all.dn, all.ds))
+hist(all.dn, breaks=100)
+hist(all.ds, breaks = 100)
 
 ##################################
 # Plot grid for all proteins
 ##################################
-
 breaks <- c(0, 0.1, 0.5, 1, 1.6, 2.5, 5)
-par(mfrow=c(2,4)) # 6 rows, 2 columns
+par(mfrow=c(5,5)) # 6 rows, 2 columns
 for (i in 1:length(res)){
   # name <- strsplit(names(res[i]), "[.]")[[1]][1]
   dnds <- res[[i]]
@@ -84,7 +93,6 @@ for (i in 1:length(res)){
 ##################################
 # Create fingerprint
 ##################################
-
 get_fingerprint <- function(x, breaks){
   n <- length(breaks)
   ds <- factor(findInterval(x$alpha, vec=breaks), levels=1:n)
@@ -92,31 +100,18 @@ get_fingerprint <- function(x, breaks){
   fp <- table(dn, ds) # Fingerprint
   return(fp)
 }
-
 ##################################
 # Measure fingerprint similarity
 ##################################
-
 cosine <- function(x,y) {
   sum(x*y) / sqrt(as.numeric(sum(x*x)) * as.numeric(sum(y*y)))
 }
-
-################################################
-# Calculate cosine distance between two clusters
-################################################
-
+###########################################
+# cosine distance and PCA for all proteins
+###########################################
 breaks <- c(0, 0.1, 0.5, 1, 1.6, 2.5, 5)
 
-clust.1 <- res[[1]]
-clust.2 <- res[[2]]
-
-fp1 <- get_fingerprint(clust.1, breaks = breaks)
-fp2 <- get_fingerprint(clust.2, breaks = breaks)
-sim <- cosine(fp1, fp2)
-
-###################################
-# cosine distance for all proteins
-###################################
+# --- get cosine distance between all --- #
 prot.sim <- matrix(NA, length(res), length(res))
 
 for (i in 1:length(res)){
@@ -132,9 +127,90 @@ for (i in 1:length(res)){
 }
 
 cos.dis <- 1 - prot.sim
+res.names <- unlist(lapply(names(res), function(x) gsub(".FUBAR.json", "", x)))
+rownames(cos.dis)<- res.names
+colnames(cos.dis)<-res.names
+
+# --- PCA --- #
 pca <- prcomp(cos.dis)
 plot(pca$x[,1], pca$x[,2])
 
+# Get protein name
+get_protein <- function(x){
+  splited <- strsplit(x, "_")[[1]]
+  protein <- paste(splited[2:length(splited)], collapse = "_")
+  return(protein)
+}
+
+# Get virus name
+get_virus <- function(x){
+  splited <- strsplit(x, "_")[[1]]
+  virus <- splited[1]
+  return(virus)
+}
+
+# Annotate PCA
+pca.df <- as.data.frame(pca$x)[, c("PC1", "PC2", "PC3", "PC4")]
+pca.df$virus <- unlist(lapply(rownames(pca.df),get_virus))
+pca.df$protein <- unlist(lapply(rownames(pca.df),get_protein))
+
+# variation: From Sareh's surfaces/fubar/create_pca.r
+pca.var <- pca$sdev^2
+pca.var <- pca$sdev^2
+pca.var.per <- round(pca.var/sum(pca.var), 1)
+
+# --- Annotate surface proteins --- #
+# chikv, mumps, lyssavirus, measles, zika, tbe
+surface.proteins <- c("E1_envelope_glycoprotein", "E2_envelope_glycoprotein",
+                      "SH_protein", "fusion_protein", "hemagglutinin", "small_hydrophobic_protein", 
+                      "glycoprotein",
+                      "hemagglutinin", "fusion_protein",
+                      "envelope_protein_E",
+                      "envelope_protein_E"
+                      )
+
+# --- Plot --- #
+par(mfrow=c(1,3)) #row, column
+
+# Plot variation
+barplot(pca.var.per, main="Component contribution", xlab = "PC", las=1,
+        ylab="Percent Variation", xlim=c(0,10), col = "dodgerblue4")
+
+# Plot PCA colored by is.surface
+pca.df$is.surface <- pca.df$protein %in% surface.proteins
+plot(pca.df$PC1, pca.df$PC2, col=as.factor(pca.df$is.surface), pch=19, las=1)
+text(pca.df$PC1[pca.df$is.surface], pca.df$PC2[pca.df$is.surface],
+     labels=pca.df$protein[pca.df$is.surface], pos=4, cex=1.1)
+legend("topleft", legend = c("not surface", "surface"),
+       col=as.factor(unique(pca.df$is.surface)), pch=19)
+
+# Plot PCA colored by virus
+plot(pca.df$PC1, pca.df$PC2, col=as.factor(pca.df$virus), pch=19, las=1)
+legend("topleft", legend = unique(pca.df$virus),
+       col=as.factor(unique(pca.df$virus)), pch=19, cex=1.1)
+
+################################################
+# Calculate cosine distance between two clusters
+################################################
+clust.1 <- res[[1]]
+clust.2 <- res[[2]]
+
+fp1 <- get_fingerprint(clust.1, breaks = breaks)
+fp2 <- get_fingerprint(clust.2, breaks = breaks)
+sim <- cosine(fp1, fp2)
+##################################
+# Load metadata
+##################################
+md<-read.csv("feb28measles_protein-clusters-info.csv")
+g.n<-table(md$gene.name,md$clusters)
+prot.name<-c()
+len.clus <-c()
+for(i in 1:8){
+  m <- which.max(g.n[,i])
+  l <- sum(g.n[,6])
+  len.clus <- append(len.clus,l)
+  prot.name<-append(prot.name,names(m))
+}
 ###################################
 # Get tree lengths
 ###################################
@@ -158,4 +234,5 @@ prot.d <- data.frame(
                    ) 
 
 write.csv(prot.d, "measles-surfaces-info.csv", row.names = FALSE)
+
 
