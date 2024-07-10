@@ -119,7 +119,7 @@ if __name__ == "__main__":
             # get sequences
             for prod, strand, parts, cd_seq, aa_seq in retrieve_CDS(record):
                 loc = '.'.join('{}_{}'.format(p[0], p[1]) for p in parts)
-                prod = prod[0].replace(" ", "_")
+                prod = prod[0].replace(" ", "_").replace("-", "_")
                 cds_file.write(f'>{record.id}-{org}-{prod}-{strand}-{loc}\n{cd_seq}\n')
                 if not args.poly:
                     aa_file.write(f'>{record.id}-{org}-{prod}-{strand}-{loc}\n{aa_seq}\n')            
