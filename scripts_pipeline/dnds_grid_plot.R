@@ -58,10 +58,22 @@ summary(cbind(all.dn, all.ds))
 hist(all.dn, breaks=100)
 hist(all.ds, breaks = 100)
 
+###################################
+# Getting equiprobable breakpoints
+###################################
+x <- quantile(all.dn, probs = seq(0, 1, length.out = 5))
+cut(all.dn, breaks=x)
+
+
+tiled<-ntile(all.dn, n=5)
+
+
 ##################################
 # Plot grid for all proteins
 ##################################
 breaks <- c(0, 0.1, 0.5, 1, 1.6, 2.5, 5)
+
+
 par(mfrow=c(5,5)) # 6 rows, 2 columns
 for (i in 1:length(res)){
   # name <- strsplit(names(res[i]), "[.]")[[1]][1]
@@ -111,6 +123,20 @@ cosine <- function(x,y) {
 ###########################################
 breaks <- c(0, 0.1, 0.5, 1, 1.6, 2.5, 5)
 
+pdf("pca_analysis.pdf", width=17, height = 16)
+
+par(mfrow=c(4,4)) #row, column
+# par(mfrow=c(2,3)) #row, column
+par(mar=c(2, 4, 3, 1))
+
+int <- c(2, 3, 4, 5, 6, 7, 8, 9, 10, 20, 50, 100, 150, 200, 250, 300)
+
+for (j in 1:length(int)) {
+
+# --- Define grid points --- #  
+interval=int[j]
+x <- quantile(all.dn, probs = seq(0, 1, length.out = interval))
+breaks <-x
 # --- get cosine distance between all --- #
 prot.sim <- matrix(NA, length(res), length(res))
 
@@ -133,7 +159,7 @@ colnames(cos.dis)<-res.names
 
 # --- PCA --- #
 pca <- prcomp(cos.dis)
-plot(pca$x[,1], pca$x[,2])
+# plot(pca$x[,1], pca$x[,2])
 
 # Get protein name
 get_protein <- function(x){
@@ -160,17 +186,18 @@ pca.var <- pca$sdev^2
 pca.var.per <- round(pca.var/sum(pca.var), 1)
 
 # --- Annotate surface proteins --- #
-# chikv, mumps, lyssavirus, measles, zika, tbe
+# chikv, mumps, lyssavirus, measles, zika, tbe, dengue
 surface.proteins <- c("E1_envelope_glycoprotein", "E2_envelope_glycoprotein",
                       "SH_protein", "fusion_protein", "hemagglutinin", "small_hydrophobic_protein", 
                       "glycoprotein",
                       "hemagglutinin", "fusion_protein",
                       "envelope_protein_E",
-                      "envelope_protein_E"
+                      "envelope_protein_E", 
+                      "envelope_protein_E_v1"
                       )
 
 # --- Plot --- #
-par(mfrow=c(1,3)) #row, column
+# par(mfrow=c(1,3)) #row, column
 
 # Plot variation
 barplot(pca.var.per, main="Component contribution", xlab = "PC", las=1,
@@ -178,7 +205,7 @@ barplot(pca.var.per, main="Component contribution", xlab = "PC", las=1,
 
 # Plot PCA colored by is.surface
 pca.df$is.surface <- pca.df$protein %in% surface.proteins
-plot(pca.df$PC1, pca.df$PC2, col=as.factor(pca.df$is.surface), pch=19, las=1)
+plot(pca.df$PC1, pca.df$PC2, col=as.factor(pca.df$is.surface), pch=19, las=1, main=paste("intervals =", interval))
 text(pca.df$PC1[pca.df$is.surface], pca.df$PC2[pca.df$is.surface],
      labels=pca.df$protein[pca.df$is.surface], pos=4, cex=1.1)
 legend("topleft", legend = c("not surface", "surface"),
@@ -188,6 +215,9 @@ legend("topleft", legend = c("not surface", "surface"),
 plot(pca.df$PC1, pca.df$PC2, col=as.factor(pca.df$virus), pch=19, las=1)
 legend("topleft", legend = unique(pca.df$virus),
        col=as.factor(unique(pca.df$virus)), pch=19, cex=1.1)
+}
+
+dev.off()
 
 ################################################
 # Calculate cosine distance between two clusters
