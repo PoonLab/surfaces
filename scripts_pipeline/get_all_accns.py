@@ -12,7 +12,7 @@ import argparse
 import re
 
 
-def read_accns(handle, regex="([A-Z]+[0-9]+)(\.[0-9]+)?"):
+def read_accns(handle, regex="([A-Z]+_?[0-9]+)(\.[0-9]+)?"):
     """ Read and validate accession numbers from file """
     pat = re.compile(regex)
     accns = []
