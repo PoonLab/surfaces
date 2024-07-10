@@ -1,76 +1,46 @@
-# Retrieve medatada, CDSs, and full genome from accession numbers
-# Modified from: https://github.com/PoonLab/ProtClust/blob/main/scripts/protein_scraper.py#L100
-from Bio import Entrez, SeqIO, SeqFeature
+description = """
+Retrieve medatada, coding sequences (CDSs), and full genome 
+sequences from the NCBI Genbank database, given a list of accession 
+numbers
+"""
+
+from Bio import Entrez, SeqIO
 from time import sleep
 import csv
 import sys
-
 import argparse
+import re
 
 
-def get_args(parser):
-    # Required arguments
-    parser.add_argument(
-        'table',
-        help='Path to the file containing list of accession numbers'
-    )
-    parser.add_argument(
-        'email',
-        help='email name to be identified in NCBI'
-    )
-    # Optional
-    parser.add_argument(
-        '--outfile', default=None, 
-        help='<Optional> Path to fasta file with amino acid sequences'
-    )
-    parser.add_argument(
-        '--poly', action = 'store_true', default = False, 
-        help='<Optional> true if virus encodes a polyprotein'
-    )
-
-    return parser.parse_args()
-
-def parse_table(tbl):
-    """
-    Loop trough table file to retrieve accession numbers as a list
-    :param tbl: list with accession numbers
-    """
-    handle = open(tbl)
-
-    values = []
+def read_accns(handle, regex="([A-Z]+[0-9]+)(\.[0-9]+)?"):
+    """ Read and validate accession numbers from file """
+    pat = re.compile(regex)
+    accns = []
     for line in handle:
-        temp = line.strip('\n')  # Remove new line
-        values.append(temp)
+        matches = pat.findall(line.strip())
+        if len(matches) == 0:
+            if line != '\n':  # ignore blank line
+                sys.stderr.write(f"Invalid accession detected: {line}\n")
+            continue
+        accns.append(''.join(matches[0]))
+    return accns
 
-    return(values)
 
-def retrieve_gid(accn):
+def get_metadata(record):
     """
-    Find records according to genbank accession number
-    :param accn: NCBI accession number
-    :returns: GenInfo Identifier (GI) associated with the accession number
-    """
-    handle = Entrez.esearch(db='nucleotide', term=accn, retmax=1)
-    response = Entrez.read(handle)
-    if response['Count'] == '0':
-        # retry query
-        handle = Entrez.esearch(db='nucleotide', term=accn, retmax=1)
-        response = Entrez.read(handle)
-        if response['Count'] == '0':
-            return None
+    Retrieve source metadata associated with Genbank SeqRecord.
+    :return:  dict, values associated with fields
+    """    
+    fields = ('isolate', 'host', 'country', 'collection_date', 'organism')
+    source = record.features[0]
+    values = [source.qualifiers.get(f, [''])[0] for f in fields]
+    
+    result = dict(zip(fields, values))
+    result['accn'] = record.id
+    result.update({'taxonomy': ':'.join(record.annotations["taxonomy"])})
 
-    return response['IdList'][0]
+    return result
 
-def retrieve_record(gid):
-    """
-    Using Entrez, fetch SeqRecord object from NCBI using GI number
-    :param gid: GenInfo Identifier (GI) assigned to a record proccesed by NCBI 
-    :returns: SeqRecord object 
-    """
-    handle = Entrez.efetch(db='nucleotide', rettype='gb', retmode='text', id=gid)
-    # handle = Entrez.efetch(db='nuccore', id=gid, rettype='gb', retmode='text')
-    gb = SeqIO.parse(handle, format='genbank')
-    return next(gb)
 
 def retrieve_CDS(record):
     """
@@ -99,78 +69,65 @@ def retrieve_CDS(record):
 
         yield product, cd.strand, parts, cd_seq, aaseq
 
-def get_metadata(accn):
-    handle = Entrez.efetch(db='nuccore', id=accn, rettype='gb', retmode='text')
-    records = SeqIO.parse(handle, 'gb')
-    
-    for rec in records:
-        taxon = ':'.join(rec.annotations["taxonomy"])
-        source = list(filter(lambda f: f.type=='source', rec.features))
-        quals = source[0].qualifiers
-        iso = quals.get('isolate', [''])[0],
-        host = quals.get('host', [''])[0],
-        loc = quals.get('country', [''])[0],
-        coldate = quals.get('collection_date', [''])[0]
-        organism = quals.get('organism', [''])[0]
-        yield rec.id, taxon, iso, host, loc, coldate, rec.seq, organism
-
-
-def main():
-
-    parser = argparse.ArgumentParser(
-        description="""From list of accession numbers, 
-          retrieve amino acid sequences as fasta file"""
-    )
-    
-    args = get_args(parser)
-    accn_table = args.table
-    Entrez.email = args.email
-    filename = args.outfile if args.outfile else f'{accn_table}'
-    poly = args.poly
-    
-    if poly:
-        cds_file = open(f'{filename}_CDSs_polyprot.fasta', 'w')
-    else:
-        cds_file = open(f'{filename}_CDSs.fasta', 'w')
-        aa_file = open(f'{filename}_aa.fasta', 'w')
-    
-    md_file = open(f'{filename}_md.csv', 'w')
-    md_writer = csv.writer(md_file)
-    md_writer.writerow(['accn', 'taxonomy', 'isolate', 'host', 'country', 'coldate'])
-    values = parse_table(accn_table)
-    # full_gen_file = open(f'{filename}_full_gen.fasta', 'w')
-
-    for accn in values:
-
-        gid = retrieve_gid(accn)
-        if gid is None:
-            print('Warning, failed to retrieve gid for {}'.format(accn))
-            continue
-
-        sleep(1)  # avoid spamming the server
-        record = retrieve_record(gid)
-        
-        # Get medatada and store full genomes
-        for id, taxon, iso, host, loc, coldate, full_seq, organism in get_metadata(accn):
-            md_writer.writerow([id, taxon, iso, host, loc, coldate])
-            # full_gen_file.write(f'>{id}-{organism}-{host}-{coldate}\n{full_seq}\n')
-
-        # get sequences
-        for product, strand, parts, cd_seq, aa_seq in retrieve_CDS(record):
-            location = '.'.join('{}_{}'.format(p[0], p[1]) for p in parts)
-            organism_name = record.annotations['organism'].replace(" ", "_")
-            product = product[0].replace(" ", "_")
-            cds_file.write(f'>{accn}-{organism_name}-{product}-{strand}-{location}\n{cd_seq}\n')
-            if not poly:
-                aa_file.write(f'>{accn}-{organism_name}-{product}-{strand}-{location}\n{aa_seq}\n')
-            
-        print(accn)
-        sleep(1)
-    # close files
-    cds_file.close()
-    if not poly:
-        aa_file.close()
-    print(f'\n>>> DONE <<<\n')
 
 if __name__ == "__main__":
-    main()
+    # command line interface
+    parser = argparse.ArgumentParser(description=description)
+    parser.add_argument('infile', type=argparse.FileType('r'),
+                        help='Path to file containing accession numbers')
+    parser.add_argument('email', help='email for Entrez API transactions')
+    parser.add_argument('--prefix', type=str, 
+                        help='Path and prefix for output files')
+    parser.add_argument("--batch", type=int, default=50,
+                        help="Batch size for retrieving records")
+    parser.add_argument("--delay", type=float, default=1.0, 
+                        help="Number of seconds to pause between queries (default 1).")
+    parser.add_argument('--poly', action='store_true',
+                        help='Set if virus genome encodes a polyprotein')
+    args = parser.parse_args()
+    
+    Entrez.email = args.email
+
+    # read accessions from file
+    accns = read_accns(args.infile)
+    sys.stderr.write(f"Extracted {len(accns)} accession numbers from input file:\n")
+    sys.stderr.write(f"  {', '.join(accns[:3])}, ..., {', '.join(accns[-3:])}\n")
+    
+    # prepare output file paths
+    if args.prefix is None:
+        args.prefix = args.infile.name
+    cds_file = open(f'{args.prefix}_CDSs.fasta', 'w')
+    aa_file = open(f'{args.prefix}_aa.fasta', 'w')
+    if args.poly:
+        cds_file = open(f'{args.prefix}_CDSs_polyprot.fasta', 'w')
+        aa_file = None
+
+    fields = ['accn', 'taxonomy', 'isolate', 'host', 'country', 'collection_date']
+    md_file = open(f'{args.prefix}_md.csv', 'w')
+    md_writer = csv.DictWriter(md_file, fieldnames=fields)
+    md_writer.writeheader()
+
+    # retrieve records in batches
+    for i in range(0, len(accns), args.batch):
+        query = ','.join(accns[i:(i+args.batch)])
+        response = Entrez.efetch(db="nucleotide", rettype="gb", retmode="text", id=query)
+        for record in SeqIO.parse(response, format="genbank"):
+            mdata = get_metadata(record)
+            org = mdata.pop('organism').replace(' ', '_')
+            md_writer.writerow(mdata)
+            
+            # get sequences
+            for prod, strand, parts, cd_seq, aa_seq in retrieve_CDS(record):
+                loc = '.'.join('{}_{}'.format(p[0], p[1]) for p in parts)
+                prod = prod[0].replace(" ", "_")
+                cds_file.write(f'>{record.id}-{org}-{prod}-{strand}-{loc}\n{cd_seq}\n')
+                if not args.poly:
+                    aa_file.write(f'>{record.id}-{org}-{prod}-{strand}-{loc}\n{aa_seq}\n')            
+
+        sleep(args.delay)
+
+    # close files
+    cds_file.close()
+    if not args.poly:
+        aa_file.close()
+    print('\n>>> DONE <<<\n')
