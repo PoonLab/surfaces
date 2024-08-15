@@ -7,7 +7,7 @@ import os
 import sys
 
 
-def align_amino(records, bin='mafft'):
+def align_amino(records, bin='mafft', quiet=False, threads=1):
     """
     Given a set of codon sequences (CDSs), translate to amino acids and 
     perform multiple sequence alignment.  To make this more efficient, 
@@ -37,7 +37,14 @@ def align_amino(records, bin='mafft'):
     handle.close()
     sys.stderr.write(f"Compressed FASTA from {len(records)} to {len(unique)} unique sequences\n")
 
-    stdout = subprocess.check_output([bin, '--quiet', handle.name])
+    cmd = [bin]
+    if quiet:
+        cmd.append('--quiet')
+    if threads > 1:
+        cmd.extend(['--thread', str(threads)])
+    cmd.append(handle.name)
+    
+    stdout = subprocess.check_output(cmd)
     stdout = stdout.decode('utf-8')
     os.remove(handle.name)  # delete temp file
     
@@ -97,11 +104,18 @@ if __name__ == "__main__":
         "-o", "--outfile", type=argparse.FileType('w'), default=sys.stdout,
         help="option, path to write FASTA output. Default is stdout."
     )
+    parser.add_argument(
+        "--quiet", action="store_true", help="Suppress MAFFT console messages"
+    )
+    parser.add_argument(
+        "-t", "--threads", type=int, default=1, 
+        help="Number of threads to run MAFFT (default 1)."
+    )
     args = parser.parse_args()
 
     # load records into memory because we need to iterate twice
     records = list(SeqIO.parse(args.infile, args.format))
 
-    aln = align_amino(records)
+    aln = align_amino(records, quiet=args.quiet, threads=args.threads)
     for label, codseq in apply_aln(records, aln):
         args.outfile.write(f">{label}\n{codseq}\n")
