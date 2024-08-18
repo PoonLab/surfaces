@@ -50,7 +50,7 @@ locate.decline <- function(x, w=5, threshold=0.1) {
 # Visualize tree lengths as function of number of tips
 require(ggfree)
 prots <- unique(df$protein)
-pal <- ggfree::gg.rainbow(n=8)
+pal <- ggfree::gg.rainbow(n=9)
 
 # prepare plot region
 par(mar=c(5,5,1,1))
@@ -63,8 +63,13 @@ for (i in 1:length(prots)) {
   y <- df$tree.len[df$protein==prot]
   lines(x, y, col=pal[i], lwd=2)
   
-  idx <- locate.decline(y, threshold=1)
+  idx <- locate.decline(y, threshold=0.5)
   points(x[idx], y[idx], pch=19, col=pal[i])
+  
+  text(x[1], y[1], label=prot, col=pal[i], adj=0, cex=0.7, xpd=NA)
+  text(0.01*diff(range(df$ntips))+x[idx], y[idx], label=x[idx], cex=0.5, adj=0)
+  #idx <- locate.decline(y, threshold=1.0)
+  #points(x[idx], y[idx], pch=21, col=pal[i], bg='white')
 }
 
 
