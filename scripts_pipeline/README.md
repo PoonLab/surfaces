@@ -1,5 +1,5 @@
 
-## Surface Pipeline
+## Surfaces Pipeline
 
 ### Step 1: Download Sequences from NCBI
 
