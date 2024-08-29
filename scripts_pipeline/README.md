@@ -25,4 +25,4 @@ python3 /home/hugocastelan/Documents/projects/surfaces/scripts_pipeline/codon_al
 
 ### Step 3: Manual Sequence Review
 
-Manually review and remove any problematic sequences from each alignment.
+Manually review and remove any problematic sequences from each alignment using aliview
