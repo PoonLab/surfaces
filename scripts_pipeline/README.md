@@ -17,11 +17,13 @@ python3 ../../surfaces/scripts_pipeline/extract_mat_peptides.py '../../surfaces_
  
 ### Step 2 : Align Sequences 
 
-Use the codon_align.py script to align the sequences in codon in frame, example for``` only one gene. 
+Use the codon_align.py script to align the sequences in codon in frame, example for only one gene. 
 ```bash
 python3 ../../surfaces/scripts_pipeline/codon_align.py zika_nonstructural_protein_NS4B_step1.fasta -o zika_nonstructural_protein_NS4B_step2.fasta
 ```
-Example for all gene 
+
+Example, for all genes a virus
+
 ```bash
 for i in *.fasta; do python3 ../../surfaces/scripts_pipeline/codon_align.py "$i" -o "${i%.fasta}_step2.fasta"; done
 ```
