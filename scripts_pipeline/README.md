@@ -9,7 +9,7 @@ To download sequences from NCBI, use the `get_all_accns.py` script:
 python3 ../../surfaces/scripts_pipeline/get_all_accns.py --prefix zika zika.seq --poly hcastelans@gmail.com
 ```
 
-If your virus is encoded by a polyprotein, you need to run the extract_mat_peptides.py script to extract the CDS:
+If your virus is encoded by a polyprotein, you need to run the extract_mat_peptides.py script to extract the CDS.In this case is necessary to use reference genome to in gbk format to extract the CDS 
 
 ```bash
 python3 ../../surfaces/scripts_pipeline/extract_mat_peptides.py '/home/hugocastelan/Documents/projects/surfaces_data/zika/zika/sequence.gb' '/home/hugocastelan/Documents/projects/surfaces_data/zika/zika/zika.seq_CDSs_polyprot.fasta'
