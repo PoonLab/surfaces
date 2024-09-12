@@ -47,6 +47,10 @@ Prune the phylogenetics tree, for this is necessary to run the follow comand
 for f in *.nwk; do   python3 ../../../surfaces/scripts_pipeline/prunetree.py "$f" > "${f%_step3.nwk}_step4.csv"; done
 
 ```
-Run the R script named step4_filter.R to generate the graph showing the number of sequences to filter. 
+Run the R script named step4_filter.R to generate the graph showing the number of sequences to filter, with the results you get the number of tips.
+Then run prunetree.py again and specify the number of tips that were obtained for that protein. For example: 
 
+```bash
+python3  ../../../surfaces/scripts_pipeline/prunetree.py ../step3/zika_anchored_capsid_protein_C_step3.nwk  --seq  ../step3/zika_anchored_capsid_protein_C_step3.fasta -t 78 --mode ntips -o  zika_anchored_capsid_protein_C_step4.fasta  --csvfile  zika_anchored_capsid_protein_C_step4.labels.csv
+```
 
