@@ -1,7 +1,7 @@
 
 ## Surfaces Pipeline
 
-### Step 1: Download Sequences from NCBI
+### Step 1: Download sequences from NCBI
 
 To download sequences from NCBI, use the `get_all_accns.py` script:
 
@@ -15,7 +15,7 @@ If your virus is encoded by a polyprotein, you need to run the extract_mat_pepti
 python3 ../../surfaces/scripts_pipeline/extract_mat_peptides.py '../../surfaces_data/zika/zika/sequence.gb' '/home/hugocastelan/Documents/projects/surfaces_data/zika/zika/zika.seq_CDSs_polyprot.fasta'
 ```
  
-### Step 2 : Align Sequences 
+### Step 2 : Align sequences 
 
 Use the codon_align.py script to align the sequences in codon in frame, example for only one gene. 
 ```bash
@@ -28,7 +28,7 @@ Example, for all genes a virus
 for i in *.fasta; do python3 ../../surfaces/scripts_pipeline/codon_align.py "$i" -o "${i%_step1.fasta}_step2.fasta"; done
 ```
 
-### Step 3: Manual Sequence Review and create phylogenetic tree 
+### Step 3: Manual sequence review and create phylogenetic tree 
 
 Manually review and remove any problematic sequences from each alignment using Aliview. After removing the sequences, re-align the data and save the alignments with the extension _step3.fasta in the step 3 folder.
 
@@ -39,7 +39,7 @@ For this step, it is necessary to run the FastTree program with all alignments f
 for f in *.fasta; do  fasttree -nt -quote "$f" >  ${f%.fasta}.nwk ;  done 
 ```
 
-### Step 4: prune the phylogenetic trees 
+### Step 4: Prune the phylogenetic trees 
 
 Prune the phylogenetics tree, for this is necessary to run the follow comand  
 
