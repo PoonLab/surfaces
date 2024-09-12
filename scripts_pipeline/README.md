@@ -28,7 +28,7 @@ Example, for all genes a virus
 for i in *.fasta; do python3 ../../surfaces/scripts_pipeline/codon_align.py "$i" -o "${i%_step1.fasta}_step2.fasta"; done
 ```
 
-### Step 3:Manually review the sequence alignment and create the phylogenetic tree
+### Step 3: Manually review the sequence alignment and create the phylogenetic tree
 
 Manually review and remove any problematic sequences from each alignment using Aliview. After removing the sequences, re-align the data and save the alignments with the extension _step3.fasta in the step 3 folder.
 
