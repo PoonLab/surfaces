@@ -59,7 +59,7 @@ prots <- unique(df$protein)
 pal <- ggfree::gg.rainbow(n=length(prots)) #change according the numbers of proteins 
 
 # prepare plot region
-par(mar=c(3,3,2,2))
+par(mar=c(3,3,1,1))
 plot(NA, xlim=range(df$ntips), ylim=range(df$tree.len),
      xlab="Number of tips", ylab="Tree length", bty='n')
 
@@ -71,12 +71,14 @@ for (i in 1:length(prots)) {
   
   idx <- locate.decline(y, threshold=0.5)
   points(x[idx], y[idx], pch=19, col=pal[i])
-  
   text(x[1], y[1], label=prot, col=pal[i], adj=0, cex=0.7, xpd=NA)
   text(0.01*diff(range(df$ntips))+x[idx], y[idx], label=x[idx], cex=0.5, adj=0)
+  print(paste("Protein:", prot, "=", x[idx]))
   #idx <- locate.decline(y, threshold=1.0)
   #points(x[idx], y[idx], pch=21, col=pal[i], bg='white')
 }
+
+
 
 
 
