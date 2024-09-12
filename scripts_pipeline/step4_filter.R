@@ -2,21 +2,27 @@
 # with the progressive pruning of the shortest tips, and to 
 # develop and apply a function for selecting a threshold for pruning.
 
-# Modify this path to select a specific group of CSV files
+# Load contents of all CSV files into a single data frame
 # produced by running prunetree.py with no additional arguments.
-files <- Sys.glob("~/git/surfaces/data/IAV/*step4.pruning.csv")
+files <- Sys.glob("/home/hugocastelan/Documents/projects/surfaces_data/zika1/step3/*.csv")
 
 # Load contents of all CSV files into a single data frame
-prune <- read.csv(files[1], header=F)
-df <- data.frame(protein='HA', ntips=prune$V1, tree.len=prune$V2)
+#prune <- read.csv(files[1], header=FALSE)
+#filename <- basename(files[1])
+#parts <- strsplit(filename, "_")[[1]]
+#prot<- paste(parts[2:(length(parts)-1)], collapse = "_")
+#df <- data.frame(protein=prot, ntips=prune$V1, tree.len=prune$V2)
+
+# Loop through each file to read and process the data
+df <- data.frame(protein=character(), ntips=numeric(), tree.len=numeric(), stringsAsFactors=FALSE)
 for (i in 2:length(files)) {
-  prune <- read.csv(files[i], header=F)
-  # extract protein name from canonical filename
-  prot <- strsplit(basename(files[i]), "_")[[1]][2]
-  temp <- data.frame(protein=prot, ntips=prune$V1, tree.len=prune$V2)
+  prune <- read.csv(files[i], header=FALSE)
+  filename <- basename(files[i])
+  parts <- strsplit(filename, "_")[[1]]
+  prot <- paste(parts[2:(length(parts)-1)], collapse = "_")
+  temp <- data.frame(protein=prot, ntips=prune$V1, tree.len=prune$V2, stringsAsFactors=FALSE)
   df <- rbind(df, temp)
 }
-
 
 #' Locate point where decay slope exceeds some threshold
 #' 
@@ -50,10 +56,10 @@ locate.decline <- function(x, w=5, threshold=0.1) {
 # Visualize tree lengths as function of number of tips
 require(ggfree)
 prots <- unique(df$protein)
-pal <- ggfree::gg.rainbow(n=9)
+pal <- ggfree::gg.rainbow(n=length(prots)) #change according the numbers of proteins 
 
 # prepare plot region
-par(mar=c(5,5,1,1))
+par(mar=c(3,3,2,2))
 plot(NA, xlim=range(df$ntips), ylim=range(df$tree.len),
      xlab="Number of tips", ylab="Tree length", bty='n')
 
