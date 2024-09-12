@@ -40,3 +40,4 @@ For this step, it is necessary to run the FastTree program with all alignments f
 ```bash
 for f in *.fasta; do o=$(echo $f | sed 's/.fasta/.nwk/g');   fasttree   -nt -quote  $i > $o ; done
 ```
+Once the phylogenetic trees are built, it is necessary to visualize them in FigTree to check for outliers. If an outlier is found, it should be removed from the alignment in step 3
