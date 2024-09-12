@@ -25,7 +25,7 @@ python3 ../../surfaces/scripts_pipeline/codon_align.py zika_nonstructural_protei
 Example, for all genes a virus
 
 ```bash
-for i in *.fasta; do python3 ../../surfaces/scripts_pipeline/codon_align.py "$i" -o "${i%.fasta}_step2.fasta"; done
+for i in *.fasta; do python3 ../../surfaces/scripts_pipeline/codon_align.py "$i" -o "${i%_step1.fasta}_step2.fasta"; done
 ```
 
 ### Step 3: Manual Sequence Review
