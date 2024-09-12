@@ -47,3 +47,6 @@ Prune the phylogenetics tree, for this is necessary to run the follow comand
 for f in *.nwk; do   python3 ../../../surfaces/scripts_pipeline/prunetree.py "$f" > "${f%_step3.nwk}_step4.csv"; done
 
 ```
+Run the R script named step4_filter.R to generate the graph showing the number of sequences to filter. 
+
+
