@@ -53,4 +53,10 @@ Then run prunetree.py again and specify the number of tips that were obtained fo
 ```bash
 python3  ../../../surfaces/scripts_pipeline/prunetree.py ../step3/zika_anchored_capsid_protein_C_step3.nwk  --seq  ../step3/zika_anchored_capsid_protein_C_step3.fasta -t 78 --mode ntips -o  zika_anchored_capsid_protein_C_step4.fasta  --csvfile  zika_anchored_capsid_protein_C_step4.labels.csv
 ```
+Next you have to run phylogenetic tree for this protein again 
+```bash
+fasttree -nt -quote zika_anchored_capsid_protein_C_step4.fasta > zika_anchored_capsid_protein_C_step4.nwk
+
+```
+
 
