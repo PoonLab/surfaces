@@ -47,15 +47,18 @@ Prune the phylogenetics tree, for this is necessary to run the follow comand
 for f in *.nwk; do   python3 ../../../surfaces/scripts_pipeline/prunetree.py "$f" > "${f%_step3.nwk}_step4.csv"; done
 
 ```
-Run the R script named step4_filter.R to generate the graph showing the number of sequences to filter, with the results you get the number of tips.
-Then run prunetree.py again and specify the number of tips that were obtained for that protein. For example: 
+Run the R script named step4_filter.R to generate the graph showing the number of sequences to filter, with the results you get the number of tips. 
+NOTE: If length of entire tree is below some threshold (0.5) then abandon alignment (stop here) 
+
+### Step 5: Prune and create phylogenetic trees 
+Then run prunetree.py again and specify the number of tips for each protein to necessary to prune accoriding with the results of step 4. For example: 
 
 ```bash
-python3  ../../../surfaces/scripts_pipeline/prunetree.py ../step3/zika_anchored_capsid_protein_C_step3.nwk  --seq  ../step3/zika_anchored_capsid_protein_C_step3.fasta -t 78 --mode ntips -o  zika_anchored_capsid_protein_C_step4.fasta  --csvfile  zika_anchored_capsid_protein_C_step4.labels.csv
+python3  ../../../surfaces/scripts_pipeline/prunetree.py ../step3/zika_anchored_capsid_protein_C_step3.nwk  --seq  ../step3/zika_anchored_capsid_protein_C_step3.fasta -t 78 --mode ntips -o  zika_anchored_capsid_protein_C_step5.fasta  --csvfile  zika_anchored_capsid_protein_C_step5.labels.csv
 ```
 Next you have to run phylogenetic tree for each protein again 
 ```bash
-fasttree -nt -quote zika_anchored_capsid_protein_C_step4.fasta > zika_anchored_capsid_protein_C_step4.nwk
+fasttree -nt -quote zika_anchored_capsid_protein_C_step5.fasta > zika_anchored_capsid_protein_C_step5.nwk
 
 ```
 
