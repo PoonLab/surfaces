@@ -4,7 +4,7 @@
 
 # Load contents of all CSV files into a single data frame
 # produced by running prunetree.py with no additional arguments.
-files <- Sys.glob("/home/hugocastelan/Documents/projects/surfaces_data/zika1/step3/*.csv")
+files <- Sys.glob("/home/hugocastelan/Documents/projects/surfaces_data/zika1/step4/*_step4.csv")
 
 # Load contents of all CSV files into a single data frame
 #prune <- read.csv(files[1], header=FALSE)
