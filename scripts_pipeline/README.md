@@ -61,5 +61,10 @@ Next you have to run phylogenetic tree for each protein again
 fasttree -nt -quote zika_anchored_capsid_protein_C_step5.fasta > zika_anchored_capsid_protein_C_step5.nwk
 
 ```
+### Step 6: Selection analysis 
 
+Run the script `fubar.py` to run the selection analysis and then plot the fingerprints with the script `fingerprint_dnds_plot.R` 
 
+```bash
+python3 ../../../surfaces/scripts_pipeline/fubar.py  zika_protein_2K_step5.fasta  zika_protein_2K_step5.fubar.csv
+```
