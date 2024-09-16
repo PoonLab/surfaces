@@ -60,7 +60,7 @@ Next you have to run phylogenetic tree for each protein again
 ```bash
 fasttree -nt -quote zika_anchored_capsid_protein_C_step5.fasta > zika_anchored_capsid_protein_C_step5.nwk
 ```
-To run in batch the trees
+If you want to run in batch the trees
 
 ```bash
 for in in *.fasta; do fasttree -nt -quote "$i" > "${i%.fasta}.tree" ; done 
