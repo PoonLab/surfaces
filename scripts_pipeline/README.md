@@ -63,7 +63,7 @@ fasttree -nt -quote zika_anchored_capsid_protein_C_step5.fasta > zika_anchored_c
 To run in batch the trees
 
 ```bash
-for in in *.fasta; do fastttree -nt -quote "$i" > "${i%.fasta}.tree" ; done 
+for in in *.fasta; do fasttree -nt -quote "$i" > "${i%.fasta}.tree" ; done 
 ```
 
 ### Step 6: Selection analysis 
