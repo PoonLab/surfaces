@@ -59,8 +59,13 @@ python3  ../../../surfaces/scripts_pipeline/prunetree.py ../step3/zika_anchored_
 Next you have to run phylogenetic tree for each protein again 
 ```bash
 fasttree -nt -quote zika_anchored_capsid_protein_C_step5.fasta > zika_anchored_capsid_protein_C_step5.nwk
-
 ```
+To run in batch the trees
+
+```bash
+for in in *.fasta; do fastttree -nt -quote "$i" > "${i%.fasta}.tree" ; done 
+```
+
 ### Step 6: Selection analysis 
 
 Run the script `fubar.py` to run the selection analysis and then plot the fingerprints with the script `fingerprint_dnds_plot.R` 
