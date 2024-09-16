@@ -44,7 +44,7 @@ for f in *.fasta; do  fasttree -nt -quote "$f" >  ${f%.fasta}.nwk ;  done
 Prune the phylogenetics tree, for this is necessary to run the follow comand  
 
 ```bash
-for f in *.nwk; do   python3 ../../../surfaces/scripts_pipeline/prunetree.py "$f" > "${f%_step3.nwk}_step4.csv"; done
+for f i *.nwk; do   python3 ../../../surfaces/scripts_pipeline/prunetree.py "$f" > "${f%_step3.nwk}_step4.csv"; done
 
 ```
 Then run the R script named `step4_filter.R`  to generate the graph of trend of tree length decay with decreasing number of tips, with the graph you get the number of tips are neccesary to prune. 
