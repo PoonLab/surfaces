@@ -1,5 +1,5 @@
 
-## Surfaces Pipeline
+## Pipeline
 
 ### Step 1: Download sequences from NCBI
 
@@ -50,14 +50,15 @@ NOTE: If length of entire tree is below some threshold (0.5) then abandon alignm
 
 ### Step 5: Prune and create phylogenetic trees 
 Then run prunetree.py again and specify the number of tips for each protein to necessary to prune accoriding with the results of step 4. For example: 
-
 ```bash
 python3  ../../../surfaces/scripts_pipeline/prunetree.py ../step3/zika_anchored_capsid_protein_C_step3.nwk  --seq  ../step3/zika_anchored_capsid_protein_C_step3.fasta -t 78 --mode ntips -o  zika_anchored_capsid_protein_C_step5.fasta --csvfile zika_anchored_capsid_protein_C_step5.labels.csv
 ```
 
-For batch processing, you can use something like the following:
+For batch processing, you can run something like the following:
 ```bash
-for f in data/IBV/*_step5.cds.fa; do python scripts_pipeline/fubar.py $f "${f%.cds.fa}"; done
+for f in data/HCV/HCV1a_*_step3.nwk; do python scripts_pipeline/prunetree.py -t 100 \
+--mode ntips --seq "${f%.nwk}.fasta" -o "${f%_step3.nwk}_step5.fasta" --csvfile \
+"${f%_step3.nwk}_step5.labels.csv" $f; done
 ```
 
 ### Step 6: Selection analysis 
@@ -65,4 +66,8 @@ for f in data/IBV/*_step5.cds.fa; do python scripts_pipeline/fubar.py $f "${f%.c
 Run the script `fubar.py` to run the selection analysis and then plot the fingerprints with the script `fingerprint_dnds_plot.R` 
 ```bash
 python3 ../../../surfaces/scripts_pipeline/fubar.py  zika_protein_2K_step5.fasta  zika_protein_2K_step5.fubar.csv
+```
+For batch processing, you can use something like the following:
+```bash
+for f in data/IBV/*_step5.cds.fa; do python scripts_pipeline/fubar.py $f "${f%.cds.fa}"; done
 ```
