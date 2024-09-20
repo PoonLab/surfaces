@@ -36,16 +36,14 @@ Then, run FastTree to build the phylogenetic tree.
 
 For this step, it is necessary to run the FastTree program with all alignments from step 3. Use the following command line
 ```bash
-for f in *.fasta; do  fasttree -nt -quote "$f" >  ${f%.fasta}.nwk ;  done 
+for f in *.fasta; do fasttree -nt -quote "$f" >  ${f%.fasta}.nwk ;  done 
 ```
 
 ### Step 4: Prune the phylogenetic trees 
 
-Prune the phylogenetics tree, for this is necessary to run the follow comand  
-
+Prune the phylogenetics tree, for this is necessary to run the following command:
 ```bash
-for f i *.nwk; do   python3 ../../../surfaces/scripts_pipeline/prunetree.py "$f" > "${f%_step3.nwk}_step4.csv"; done
-
+for f in *.nwk; do python3 scripts_pipeline/prunetree.py "$f" > "${f%_step3.nwk}_step4.csv"; done
 ```
 Then run the R script named `step4_filter.R`  to generate the graph of trend of tree length decay with decreasing number of tips, with the graph you get the number of tips are neccesary to prune. 
 NOTE: If length of entire tree is below some threshold (0.5) then abandon alignment (stop here) 
@@ -54,22 +52,12 @@ NOTE: If length of entire tree is below some threshold (0.5) then abandon alignm
 Then run prunetree.py again and specify the number of tips for each protein to necessary to prune accoriding with the results of step 4. For example: 
 
 ```bash
-python3  ../../../surfaces/scripts_pipeline/prunetree.py ../step3/zika_anchored_capsid_protein_C_step3.nwk  --seq  ../step3/zika_anchored_capsid_protein_C_step3.fasta -t 78 --mode ntips -o  zika_anchored_capsid_protein_C_step5.fasta  --csvfile  zika_anchored_capsid_protein_C_step5.labels.csv
-```
-Next you have to run phylogenetic tree for each protein again 
-```bash
-fasttree -nt -quote zika_anchored_capsid_protein_C_step5.fasta > zika_anchored_capsid_protein_C_step5.nwk
-```
-If you want to run in batch the trees
-
-```bash
-for in in *.fasta; do fasttree -nt -quote "$i" > "${i%.fasta}.tree" ; done 
+python3  ../../../surfaces/scripts_pipeline/prunetree.py ../step3/zika_anchored_capsid_protein_C_step3.nwk  --seq  ../step3/zika_anchored_capsid_protein_C_step3.fasta -t 78 --mode ntips -o  zika_anchored_capsid_protein_C_step5.fasta --csvfile zika_anchored_capsid_protein_C_step5.labels.csv
 ```
 
 ### Step 6: Selection analysis 
 
 Run the script `fubar.py` to run the selection analysis and then plot the fingerprints with the script `fingerprint_dnds_plot.R` 
-
 ```bash
 python3 ../../../surfaces/scripts_pipeline/fubar.py  zika_protein_2K_step5.fasta  zika_protein_2K_step5.fubar.csv
 ```
