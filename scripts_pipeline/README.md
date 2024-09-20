@@ -55,6 +55,11 @@ Then run prunetree.py again and specify the number of tips for each protein to n
 python3  ../../../surfaces/scripts_pipeline/prunetree.py ../step3/zika_anchored_capsid_protein_C_step3.nwk  --seq  ../step3/zika_anchored_capsid_protein_C_step3.fasta -t 78 --mode ntips -o  zika_anchored_capsid_protein_C_step5.fasta --csvfile zika_anchored_capsid_protein_C_step5.labels.csv
 ```
 
+For batch processing, you can use something like the following:
+```bash
+for f in data/IBV/*_step5.cds.fa; do python scripts_pipeline/fubar.py $f "${f%.cds.fa}"; done
+```
+
 ### Step 6: Selection analysis 
 
 Run the script `fubar.py` to run the selection analysis and then plot the fingerprints with the script `fingerprint_dnds_plot.R` 
