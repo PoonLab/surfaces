@@ -2,22 +2,24 @@
 # with the progressive pruning of the shortest tips, and to 
 # develop and apply a function for selecting a threshold for pruning.
 
-# Modify this path to select a specific group of CSV files
-# produced by running prunetree.py with no additional arguments.
-files <- Sys.glob("~/git/surfaces/data/HCV/*step4.pruning.csv")
-
 # Load contents of all CSV files into a single data frame
-prune <- read.csv(files[1], header=F)
-protein <- strsplit(basename(files[1]), "_")[[1]][2]
-df <- data.frame(protein=protein, ntips=prune$V1, tree.len=prune$V2)
-for (i in 2:length(files)) {
-  prune <- read.csv(files[i], header=F)
-  # extract protein name from canonical filename
-  prot <- strsplit(basename(files[i]), "_")[[1]][2]
-  temp <- data.frame(protein=prot, ntips=prune$V1, tree.len=prune$V2)
+# produced by running prunetree.py with no additional arguments.
+args <- commandArgs(trailingOnly = TRUE)
+glob <- args[1]
+outpath <- ifelse(length(args) > 1, args[2], NA)
+
+files <- Sys.glob(glob)
+
+
+# Loop through each file to read and process the data
+df <- data.frame(protein=character(), ntips=numeric(), tree.len=numeric(), stringsAsFactors=FALSE)
+for (fn in files) {
+  prune <- read.csv(fn, header=FALSE)
+  parts <- strsplit(basename(fn), "_")[[1]]
+  prot <- paste(parts[2:(length(parts)-1)], collapse = "_")
+  temp <- data.frame(protein=prot, ntips=prune$V1, tree.len=prune$V2, stringsAsFactors=FALSE)
   df <- rbind(df, temp)
 }
-
 
 #' Locate point where decay slope exceeds some threshold
 #' 
@@ -48,31 +50,36 @@ locate.decline <- function(x, w=5, threshold=0.1) {
 }
 
 
-# Visualize tree lengths as function of number of tips
-require(ggfree)
-prots <- unique(df$protein)
-pal <- ggfree::gg.rainbow(n=length(prots))
-
-# prepare plot region
-par(mar=c(5,5,1,1))
-plot(NA, xlim=range(df$ntips), ylim=range(df$tree.len),
-     xlab="Number of tips", ylab="Tree length", bty='n')
+if (!is.na(outpath)) {
+  pdf(outpath, width=5, height=5)
+  
+  # Visualize tree lengths as function of number of tips
+  require(ggfree, quietly = TRUE)
+  prots <- unique(df$protein)
+  pal <- ggfree::gg.rainbow(n=length(prots))
+  
+  # prepare plot region
+  par(mar=c(5,5,1,1))
+  plot(NA, xlim=range(df$ntips), ylim=range(df$tree.len),
+       xlab="Number of tips", ylab="Tree length", bty='n')
+}
 
 for (i in 1:length(prots)) {
   prot <- prots[i]
   x <- df$ntips[df$protein==prot]
   y <- df$tree.len[df$protein==prot]
-  lines(x, y, col=pal[i], lwd=2)
-  
   idx <- locate.decline(y, threshold=0.5)
-  print(paste(prot, x[idx]))
-  points(x[idx], y[idx], pch=19, col=pal[i])
-  
-  text(x[1], y[1], label=prot, col=pal[i], adj=0, cex=0.7, xpd=NA)
-  text(0.01*diff(range(df$ntips))+x[idx], y[idx], label=x[idx], cex=0.5, adj=0)
-  #idx <- locate.decline(y, threshold=1.0)
-  #points(x[idx], y[idx], pch=21, col=pal[i], bg='white')
+  print(paste("Protein:", prot, "=", x[idx]))
+
+  if (!is.na(outpath)) {
+    lines(x, y, col=pal[i], lwd=2)
+    points(x[idx], y[idx], pch=19, col=pal[i])
+    text(x[1], y[1], label=prot, col=pal[i], adj=0, cex=0.7, xpd=NA)
+    text(0.01*diff(range(df$ntips))+x[idx], y[idx], label=x[idx], cex=0.5, adj=0)
+  }
 }
 
-
+if (!is.na(outpath)) {
+  dev.off()
+}
 
