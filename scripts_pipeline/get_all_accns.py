@@ -98,11 +98,13 @@ if __name__ == "__main__":
     # prepare output file paths
     if args.prefix is None:
         args.prefix = args.infile.name
-    cds_file = open(f'{args.prefix}_CDSs.fasta', 'w')
-    aa_file = open(f'{args.prefix}_aa.fasta', 'w')
+
     if args.poly:
         cds_file = open(f'{args.prefix}_CDSs_polyprot.fasta', 'w')
         aa_file = None
+    else:
+        cds_file = open(f'{args.prefix}_CDSs.fasta', 'w')
+        aa_file = open(f'{args.prefix}_aa.fasta', 'w')
 
     fields = ['accn', 'taxonomy', 'isolate', 'host', 'country', 'collection_date']
     md_file = open(f'{args.prefix}_md.csv', 'w')
