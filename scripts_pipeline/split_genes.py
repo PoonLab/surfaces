@@ -17,9 +17,9 @@ parser = argparse.ArgumentParser(description = "Split FASTA containing M1 and M2
 parser.add_argument("input", type=argparse.FileType('r'),
                     help="input FASTA file")
 parser.add_argument("out1", type=argparse.FileType('w'),
-                    help="path to write FASTA of first sequences")
+                    help="path to write FASTA of first sequences ('.' in loc / >maxlen)")
 parser.add_argument("out2", type=argparse.FileType('w'),
-                    help="path to write FASTA of second sequences")
+                    help="path to write FASTA of second sequences (<=maxlen)")
 parser.add_argument("--maxlen", type=int, default=None,
                     help="optional, partition sequences by length")
 args = parser.parse_args()
@@ -36,3 +36,4 @@ for record in SeqIO.parse(args.input, 'fasta'):
         check = (int(right)-int(left)) > args.maxlen
     
     SeqIO.write(record, args.out1 if check else args.out2, 'fasta')
+

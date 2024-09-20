@@ -5,12 +5,16 @@ from Bio import SeqIO
 
 
 description = """
+Influenza A/B virus encodes multiple open reading frames on some of its
+segments.  For example, IAV segment 7 encodes M1 and M2, where M2 consists
+of a small portion of the 5' end of M1, 
 Concatenate alternative open reading frames and exclude overlaps.
 For the current pipeline, sequence headers are delimited by underscores:
   {accn}-{organism}-{product}-{strand}-{location}
 where location consists of closed intervals separated by '.' for spliced genes
 """
 
+# regex for Genbank accession numbers
 accpat = re.compile("([A-Z]{1,3}_?[0-9]{5,7})(\.[0-9]+)?")
 
 
@@ -18,6 +22,10 @@ def concat(records):
    # extract feature locations from sequence names
     coords = []
     for h, _ in records:
+        accn, organism, product, strand, location = h.split('-')
+        for loc in location.split('.'):
+        
+        coords.append([ for left, right in location.split('.')])
         matches = pat.findall(h)
         if len(matches) == 0:
             print(block)

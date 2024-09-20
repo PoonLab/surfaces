@@ -84,6 +84,8 @@ if __name__ == "__main__":
                         help="Number of seconds to pause between queries (default 1).")
     parser.add_argument('--poly', action='store_true',
                         help='Set if virus genome encodes a polyprotein')
+    parser.add_argument('--original', action='store_true', 
+                        help="Keep original sequence headers")
     args = parser.parse_args()
     
     Entrez.email = args.email
@@ -120,9 +122,14 @@ if __name__ == "__main__":
             for prod, strand, parts, cd_seq, aa_seq in retrieve_CDS(record):
                 loc = '.'.join('{}_{}'.format(p[0], p[1]) for p in parts)
                 prod = prod[0].replace(" ", "_").replace("-", "_")
-                cds_file.write(f'>{record.id}-{org}-{prod}-{strand}-{loc}\n{cd_seq}\n')
-                if not args.poly:
-                    aa_file.write(f'>{record.id}-{org}-{prod}-{strand}-{loc}\n{aa_seq}\n')            
+                if args.original:
+                    cds_file.write(f">{record.description}\n{cd_seq}\n")
+                    if not args.poly:
+                        aa_file.write(f">{record.description}\n{aa_seq}\n")
+                else:
+                    cds_file.write(f'>{record.id}-{org}-{prod}-{strand}-{loc}\n{cd_seq}\n')
+                    if not args.poly:
+                        aa_file.write(f'>{record.id}-{org}-{prod}-{strand}-{loc}\n{aa_seq}\n')            
 
         sleep(args.delay)
 

@@ -4,11 +4,12 @@
 
 # Modify this path to select a specific group of CSV files
 # produced by running prunetree.py with no additional arguments.
-files <- Sys.glob("~/git/surfaces/data/IAV/*step4.pruning.csv")
+files <- Sys.glob("~/git/surfaces/data/HCV/*step4.pruning.csv")
 
 # Load contents of all CSV files into a single data frame
 prune <- read.csv(files[1], header=F)
-df <- data.frame(protein='HA', ntips=prune$V1, tree.len=prune$V2)
+protein <- strsplit(basename(files[1]), "_")[[1]][2]
+df <- data.frame(protein=protein, ntips=prune$V1, tree.len=prune$V2)
 for (i in 2:length(files)) {
   prune <- read.csv(files[i], header=F)
   # extract protein name from canonical filename
@@ -50,7 +51,7 @@ locate.decline <- function(x, w=5, threshold=0.1) {
 # Visualize tree lengths as function of number of tips
 require(ggfree)
 prots <- unique(df$protein)
-pal <- ggfree::gg.rainbow(n=9)
+pal <- ggfree::gg.rainbow(n=length(prots))
 
 # prepare plot region
 par(mar=c(5,5,1,1))
@@ -64,6 +65,7 @@ for (i in 1:length(prots)) {
   lines(x, y, col=pal[i], lwd=2)
   
   idx <- locate.decline(y, threshold=0.5)
+  print(paste(prot, x[idx]))
   points(x[idx], y[idx], pch=19, col=pal[i])
   
   text(x[1], y[1], label=prot, col=pal[i], adj=0, cex=0.7, xpd=NA)

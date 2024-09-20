@@ -75,7 +75,7 @@ def translate_nuc(seq, offset, resolve=False, return_list=False):
     Synonymous nucleotide mixtures are resolved to the corresponding residue.
     Nonsynonymous nucleotide mixtures are encoded with '?'
     """
-    seq = '-' * offset + seq
+    seq = '-' * offset + seq.upper()
     aa_list = []
     aa_seq = ''  # use to align against reference, for resolving indels
 
