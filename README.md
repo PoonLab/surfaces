@@ -50,9 +50,15 @@ NOTE: If length of entire tree is below some threshold (0.5) then abandon alignm
 
 ### Step 5: Prune and create phylogenetic trees 
 Then run prunetree.py again and specify the number of tips for each protein to necessary to prune accoriding with the results of step 4. For example: 
-
 ```bash
 python3  ../../../surfaces/scripts_pipeline/prunetree.py ../step3/zika_anchored_capsid_protein_C_step3.nwk  --seq  ../step3/zika_anchored_capsid_protein_C_step3.fasta -t 78 --mode ntips -o  zika_anchored_capsid_protein_C_step5.fasta --csvfile zika_anchored_capsid_protein_C_step5.labels.csv
+```
+
+For batch processing, you can run something like the following:
+```bash
+for f in data/HCV/HCV1a_*_step3.nwk; do python scripts_pipeline/prunetree.py -t 100 \
+--mode ntips --seq "${f%.nwk}.fasta" -o "${f%_step3.nwk}_step5.fasta" --csvfile \
+"${f%_step3.nwk}_step5.labels.csv" $f; done
 ```
 
 ### Step 6: Selection analysis 
