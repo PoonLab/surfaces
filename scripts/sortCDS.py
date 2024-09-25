@@ -2,6 +2,8 @@ from Bio import SeqIO
 import argparse
 import subprocess
 import tempfile
+from io import StringIO
+import os
 
 
 description = """
@@ -63,9 +65,29 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     refs = parse_gb(args.gb)
+    print(f"Detected the following products: {','.join(list(refs.keys()))}")
+
+    # create output files
+    outfile = {}
+    try:
+        virus, locus, step = os.path.basename(args.cds.name).split('_')[:3]
+    except:
+        print(os.path.basename(args.cds.name))
+        raise
+
+    for key in refs:
+        fn = f"{virus}_{key.split(' ')[0]}_{step}.fasta" 
+        outfile.update({key: open(fn, 'w')})
+
     for record in SeqIO.parse(args.cds, args.format):
         query = str(record.seq.translate())
-        for rlab, rseq in refs.items():
+        max_key = None
+        max_score = -1e6
+        for key, rseq in refs.items():
             ascore = mafft(query, rseq)
-            print rlab, ascore
-        break
+            if ascore > max_score:
+                max_score = ascore
+                max_key = key
+        print(record.description, max_key)
+        SeqIO.write(record, outfile[max_key], 'fasta')
+
