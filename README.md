@@ -49,11 +49,11 @@ $ python3 get_all_accns.py data/measles_accns.seq user@gmail.com --outfile data/
 
 Based on the type of genome there are two different approaches
 
-### 1.2 Grouping independently encoded proteins (3 steps):
+#### 1.2 Grouping independently encoded proteins:
 
 Since we can't rely on record annotations to classify our CDSs, we find homologous sequences by calculating k-mer distances between amino acid sequences, and then clustering proteins based on those distances.
 
-#### A. Calculate k-mer distances between amino acid sequences
+##### A. Calculate k-mer distances between amino acid sequences
 
 From the multi fasta file with all the amino acid sequences from all CDSs of your virus of interest, calculate a k-mer distance between proteins using `kmer.py`.
 
@@ -61,7 +61,7 @@ From the multi fasta file with all the amino acid sequences from all CDSs of you
 
 Use the option `--filter` to analyze only those genomes with at least `mean-2` proteins, where mean is the mean number of proteins per genome in your dataset.
 
-#### Inputs:
+##### Inputs:
 
 - Fasta file with amino acid sequences
 
@@ -77,11 +77,11 @@ $ python3 kmer.py measles_feb27_aa.fasta measles_feb27_kmerdist_filtered.csv --f
 
 ```
 
-#### B. Extract clusters of homology
+##### B. Extract clusters of homology
 
 Use `hclust.R` to cluster your amino acid sequences based on the k-mer distances.
 
-#### Input:
+##### Input:
 
 - csv file with k-mer distance between sequences
 
@@ -97,7 +97,7 @@ kmer.filename <- 'scripts_pipeline/temp_measles/measles_kmerdist.csv'  #input
 info.filename <- 'scripts_pipeline/temp_measles/measles_info2.csv'  # output
 ```
 
-#### Output:
+##### Output:
 
 - csv file with cluster classification for each protein and name of the clusters for each protein
 
@@ -112,9 +112,9 @@ info.filename <- 'scripts_pipeline/temp_measles/measles_info2.csv'  # output
 From this output, you can notice that clusters `9` and `10` only have 3 and 2 proteins assigned, therefore we can consider them outliers.
 The number of clusters should be equal to the number of proteins your genome encodes. For mumps, that number is 8. 
 
-#### C. Separate sequences in a cluster into independent fasta files
+##### C. Separate sequences in a cluster into independent fasta files
 Once you have clustered your data, you can create multiple CDSs with the sequences assigned to the same cluster using `split_CDS_by_cluster.py`
-#### Inputs:
+##### Inputs:
 - fasta file with all CDSs from all genomes
 - `-ci`: csv file with information about proteins assigned to clusters
 - `-n`: number of proteins (to decide the maximum number of clusters to analyze --- should be the same as the number of proteins in your genome).
@@ -124,25 +124,26 @@ Example
 ```
 python3 split_CDS_by_cluster.py temp_mumps/info/mumps_CDSs.fasta -ci temp_mumps/info/mumps_info2.csv -l temp_mumps/info/
 ```
-##### Outputs:
+###### Outputs:
 - (n) number of fasta files of CDSs assigned to the same cluster
 
-#### D. (Optional) Visualize the cluster classification on your genome  
+##### D. (Optional) Visualize the cluster classification on your genome  
 
 Use `plot-genome.py` to check your clustering results.
 Each line on the plot correspond to a genome, and the different fragments correspond to genes within the genome.
 If the process worked properly, you should see a plot with columns colored consistently across all genomes.
 
-#### Input:
+##### Input:
 - csv file with proteins assigned to clusters
-#### Output:
+##### Output:
 - pdf with genomes colored based on cluster classification
 
 Example
 ```console
 python3 plot-genome.py measles-protein-clusters-info.csv --outfile measles-genome
+```
 
-#### Option 2 
+####  Option 2 
 
 To download sequences from NCBI, use the `get_all_accns.py` script:
 
@@ -155,7 +156,7 @@ If your virus is encoded by a polyprotein, you need to run the extract_mat_pepti
 ```bash
 python3 ../../surfaces/scripts_pipeline/extract_mat_peptides.py '../../surfaces_data/zika/zika/sequence.gb' '/home/hugocastelan/Documents/projects/surfaces_data/zika/zika/zika.seq_CDSs_polyprot.fasta'
 ```
- 
+
 ### Step 2 : Align sequences 
 
 Use the codon_align.py script to align the sequences in codon in frame, example for only one gene. 
