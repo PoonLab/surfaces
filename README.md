@@ -49,7 +49,7 @@ $ python3 get_all_accns.py data/measles_accns.seq user@gmail.com --outfile data/
 
 Based on the type of genome there are two different approaches
 
-#### 1.2 Grouping independently encoded proteins:
+#### 1.3 Grouping independently encoded proteins:
 
 Since we can't rely on record annotations to classify our CDSs, we find homologous sequences by calculating k-mer distances between amino acid sequences, and then clustering proteins based on those distances.
 
