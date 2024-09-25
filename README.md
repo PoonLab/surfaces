@@ -3,6 +3,51 @@
 
 ### Step 1: Download sequences from NCBI
 
+#### Option 1 
+
+- To get accession numbers, search your virus from the `taxonomy` browser in NCBI.
+
+- Click your virus species and filter genomes by length (based on the length of your genome). This should give you accession numbers of entries properly classified as your virus species that are complete or close to complete genomes.
+
+- In the right panel, click `Send to`, `Complete Record`. Destination should be `File` and then chose the format `Accession List` and click `Create File`.
+
+ Example of a list with accessions numbers:
+```
+KU728743.1
+KU728742.1
+MN125030.1
+MN125029.1
+```
+
+#### 1.2 Download coding sequences
+
+Use `get_all_accns.py` to download the information associated with your genomes.
+#### Inputs:
+- List with accession numbers
+- Email
+
+##### Outputs:
+The outputs of this script depends on the type of genome:
+
+**Option 1: Genomes with genes translated independently:**
+
+- `_md.csv`: metadata
+
+- `_aa.fasta`: amino acid sequences
+
+- `_CDS.fasta`: coding sequences (CDSs)
+
+  Note: We will use the amino acid sequences to cluster the more similar proteins, but the selection analysis will be performed on the CDSs.
+
+  
+Example:
+``` console
+$ python3 get_all_accns.py data/measles_accns.seq user@gmail.com --outfile data/measles
+```
+
+
+#### Option 2 
+
 To download sequences from NCBI, use the `get_all_accns.py` script:
 
 ```bash
