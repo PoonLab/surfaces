@@ -59,7 +59,7 @@ def retrieve_CDS(record):
         cd_seq = cd.location.extract(record).seq
         
         # translate aa sequence
-        aaseq = cd_seq.translate(cds=False)
+        aaseq = cd.qualifiers['translation'][0]  #cd_seq.translate(cds=False)
         stop_count = aaseq.count("*")
         if stop_count > 3:  # More than three stop codons in the amino acid seq
             print(f"\nSkipping record {record.name}")
@@ -67,7 +67,7 @@ def retrieve_CDS(record):
             print(aaseq, "\n")
             break
 
-        yield product, cd.strand, parts, cd_seq, aaseq
+        yield product, cd.location.strand, parts, cd_seq, aaseq
 
 
 if __name__ == "__main__":
