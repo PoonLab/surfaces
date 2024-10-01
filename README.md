@@ -89,7 +89,7 @@ for f in *.fasta; do fasttree -nt -quote "$f" >  ${f%.fasta}.nwk ;  done
 
 Prune the phylogenetics tree, for this is necessary to run the following command:
 ```bash
-for f in *.nwk; do python3 scripts_pipeline/prunetree.py "$f" > "${f%_step3.nwk}_step4.csv"; done
+for f in *.nwk; do python3 scripts/prunetree.py "$f" > "${f%_step3.nwk}_step4.csv"; done
 ```
 Then run the R script named `step4_filter.R`  to generate the graph of trend of tree length decay with decreasing number of tips, with the graph you get the number of tips are neccesary to prune. 
 NOTE: If length of entire tree is below some threshold (0.5) then abandon alignment (stop here) 
@@ -97,7 +97,7 @@ NOTE: If length of entire tree is below some threshold (0.5) then abandon alignm
 ### Step 5: Prune and create phylogenetic trees 
 Then run prunetree.py again and specify the number of tips for each protein to necessary to prune accoriding with the results of step 4. For example: 
 ```bash
-python3  ../../surfaces/scripts/prunetree.py ../step3/zika_anchored_capsid_protein_C_step3.nwk  --seq  ../step3/zika_anchored_capsid_protein_C_step3.fasta -t 78 --mode ntips -o  zika_anchored_capsid_protein_C_step5.fasta --csvfile zika_anchored_capsid_protein_C_step5.labels.csv
+python3  ../../surfaces/scripts/prunetree.py ../step3/zika_anchored_capsid_protein_C_step3.nwk  --seq  ../step3/zika_anchored_capsid_protein_C_step3.fasta -t 100 --mode ntips -o  zika_anchored_capsid_protein_C_step5.fasta --csvfile zika_anchored_capsid_protein_C_step5.labels.csv
 ```
 
 For batch processing, you can run something like the following:
