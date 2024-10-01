@@ -53,25 +53,25 @@ Output:
 
 To download sequences from NCBI for genomes with a single open reading frame encoding all proteins, use the `get_all_accns.py` script with the `--poly` flag:
 ```bash
-python3 ../../surfaces/scripts_pipeline/get_all_accns.py --prefix zika zika.seq --poly hcastelans@gmail.com
+python3 ../../surfaces/scripts/get_all_accns.py --prefix zika zika.seq --poly hcastelans@gmail.com
 ```
 
 Next you need to run the `extract_mat_peptides.py` script to extract the CDS.
 In this case, it is necessary to use a reference genome in Genbank format to extract the CDS.
 ```bash
-python3 ../../surfaces/scripts_pipeline/extract_mat_peptides.py '../../surfaces_data/zika/zika/sequence.gb' '/home/hugocastelan/Documents/projects/surfaces_data/zika/zika/zika.seq_CDSs_polyprot.fasta'
+python3 ../../surfaces/scripts/extract_mat_peptides.py '../../surfaces_data/zika/zika/sequence.gb' '/home/hugocastelan/Documents/projects/surfaces_data/zika/zika/zika.seq_CDSs_polyprot.fasta'
 ```
 
 ### Step 2 : Align sequences 
 
 Use the codon_align.py script to align the sequences in codon in frame, example for only one gene. 
 ```bash
-python3 ../../surfaces/scripts_pipeline/codon_align.py zika_nonstructural_protein_NS4B_step1.fasta -o zika_nonstructural_protein_NS4B_step2.fasta
+python3 ../../surfaces/scripts/codon_align.py zika_nonstructural_protein_NS4B_step1.fasta -o zika_nonstructural_protein_NS4B_step2.fasta
 ```
 
 Example, for all genes of a virus
 ```bash
-for i in *.fasta; do python3 ../../surfaces/scripts_pipeline/codon_align.py "$i" -o "${i%_step1.fasta}_step2.fasta"; done
+for i in *.fasta; do python3 ../../surfaces/scripts/codon_align.py "$i" -o "${i%_step1.fasta}_step2.fasta"; done
 ```
 
 ### Step 3: Manually review the sequence alignment and create the phylogenetic tree
@@ -97,7 +97,7 @@ NOTE: If length of entire tree is below some threshold (0.5) then abandon alignm
 ### Step 5: Prune and create phylogenetic trees 
 Then run prunetree.py again and specify the number of tips for each protein to necessary to prune accoriding with the results of step 4. For example: 
 ```bash
-python3  ../../../surfaces/scripts_pipeline/prunetree.py ../step3/zika_anchored_capsid_protein_C_step3.nwk  --seq  ../step3/zika_anchored_capsid_protein_C_step3.fasta -t 78 --mode ntips -o  zika_anchored_capsid_protein_C_step5.fasta --csvfile zika_anchored_capsid_protein_C_step5.labels.csv
+python3  ../../surfaces/scripts/prunetree.py ../step3/zika_anchored_capsid_protein_C_step3.nwk  --seq  ../step3/zika_anchored_capsid_protein_C_step3.fasta -t 78 --mode ntips -o  zika_anchored_capsid_protein_C_step5.fasta --csvfile zika_anchored_capsid_protein_C_step5.labels.csv
 ```
 
 For batch processing, you can run something like the following:
@@ -111,7 +111,7 @@ for f in data/HCV/HCV1a_*_step3.nwk; do python scripts_pipeline/prunetree.py -t 
 
 Run the script `fubar.py` to run the selection analysis and then plot the fingerprints with the script `fingerprint_dnds_plot.R` 
 ```bash
-python3 ../../../surfaces/scripts_pipeline/fubar.py  zika_protein_2K_step5.fasta  zika_protein_2K_step5.fubar.csv
+python3 ../../surfaces/scripts/fubar.py  zika_protein_2K_step5.fasta  zika_protein_2K_step5.fubar.csv
 ```
 For batch processing, you can use something like the following:
 ```bash
