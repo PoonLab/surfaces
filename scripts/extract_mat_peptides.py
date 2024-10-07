@@ -154,10 +154,11 @@ def extract(query, ref, binpath="mafft", rf=1, gap_threshold = 0.5, gap_open = 1
         int_gaps = refseq.count('-')  # internal gaps
         ascore = align_score(qseq, refseq)
         
-        # Store nucleotide sequences bellow gap threshold
+        # Store nucleotide sequences below gap threshold
         if (int_gaps/len(refseq)) > gap_threshold:
-            sys.stderr.write(f"Bad alignment:\n{refseq}\n{aquery[left:right]}\n")
-            sys.exit()
+            #sys.stderr.write(f"Bad alignment:\n{refseq}\n{aquery[left:right]}\n")
+            continue
+        
         aln_scores[rf] = ascore
         aln_nuc = apply_align(query, aquery, left, right)
         align_cache[rf] = {'nuc': aln_nuc, 'aquery': qseq, 'aref': refseq}
@@ -206,7 +207,7 @@ if __name__=="__main__":
 
     # extract mature peptide sequences from reference
     proteins = get_reference_proteins(ref)
-    proteins = {"1D": proteins["1D"]}  # testing
+    # proteins = {"1D": proteins["1D"]}  # testing
 
     # prepare separate output FASTA files for different genes/proteins
     outfiles = {}
