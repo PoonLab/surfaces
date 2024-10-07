@@ -40,7 +40,6 @@ mixture_dict = {'W':'AT', 'R':'AG', 'K':'GT', 'Y':'CT', 'S':'CG',
                 'M':'AC', 'V':'AGC', 'H':'ATC', 'D':'ATG',
                 'B':'TGC', 'N':'ATGC', '-':'ATGC'}
 
-
 def get_args(parser):
     # Required arguments
     parser.add_argument(
@@ -54,8 +53,8 @@ def get_args(parser):
     # Optional
     parser.add_argument(
         '--label', default=None, 
-        help="<Optional> Path and prefix for output files.  For example, \
-              'data/HIV1/HIV1_' will write data/HIV1/HIV1_env_step1.fasta"
+        help='<Optional> Path to output files with CDS and \
+                amino acid sequences of mature peptides'
     )
     parser.add_argument(
         '--rf', default=1, type=int ,
@@ -157,8 +156,7 @@ def mafft(query, ref, binpath="mafft", rf=1, gap_threshold = 0.5):
         handle.close()
 
         # call MAFFT on temporary file
-        stdout = subprocess.check_output([
-            binpath, '--op', '3.0', '--quiet', handle.name])
+        stdout = subprocess.check_output([binpath, '--quiet', handle.name])
         stdout = stdout.decode('utf-8')
         result = list(SeqIO.parse(StringIO(stdout), "fasta"))
         aref = str(result[0].seq)
@@ -171,27 +169,20 @@ def mafft(query, ref, binpath="mafft", rf=1, gap_threshold = 0.5):
         nuc_seq = query[(3*left):(3*right)] 
 
         # score = No of matches - number of gaps within refseq
-        #int_gaps = refseq.count('-')  # internal gaps
-        #score = len(aref.replace('-', '')) - refseq.count('-')
-        score = 0
-        qseq = aquery[left:right]
-        for i, raa in enumerate(refseq):
-            qaa = qseq[i]
-            if raa == '-' or qaa == '-':
-                score -= 2
-            elif raa == qaa:
-                score += 1
-            else:
-                score -= 1
-        score /= (right-left)  # length of aligned region
+        int_gaps = refseq.count('-')  # internal gaps
+        score = len(aref.replace('-', '')) - refseq.count('-')
 
-        # Store nucleotide sequences below gap threshold
+        # Store nucleotide sequences bellow gap threshold
         if (int_gaps/len(refseq)) < gap_threshold:
             aln_scores[rf] = score
             nt_seq_rf[rf] = nuc_seq
-        else:
-            print(f"Bad alignment:\n{refseq}\n{aquery[left:right]}")
-            sys.exit()
+        # else:
+        #     print(f"\n>>>>>>>>>> refseq with many gaps:")
+        #     print(refseq)
+        #     print(f"\nFrom nucleotide sequence:")
+        #     print(nuc_seq)
+        #     print()        
+        #     sys.exit()
             
     if aln_scores:
         # Find the best alignment 
@@ -232,24 +223,20 @@ if __name__=="__main__":
 
     # extract mature peptide sequences from reference
     proteins = get_reference_proteins(ref)
-    proteins = {"1D": proteins["1D"]}
 
     # prepare separate output FASTA files for different genes/proteins
-    """
     outfiles = {}
     for p in proteins:
-        pname = re.sub("[/.,:]", "", p)
-        pname = pname.split()[0]  #re.sub("mature_peptide|", "", pname)
+        pname = re.sub("[ /.,:]", "_", p)
+        pname = re.sub("_mature_peptide", "", pname)
         print(pname)  # debugging
-        outfile = open(f"{label}_{pname}_step1.fasta", 'w')
+        outfile = open(f"{label}{pname}.fasta", 'w')
         outfiles.update({p: outfile})
-    """
 
     # load the input FASTA file
     records = SeqIO.parse(polyprots, 'fasta')
     not_found = {}
     for record in records:
-        print(record.name)
         query = str(record.seq)  # CDS file contains entire polyprotein sequences (in-frame!)
         name_parts = record.name.split("-")
         prot_name = name_parts[0]
@@ -260,15 +247,13 @@ if __name__=="__main__":
             # Get the part of nucleotide sequence
             result = mafft(query=query, ref=refseq, rf=args.rf, gap_threshold=args.gt)
             if len(result) == 0:
-                print(f"\n>>>>> no result for protein {protein} in {prot_name}<<<<<\n")
+                # print(f"\n>>>>> no result for protein {protein} in {prot_name}<<<<<\n")
                 if prot_name not in not_found.keys():
                     not_found[prot_name] = []
                 not_found[prot_name].append(protein)
                 continue
             header = "-".join(name_parts)
-            #outfiles[protein].write(f">{record.name}\n{result}\n")
-        break
+            outfiles[protein].write(f">{record.name}\n{result}\n")
     
     print("Not found proteins:")
     pprint.pprint(not_found)
-
