@@ -1,7 +1,8 @@
 
 ## Pipeline
 
-### 1.1: Identify records from NCBI
+### Step 1: Data collection 
+#### 1.1. Identify records from NCBI
 
 - To get accession numbers, search your virus from the `taxonomy` browser in NCBI.
 
@@ -17,7 +18,7 @@ MN125030.1
 MN125029.1
 ```
 
-### 1.2 Download coding sequences
+#### 1.2. Download coding sequences
 
 **Option 1: Genomes with genes translated independently:**
 
@@ -53,54 +54,55 @@ Output:
 
 To download sequences from NCBI for genomes with a single open reading frame encoding all proteins, use the `get_all_accns.py` script with the `--poly` flag:
 ```bash
-python3 ../../surfaces/scripts_pipeline/get_all_accns.py --prefix zika zika.seq --poly hcastelans@gmail.com
+python3 ../../surfaces/scripts/get_all_accns.py --prefix zika zika.seq --poly hcastelans@gmail.com
 ```
 
 Next you need to run the `extract_mat_peptides.py` script to extract the CDS.
 In this case, it is necessary to use a reference genome in Genbank format to extract the CDS.
 ```bash
-python3 ../../surfaces/scripts_pipeline/extract_mat_peptides.py '../../surfaces_data/zika/zika/sequence.gb' '/home/hugocastelan/Documents/projects/surfaces_data/zika/zika/zika.seq_CDSs_polyprot.fasta'
+python3 ../../surfaces/scripts/extract_mat_peptides.py '../../surfaces_data/zika/zika/sequence.gb' '/home/hugocastelan/Documents/projects/surfaces_data/zika/zika/zika.seq_CDSs_polyprot.fasta'
 ```
 
-### Step 2 : Align sequences 
+### Step 2: Sequence alignment
 
-Use the codon_align.py script to align the sequences in codon in frame, example for only one gene. 
+Use the `codon_align.py` script to align your protein encoding sequence in a codon-aware manner:
+
 ```bash
-python3 ../../surfaces/scripts_pipeline/codon_align.py zika_nonstructural_protein_NS4B_step1.fasta -o zika_nonstructural_protein_NS4B_step2.fasta
+python3 ../../surfaces/scripts/codon_align.py zika_nonstructural_protein_NS4B_step1.fasta -o zika_nonstructural_protein_NS4B_step2.fasta
 ```
 
-Example, for all genes of a virus
+- For multiple coding sequences:
 ```bash
-for i in *.fasta; do python3 ../../surfaces/scripts_pipeline/codon_align.py "$i" -o "${i%_step1.fasta}_step2.fasta"; done
+for i in *.fasta; do python3 ../../surfaces/scripts/codon_align.py "$i" -o "${i%_step1.fasta}_step2.fasta"; done
 ```
 
-### Step 3: Manually review the sequence alignment and create the phylogenetic tree
+### Step 3: Revise sequence alignments and create phylogenies
 
-Manually review and remove any problematic sequences from each alignment using Aliview. After removing the sequences, re-align the data and save the alignments with the extension _step3.fasta in the step 3 folder.
+- Use `Aliview` to visualize your alignments. If required, remove problematic sequences or nucleotides that introduce frameshifts. After removing the sequences, re-align the data and save the alignments with the extension `_step3.fasta` in the step 3 folder.
 
-Then, run FastTree to build the phylogenetic tree.
-
-For this step, it is necessary to run the FastTree program with all alignments from step 3. Use the following command line
+- Use `FastTree` to build the phylogenetic tree on the manually curated alignments:
 ```bash
 for f in *.fasta; do fasttree -nt -quote "$f" >  ${f%.fasta}.nwk ;  done 
 ```
 
-### Step 4: Prune the phylogenetic trees 
+### Step 4: Examine decay of tree length and prune tree to a target number of tips
 
-Prune the phylogenetics tree, for this is necessary to run the following command:
+- Use `prunetree.py` to record the effect on tree sizes when progressively down-sampling the sequence alignment by removing the shortest tips of the tree.
 ```bash
-for f in *.nwk; do python3 scripts_pipeline/prunetree.py "$f" > "${f%_step3.nwk}_step4.csv"; done
-```
-Then run the R script named `step4_filter.R`  to generate the graph of trend of tree length decay with decreasing number of tips, with the graph you get the number of tips are neccesary to prune. 
-NOTE: If length of entire tree is below some threshold (0.5) then abandon alignment (stop here) 
-
-### Step 5: Prune and create phylogenetic trees 
-Then run prunetree.py again and specify the number of tips for each protein to necessary to prune accoriding with the results of step 4. For example: 
-```bash
-python3  ../../../surfaces/scripts_pipeline/prunetree.py ../step3/zika_anchored_capsid_protein_C_step3.nwk  --seq  ../step3/zika_anchored_capsid_protein_C_step3.fasta -t 78 --mode ntips -o  zika_anchored_capsid_protein_C_step5.fasta --csvfile zika_anchored_capsid_protein_C_step5.labels.csv
+for f in *_step3.nwk; do python3 scripts/prunetree.py "$f" > "${f%_step3.nwk}_step4.csv"; done
 ```
 
-For batch processing, you can run something like the following:
+- Use `step4_filter.R` to create a tree-length-decay plot. Take note of the number of tips to prune per alignment.
+**NOTE: If length of entire tree is below some threshold (0.5) then abandon alignment (stop here)**
+
+- Use `prunetree.py` one more time, but now provide a target number of tips (`--target` option under `--mode ntips`) for each alignment based on your previous output.  
+```bash
+python3 prunetree.py measles_C_protein_step3.nwk --seq measles_C_protein_step2.fasta --mode ntips --target 97 --csvfile measles_C_protein_step5.labels.csv --outfile measles_C_protein_step5.fasta
+```
+### Step 5 (Optional): Prune to target tree length of `1.0` if trees exceed this size
+- Case 1: prune down to tree length of `1.0` if doing so does not removes too many tips (change mode to `--mode treelen`). 
+
+- Case 2: prune to `100` tips when you cannot reach a tree length of `1.0` without removing too many sequences.
 ```bash
 for f in data/HCV/HCV1a_*_step3.nwk; do python scripts_pipeline/prunetree.py -t 100 \
 --mode ntips --seq "${f%.nwk}.fasta" -o "${f%_step3.nwk}_step5.fasta" --csvfile \
@@ -109,11 +111,14 @@ for f in data/HCV/HCV1a_*_step3.nwk; do python scripts_pipeline/prunetree.py -t 
 
 ### Step 6: Selection analysis 
 
-Run the script `fubar.py` to run the selection analysis and then plot the fingerprints with the script `fingerprint_dnds_plot.R` 
+- Use `fubar.py` to run FUBAR on your pruned alignments and store selection pressures (dN and dS per codon) in a `csv` file.
+For example:
 ```bash
-python3 ../../../surfaces/scripts_pipeline/fubar.py  zika_protein_2K_step5.fasta  zika_protein_2K_step5.fubar.csv
+python3 fubar.py  zika_protein_2K_step5.fasta  zika_protein_2K_step5.fubar.csv
 ```
-For batch processing, you can use something like the following:
+For batch processing, use:
 ```bash
-for f in data/IBV/*_step5.cds.fa; do python scripts_pipeline/fubar.py $f "${f%.cds.fa}"; done
+for f in *step5.fasta; do python3 scripts/fubar.py "$f" "${f%.fasta}"; done
 ```
+
+- Create and visualize selection fingerprints with `fingerprint_dnds_plot.R`. 
