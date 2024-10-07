@@ -5,6 +5,10 @@
 # Load contents of all CSV files into a single data frame
 # produced by running prunetree.py with no additional arguments.
 args <- commandArgs(trailingOnly = TRUE)
+if (length(args) == 0) {
+  stop("Usage: Rscript \"[glob to pruning CSVs]\" (optional PDF image)")
+}
+
 glob <- args[1]
 outpath <- ifelse(length(args) > 1, args[2], NA)
 
@@ -49,13 +53,13 @@ locate.decline <- function(x, w=5, threshold=0.1) {
   i
 }
 
+prots <- unique(df$protein)
 
 if (!is.na(outpath)) {
   pdf(outpath, width=5, height=5)
   
   # Visualize tree lengths as function of number of tips
   require(ggfree, quietly = TRUE)
-  prots <- unique(df$protein)
   pal <- ggfree::gg.rainbow(n=length(prots))
   
   # prepare plot region
