@@ -5,11 +5,14 @@
 # Load contents of all CSV files into a single data frame
 # produced by running prunetree.py with no additional arguments.
 args <- commandArgs(trailingOnly = TRUE)
+if (length(args) < 1) {
+  stop("Usage: Rscript step4_filter.R \"[glob]\" (PDF output)")
+  exit(1)
+}
 glob <- args[1]
 outpath <- ifelse(length(args) > 1, args[2], NA)
 
 files <- Sys.glob(glob)
-
 
 # Loop through each file to read and process the data
 df <- data.frame(protein=character(), ntips=numeric(), tree.len=numeric(), stringsAsFactors=FALSE)
@@ -20,6 +23,7 @@ for (fn in files) {
   temp <- data.frame(protein=prot, ntips=prune$V1, tree.len=prune$V2, stringsAsFactors=FALSE)
   df <- rbind(df, temp)
 }
+prots <- unique(df$protein)
 
 #' Locate point where decay slope exceeds some threshold
 #' 
@@ -55,7 +59,6 @@ if (!is.na(outpath)) {
   
   # Visualize tree lengths as function of number of tips
   require(ggfree, quietly = TRUE)
-  prots <- unique(df$protein)
   pal <- ggfree::gg.rainbow(n=length(prots))
   
   # prepare plot region
