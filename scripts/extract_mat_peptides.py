@@ -65,72 +65,66 @@ def get_args(parser):
         help='<Optional> gap threshold: maximum percentage of internal gaps\
               allowed in the refseq when aligning amino acids'
     )
-
     return parser.parse_args()
 
-def translate_nuc(seq, offset, resolve=False, return_list=False):
-    """
-    Translate nucleotide sequence into amino acid sequence.
-            offset by X shifts sequence to the right by X bases
-    Synonymous nucleotide mixtures are resolved to the corresponding residue.
-    Nonsynonymous nucleotide mixtures are encoded with '?'
-    """
-    seq = '-' * offset + seq.upper()
-    aa_list = []
-    aa_seq = ''  # use to align against reference, for resolving indels
 
-    # loop over codon sites in nucleotide sequence
+def translate_nuc(seq, offset, resolve=False, return_list=False):
+    seq = '-' * offset + seq.upper()
+    aa_seq = ''
     for codon_site in range(0, len(seq), 3):
-        codon = seq[codon_site:codon_site + 3]
+        codon = seq[codon_site:(codon_site+3)]
         if len(codon) < 3:
             break
-
-        # note that we're willing to handle a single missing nucleotide as an ambiguity
-        if codon.count('-') > 1 or '?' in codon:
-            if codon == '---':  # don't bother to translate incomplete codons
-                aa_seq += '-'
-                aa_list.append(['-'])
-            else:
-                aa_seq += '?'
-                aa_list.append(['?'])
-            continue
-
-        # look for nucleotide mixtures in codon, resolve to alternative codons if found
-        num_mixtures = len(mixture_regex.findall(codon))
-        if num_mixtures == 0:
-            aa = codon_dict[codon]
-            aa_seq += aa
-            aa_list.append([aa])
-        elif num_mixtures == 1:
-            resolved_AAs = []
-            for pos in range(3):
-                if codon[pos] in mixture_dict.keys():
-                    for r in mixture_dict[codon[pos]]:
-                        rcodon = codon[0:pos] + r + codon[(pos + 1):]
-                        if codon_dict[rcodon] not in resolved_AAs:
-                            resolved_AAs.append(codon_dict[rcodon])
-
-                        aa_list.append(resolved_AAs)
-
-                        if len(resolved_AAs) > 1:
-                            if resolve:
-                                # for purposes of aligning AA sequences
-                                # it is better to have one of the resolutions
-                                # than a completely ambiguous '?'
-                                aa_seq += resolved_AAs[0]
-                            else:
-                                aa_seq += '?'
-                        else:
-                            aa_seq += resolved_AAs[0]
-                else:
-                    aa_seq += '?'
-                    aa_list.append(['?'])
-    if return_list:
-        return aa_list
+        check = sum([codon.count(nt) for nt in 'ACGT'])
+        aa_seq += codon_dict[codon] if check == 3 else 'X'
     return aa_seq
 
 
-def mafft(query, ref, binpath="mafft", rf=1, gap_threshold = 0.5):
+def mafft(query, ref, binpath='mafft', gap_open=10.0):
+    """ Wrapper for MAFFT """
+    handle = tempfile.NamedTemporaryFile(delete=False)
+    s = f'>ref\n{ref}\n>query\n{query}\n'
+    handle.write(s.encode('utf-8'))
+    handle.close()
+
+    # call MAFFT on temporary file
+    stdout = subprocess.check_output(
+        [binpath, '--op', str(gap_open), '--quiet', handle.name])
+    stdout = stdout.decode('utf-8')
+    result = list(SeqIO.parse(StringIO(stdout), "fasta"))
+    aref = str(result[0].seq)
+    aquery = str(result[1].seq)
+    return aquery, aref
+
+
+def align_score(aquery, aref, match=1, mismatch=-1, gap=-2):
+    """ A simple pairwise alignment score """
+    if len(aquery) != len(aref):
+        return None
+    score = 0
+    for i, raa in enumerate(aref):
+        qaa = aquery[i]
+        if raa == '-' or qaa == '-':
+            score += gap
+        else:
+            score += match if raa == qaa else mismatch
+    score /= len(aref)
+    return score
+
+
+def apply_align(nucseq, aquery, left, right):
+    """ Apply pairwise amino acid alignment to nucleotides """
+    new_seq = ''
+    qpos = 3*left
+    for i in range(left, right):
+        if aquery[i] == '-':
+            continue  # skip insertion in reference
+        new_seq += nucseq[qpos:(qpos+3)]
+        qpos += 3
+    return new_seq
+
+
+def extract(query, ref, binpath="mafft", rf=1, gap_threshold = 0.5, gap_open = 10.0):
     """
     Align translation of query sequence to a reference protein
     and use the resulting alignment to cut the corresponding region
@@ -145,53 +139,42 @@ def mafft(query, ref, binpath="mafft", rf=1, gap_threshold = 0.5):
     """
     # translate input nucleotide sequence into amino acids
     aln_scores = {}
-    nt_seq_rf = {}
+    align_cache = {}
     for rf in range(0, rf):
-        
         tquery = translate_nuc(query, rf)
-
-        handle = tempfile.NamedTemporaryFile(delete=False)
-        s = f'>ref\n{ref}\n>query\n{tquery}\n'
-        handle.write(s.encode('utf-8'))
-        handle.close()
-
-        # call MAFFT on temporary file
-        stdout = subprocess.check_output([binpath, '--quiet', handle.name])
-        stdout = stdout.decode('utf-8')
-        result = list(SeqIO.parse(StringIO(stdout), "fasta"))
-        aref = str(result[0].seq)
-        aquery = str(result[1].seq)
+        aquery, aref = mafft(tquery, ref)
 
         # Extract coordinates in reference
         left = len(aref) - len(aref.lstrip('-'))
         right = len(aref.rstrip('-'))
         refseq = aref[left:right]
-        nuc_seq = query[(3*left):(3*right)] 
+        qseq = aquery[left:right]
 
         # score = No of matches - number of gaps within refseq
         int_gaps = refseq.count('-')  # internal gaps
-        score = len(aref.replace('-', '')) - refseq.count('-')
-
+        ascore = align_score(qseq, refseq)
+        
         # Store nucleotide sequences bellow gap threshold
-        if (int_gaps/len(refseq)) < gap_threshold:
-            aln_scores[rf] = score
-            nt_seq_rf[rf] = nuc_seq
-        # else:
-        #     print(f"\n>>>>>>>>>> refseq with many gaps:")
-        #     print(refseq)
-        #     print(f"\nFrom nucleotide sequence:")
-        #     print(nuc_seq)
-        #     print()        
-        #     sys.exit()
-            
+        if (int_gaps/len(refseq)) > gap_threshold:
+            sys.stderr.write(f"Bad alignment:\n{refseq}\n{aquery[left:right]}\n")
+            sys.exit()
+        aln_scores[rf] = ascore
+        aln_nuc = apply_align(query, aquery, left, right)
+        align_cache[rf] = {'nuc': aln_nuc, 'aquery': qseq, 'aref': refseq}
+
     if aln_scores:
         # Find the best alignment 
+        best_score = max(aln_scores.values())
         best_rf = max(aln_scores, key=aln_scores.get)
-        max_nt_seq = nt_seq_rf[best_rf]
+        max_nt_seq = align_cache[best_rf]['nuc']
+        if best_score < 0:
+            sys.stderr.write(f"Potential bad alignment with score {best_score}:\n" \
+                f"{align_cache[best_rf]['aref']}\n{align_cache[best_rf]['aquery']}\n")
     else:
         max_nt_seq = ''
 
     return max_nt_seq
+
 
 def get_reference_proteins(ref_genome):
     """
@@ -223,16 +206,17 @@ if __name__=="__main__":
 
     # extract mature peptide sequences from reference
     proteins = get_reference_proteins(ref)
+    proteins = {"1D": proteins["1D"]}  # testing
 
     # prepare separate output FASTA files for different genes/proteins
     outfiles = {}
     for p in proteins:
-        pname = re.sub("[ /.,:]", "_", p)
-        pname = re.sub("_mature_peptide", "", pname)
+        pname = re.sub("[/.,:]", "_", p)
+        pname = pname.split()[0]  #re.sub("_mature_peptide", "", pname)
         print(pname)  # debugging
-        outfile = open(f"{label}{pname}.fasta", 'w')
+        outfile = open(f"{label}_{pname}_step1.fasta", 'w')
         outfiles.update({p: outfile})
-
+    
     # load the input FASTA file
     records = SeqIO.parse(polyprots, 'fasta')
     not_found = {}
@@ -245,7 +229,7 @@ if __name__=="__main__":
         for protein, refseq in proteins.items():
             name_parts[2] = re.sub("[ /.,:]", "_", protein)
             # Get the part of nucleotide sequence
-            result = mafft(query=query, ref=refseq, rf=args.rf, gap_threshold=args.gt)
+            result = extract(query=query, ref=refseq, rf=args.rf, gap_threshold=args.gt)
             if len(result) == 0:
                 # print(f"\n>>>>> no result for protein {protein} in {prot_name}<<<<<\n")
                 if prot_name not in not_found.keys():
