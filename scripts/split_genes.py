@@ -28,12 +28,7 @@ for record in SeqIO.parse(args.input, 'fasta'):
     loc = record.description.split('-')[-1]
     check = '.' in loc
     if args.maxlen:
-        matches = pat.findall(loc)
-        if not matches:
-            sys.stderr.write(f"ERROR: Failed to extract coordinates from loc field {loc}\n")
-            sys.exit()
-        left, right = matches[0]
-        check = (int(right)-int(left)) > args.maxlen
+        check = len(record.seq) > args.maxlen
     
     SeqIO.write(record, args.out1 if check else args.out2, 'fasta')
 

@@ -4,6 +4,10 @@
 
 # Load contents of all CSV files into a single data frame
 args <- commandArgs(trailingOnly = TRUE)
+if (length(args) == 0) {
+  stop("Usage: Rscript \"[glob to pruning CSVs]\" (optional PDF image)")
+}
+
 glob <- args[1]
 outpath <- ifelse(length(args) > 1, args[2], NA)
 
@@ -19,6 +23,7 @@ for (fn in files) {
   temp <- data.frame(protein = prot, ntips = prune$V1, tree.len = prune$V2, stringsAsFactors = FALSE)
   df <- rbind(df, temp)
 }
+prots <- unique(df$protein)
 
 # Function to locate point where decay slope exceeds some threshold
 locate.decline <- function(x, w = 5, threshold = 0.1) {
@@ -42,7 +47,10 @@ locate.decline <- function(x, w = 5, threshold = 0.1) {
   i
 }
 
+<<<<<<< HEAD
 # Define prots outside of the conditional to avoid 'not found' error
+=======
+>>>>>>> cc06f3932d17f9797b9f055170558ca04dcd07e1
 prots <- unique(df$protein)
 
 if (!is.na(outpath)) {
@@ -50,7 +58,11 @@ if (!is.na(outpath)) {
   
   # Visualize tree lengths as function of number of tips
   require(ggfree, quietly = TRUE)
+<<<<<<< HEAD
   pal <- ggfree::gg.rainbow(n = length(prots))
+=======
+  pal <- ggfree::gg.rainbow(n=length(prots))
+>>>>>>> cc06f3932d17f9797b9f055170558ca04dcd07e1
   
   # Prepare plot region
   par(mar = c(5, 5, 1, 1))
