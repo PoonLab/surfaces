@@ -93,6 +93,10 @@ for f in *_step3.nwk; do python3 scripts/prunetree.py "$f" > "${f%_step3.nwk}_st
 ```
 
 - Use `step4_filter.R` to create a tree-length-decay plot. Take note of the number of tips to prune per alignment.
+
+```bash
+Rscript ../../../surfaces/scripts/step4_filter.R  /home/hugocastelan/Documents/projects/surfaces_data/dengue/step4/ 
+```
 **NOTE: If length of entire tree is below some threshold (0.5) then abandon alignment (stop here)**
 
 - Use `prunetree.py` one more time, but now provide a target number of tips (`--target` option under `--mode ntips`) for each alignment based on your previous output.  
