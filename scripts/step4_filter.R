@@ -1,77 +1,100 @@
-# The purpose of this script is to visualize the decay of tree length
-# with the progressive pruning of the shortest tips, and to
-# develop and apply a function for selecting a threshold for pruning.
+#!/usr/bin/env Rscript
 
-# Load contents of all CSV files into a single data frame
+# Get command-line arguments
 args <- commandArgs(trailingOnly = TRUE)
-if (length(args) == 0) {
-  stop("Usage: Rscript \"[glob to pruning CSVs]\" (optional PDF image)")
+
+# Check if directory path is provided
+if (length(args) < 1) {
+  stop("Please provide a directory path as a command-line argument")
 }
 
-glob <- args[1]
+# Check if output path is provided (optional)
 outpath <- ifelse(length(args) > 1, args[2], NA)
 
-files <- Sys.glob(glob)
+# Load contents of all CSV files into a single data frame
+files <- Sys.glob(file.path(args[1], "*.csv"))
+
+# Check if any CSV files were found
+if (length(files) == 0) {
+  stop("No CSV files found in the specified directory.")
+}
+
+# Load required library
+require(ggfree)
+
+# Initialize an empty data frame
+df <- data.frame(protein=character(), ntips=numeric(), tree.len=numeric(), stringsAsFactors=FALSE)
 
 # Loop through each file to read and process the data
-df <- data.frame(protein = character(), ntips = numeric(), tree.len = numeric(), stringsAsFactors = FALSE)
-
-for (fn in files) {
-  prune <- read.csv(fn, header = FALSE)
-  parts <- strsplit(basename(fn), "_")[[1]]
-  prot <- paste(parts[2:(length(parts) - 1)], collapse = "_")
-  temp <- data.frame(protein = prot, ntips = prune$V1, tree.len = prune$V2, stringsAsFactors = FALSE)
+for (i in 1:length(files)) {
+  prune <- read.csv(files[i], header=FALSE)
+  filename <- basename(files[i])
+  parts <- strsplit(filename, "_")[[1]]
+  prot <- paste(parts[2:(length(parts)-1)], collapse = "_")
+  temp <- data.frame(protein=prot, ntips=prune$V1, tree.len=prune$V2, stringsAsFactors=FALSE)
   df <- rbind(df, temp)
 }
 
-prots <- unique(df$protein)
-
-# Function to locate point where decay slope exceeds some threshold
-locate.decline <- function(x, w = 5, threshold = 0.1) {
-  # Validate input vector
+# Function to locate point of significant tree length decline
+locate.decline <- function(x, w=5, threshold=0.1) {
   stopifnot(is.numeric(x))
-  stopifnot(length(x) > 2 * w + 1)  # Vector is sufficient length
-  stopifnot(all(diff(x) <= 0))  # Is monotonically decreasing
-  stopifnot(!all(x == x[1]))  # Not a flat line
+  stopifnot(length(x) > 2*w+1)
+  stopifnot(all(diff(x) <= 0))
+  stopifnot(!all(x == x[1]))
   
-  max.x <- x[1]  # Total tree length
-  threshold <- threshold * max.x / length(x)  # Adjust to constant decay
+  max.x <- x[1]
+  threshold <- threshold * max.x / length(x)
   
-  i <- which(x < max.x)[1]  # Fast-forward to initial decline
+  i <- which(x < max.x)[1]
   while (i < length(x)) {
-    slope <- (x[max(1, i - w)] - x[min(i + w, length(x))]) / (2 * w + 1)
+    slope <- (x[max(1, i-w)] - x[min(i+w, length(x))]) / (2*w+1)
     if (slope > threshold) {
       break
     }
     i <- i + 1
   }
-  i
+  return(i)
 }
 
-# Prepare plot region
-par(mar = c(5, 5, 1, 1))
-plot(NA, xlim = range(df$ntips), ylim = range(df$tree.len),
-     xlab = "Number of tips", ylab = "Tree length", bty = 'n')
+# Visualize tree lengths as a function of number of tips
+prots <- unique(df$protein)
+pal <- ggfree::gg.rainbow(n=length(prots))
 
-# Define a color palette
-pal <- rainbow(length(prots))  # Adjust color palette as needed
+# Prepare plot region and generate the plot
+par(mar=c(3, 3, 2, 2))
+plot(NA, xlim=range(df$ntips), ylim=range(df$tree.len), 
+     xlab="Number of tips", ylab="Tree length", bty='n')
 
-# Loop through proteins to plot data
-for (i in seq_along(prots)) {
+for (i in 1:length(prots)) {
   prot <- prots[i]
   x <- df$ntips[df$protein == prot]
   y <- df$tree.len[df$protein == prot]
-  idx <- locate.decline(y, threshold = 0.5)
-  print(paste("Protein:", prot, "=", x[idx]))
+  lines(x, y, col=pal[i], lwd=2)
   
-  if (!is.na(outpath)) {
-    lines(x, y, col = pal[i], lwd = 2)
-    points(x[idx], y[idx], pch = 19, col = pal[i])
-    text(x[1], y[1], label = prot, col = pal[i], adj = 0, cex = 0.7, xpd = NA)
-    text(0.01 * diff(range(df$ntips)) + x[idx], y[idx], label = x[idx], cex = 0.5, adj = 0)
-  }
+  idx <- locate.decline(y, threshold=0.5)
+  points(x[idx], y[idx], pch=19, col=pal[i])
+  text(x[1], y[1], label=prot, col=pal[i], adj=0, cex=0.7, xpd=NA)
+  text(0.01 * diff(range(df$ntips)) + x[idx], y[idx], label=x[idx], cex=0.5, adj=0)
+  print(paste("Protein:", prot, "=", x[idx]))
 }
 
+# Save the plot as a PDF if an output path is provided
 if (!is.na(outpath)) {
+  pdf(outpath)
+  plot(NA, xlim=range(df$ntips), ylim=range(df$tree.len), 
+       xlab="Number of tips", ylab="Tree length", bty='n')
+  
+  for (i in 1:length(prots)) {
+    prot <- prots[i]
+    x <- df$ntips[df$protein == prot]
+    y <- df$tree.len[df$protein == prot]
+    lines(x, y, col=pal[i], lwd=2)
+    
+    idx <- locate.decline(y, threshold=0.5)
+    points(x[idx], y[idx], pch=19, col=pal[i])
+    text(x[1], y[1], label=prot, col=pal[i], adj=0, cex=0.7, xpd=NA)
+    text(0.01 * diff(range(df$ntips)) + x[idx], y[idx], label=x[idx], cex=0.5, adj=0)
+    print(paste("Protein:", prot, "=", x[idx]))
+  }
   dev.off()
 }
