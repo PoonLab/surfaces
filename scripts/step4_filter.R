@@ -47,23 +47,6 @@ locate.decline <- function(x, w = 5, threshold = 0.1) {
   i
 }
 
-<<<<<<< HEAD
-# Define prots outside of the conditional to avoid 'not found' error
-=======
->>>>>>> cc06f3932d17f9797b9f055170558ca04dcd07e1
-prots <- unique(df$protein)
-
-if (!is.na(outpath)) {
-  pdf(outpath, width = 5, height = 5)
-  
-  # Visualize tree lengths as function of number of tips
-  require(ggfree, quietly = TRUE)
-<<<<<<< HEAD
-  pal <- ggfree::gg.rainbow(n = length(prots))
-=======
-  pal <- ggfree::gg.rainbow(n=length(prots))
->>>>>>> cc06f3932d17f9797b9f055170558ca04dcd07e1
-  
   # Prepare plot region
   par(mar = c(5, 5, 1, 1))
   plot(NA, xlim = range(df$ntips), ylim = range(df$tree.len),
