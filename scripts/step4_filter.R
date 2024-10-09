@@ -1,5 +1,5 @@
 # The purpose of this script is to visualize the decay of tree length
-# with the progressive pruning of the shortest tips, and to 
+# with the progressive pruning of the shortest tips, and to
 # develop and apply a function for selecting a threshold for pruning.
 
 # Load contents of all CSV files into a single data frame
@@ -19,10 +19,11 @@ df <- data.frame(protein = character(), ntips = numeric(), tree.len = numeric(),
 for (fn in files) {
   prune <- read.csv(fn, header = FALSE)
   parts <- strsplit(basename(fn), "_")[[1]]
-  prot <- paste(parts[2:(length(parts)-1)], collapse = "_")
+  prot <- paste(parts[2:(length(parts) - 1)], collapse = "_")
   temp <- data.frame(protein = prot, ntips = prune$V1, tree.len = prune$V2, stringsAsFactors = FALSE)
   df <- rbind(df, temp)
 }
+
 prots <- unique(df$protein)
 
 # Function to locate point where decay slope exceeds some threshold
@@ -47,11 +48,13 @@ locate.decline <- function(x, w = 5, threshold = 0.1) {
   i
 }
 
-  # Prepare plot region
-  par(mar = c(5, 5, 1, 1))
-  plot(NA, xlim = range(df$ntips), ylim = range(df$tree.len),
-       xlab = "Number of tips", ylab = "Tree length", bty = 'n')
-}
+# Prepare plot region
+par(mar = c(5, 5, 1, 1))
+plot(NA, xlim = range(df$ntips), ylim = range(df$tree.len),
+     xlab = "Number of tips", ylab = "Tree length", bty = 'n')
+
+# Define a color palette
+pal <- rainbow(length(prots))  # Adjust color palette as needed
 
 # Loop through proteins to plot data
 for (i in seq_along(prots)) {
