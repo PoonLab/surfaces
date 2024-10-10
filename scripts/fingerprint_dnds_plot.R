@@ -1,3 +1,10 @@
+args <- commandArgs(trailingOnly = TRUE)
+if (length(args) == 0) {
+  stop("Usage: Rscript \"[glob to fubar CSVs]\" (optional PDF image)")
+}
+glob <- args[1]
+outpath <- ifelse(length(args) > 1, args[2], NA)
+
 fingerprint <- function(
     dnds, 
     breaks = c(0, 0.1, 0.25, 0.5, 1, 1.6, 2.5, 5, 10, 50), 
@@ -28,19 +35,25 @@ fingerprint <- function(
 }
 
 # display fingerprints
-setwd("/home/hugocastelan/Documents/projects/surfaces_data/zika1/step5/")
-files <- Sys.glob("/home/hugocastelan/Documents/projects/surfaces_data/zika1/step5/*.fubar.csv")
+#setwd("/home/hugocastelan/Documents/projects/surfaces_data/zika1/step5/")
+#files <- Sys.glob("/home/hugocastelan/Documents/projects/surfaces_data/zika1/step5/*.fubar.csv")
+files <- Sys.glob(glob)
+if (!is.na(outpath)) {
+  pdf(file=outpath, width=10, height=12)
+}
+
 par(mfrow=c(5,4))
 for (i in 1:length(files)) {
-  #prefix <- strsplit(files[i], "\\.")[[1]][1]
-  #tokens <- strsplit(prefix, "_")[[1]]
-  #prot <- tokens[2]
   filename <- basename(files[i])
-  parts <- strsplit(filename, "_")[[1]]
+  prefix <- strsplit(filename, "\\.")[[1]][1]
+  parts <- strsplit(prefix, "_")[[1]]
   prot <- paste(parts[2:(length(parts)-1)], collapse = "_")
-  method <- ifelse(tokens[3]=="step4", "large", "small")
+  step_no <- as.character(parts[length(parts)])
+  method <- ifelse(step_no == "step4", "large", "small")
   dnds <- read.csv(files[i])  
   fingerprint(dnds, main=paste(prot, method))
 }
 
-image
+if (!is.na(outpath)) {
+  dev.off()
+}
