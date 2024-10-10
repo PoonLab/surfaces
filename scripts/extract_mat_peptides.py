@@ -215,7 +215,7 @@ if __name__=="__main__":
         pname = re.sub("[/.,:]", "_", p)
         #pname = pname.split()[0]  
         pname=re.sub("_mature_peptide", "", pname)
-        pname = pname.replace(" ", "_") 
+        pname = pname.replace(" ", "-") 
         print(pname)  # debugging
         outfile = open(f"{label}_{pname}_step1.fasta", 'w')
         outfiles.update({p: outfile})

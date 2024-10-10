@@ -4,12 +4,14 @@ import subprocess
 import tempfile
 from io import StringIO
 import os
+import sys
 
 
 description = """
 Use a reference Genbank record to classify CDS records by 
 pairwise alignment.
 """
+
 
 def parse_gb(gb_file):
     prots = {}
@@ -62,22 +64,24 @@ if __name__ == "__main__":
                         help="File containing CDS records")
     parser.add_argument('-f', '--format', type=str, default='fasta',
                         help="option, specify file format for CDS")
+    parser.add_argument('--outdir', type=str, default='.',
+                        help="option, dir for output files, e.g., data/")
     args = parser.parse_args()
 
     refs = parse_gb(args.gb)
-    print(f"Detected the following products: {','.join(list(refs.keys()))}")
+    sys.stderr.write(f"Detected the following products: {','.join(list(refs.keys()))}")
 
     # create output files
     outfile = {}
     try:
-        virus, locus, step = os.path.basename(args.cds.name).split('_')[:3]
+        virus = os.path.basename(args.cds.name).split('_')[0]
     except:
-        print(os.path.basename(args.cds.name))
+        sys.stderr.write(f"Failed to parse virus name from {os.path.basename(args.cds.name)}")
         raise
 
     for key in refs:
-        fn = f"{virus}_{key.split(' ')[0]}_{step}.fasta" 
-        outfile.update({key: open(fn, 'w')})
+        fn = f"{virus}_{key.split(' ')[0]}_step1.fasta" 
+        outfile.update({key: open(os.path.join(args.outdir, fn), 'w')})
 
     for record in SeqIO.parse(args.cds, args.format):
         query = str(record.seq.translate())
@@ -88,6 +92,6 @@ if __name__ == "__main__":
             if ascore > max_score:
                 max_score = ascore
                 max_key = key
-        print(record.description, max_key)
+        #print(record.description, max_key)
         SeqIO.write(record, outfile[max_key], 'fasta')
 
