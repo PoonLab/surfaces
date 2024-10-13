@@ -12,7 +12,7 @@ import argparse
 import re
 
 
-def read_accns(handle, regex="([A-Z]+_?[0-9]+)(\.[0-9]+)?"):
+def read_accns(handle, regex="([A-Z]+_?[0-9]+)(\\.[0-9]+)?"):
     """ Read and validate accession numbers from file """
     pat = re.compile(regex)
     accns = []
@@ -59,7 +59,9 @@ def retrieve_CDS(record):
         cd_seq = cd.location.extract(record).seq
         
         # translate aa sequence
-        aaseq = cd.qualifiers['translation'][0]  #cd_seq.translate(cds=False)
+        aaseq = cd.qualifiers.get('translation', [None])[0]
+        if aaseq is None:
+            aaseq = cd_seq.translate(cds=False)
         stop_count = aaseq.count("*")
         if stop_count > 3:  # More than three stop codons in the amino acid seq
             print(f"\nSkipping record {record.name}")
