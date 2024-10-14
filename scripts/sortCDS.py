@@ -5,6 +5,7 @@ import tempfile
 from io import StringIO
 import os
 import sys
+import re
 
 
 description = """
@@ -15,13 +16,21 @@ pairwise alignment.
 
 def parse_gb(gb_file):
     prots = {}
-    record = SeqIO.read(gb_file, 'genbank')
+    record = SeqIO.read(gb_file, format)
     for feat in record.features:
         if feat.type == "CDS":
             prot = feat.qualifiers['translation'][0]
             product = feat.qualifiers['product'][0]
             prots.update({product: prot})
     return prots
+
+def parse_fasta(infile):
+    pat = re.compile("\\[protein=([^\\]]+)\\]")
+    proteins = {}
+    for record in SeqIO.parse(infile, 'fasta'):
+        prot = pat.findall(record.description)[0].split()[-1]
+        proteins.update({prot: str(record.seq)})
+    return proteins
 
 
 def mafft(query, ref, binpath="mafft", match=1, mismatch=-1, gap=-3):
@@ -64,12 +73,21 @@ if __name__ == "__main__":
                         help="File containing CDS records")
     parser.add_argument('-f', '--format', type=str, default='fasta',
                         help="option, specify file format for CDS")
+    parser.add_argument('--rft', type=str, default='genbank',
+                        help="Reference file format (default genbank)")
     parser.add_argument('--outdir', type=str, default='.',
                         help="option, dir for output files, e.g., data/")
     args = parser.parse_args()
 
-    refs = parse_gb(args.gb)
-    sys.stderr.write(f"Detected the following products: {','.join(list(refs.keys()))}")
+    if args.rft == 'genbank':
+        refs = parse_gb(args.gb)
+    elif args.rft == 'fasta':
+        refs = parse_fasta(args.gb)
+    else:
+        sys.stderr.write(f"ERROR: Unrecognized argument {args.rft} for --rft\n")
+        sys.exit()
+    sys.stderr.write(
+        f"Detected the following products: {','.join(list(refs.keys()))}\n")
 
     # create output files
     outfile = {}
