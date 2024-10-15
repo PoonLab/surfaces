@@ -46,6 +46,11 @@ Run the script `sortCDS.py` to partition the CDS file produced by `get_all_accns
 Inputs:
 - Genbank file of reference genome
 - File containing all CDS records
+  
+Example:
+``` console
+$ python3 ../../surfaces/scripts/sortCDS.py  rsv_sequence.gb  rsv_sequence.seq_CDSs.fasta
+```
 
 Output:
 - Automatically opens multiple FASTA files to write different CDSs
