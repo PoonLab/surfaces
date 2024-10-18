@@ -5,14 +5,14 @@ args <- commandArgs(trailingOnly = TRUE)
 
 # Check if directory path is provided
 if (length(args) < 1) {
-  stop("Please provide a directory path as a command-line argument")
+  stop("Usage: Rscript step4_filter.R [\"PATH/*_step4.pruning.csv\"] (optional PDF)")
 }
 
 # Check if output path is provided (optional)
 outpath <- ifelse(length(args) > 1, args[2], NA)
 
 # Load contents of all CSV files into a single data frame
-files <- Sys.glob(file.path(args[1], "*.csv"))
+files <- Sys.glob(args[1])
 
 # Check if any CSV files were found
 if (length(files) == 0) {
@@ -20,7 +20,7 @@ if (length(files) == 0) {
 }
 
 # Load required library
-require(ggfree)
+require(ggfree, quietly=TRUE)
 
 # Initialize an empty data frame
 df <- data.frame(protein=character(), ntips=numeric(), tree.len=numeric(), stringsAsFactors=FALSE)
@@ -80,7 +80,8 @@ for (i in 1:length(prots)) {
 
 # Save the plot as a PDF if an output path is provided
 if (!is.na(outpath)) {
-  pdf(outpath)
+  pdf(outpath, width=5, height=5)
+  par(mar=c(5,5,1,1))
   plot(NA, xlim=range(df$ntips), ylim=range(df$tree.len), 
        xlab="Number of tips", ylab="Tree length", bty='n')
   
@@ -94,7 +95,6 @@ if (!is.na(outpath)) {
     points(x[idx], y[idx], pch=19, col=pal[i])
     text(x[1], y[1], label=prot, col=pal[i], adj=0, cex=0.7, xpd=NA)
     text(0.01 * diff(range(df$ntips)) + x[idx], y[idx], label=x[idx], cex=0.5, adj=0)
-    print(paste("Protein:", prot, "=", x[idx]))
   }
   dev.off()
 }
