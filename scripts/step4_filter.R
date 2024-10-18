@@ -5,7 +5,7 @@ args <- commandArgs(trailingOnly = TRUE)
 
 # Check if directory path is provided
 if (length(args) < 1) {
-  stop("Usage: Rscript step4_filter.R [\"PATH/*_step4.pruning.csv\"] (optional PDF)")
+  stop("Usage: Rscript step4_filter.R [\"PATH/*_step4.pruning.csv\"] (optional PNG)")
 }
 
 # Check if output path is provided (optional)
@@ -80,7 +80,7 @@ for (i in 1:length(prots)) {
 
 # Save the plot as a PDF if an output path is provided
 if (!is.na(outpath)) {
-  pdf(outpath, width=5, height=5)
+  png(outpath, width=5*150, height=5*150, res=150)
   par(mar=c(5,5,1,1))
   plot(NA, xlim=range(df$ntips), ylim=range(df$tree.len), 
        xlab="Number of tips", ylab="Tree length", bty='n')
