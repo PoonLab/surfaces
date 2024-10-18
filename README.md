@@ -46,6 +46,11 @@ Run the script `sortCDS.py` to partition the CDS file produced by `get_all_accns
 Inputs:
 - Genbank file of reference genome
 - File containing all CDS records
+  
+Example:
+``` console
+$ python3 ../../surfaces/scripts/sortCDS.py  rsv_sequence.gb  rsv_sequence.seq_CDSs.fasta
+```
 
 Output:
 - Automatically opens multiple FASTA files to write different CDSs
@@ -60,7 +65,7 @@ python3 ../../surfaces/scripts/get_all_accns.py --prefix zika zika.seq --poly hc
 Next you need to run the `extract_mat_peptides.py` script to extract the CDS.
 In this case, it is necessary to use a reference genome in Genbank format to extract the CDS.
 ```bash
-python3 ../../surfaces/scripts/extract_mat_peptides.py '../../surfaces_data/zika/zika/sequence.gb' '/home/hugocastelan/Documents/projects/surfaces_data/zika/zika/zika.seq_CDSs_polyprot.fasta'
+python3 ../../surfaces/scripts/extract_mat_peptides.py  --label zika 'sequence_zika.gb' '/home/hugocastelan/zika.seq_CDSs_polyprot.fasta' 
 ```
 
 ### Step 2: Sequence alignment
