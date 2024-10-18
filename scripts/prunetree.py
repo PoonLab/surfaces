@@ -109,6 +109,82 @@ def prune_tiplen(phy, target, cache=False):
     return phy
 
 
+def prunetree(tree, mode, target, outfile, seq=None, format='fasta', csvfile=None):
+    """
+    Main function
+    
+    :param tree:  str, path to file containing tree to prune
+    :param mode:  str, one of {'ntips', 'treelen', 'tiplen'}
+    :param target:  int or float, pruning cutoff
+    :param outfile:  file handle or stdout stream
+    :param seq:  str, path to file containing sequence alignment
+    :param format:  str, format of sequence alignment (default: 'fasta')
+    :param csvfile:  str, path to write removed tip labels
+    
+    :return:  Object of class Bio.Phylo.BaseTree
+    """
+    phy = Phylo.read(tree, "newick")
+    tip_names = set([tip.name for tip in phy.get_terminals()])
+
+    if seq:
+        # checks whether sequences have the same length
+        aln = AlignIO.read(seq, format)
+        records = dict([(record.description.split("'")[0], record) for record in aln])
+        labels = set(records.keys())
+        if tip_names != labels:
+            sys.stderr.write("ERROR: Input tree labels do not match alignment.\n")
+            sys.stderr.write(f"{tip_names.difference(labels)}\n")
+            sys.exit()
+
+    # perform pruning
+    if mode == "treelen":
+        tlen = phy.total_branch_length()
+        if target is None or target <= 0:
+            sys.stderr.write(f"Starting tree length: {tlen}\n")
+            sys.exit()
+        pruned = prune_length(phy, target=target, cache=csvfile is not None)
+    elif mode == "tiplen":
+        if target is None:
+            tips = phy.get_terminals()
+            tiplens = sorted([tip.branch_length for tip in tips])
+            sys.stderr.write(f"Shortest tip lengths:\n")
+            sys.stderr.write(f"  min:    {tiplens[0]}\n")
+            sys.stderr.write(f"  2.5%:   {tiplens[round(0.025 * len(tips))]}\n")
+            sys.stderr.write(f"  25%:    {tiplens[round(0.25 * len(tips))]}\n")
+            sys.stderr.write(f"  median: {tiplens[round(0.5*len(tips))]}\n")
+            sys.exit()
+        pruned = prune_tiplen(phy, target=target, cache=csvfile is not None)
+    elif mode == "ntips":
+        if target is None:
+            prune_tips(phy, target=4, trace=True)
+            #sys.stderr.write(f"Starting tip count: {len(phy.get_terminals())}\n")
+            sys.exit()
+        pruned = prune_tips(phy, target=target, cache=csvfile is not None)
+    else:
+        sys.stderr.write(f"ERROR: Unknown --mode option {mode}, exiting\n")
+        sys.exit()
+
+    if outfile:
+        if seq:
+            # write resulting sequences to output file
+            for tip in pruned.get_terminals():
+                record = records[tip.name]
+                _ = SeqIO.write(record, outfile, "fasta")
+        else:
+            # write pruned tree to output file
+            Phylo.write(pruned, outfile, 'newick')
+
+    if csvfile:
+        # write pruned labels to CSV
+        writer = csv.writer(csvfile)
+        for tip in pruned.get_terminals():
+            if not hasattr(tip, 'cache'):
+                continue
+            for label in tip.cache:
+                writer.writerow([tip.name, label])
+    return pruned
+
+
 if __name__ == "__main__":
     # command-line interface
     parser = argparse.ArgumentParser(description=description)
@@ -152,62 +228,5 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
 
-    phy = Phylo.read(args.tree, "newick")
-    tip_names = set([tip.name for tip in phy.get_terminals()])
-
-    if args.seq:
-        # checks whether sequences have the same length
-        aln = AlignIO.read(args.seq, args.format)
-        records = dict([(record.description.split("'")[0], record) for record in aln])
-        labels = set(records.keys())
-        if tip_names != labels:
-            sys.stderr.write("ERROR: Input tree labels do not match alignment.\n")
-            sys.stderr.write(f"{tip_names.difference(labels)}\n")
-            sys.exit()
-
-    # perform pruning
-    if args.mode == "treelen":
-        tlen = phy.total_branch_length()
-        if args.target is None or args.target <= 0:
-            sys.stderr.write(f"Starting tree length: {tlen}\n")
-            sys.exit()
-        pruned = prune_length(phy, target=args.target, cache=args.csvfile is not None)
-    elif args.mode == "tiplen":
-        if args.target is None:
-            tips = phy.get_terminals()
-            tiplens = sorted([tip.branch_length for tip in tips])
-            sys.stderr.write(f"Shortest tip lengths:\n")
-            sys.stderr.write(f"  min:    {tiplens[0]}\n")
-            sys.stderr.write(f"  2.5%:   {tiplens[round(0.025 * len(tips))]}\n")
-            sys.stderr.write(f"  25%:    {tiplens[round(0.25 * len(tips))]}\n")
-            sys.stderr.write(f"  median: {tiplens[round(0.5*len(tips))]}\n")
-            sys.exit()
-        pruned = prune_tiplen(phy, target=args.target, cache=args.csvfile is not None)
-    elif args.mode == "ntips":
-        if args.target is None:
-            prune_tips(phy, target=4, trace=True)
-            #sys.stderr.write(f"Starting tip count: {len(phy.get_terminals())}\n")
-            sys.exit()
-        pruned = prune_tips(phy, target=args.target,
-                            cache=args.csvfile is not None)
-    else:
-        sys.stderr.write(f"ERROR: Unknown --mode option {args.mode}, exiting\n")
-        sys.exit()
-
-    if args.seq:
-        # write resulting sequences to output file
-        for tip in pruned.get_terminals():
-            record = records[tip.name]
-            _ = SeqIO.write(record, args.outfile, "fasta")
-    else:
-        # write pruned tree to output file
-        Phylo.write(pruned, args.outfile, 'newick')
-
-    if args.csvfile:
-        # write pruned labels to CSV
-        writer = csv.writer(args.csvfile)
-        for tip in pruned.get_terminals():
-            if not hasattr(tip, 'cache'):
-                continue
-            for label in tip.cache:
-                writer.writerow([tip.name, label])
+    prunetree(tree=args.tree, mode=args.mode, target=args.target, outfile=args.outfile,
+              seq=args.seq, format=args.format, csvfile=args.csvfile)

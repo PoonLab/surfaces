@@ -20,7 +20,7 @@ if (length(files) == 0) {
 }
 
 # Load required library
-require(ggfree, quietly=TRUE)
+suppressMessages(require(ggfree, quietly=TRUE))
 
 # Initialize an empty data frame
 df <- data.frame(protein=character(), ntips=numeric(), tree.len=numeric(), stringsAsFactors=FALSE)
@@ -75,10 +75,10 @@ for (i in 1:length(prots)) {
   points(x[idx], y[idx], pch=19, col=pal[i])
   text(x[1], y[1], label=prot, col=pal[i], adj=0, cex=0.7, xpd=NA)
   text(0.01 * diff(range(df$ntips)) + x[idx], y[idx], label=x[idx], cex=0.5, adj=0)
-  print(paste("Protein:", prot, "=", x[idx]))
+  cat(paste(prot, ",", x[idx], "\n", sep=''))
 }
 
-# Save the plot as a PDF if an output path is provided
+# Save the plot as a PNG if an output path is provided
 if (!is.na(outpath)) {
   png(outpath, width=5*150, height=5*150, res=150)
   par(mar=c(5,5,1,1))
@@ -96,5 +96,5 @@ if (!is.na(outpath)) {
     text(x[1], y[1], label=prot, col=pal[i], adj=0, cex=0.7, xpd=NA)
     text(0.01 * diff(range(df$ntips)) + x[idx], y[idx], label=x[idx], cex=0.5, adj=0)
   }
-  dev.off()
+  invisible(capture.output(dev.off()))
 }
