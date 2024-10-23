@@ -96,11 +96,11 @@ for f in *.fasta; do fasttree -nt -quote "$f" >  ${f%.fasta}.nwk ;  done
 ```bash
 for f in *_step3.nwk; do python3 scripts/prunetree.py "$f" > "${f%_step3.nwk}_step4.csv"; done
 ```
-
 - Use `step4_filter.R` to create a tree-length-decay plot. Take note of the number of tips to prune per alignment.
-
+- It is necessary to include the "path in quotes"
+  
 ```bash
-Rscript ../../../surfaces/scripts/step4_filter.R  /home/hugocastelan/Documents/projects/surfaces_data/dengue/step4/ 
+Rscript step4_filter.R  "/home/hugocastelan/Documents/projects/surfaces_data/dengue/step4/*.csv"  "/home/hugocastelan/Documents/projects/surfaces_data/dengue/step4/figure.png"
 ```
 **NOTE: If length of entire tree is below some threshold (0.5) then abandon alignment (stop here)**
 
