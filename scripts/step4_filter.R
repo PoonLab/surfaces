@@ -10,6 +10,10 @@ if (length(args) < 1) {
 
 # Check if output path is provided (optional)
 outpath <- ifelse(length(args) > 1, args[2], NA)
+if (grepl("\\.csv$", outpath)) {
+  stop("Prevented PNG output from being written to a CSV file\n", 
+       "Did you forget to enclose the first argument in quotes?")
+}
 
 # Load contents of all CSV files into a single data frame
 files <- Sys.glob(args[1])
