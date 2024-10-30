@@ -16,7 +16,7 @@ pairwise alignment.
 
 def parse_gb(gb_file):
     prots = {}
-    record = SeqIO.read(gb_file, format)
+    record = SeqIO.read(gb_file, 'genbank')
     for feat in record.features:
         if feat.type == "CDS":
             prot = feat.qualifiers['translation'][0]
