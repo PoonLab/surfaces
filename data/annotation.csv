@@ -1,7 +1,7 @@
 virus,protein,refseq,uniprot
-chikv,6K protein,NC_004162.2,
-chikv,capsid protein,NC_004162.2,
-chikv,E1 envelope glycoprotein,NC_004162.2,
+chikv,6K protein,NC_004162.2,F2YI15
+chikv,capsid protein,NC_004162.2,D9J2W0
+chikv,E1 envelope glycoprotein,NC_004162.2,A0A173M1K7
 chikv,E2 envelope glycoprotein,NC_004162.2,
 chikv,E3 protein,NC_004162.2,
 chikv,mRNA-capping enzyme nsp1,NC_004162.2,
