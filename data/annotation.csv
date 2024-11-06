@@ -102,11 +102,13 @@ orthobornavirus,matrix protein,NC_030692.1,
 orthobornavirus,nucleoprotein,NC_030692.1,
 orthobornavirus,phosphoprotein,NC_030692.1,
 orthobornavirus,RNA dependent RNA polymerase,NC_030692.1,
+orthobornavirus,X protein,NC_030692.1,
 polio,protein 1b,NC_002058.3,
 polio,protein 3b,NC_002058.3,
 polio,protein 4b,NC_002058.3,
 polio,protein 5b,NC_002058.3,
 polio,protein X,NC_002058.3,
+polio,protein 2,NC_002058.3,
 polio,VP1,NC_002058.3,
 polio,VP2,NC_002058.3,
 polio,VP3,NC_002058.3,
@@ -188,3 +190,34 @@ zika,nonstructural protein NS4B,NC_035889.1,
 zika,protein 2K,NC_035889.1,
 zika,protein pr,NC_035889.1,
 zika,RNA-dependent RNA polymerase NS5,NC_035889.1,
+HIV1A1,Gag,NC_001802.1,
+HIV1A1,gp160,NC_001802.1,
+HIV1A1,Nef,NC_001802.1,
+HIV1A1,Pol,NC_001802.1,
+HIV1A1,Rev,NC_001802.1,
+HIV1A1,Tat,NC_001802.1,
+HIV1A1,Vif,NC_001802.1,
+HIV1A1,Vpr,NC_001802.1,
+HIV1A1,Vpu,NC_001802.1,
+TBEV,core protein,NC_001672.1,
+TBEV,envelope protein E,NC_001672.1,
+TBEV,matrix protein M,NC_001672.1,
+TBEV,non-structural protein NS1,NC_001672.1,
+TBEV,non-structural protein NS2a,NC_001672.1,
+TBEV,non-structural protein NS2b,NC_001672.1,
+TBEV,non-structural protein NS3,NC_001672.1,
+TBEV,non-structural protein NS4a,NC_001672.1,
+TBEV,non-structural protein NS4b,NC_001672.1,
+TBEV,non-structural protein NS5,NC_001672.1,
+TBEV,pre protein,NC_001672.1,
+coxsacki,2A-protein,NC_001612
+coxsacki,2B-protein,NC_001612
+coxsacki,2C-protein,NC_001612
+coxsacki,3A-protein,NC_001612
+coxsacki,3B-protein,NC_001612
+coxsacki,3C-protein,NC_001612
+coxsacki,3D-protein,NC_001612
+coxsacki,VP1-protein,NC_001612
+coxsacki,VP2-protein,NC_001612
+coxsacki,VP3-protein,NC_001612
+coxsacki,VP4-protein,NC_001612
