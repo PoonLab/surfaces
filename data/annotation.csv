@@ -210,14 +210,15 @@ TBEV,non-structural protein NS4a,NC_001672.1,
 TBEV,non-structural protein NS4b,NC_001672.1,
 TBEV,non-structural protein NS5,NC_001672.1,
 TBEV,pre protein,NC_001672.1,
-coxsacki,2A-protein,NC_001612
-coxsacki,2B-protein,NC_001612
-coxsacki,2C-protein,NC_001612
-coxsacki,3A-protein,NC_001612
-coxsacki,3B-protein,NC_001612
-coxsacki,3C-protein,NC_001612
-coxsacki,3D-protein,NC_001612
-coxsacki,VP1-protein,NC_001612
-coxsacki,VP2-protein,NC_001612
-coxsacki,VP3-protein,NC_001612
-coxsacki,VP4-protein,NC_001612
+coxsacki,2A-protein,NC_001612,
+coxsacki,2B-protein,NC_001612,
+coxsacki,2C-protein,NC_001612,
+coxsacki,3A-protein,NC_001612,
+coxsacki,3B-protein,NC_001612,
+coxsacki,3C-protein,NC_001612,
+coxsacki,3D-protein,NC_001612,
+coxsacki,VP1-protein,NC_001612,
+coxsacki,VP2-protein,NC_001612,
+coxsacki,VP3-protein,NC_001612,
+coxsacki,VP4-protein,NC_001612,
+
