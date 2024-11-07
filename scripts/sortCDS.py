@@ -14,9 +14,9 @@ pairwise alignment.
 """
 
 
-def parse_gb(gb_file):
+def parse_gb(gb_file, file_format="genbank"):
     prots = {}
-    record = SeqIO.read(gb_file, 'genbank')
+    record = SeqIO.read(gb_file, file_format)
     for feat in record.features:
         if feat.type == "CDS":
             prot = feat.qualifiers['translation'][0]
@@ -80,7 +80,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     if args.rft == 'genbank':
-        refs = parse_gb(args.gb)
+        refs = parse_gb(args.gb, args.rft)
     elif args.rft == 'fasta':
         refs = parse_fasta(args.gb)
     else:
