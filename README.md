@@ -108,6 +108,14 @@ Rscript step4_filter.R  "/home/hugocastelan/Documents/projects/surfaces_data/den
 ```bash
 python3 prunetree.py measles_C_protein_step3.nwk --seq measles_C_protein_step2.fasta --mode ntips --target 97 --csvfile measles_C_protein_step5.labels.csv --outfile measles_C_protein_step5.fasta
 ```
+For batch processing, use:
+```bash
+python3 "step4_batch.py" "step4_filter.csv" "*_step3.nwk" 
+```
+**NOTES:**
+* `step4_filter.csv` is a CSV from `step4_filter.R` output
+* Script assumes Newick files are in the same directory as corresponding `\*\_step3.fasta` files
+
 ### Step 5 (Optional): Prune to target tree length of `1.0` if trees exceed this size
 - Case 1: prune down to tree length of `1.0` if doing so does not removes too many tips (change mode to `--mode treelen`). 
 
