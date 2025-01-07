@@ -58,6 +58,4 @@ for fn in files:
       
     # align to corresponding reference
     aquery, aref = mafft(cseq, refseq)
-    print(aref)
-    print(aquery)
-    break
+    
