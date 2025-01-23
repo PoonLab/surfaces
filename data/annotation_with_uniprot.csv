@@ -1,0 +1,223 @@
+virus,protein,new_name,refseq,uniprot,
+chikv,6K protein,chikv_6K_protein,NC_004162.2,,
+chikv,capsid protein,chikv_capsid_protein,NC_004162.2,,
+chikv,E1 envelope glycoprotein,chikv_E1_envelope_glycoprotein,NC_004162.2,,
+chikv,E2 envelope glycoprotein,chikv_E2_envelope_glycoprotein,NC_004162.2,,
+chikv,E3 protein,chikv_E3_protein,NC_004162.2,,
+chikv,mRNA-capping enzyme nsp1,chikv_mRNA_capping_enzyme_nsp1,NC_004162.2,,
+chikv,non-structural protein nsp3,chikv_non_structural_protein_nsp3,NC_004162.2,,
+chikv,protease nsp2,chikv_protease_nsp2,NC_004162.2,,
+chikv,RNA-directed RNA polymerase nsp4,chikv_RNA_directed_RNA_polymerase_nsp4,NC_004162.2,,
+chikv,transframe fusion protein,chikv_transframe_fusion_protein,NC_004162.2,,
+dengue2,anchored capsid protein ancC,dengue2_anchored_capsid_protein_ancC,NC_001474.2,,
+dengue2,capsid protein C,dengue2_capsid_protein_C,NC_001474.2,,
+dengue2,envelope protein E,dengue2_envelope_protein_E,NC_001474.2,,
+dengue2,membrane glycoprotein M,dengue2_membrane_glycoprotein_M,NC_001474.2,,
+dengue2,membrane glycoprotein precursor prM,dengue2_membrane_glycoprotein_precursor_prM,NC_001474.2,,
+dengue2,nonstructural protein NS1,dengue2_nonstructural_protein_NS1,NC_001474.2,,
+dengue2,nonstructural protein NS2A.,dengue2_nonstructural_protein_NS2A.,NC_001474.2,,
+dengue2,nonstructural protein NS2B,dengue2_nonstructural_protein_NS2B,NC_001474.2,,
+dengue2,nonstructural protein NS3,dengue2_nonstructural_protein_NS3,NC_001474.2,,
+dengue2,nonstructural protein NS4A,dengue2_nonstructural_protein_NS4A,NC_001474.2,,
+dengue2,nonstructural protein NS4B,dengue2_nonstructural_protein_NS4B,NC_001474.2,,
+dengue2,protein 2K,dengue2_protein_2K,NC_001474.2,,
+dengue2,protein pr,dengue2_protein_pr,NC_001474.2,,
+dengue2,RNA-dependent RNA polymerase NS5,dengue2_RNA_dependent_RNA_polymerase_NS5,NC_001474.2,,
+enterov1,A71 2A,enterov1_A71_2A,NC_001612.1,,
+enterov1,A71 2B,enterov1_A71_2B,NC_001612.1,,
+enterov1,A71 2C,enterov1_A71_2C,NC_001612.1,,
+enterov1,A71 3A,enterov1_A71_3A,NC_001612.1,,
+enterov1,A71 3B,enterov1_A71_3B,NC_001612.1,,
+enterov1,A71 3C,enterov1_A71_3C,NC_001612.1,,
+enterov1,A71 3D,enterov1_A71_3D,NC_001612.1,,
+enterov1,A71 VP1,enterov1_A71_VP1,NC_001612.1,,
+enterov1,A71 VP2,enterov1_A71_VP2,NC_001612.1,,
+enterov1,A71 VP3,enterov1_A71_VP3,NC_001612.1,,
+enterov1,A71 VP4,enterov1_A71_VP4,NC_001612.1,,
+HCV1a,core,HCV1a_core,NC_004102.1,,
+HCV1a,E1,HCV1a_E1,NC_004102.1,,
+HCV1a,E2,HCV1a_E2,NC_004102.1,,
+HCV1a,NS2,HCV1a_NS2,NC_004102.1,,
+HCV1a,NS3,HCV1a_NS3,NC_004102.1,,
+HCV1a,NS4A,HCV1a_NS4A,NC_004102.1,,
+HCV1a,NS4B,HCV1a_NS4B,NC_004102.1,,
+HCV1a,NS5A,HCV1a_NS5A,NC_004102.1,,
+HCV1a,NS5B,HCV1a_NS5B,NC_004102.1,,
+HCV1a,p7,HCV1a_p7,NC_004102.1,,
+HIV2,envelope,HIV2_envelope,NC_001722.1,P04615.1,P24104.1
+HIV2,gag,HIV2_gag,NC_001722.1,,
+HIV2,nef,HIV2_nef,NC_001722.1,P04600.3,P20868.3
+HIV2,pol,HIV2_pol,NC_001722.1,,
+HIV2,rev,HIV2_rev,NC_001722.1,P04615.1,P24104.1
+HIV2,tat,HIV2_tat,NC_001722.1,P05909.1,P12453.1
+HIV2,vif,HIV2_vif,NC_001722.1,P20878.1,P04595.1
+HIV2,vpr,HIV2_vpr,NC_001722.1,P12455.1,P05930.1
+HIV2,vpx,HIV2_vpx,NC_001722.1,P24110.1,P20881.1
+IAVH9N2,HA,IAVH9N2_HA,NC_004908.1,,
+IAVH9N2,M1,IAVH9N2_M1,NC_004907.1,,
+IAVH9N2,M2,IAVH9N2_M2,NC_004907.1,,
+IAVH9N2,NA,IAVH9N2_NA,NC_004909.1,,
+IAVH9N2,NP,IAVH9N2_NP,NC_004905.2,,
+IAVH9N2,NS1,IAVH9N2_NS1,NC_004906.1,,
+IAVH9N2,NS2,IAVH9N2_NS2,NC_004906.1,,
+IAVH9N2,PA,IAVH9N2_PA,NC_004912.1,,
+IAVH9N2,PB1,IAVH9N2_PB1,NC_004911.1,,
+IAVH9N2,PB2,IAVH9N2_PB2,NC_004910.1,,
+IBV,HA,IBV_HA,NC_002207.1,,
+IBV,M1,IBV_M1,NC_002210.1,,
+IBV,M2,IBV_M2,NC_002210.1,,
+IBV,NA,IBV_NA,NC_002209.1,,
+IBV,NP,IBV_NP,NC_002208.1,,
+IBV,NS1,IBV_NS1,NC_002211.1,,
+IBV,NS2,IBV_NS2,NC_002211.1,,
+IBV,PA,IBV_PA,NC_002206.1,,
+IBV,PB1,IBV_PB1,NC_002204.1,,
+IBV,PB2,IBV_PB2,NC_002205.1,,
+lyssavirus,glycoprotein,lyssavirus_glycoprotein,NC_001542.1,P32550.1,A3RM22.1
+lyssavirus,matrix protein,lyssavirus_matrix_protein,NC_001542.1,A3RM21.1,Q66T63.1
+lyssavirus,nucleoprotein,lyssavirus_nucleoprotein,NC_001542.1,Q8B6J9.1,A3RM19.1
+lyssavirus,phosphoprotein,lyssavirus_phosphoprotein,NC_001542.1,A3RM20.1,P22363.1
+lyssavirus,polymerase,lyssavirus_polymerase,NC_001542.1,,
+Mastro1,capsid,Mastro1_capsid,NC_030922.1,,
+Mastro1,RdRp,Mastro1_RdRp,NC_030922.1,,
+Mastro1,serine-protease,Mastro1_serine_protease,NC_030922.1,,
+measles,C protein,measles_C_protein,NC_001498.1,Q9YZN9.1,P03424.1
+measles,fusion protein,measles_fusion_protein,NC_001498.1,,
+measles,hemagglutinin protein,measles_hemagglutinin_protein,NC_001498.1,P08362.1,P35971.1
+measles,large polymerase protein,measles_large_polymerase_protein,NC_001498.1,,
+measles,matrix protein,measles_matrix_protein,NC_001498.1,Q9W850.1,P06942.1
+measles,nucleocapsid protein,measles_nucleocapsid_protein,NC_001498.1,Q9WMB5.1,Q89933.1
+measles,phosphoprotein,measles_phosphoprotein,NC_001498.1,Q77M42.1,P03422.1
+measles,V protein,measles_V_protein,NC_001498.1,Q9WMB4.1,P0C774.1
+mumps,fusion protein,mumps_fusion_protein,NC_002200.1,,
+mumps,hemagglutinin,mumps_hemagglutinin,NC_002200.1,P11235.1,P10866.1
+mumps,large polymerase protein,mumps_large_polymerase_protein,NC_002200.1,,
+mumps,matrix protein,mumps_matrix_protein,NC_002200.1,P33482.1,Q9JG20.1
+mumps,nucleocapsid protein,mumps_nucleocapsid_protein,NC_002200.1,P21186.1,Q77IS8.1
+mumps,phosphoprotein,mumps_phosphoprotein,NC_002200.1,P16595.1,P19717.1
+mumps,small hydrophobic protein,mumps_small_hydrophobic_protein,NC_002200.1,P28087.1,P20716.1
+mumps,V protein short,mumps_V_protein_short,NC_002200.1,P30928.1,P16595.1
+orthobornavirus,glycoprotein,orthobornavirus_glycoprotein,NC_030692.1,,
+orthobornavirus,matrix protein,orthobornavirus_matrix_protein,NC_030692.1,P0C794.1,P0C795.1
+orthobornavirus,nucleoprotein,orthobornavirus_nucleoprotein,NC_030692.1,P0C796.1,P0C797.1
+orthobornavirus,phosphoprotein,orthobornavirus_phosphoprotein,NC_030692.1,P0C798.1,P0C799.1
+orthobornavirus,RNA dependent RNA polymerase,orthobornavirus_RNA_dependent_RNA_polymerase,NC_030692.1,Q8JMN0.1,P52639.2
+orthobornavirus,X protein,orthobornavirus_X_protein,NC_030692.1,,
+polio,protein 1b,polio_protein_1b,NC_002058.3,,
+polio,protein 3b,polio_protein_3b,NC_002058.3,,
+polio,protein 4b,polio_protein_4b,NC_002058.3,,
+polio,protein 5b,polio_protein_5b,NC_002058.3,,
+polio,protein X,polio_protein_X,NC_002058.3,,
+polio,protein 2,polio_protein_2,NC_002058.3,,
+polio,VP1,polio_VP1,NC_002058.3,,
+polio,VP2,polio_VP2,NC_002058.3,,
+polio,VP3,polio_VP3,NC_002058.3,,
+polio,VP4,polio_VP4,NC_002058.3,,
+PotatoY,6K1,PotatoY_6K1,NC_001616.1,,
+PotatoY,6K2,PotatoY_6K2,NC_001616.1,,
+PotatoY,CI,PotatoY_CI,NC_001616.1,,
+PotatoY,coat,PotatoY_coat,NC_001616.1,,
+PotatoY,HC-Pro,PotatoY_HC_Pro,NC_001616.1,,
+PotatoY,NIa-Pro,PotatoY_NIa_Pro,NC_001616.1,,
+PotatoY,NIa-VPg,PotatoY_NIa_VPg,NC_001616.1,,
+PotatoY,NIb,PotatoY_NIb,NC_001616.1,,
+PotatoY,P1,PotatoY_P1,NC_001616.1,,
+PotatoY,P3,PotatoY_P3,NC_001616.1,,
+RhinoA,1A,RhinoA_1A,NC_001617.1,,
+RhinoA,1B,RhinoA_1B,NC_001617.1,,
+RhinoA,1C,RhinoA_1C,NC_001617.1,,
+RhinoA,1D,RhinoA_1D,NC_001617.1,,
+RhinoA,2A,RhinoA_2A,NC_001617.1,,
+RhinoA,2B,RhinoA_2B,NC_001617.1,,
+RhinoA,2C,RhinoA_2C,NC_001617.1,,
+RhinoA,3A,RhinoA_3A,NC_001617.1,,
+RhinoA,3B,RhinoA_3B,NC_001617.1,,
+RhinoA,3C,RhinoA_3C,NC_001617.1,,
+RhinoA,3D,RhinoA_3D,NC_001617.1,,
+RotaA,NSP1,RotaA_NSP1,NC_011500.2,B3SRS0.1,Q82045.1
+RotaA,NSP2,RotaA_NSP2,NC_011502.2,B3SRS2.1,B3SRV4.1
+RotaA,NSP3,RotaA_NSP3,NC_011501.2,Q9ICB2.1,B3SRS1.1
+RotaA,NSP4,RotaA_NSP4,NC_011504.2,Q9YJN7.1,B3SRV6.1
+RotaA,NSP5,RotaA_NSP5,NC_011505.2,Q03054.1,B3SRY1.1
+RotaA,VP1,RotaA_VP1,NC_011507.2,A4ZCW8.1,B1NKR3.1
+RotaA,VP2,RotaA_VP2,NC_011506.2,B1NKT8.1,A7J3A3.1
+RotaA,VP3,RotaA_VP3,NC_011508.2,,
+RotaA,VP4,RotaA_VP4,NC_011510.2,,
+RotaA,VP6,RotaA_VP6,NC_011509.2,B1NKU0.1,B1NKT2.1
+RotaA,VP7,RotaA_VP7,NC_011503.2,P11854.1,Q6L5Y4.1
+rsv,attachment protein,rsv_attachment_protein,NC_001803.1,,
+rsv,fusion protein,rsv_fusion_protein,NC_001803.1,,
+rsv,large protein,rsv_large_protein,NC_001803.1,,
+rsv,matrix protein 2-1,rsv_matrix_protein_2_1,NC_001803.1,P04545.1,Q4KRW3.1
+rsv,matrix protein 2-2,rsv_matrix_protein_2_2,NC_001803.1,P88812.1,Q4KRW2.1
+rsv,nonstructural protein 1,rsv_nonstructural_protein_1,NC_001803.1,Q86306.1,O42083.1
+rsv,nonstructural protein 2,rsv_nonstructural_protein_2,NC_001803.1,P04543.2,Q86305.1
+rsv,nucleoprotein,rsv_nucleoprotein,NC_001803.1,P24566.1,O42053.1
+rsv,phosphoprotein,rsv_phosphoprotein,NC_001803.1,P03421.1,P12579.2
+rsv,small hydrophobic protein,rsv_small_hydrophobic_protein,NC_001803.1,Q4KRW6.1,O36632.1
+VEEV,6K,VEEV_6K,NC_075022.1,,
+VEEV,capsid,VEEV_capsid,NC_075022.1,,
+VEEV,E1,VEEV_E1,NC_075022.1,,
+VEEV,E2,VEEV_E2,NC_075022.1,,
+VEEV,E3,VEEV_E3,NC_075022.1,,
+VEEV,nsp1,VEEV_nsp1,NC_075022.1,,
+VEEV,nsp2,VEEV_nsp2,NC_075022.1,,
+VEEV,nsp3,VEEV_nsp3,NC_075022.1,,
+VEEV,nsp4,VEEV_nsp4,NC_075022.1,,
+wnv,2K protein,wnv_2K_protein,NC_009942.1,,
+wnv,anchored capsid protein,wnv_anchored_capsid_protein,NC_009942.1,,
+wnv,envelope protein,wnv_envelope_protein,NC_009942.1,,
+wnv,membrane protein,wnv_membrane_protein,NC_009942.1,,
+wnv,nonstructural protein 1,wnv_nonstructural_protein_1,NC_009942.1,,
+wnv,nonstructural protein 2A,wnv_nonstructural_protein_2A,NC_009942.1,,
+wnv,nonstructural protein 2B,wnv_nonstructural_protein_2B,NC_009942.1,,
+wnv,nonstructural protein 3,wnv_nonstructural_protein_3,NC_009942.1,,
+wnv,nonstructural protein 4A,wnv_nonstructural_protein_4A,NC_009942.1,,
+wnv,nonstructural protein 4B,wnv_nonstructural_protein_4B,NC_009942.1,,
+wnv,nonstructural protein 5,wnv_nonstructural_protein_5,NC_009942.1,,
+wnv,pre-membrane protein,wnv_pre_membrane_protein,NC_009942.1,,
+zika,anchored capsid protein C,zika_anchored_capsid_protein_C,NC_035889.1,,
+zika,capsid protein C,zika_capsid_protein_C,NC_035889.1,,
+zika,envelope protein E,zika_envelope_protein_E,NC_035889.1,,
+zika,membrane glycoprotein M,zika_membrane_glycoprotein_M,NC_035889.1,,
+zika,membrane glycoprotein precursor M,zika_membrane_glycoprotein_precursor_M,NC_035889.1,,
+zika,nonstructural protein NS1,zika_nonstructural_protein_NS1,NC_035889.1,,
+zika,nonstructural protein NS2A,zika_nonstructural_protein_NS2A,NC_035889.1,,
+zika,nonstructural protein NS2B,zika_nonstructural_protein_NS2B,NC_035889.1,,
+zika,nonstructural protein NS3,zika_nonstructural_protein_NS3,NC_035889.1,,
+zika,nonstructural protein NS4A,zika_nonstructural_protein_NS4A,NC_035889.1,,
+zika,nonstructural protein NS4B,zika_nonstructural_protein_NS4B,NC_035889.1,,
+zika,protein 2K,zika_protein_2K,NC_035889.1,,
+zika,protein pr,zika_protein_pr,NC_035889.1,,
+zika,RNA-dependent RNA polymerase NS5,zika_RNA_dependent_RNA_polymerase_NS5,NC_035889.1,,
+HIV1A1,Gag,HIV1A1_Gag,NC_001802.1,,
+HIV1A1,gp160,HIV1A1_gp160,NC_001802.1,P12491.1,P12490.1
+HIV1A1,Nef,HIV1A1_Nef,NC_001802.1,P12480.3,
+HIV1A1,Pol,HIV1A1_Pol,NC_001802.1,,
+HIV1A1,Rev,HIV1A1_Rev,NC_001802.1,O41802.1,P24739.1
+HIV1A1,Tat,HIV1A1_Tat,NC_001802.1,O89943.1,O12161.1
+HIV1A1,Vif,HIV1A1_Vif,NC_001802.1,P17284.1,Q8AII0.1
+HIV1A1,Vpr,HIV1A1_Vpr,NC_001802.1,P0C1P5.1,O12160.1
+HIV1A1,Vpu,HIV1A1_Vpu,NC_001802.1,P12518.2,Q75007.1
+TBEV,core protein,TBEV_core_protein,NC_001672.1,,
+TBEV,envelope protein E,TBEV_envelope_protein_E,NC_001672.1,,
+TBEV,matrix protein M,TBEV_matrix_protein_M,NC_001672.1,,
+TBEV,non-structural protein NS1,TBEV_non_structural_protein_NS1,NC_001672.1,,
+TBEV,non-structural protein NS2a,TBEV_non_structural_protein_NS2a,NC_001672.1,,
+TBEV,non-structural protein NS2b,TBEV_non_structural_protein_NS2b,NC_001672.1,,
+TBEV,non-structural protein NS3,TBEV_non_structural_protein_NS3,NC_001672.1,,
+TBEV,non-structural protein NS4a,TBEV_non_structural_protein_NS4a,NC_001672.1,,
+TBEV,non-structural protein NS4b,TBEV_non_structural_protein_NS4b,NC_001672.1,,
+TBEV,non-structural protein NS5,TBEV_non_structural_protein_NS5,NC_001672.1,,
+TBEV,pre protein,TBEV_pre_protein,NC_001672.1,,
+coxsacki,2A-protein,coxsacki_2A_protein,NC_001612,,
+coxsacki,2B-protein,coxsacki_2B_protein,NC_001612,,
+coxsacki,2C-protein,coxsacki_2C_protein,NC_001612,,
+coxsacki,3A-protein,coxsacki_3A_protein,NC_001612,,
+coxsacki,3B-protein,coxsacki_3B_protein,NC_001612,,
+coxsacki,3C-protein,coxsacki_3C_protein,NC_001612,,
+coxsacki,3D-protein,coxsacki_3D_protein,NC_001612,,
+coxsacki,VP1-protein,coxsacki_VP1_protein,NC_001612,,
+coxsacki,VP2-protein,coxsacki_VP2_protein,NC_001612,,
+coxsacki,VP3-protein,coxsacki_VP3_protein,NC_001612,,
+coxsacki,VP4-protein,coxsacki_VP4_protein,NC_001612,,
