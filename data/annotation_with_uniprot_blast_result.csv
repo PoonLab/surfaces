@@ -1,0 +1,102 @@
+query,subject,perc_id1, alignment length, evalue, bit score,perc_id2,protein_number,protein_name,organism,virus,gene
+HIV1A1_gp160,P12491.1,80.451,133,9.23E-66,230,85.71,1,Truncated surface protein,HIV1A1,HIV1A1,gp160
+HIV1A1_gp160,P12490.1,81.955,133,2.26E-71,244,90.98,1,Truncated surface protein,HIV1A1,HIV1A1,gp160
+HIV1A1_Nef,P12480.3,82.353,17,0.038,34.3,88.24,1,Protein Nef,HIV1A1,HIV1A1,Nef
+HIV1A1_Rev,O41802.1,85.366,123,1.69E-56,174,87.8,1,Protein Rev,HIV1A1,HIV1A1,Rev
+HIV1A1_Rev,P24739.1,82.114,123,2.96E-54,168,90.24,1,Protein Rev,HIV1A1,HIV1A1,Rev
+HIV1A1_Tat,O89943.1,79.208,101,4.79E-56,171,90.1,1,Protein Tat,HIV1A1,HIV1A1,Tat
+HIV1A1_Tat,O12161.1,79.208,101,1.38E-54,167,85.15,1,Protein Tat,HIV1A1,HIV1A1,Tat
+HIV1A1_Vif,P17284.1,66.667,192,2.08E-94,275,83.33,1,Virion infectivity factor,Simian immunodeficiency virus (isolate CPZ GAB1) (SIV-cpz) (Chimpanzee immunodeficiency virus),HIV1A1,Vif
+HIV1A1_Vif,Q8AII0.1,56.566,198,1.17E-81,243,73.74,1,Virion infectivity factor,Simian immunodeficiency virus (isolate TAN1) (SIV-cpz) (Chimpanzee immunodeficiency virus),HIV1A1,Vif
+HIV1A1_Vpr,P0C1P5.1,91.667,96,1.80E-47,149,93.75,1,Protein Vpr,HIV-1 M:F2_MP257C,HIV1A1,Vpr
+HIV1A1_Vpr,O12160.1,88.542,96,5.88E-54,165,92.71,1,Protein Vpr,HIV-1 M:C_92BR025,HIV1A1,Vpr
+HIV1A1_Vpu,P12518.2,72.84,81,4.77E-34,114,83.95,1,Protein Vpu,HIV1A1,HIV1A1,Vpu
+HIV1A1_Vpu,Q75007.1,76.712,73,8.74E-33,111,87.67,1,Protein Vpu,HIV1A1,HIV1A1,Vpu
+HIV2_envelope,P04615.1,92.308,78,1.04E-28,113,96.15,1,Protein Rev,Human immunodeficiency virus type 2 (ISOLATE ROD),HIV2,envelope
+HIV2_envelope,P24104.1,88.312,77,5.44E-18,83.2,93.51,1,Protein Rev,Human immunodeficiency virus type 2 (ISOLATE CAM2),HIV2,envelope
+HIV2_nef,P04600.3,86.328,256,6.66E-159,444,92.97,1,Protein Nef,HIV2,HIV2,nef
+HIV2_nef,P20868.3,85.938,256,5.16E-156,436,92.58,1,Protein Nef,HIV2,HIV2,nef
+HIV2_rev,P04615.1,95,100,4.87E-50,156,97,1,Protein Rev,Human immunodeficiency virus type 2 (ISOLATE ROD),HIV2,rev
+HIV2_rev,P24104.1,92.929,99,2.92E-39,129,95.96,1,Protein Rev,Human immunodeficiency virus type 2 (ISOLATE CAM2),HIV2,rev
+HIV2_tat,P05909.1,93.077,130,2.65E-74,219,93.85,1,Protein Tat,Human immunodeficiency virus type 2 (ISOLATE NIH-Z),HIV2,tat
+HIV2_tat,P12453.1,89.231,130,6.23E-81,236,92.31,1,Protein Tat,Human immunodeficiency virus type 2 (ISOLATE SBLISY),HIV2,tat
+HIV2_vif,P20878.1,93.488,215,1.29E-152,424,97.21,1,Virion infectivity factor,Human immunodeficiency virus type 2 (ISOLATE ST),HIV2,vif
+HIV2_vif,P04595.1,92.093,215,2.35E-138,388,95.35,1,Virion infectivity factor,Human immunodeficiency virus type 2 (ISOLATE ROD),HIV2,vif
+HIV2_vpr,P12455.1,94.286,105,2.27E-68,202,95.24,1,Protein Vpr,Human immunodeficiency virus type 2 (ISOLATE SBLISY),HIV2,vpr
+HIV2_vpr,P05930.1,92.381,105,6.72E-59,179,94.29,1,Protein Vpr,Human immunodeficiency virus type 2 (ISOLATE NIH-Z),HIV2,vpr
+HIV2_vpx,P24110.1,95.536,112,1.98E-77,226,97.32,1,Protein Vpx,Human immunodeficiency virus type 2 (ISOLATE CAM2),HIV2,vpx
+HIV2_vpx,P20881.1,93.333,90,5.70E-60,182,95.56,1,Protein Vpx,Human immunodeficiency virus type 2 (ISOLATE ST),HIV2,vpx
+lyssavirus_glycoprotein,P32550.1,96.367,523,0,1052,97.51,1,Glycoprotein,Rabies virus strain Street,lyssavirus,glycoprotein
+lyssavirus_glycoprotein,A3RM22.1,95.992,524,0,1052,97.52,1,Glycoprotein,Rabies virus India,lyssavirus,glycoprotein
+lyssavirus_matrix_protein,A3RM21.1,98.515,202,2.33E-148,412,99.01,1,Matrix protein,Rabies virus India,lyssavirus,matrix_protein
+lyssavirus_matrix_protein,Q66T63.1,94.554,202,2.01E-145,405,97.52,1,Matrix protein,Rabies virus silver-haired bat-associated SHBRV,lyssavirus,matrix_protein
+lyssavirus_nucleoprotein,Q8B6J9.1,99.333,450,0,936,99.56,1,Nucleoprotein,Rabies virus HEP-FLURY,lyssavirus,nucleoprotein
+lyssavirus_nucleoprotein,A3RM19.1,98.889,450,0,935,99.56,1,Nucleoprotein,Rabies virus India,lyssavirus,nucleoprotein
+lyssavirus_phosphoprotein,A3RM20.1,95.96,297,0,586,97.31,1,Phosphoprotein,Rabies virus India,lyssavirus,phosphoprotein
+lyssavirus_phosphoprotein,P22363.1,93.266,297,0,573,95.29,1,Phosphoprotein,Rabies virus CVS-11,lyssavirus,phosphoprotein
+measles_C_protein,Q9YZN9.1,99.462,186,1.70E-134,376,100,1,Protein C,Measles virus strain Ichinose-B95a,measles,C_protein
+measles_C_protein,P03424.1,98.387,186,1.06E-131,369,98.92,1,Protein C,Measles virus strain Edmonston,measles,C_protein
+measles_hemagglutinin_protein,P08362.1,98.703,617,0,1264,98.87,1,Hemagglutinin glycoprotein,Measles virus strain Edmonston,measles,hemagglutinin_protein
+measles_hemagglutinin_protein,P35971.1,98.541,617,0,1261,98.7,1,Hemagglutinin glycoprotein,Measles virus strain AIK-C,measles,hemagglutinin_protein
+measles_matrix_protein,Q9W850.1,100,335,0,691,100,1,Matrix protein,Measles virus strain Ichinose-B95a,measles,matrix_protein
+measles_matrix_protein,P06942.1,99.104,335,0,685,99.7,1,Matrix protein,Measles virus strain Edmonston,measles,matrix_protein
+measles_nucleocapsid_protein,Q9WMB5.1,98.476,525,0,1046,98.48,1,Nucleoprotein,Measles virus strain Ichinose-B95a,measles,nucleocapsid_protein
+measles_nucleocapsid_protein,Q89933.1,98.286,525,0,1046,98.67,1,Nucleoprotein,Measles virus strain Edmonston-B,measles,nucleocapsid_protein
+measles_phosphoprotein,Q77M42.1,99.014,507,0,1016,99.41,1,Phosphoprotein,Measles virus strain Moraten,measles,phosphoprotein
+measles_phosphoprotein,P03422.1,98.619,507,0,1013,99.21,1,Phosphoprotein,Measles virus strain Edmonston,measles,phosphoprotein
+measles_V_protein,Q9WMB4.1,98.662,299,0,601,99.67,1,Phosphoprotein,Measles virus strain Ichinose-B95a,measles,V_protein
+measles_V_protein,P0C774.1,98.268,231,1.34E-162,457,99.57,1,Non-structural protein V,Measles virus strain Ichinose-B95a,measles,V_protein
+mumps_hemagglutinin,P11235.1,96.907,582,0,1170,98.8,1,Hemagglutinin-neuraminidase,Mumps virus Miyahara vaccine,mumps,hemagglutinin
+mumps_hemagglutinin,P10866.1,96.907,582,0,1167,98.45,1,Hemagglutinin-neuraminidase,Mumps virus strain RW,mumps,hemagglutinin
+mumps_matrix_protein,P33482.1,99.733,375,0,779,100,1,Matrix protein,Mumps virus strain SBL,mumps,matrix_protein
+mumps_matrix_protein,Q9JG20.1,99.733,375,0,778,100,1,Matrix protein,Mumps virus Miyahara vaccine,mumps,matrix_protein
+mumps_nucleocapsid_protein,P21186.1,99.089,549,0,1125,99.27,1,Nucleoprotein,Mumps virus Miyahara vaccine,mumps,nucleocapsid_protein
+mumps_nucleocapsid_protein,Q77IS8.1,98.361,549,0,1112,98.91,1,Nucleoprotein,Mumps virus strain Jeryl Lynn,mumps,nucleocapsid_protein
+mumps_phosphoprotein,P16595.1,79.31,406,0,620,80.3,1,Phosphoprotein,Mumps virus Miyahara vaccine,mumps,phosphoprotein
+mumps_phosphoprotein,P19717.1,79,400,0,604,80.25,1,Phosphoprotein,Mumps virus strain SBL-1,mumps,phosphoprotein
+mumps_small_hydrophobic_protein,P28087.1,91.228,57,1.90E-19,75.9,96.49,1,Small hydrophobic protein,Mumps virus strain RW,mumps,small_hydrophobic_protein
+mumps_small_hydrophobic_protein,P20716.1,87.719,57,4.69E-24,87.4,91.23,1,Small hydrophobic protein,Mumps virus strain Urabe vaccine AM9,mumps,small_hydrophobic_protein
+mumps_V_protein_short,P30928.1,96.875,224,1.85E-162,450,97.77,1,Non-structural protein V,Mumps virus Miyahara vaccine,mumps,V_protein_short
+mumps_V_protein_short,P16595.1,95.484,155,6.58E-102,303,96.77,1,Phosphoprotein,Mumps virus Miyahara vaccine,mumps,V_protein_short
+orthobornavirus_matrix_protein,P0C794.1,100,142,4.37E-102,291,100,1,Matrix protein,Borna disease virus 1,orthobornavirus,matrix_protein
+orthobornavirus_matrix_protein,P0C795.1,99.296,142,1.94E-101,289,100,1,Matrix protein,Borna disease virus-V,orthobornavirus,matrix_protein
+orthobornavirus_nucleoprotein,P0C796.1,99.73,370,0,768,100,1,Nucleoprotein,Borna disease virus 1,orthobornavirus,nucleoprotein
+orthobornavirus_nucleoprotein,P0C797.1,99.73,370,0,768,100,1,Nucleoprotein,Borna disease virus-V,orthobornavirus,nucleoprotein
+orthobornavirus_phosphoprotein,P0C798.1,100,201,4.23E-145,404,100,1,Phosphoprotein,Borna disease virus 1,orthobornavirus,phosphoprotein
+orthobornavirus_phosphoprotein,P0C799.1,98.507,201,3.09E-143,399,99,1,Phosphoprotein,Borna disease virus-V,orthobornavirus,phosphoprotein
+orthobornavirus_RNA_dependent_RNA_polymerase,Q8JMN0.1,99.182,1711,0,3514,99.71,1,RNA-directed RNA polymerase L,Borna disease virus 1,orthobornavirus,RNA_dependent_RNA_polymerase
+orthobornavirus_RNA_dependent_RNA_polymerase,P52639.2,99.123,1711,0,3507,99.36,1,RNA-directed RNA polymerase L,Borna disease virus-V,orthobornavirus,RNA_dependent_RNA_polymerase
+orthobornavirus_RNA_dependent_RNA_polymerase.fixed,Q8JMN0.1,99.182,1711,0,3514,99.71,1,RNA-directed RNA polymerase L,Borna disease virus 1,orthobornavirus,RNA_dependent_RNA_polymerase.fixed
+orthobornavirus_RNA_dependent_RNA_polymerase.fixed,P52639.2,99.123,1711,0,3507,99.36,1,RNA-directed RNA polymerase L,Borna disease virus-V,orthobornavirus,RNA_dependent_RNA_polymerase.fixed
+RotaA_NSP1,B3SRS0.1,91.564,486,0,941,96.5,1,Non-structural protein 1,Rotavirus A human/USA/D/1974 G1P1A[8,RotaA,NSP1
+RotaA_NSP1,Q82045.1,91.358,486,0,939,96.3,1,Non-structural protein 1,Human rotavirus G4 strain St. Thomas 3,RotaA,NSP1
+RotaA_NSP2,B3SRS2.1,98.107,317,0,656,99.37,1,Non-structural protein 2,Rotavirus A human/USA/D/1974 G1P1A[8,RotaA,NSP2
+RotaA_NSP2,B3SRV4.1,98.107,317,0,654,99.37,1,Non-structural protein 2,Human rotavirus strain P,RotaA,NSP2
+RotaA_NSP3,Q9ICB2.1,100,310,0,632,100,1,Non-structural protein 3,Rotavirus A human/USA/M/1976 G3,RotaA,NSP3
+RotaA_NSP3,B3SRS1.1,99.355,310,0,627,99.68,1,Non-structural protein 3,Rotavirus A human/USA/D/1974 G1P1A[8,RotaA,NSP3
+RotaA_NSP4,Q9YJN7.1,98.286,175,2.68E-125,352,98.86,1,Non-structural glycoprotein 4,Rotavirus A human/USA/D/1974 G1P1A[8,RotaA,NSP4
+RotaA_NSP4,B3SRV6.1,97.714,175,3.49E-124,349,98.29,1,Non-structural glycoprotein 4,Human rotavirus strain P,RotaA,NSP4
+RotaA_NSP5,Q03054.1,99.492,197,7.88E-141,393,100,1,Non-structural protein 5,Porcine rotavirus strain YM,RotaA,NSP5
+RotaA_NSP5,B3SRY1.1,98.477,197,6.01E-139,388,98.48,1,Non-structural protein 5,Rotavirus A Hu/WI61/1983/G9P1A[8,RotaA,NSP5
+RotaA_VP1,A4ZCW8.1,98.989,1088,0,2216,99.82,1,RNA-directed RNA polymerase,Human rotavirus strain WA,RotaA,VP1
+RotaA_VP1,B1NKR3.1,98.989,1088,0,2214,99.72,1,RNA-directed RNA polymerase,Rotavirus A human/USA/D/1974 G1P1A[8,RotaA,VP1
+RotaA_VP2,B1NKT8.1,96.18,890,0,1748,96.85,1,Inner capsid protein VP2,Human rotavirus G4 strain St. Thomas 3,RotaA,VP2
+RotaA_VP2,A7J3A3.1,96.067,890,0,1745,96.74,1,Inner capsid protein VP2,Rotavirus A human/JPN/YO/1977 G3P1A[8,RotaA,VP2
+RotaA_VP6,B1NKU0.1,98.992,397,0,817,100,1,Intermediate capsid protein VP6,Human rotavirus G4 strain St. Thomas 3,RotaA,VP6
+RotaA_VP6,B1NKT2.1,98.741,397,0,816,100,1,Intermediate capsid protein VP6,Human rotavirus strain P,RotaA,VP6
+RotaA_VP7,P11854.1,89.571,326,0,619,95.71,1,Outer capsid glycoprotein VP7,Human rotavirus strain P,RotaA,VP7
+RotaA_VP7,Q6L5Y4.1,89.264,326,0,617,95.4,1,Outer capsid glycoprotein VP7,Rotavirus A human/USA/M/1976 G3,RotaA,VP7
+rsv_matrix_protein_21,P04545.1,98.969,194,4.03E-142,396,99.48,1,Protein M2-1,Human respiratory syncytial virus A2,rsv,matrix_protein_21
+rsv_matrix_protein_21,Q4KRW3.1,98.454,194,4.66E-141,393,98.97,1,Protein M2-1,human respiratory syncytial virus,rsv,matrix_protein_21
+rsv_matrix_protein_22,P88812.1,85.227,88,4.67E-50,155,89.77,1,Protein M2-2,Human respiratory syncytial virus A2,rsv,matrix_protein_22
+rsv_matrix_protein_22,Q4KRW2.1,84.091,88,6.50E-50,154,89.77,1,Protein M2-2,human respiratory syncytial virus,rsv,matrix_protein_22
+rsv_nonstructural_protein_1,Q86306.1,98.561,139,1.74E-98,281,98.56,1,Non-structural protein 1,human respiratory syncytial virus,rsv,nonstructural_protein_1
+rsv_nonstructural_protein_1,O42083.1,87.05,139,4.94E-88,255,94.96,1,Non-structural protein 1,Human respiratory syncytial virus B1,rsv,nonstructural_protein_1
+rsv_nonstructural_protein_2,P04543.2,99.194,124,2.25E-87,252,99.19,1,Non-structural protein 2,Human respiratory syncytial virus A2,rsv,nonstructural_protein_2
+rsv_nonstructural_protein_2,Q86305.1,98.387,124,5.53E-87,251,99.19,1,Non-structural protein 2,human respiratory syncytial virus,rsv,nonstructural_protein_2
+rsv_nucleoprotein,P24566.1,95.908,391,0,784,99.74,1,Nucleoprotein,Human respiratory syncytial virus (subgroup B / strain 18537),rsv,nucleoprotein
+rsv_nucleoprotein,O42053.1,95.908,391,0,783,99.74,1,Nucleoprotein,Human respiratory syncytial virus B1,rsv,nucleoprotein
+rsv_phosphoprotein,P03421.1,98.755,241,5.67E-173,478,99.17,1,Phosphoprotein,Human respiratory syncytial virus A2,rsv,phosphoprotein
+rsv_phosphoprotein,P12579.2,98.34,241,1.41E-171,474,98.34,1,Phosphoprotein,human respiratory syncytial virus,rsv,phosphoprotein
+rsv_small_hydrophobic_protein,Q4KRW6.1,96.875,64,7.02E-39,125,98.44,1,Small hydrophobic protein,human respiratory syncytial virus,rsv,small_hydrophobic_protein
+rsv_small_hydrophobic_protein,O36632.1,70.769,65,5.90E-12,57.4,83.08,1,Small hydrophobic protein,Human respiratory syncytial virus B1,rsv,small_hydrophobic_protein
