@@ -1,7 +1,7 @@
 from Bio import SeqIO
 import argparse
 import sys
-
+import os  
 
 description = """
 Generate a consensus sequence from a set of aligned sequences.
@@ -12,7 +12,6 @@ mixture_dict = {'W': 'AT', 'R': 'AG', 'K': 'GT', 'Y': 'CT', 'S': 'CG',
                 'M': 'AC', 'V': 'AGC', 'H': 'ATC', 'D': 'ATG',
                 'B': 'TGC', 'N': 'ATGC', '-': 'ATGC'}
 ambig_dict = dict(("".join(sorted(v)), k) for k, v in mixture_dict.items())
-
 
 def get_columns(aln, is_nuc=False):
     """ 
@@ -32,11 +31,11 @@ def get_columns(aln, is_nuc=False):
         
         if len(record.seq) != seqlen:
             sys.stderr.write("ERROR: sequences are not the same length\n")
-            sys.exit()
+            sys.exit(1)
         
         for i, nt in enumerate(record.seq):
             if is_nuc and nt in mixture_dict:
-                # count fractional stateseach
+                # count fractional states
                 chars = mixture_dict[nt]
                 for ch in chars:
                     if ch not in columns[i]:
@@ -48,7 +47,6 @@ def get_columns(aln, is_nuc=False):
                 columns[i][nt] += 1
     return columns
 
-
 def conseq(columns, thresh=0.5, is_nuc=False):
     """
     Generate consensus sequence from position-specific frequencies
@@ -59,7 +57,15 @@ def conseq(columns, thresh=0.5, is_nuc=False):
     """
     seq = ''
     for col in columns:
+        if not col:  # Skip empty columns
+            seq += '-'
+            continue
+        
         total = sum(col.values())
+        if total == 0:  # Skip columns with no valid characters
+            seq += '-'
+            continue
+        
         intermed = [(count/total, nt) for nt, count in col.items()]
         intermed.sort(reverse=True)
         states = []
@@ -72,7 +78,9 @@ def conseq(columns, thresh=0.5, is_nuc=False):
         if len(states) == 1:
             seq += states
         else:
-            if is_nuc and states in ambig_dict:
+            if not states:  # Handle empty states
+                seq += '-'
+            elif is_nuc and states in ambig_dict:
                 seq += ambig_dict[states]  # convert nucleotide mixture
             else:
                 if states[0] == '-':
@@ -80,7 +88,6 @@ def conseq(columns, thresh=0.5, is_nuc=False):
                 else:
                     seq += '?'
     return seq
-        
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=description)
@@ -95,7 +102,25 @@ if __name__ == "__main__":
                         "then report '?' or mixture if '-n' is set.")
     args = parser.parse_args()
     
-    aln = SeqIO.parse(args.infile, format=args.format)
-    columns = get_columns(aln, is_nuc=args.nuc)
-    cseq = conseq(columns, thresh=args.thresh, is_nuc=args.nuc)
-    sys.stdout.write(f"{cseq}\n")
+    try:
+        aln = list(SeqIO.parse(args.infile, format=args.format))
+        if not aln:
+            sys.stderr.write("ERROR: Input file is empty or not in the correct format.\n")
+            sys.exit(1)
+        
+        columns = get_columns(aln, is_nuc=args.nuc)
+        if columns is None:
+            sys.stderr.write("ERROR: No columns were generated. Check the input file.\n")
+            sys.exit(1)
+        
+        cseq = conseq(columns, thresh=args.thresh, is_nuc=args.nuc)
+        
+        # get the names and extention 
+        input_filename = os.path.splitext(os.path.basename(args.infile.name))[0]
+        
+        # write the consensus and save the file 
+        sys.stdout.write(f">{input_filename}_consensus\n")  # Header
+        sys.stdout.write(f"{cseq}\n")  # Secuencia consenso
+    except Exception as e:
+        sys.stderr.write(f"ERROR: {str(e)}\n")
+        sys.exit(1)
