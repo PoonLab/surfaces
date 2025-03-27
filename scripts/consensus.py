@@ -68,25 +68,24 @@ def conseq(columns, thresh=0.5, is_nuc=False):
         
         intermed = [(count/total, nt) for nt, count in col.items()]
         intermed.sort(reverse=True)
-        states = []
-        for freq, nt in intermed:
+        states = [intermed[0][1]]  # always store most frequent character
+        for freq, nt in intermed[1:]:
             if freq < thresh:
                 break
-            states.append(nt)
+            states.append(nt)  # mixtures
             
-        states = ''.join(sorted(states))
         if len(states) == 1:
             seq += states
         else:
             if not states:  # Handle empty states
                 seq += '-'
-            elif is_nuc and states in ambig_dict:
-                seq += ambig_dict[states]  # convert nucleotide mixture
             else:
-                if states[0] == '-':
-                    seq += '-'
+                # multiple characters above threshold frequency
+                if is_nuc:
+                    key = ''.join(sorted(states))
+                    seq += ambig_dict[key]  # convert nucleotide mixture
                 else:
-                    seq += '?'
+                    seq += states[0]  # append most frequent character
     return seq
 
 if __name__ == "__main__":
