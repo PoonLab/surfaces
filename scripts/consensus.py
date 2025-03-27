@@ -75,7 +75,7 @@ def conseq(columns, thresh=0.5, is_nuc=False):
             states.append(nt)  # mixtures
             
         if len(states) == 1:
-            seq += states
+            seq += states[0]
         else:
             if not states:  # Handle empty states
                 seq += '-'
