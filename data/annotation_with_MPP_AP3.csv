@@ -1,0 +1,332 @@
+name,virus,protein,new_name,Length,GRAVY,Aliphatic Index,Instability Index,Stability,Molecular Weight,Aromaticity,Isoelectric Point,Charge at pH 7,protein_classification,Host_type,infection_type,Virus_Family
+chikv_6K_protein_step5_consensus,chikv,6K protein,chikv_6K_protein_step5_consensus,53,1.02,134.53,53.28,Unstable,5972.2,0.11,6.15,-0.25,Non_surface,Mosquito,Acute,Togaviridae
+chikv_capsid_protein_step5_consensus,chikv,capsid protein,chikv_capsid_protein_step5_consensus,261,-0.98,58.31,40.86,Unstable,29616.85,0.07,10.29,30.99,Non_surface,Mosquito,Acute,Togaviridae
+chikv_E1_envelope_glycoprotein_step5_consensus,chikv,E1 envelope glycoprotein,chikv_E1_envelope_glycoprotein_step5_consensus,439,0.02,80.62,37.95,Stable,47414.55,0.09,6.12,-5.24,Surface,Mosquito,Acute,Togaviridae
+chikv_E2_envelope_glycoprotein_step5_consensus,chikv,E2 envelope glycoprotein,chikv_E2_envelope_glycoprotein_step5_consensus,416,-0.61,65.34,40.6,Unstable,46399.91,0.07,8.72,9.44,Surface,Mosquito,Acute,Togaviridae
+chikv_E3_protein_step5_consensus,chikv,E3 protein,chikv_E3_protein_step5_consensus,64,-0.36,68.59,71.62,Unstable,7332.49,0.06,6.49,-0.5,Surface,Mosquito,Acute,Togaviridae
+chikv_mRNA-capping_enzyme_nsp1_step5_consensus,chikv,mRNA-capping enzyme nsp1,chikv_mRNA-capping_enzyme_nsp1_step5_consensus,535,-0.33,80.58,35.91,Stable,59918.95,0.08,7.48,1.38,Non_surface,Mosquito,Acute,Togaviridae
+chikv_non-structural_protein_nsp3_step5_consensus,chikv,non-structural protein nsp3,chikv_non-structural_protein_nsp3_step5_consensus,513,-0.6,72.03,43.83,Unstable,57330.17,0.06,8.94,12.31,Non_surface,Mosquito,Acute,Togaviridae
+chikv_protease_nsp2_step5_consensus,chikv,protease nsp2,chikv_protease_nsp2_step5_consensus,798,-0.28,85.85,37.32,Stable,89588.87,0.08,9.1,22.82,Non_surface, Mosquito,Acute,Togaviridae
+chikv_RNA-directed_RNA_polymerase_nsp4_step5_consensus,chikv,RNA-directed RNA polymerase nsp4,chikv_RNA-directed_RNA_polymerase_nsp4_step5_consensus,592,-0.68,69.19,56.52,Unstable,67452.54,0.09,9.75,35.19,Non_surface, Mosquito,Acute,Togaviridae
+chikv_transframe_fusion_protein_step5_consensus,chikv,transframe fusion protein,chikv_transframe_fusion_protein_step5_consensus,76,0.23,100.13,52.31,Unstable,8664.19,0.08,8.28,1.91,Non_surface, Mosquito,Acute,Togaviridae
+coxsacki_2A-protein_step5_consensus,coxsacki,2A-protein,coxsacki_2A-protein_step5_consensus,150,-0.23,77.93,39.64,Stable,16506.31,0.1,6.04,-2.76,Non_surface,Human,Acute,Picornaviridae
+coxsacki_2B-protein_step5_consensus,coxsacki,2B-protein,coxsacki_2B-protein_step5_consensus,99,0.46,122.12,20.9,Stable,10523.25,0.06,8.08,0.93,Non_surface,Human,Acute,Picornaviridae
+coxsacki_2C-protein_step5_consensus,coxsacki,2C-protein,coxsacki_2C-protein_step5_consensus,329,-0.31,83.04,38.25,Stable,37018.02,0.09,8.64,4.77,Non_surface,Human,Acute,Picornaviridae
+coxsacki_3A-protein_step5_consensus,coxsacki,3A-protein,coxsacki_3A-protein_step5_consensus,86,0.09,108.72,36.98,Stable,9667.09,0.08,5.76,-1.15,Non_surface,Human,Acute,Picornaviridae
+coxsacki_3B-protein_step5_consensus,coxsacki,3B-protein,coxsacki_3B-protein_step5_consensus,22,-0.34,80,31.55,Stable,2284.66,0.05,10.46,3.76,Non_surface,Human,Acute,Picornaviridae
+coxsacki_3C-protein_step5_consensus,coxsacki,3C-protein,coxsacki_3C-protein_step5_consensus,183,-0.07,93.11,28.21,Stable,20091.87,0.07,8.01,1.28,Non_surface,Human,Acute,Picornaviridae
+coxsacki_3D-protein_step5_consensus,coxsacki,3D-protein,coxsacki_3D-protein_step5_consensus,462,-0.33,82.1,40.73,Unstable,52518.22,0.11,5.91,-8.02,Non_surface,Human,Acute,Picornaviridae
+coxsacki_VP1-protein_step5_consensus,coxsacki,VP1-protein,coxsacki_VP1-protein_step5_consensus,297,-0.37,69.63,41.15,Unstable,33046.02,0.1,8.32,2.26,Surface,Human,Acute,Picornaviridae
+coxsacki_VP2-protein_step5_consensus,coxsacki,VP2-protein,coxsacki_VP2-protein_step5_consensus,254,0.02,84.45,26.04,Stable,27566.92,0.1,5.38,-6.99,Surface,Human,Acute,Picornaviridae
+coxsacki_VP3-protein_step5_consensus,coxsacki,VP3-protein,coxsacki_VP3-protein_step5_consensus,242,-0.02,83.84,30.38,Stable,26634.09,0.1,5.44,-5.74,Surface,Human,Acute,Picornaviridae
+coxsacki_VP4-protein_step5_consensus,coxsacki,VP4-protein,coxsacki_VP4-protein_step5_consensus,69,-0.88,43.91,51.86,Unstable,7543.16,0.07,5.45,-2.32,Surface,Human,Acute,Picornaviridae
+dengue2_anchored_capsid_protein_ancC_step5_consensus,dengue2,anchored capsid protein ancC,dengue2_anchored_capsid_protein_ancC_step5_consensus,114,-0.18,97.54,53.63,Unstable,13208.97,0.06,12,23.5,Non_surface, Mosquito,Acute,Flaviviridae
+dengue2_capsid_protein_C_step5_consensus,dengue2,capsid protein C,dengue2_capsid_protein_C_step5_consensus,100,-0.48,90.7,58.79,Unstable,11765.09,0.07,12,23.5,Non_surface, Mosquito,Acute,Flaviviridae
+dengue2_envelope_protein_E_step5_consensus,dengue2,envelope protein E,dengue2_envelope_protein_E_step5_consensus,495,-0.09,85.01,27.8,Stable,54241.2,0.07,7.91,2.41,Surface, Mosquito,Acute,Flaviviridae
+dengue2_membrane_glycoprotein_M_step5_consensus,dengue2,membrane glycoprotein M,dengue2_membrane_glycoprotein_M_step5_consensus,75,0.44,102.8,43.95,Unstable,8364.75,0.09,8.39,0.82,Non_surface, Mosquito,Acute,Flaviviridae
+dengue2_membrane_glycoprotein_precursor_prM_step5_consensus,dengue2,membrane glycoprotein precursor prM,dengue2_membrane_glycoprotein_precursor_prM_step5_consensus,166,-0.18,78.13,45.68,Unstable,18850.54,0.08,6.4,-1.66,Non_surface, Mosquito,Acute,Flaviviridae
+dengue2_nonstructural_protein_NS1_step5_consensus,dengue2,nonstructural protein NS1,dengue2_nonstructural_protein_NS1_step5_consensus,352,-0.52,70.91,41.92,Unstable,39928.01,0.09,6.41,-2.42,Non_surface, Mosquito,Acute,Flaviviridae
+dengue2_nonstructural_protein_NS2A._step5_consensus,dengue2,nonstructural protein NS2A,dengue2_nonstructural_protein_NS2A._step5_consensus,218,0.72,128.35,27.99,Stable,23622.27,0.05,9.82,7.93,Non_surface, Mosquito,Acute,Flaviviridae
+dengue2_nonstructural_protein_NS2B_step5_consensus,dengue2,nonstructural protein NS2B,dengue2_nonstructural_protein_NS2B_step5_consensus,130,0.33,118.54,43.99,Unstable,14045.12,0.05,4.45,-7.52,Non_surface, Mosquito,Acute,Flaviviridae
+dengue2_nonstructural_protein_NS3_step5_consensus,dengue2,nonstructural protein NS3,dengue2_nonstructural_protein_NS3_step5_consensus,618,-0.5,78.92,36.98,Stable,69407.58,0.08,8.5,4.74,Non_surface, Mosquito,Acute,Flaviviridae
+dengue2_nonstructural_protein_NS4A_step5_consensus,dengue2,nonstructural protein NS4A,dengue2_nonstructural_protein_NS4A_step5_consensus,127,0.63,129.92,34.22,Stable,13965.52,0.07,6.25,-1.28,Non_surface, Mosquito,Acute,Flaviviridae
+dengue2_nonstructural_protein_NS4B_step5_consensus,dengue2,nonstructural protein NS4B,dengue2_nonstructural_protein_NS4B_step5_consensus,248,0.28,107.06,29.29,Stable,26747.08,0.06,9.01,3.92,Non_surface, Mosquito,Acute,Flaviviridae
+dengue2_protein_2K_step5_consensus,dengue2,protein 2K,dengue2_protein_2K_step5_consensus,23,0.99,135.65,36.77,Stable,2432.83,0.04,4.05,-1.6,Non_surface, Mosquito,Acute,Flaviviridae
+dengue2_protein_pr_step5_consensus,dengue2,protein pr,dengue2_protein_pr_step5_consensus,91,-0.7,57.8,42.17,Unstable,10503.81,0.07,5.55,-3.01,Non_surface, Mosquito,Acute,Flaviviridae
+dengue2_RNA-dependent_RNA_polymerase_NS5_step5_consensus,dengue2,RNA-dependent RNA polymerase NS5,dengue2_RNA-dependent_RNA_polymerase_NS5_step5_consensus,900,-0.61,72.01,36.78,Stable,103181.37,0.09,8.77,12.72,Non_surface, Mosquito,Acute,Flaviviridae
+enterov1_A71_2A_step5_consensus,enterov1,A71 2A,enterov1_A71_2A_step5_consensus,17,-0.14,62.94,17.77,Stable,1828.04,0.18,9.99,1.76,Non_surface,Human,Acute,Picornaviridae
+enterov1_A71_2B_step5_consensus,enterov1,A71 2B,enterov1_A71_2B_step5_consensus,232,0.03,96.68,31.48,Stable,25243.47,0.08,5.61,-5.7,Non_surface,Human,Acute,Picornaviridae
+enterov1_A71_2C_step5_consensus,enterov1,A71 2C,enterov1_A71_2C_step5_consensus,329,-0.31,83.31,37.35,Stable,37073.06,0.09,8.65,4.77,Non_surface,Human,Acute,Picornaviridae
+enterov1_A71_3A_step5_consensus,enterov1,A71 3A,enterov1_A71_3A_step5_consensus,86,0.09,108.72,34.75,Stable,9653.06,0.08,5.74,-1.15,Non_surface,Human,Acute,Picornaviridae
+enterov1_A71_3B_step5_consensus,enterov1,A71 3B,enterov1_A71_3B_step5_consensus,22,-0.23,88.64,28.12,Stable,2312.71,0.05,10.46,3.76,Non_surface,Human,Acute,Picornaviridae
+enterov1_A71_3C_step5_consensus,enterov1,A71 3C,enterov1_A71_3C_step5_consensus,183,-0.09,93.11,37.61,Stable,20164.92,0.07,8.01,1.28,Non_surface,Human,Acute,Picornaviridae
+enterov1_A71_3D_step5_consensus,enterov1,A71 3D,enterov1_A71_3D_step5_consensus,462,-0.34,84.03,41.68,Unstable,52511.17,0.11,5.83,-9.02,Non_surface,Human,Acute,Picornaviridae
+enterov1_A71_VP1_step5_consensus,enterov1,A71 VP1,enterov1_A71_VP1_step5_consensus,297,-0.34,67.68,44.02,Unstable,32667.48,0.1,6.59,-0.8,Surface,Human,Acute,Picornaviridae
+enterov1_A71_VP2_step5_consensus,enterov1,A71 VP2,enterov1_A71_VP2_step5_consensus,254,-0.06,83.7,33.58,Stable,27705.92,0.11,5.09,-8.99,Surface,Human,Acute,Picornaviridae
+enterov1_A71_VP3_step5_consensus,enterov1,A71 VP3,enterov1_A71_VP3_step5_consensus,242,0.02,85.45,22.07,Stable,26448.01,0.1,6.21,-1.84,Surface,Human,Acute,Picornaviridae
+enterov1_A71_VP4_step5_consensus,enterov1,A71 VP4,enterov1_A71_VP4_step5_consensus,69,-0.86,46.81,45.73,Unstable,7493.1,0.09,6.53,-0.41,Surface,Human,Acute,Picornaviridae
+Foveavirus_coat_protein_step5_consensus,Foveavirus,coat protein,Foveavirus_coat_protein_step5_consensus,396,-0.33,68.26,50.15,Unstable,42165.84,0.07,7.03,0.05,Non_surface,Plant,Acute,Reoviridae
+Foveavirus_RNA_polymerase_step5_consensus,Foveavirus,RNA polymerase,Foveavirus_RNA_polymerase_step5_consensus,2180,-0.22,86.33,39.06,Stable,246620.92,0.1,6.56,-9.81,Non_surface,Plant,Acute,Reoviridae
+Foveavirus_triple_gene_block_1_step5_consensus,Foveavirus,triple gene block 1,Foveavirus_triple_gene_block_1_step5_consensus,223,-0.24,95.65,38.08,Stable,25241.58,0.09,6.75,-0.73,Non_surface,Plant,Acute,Reoviridae
+Foveavirus_triple_gene_block_2_step5_consensus,Foveavirus,triple gene block 2,Foveavirus_triple_gene_block_2_step5_consensus,120,0.26,86.08,61.37,Unstable,12762.64,0.09,8.33,1.72,Non_surface,Plant,Acute,Reoviridae
+Foveavirus_triple_gene_block_3_step5_consensus,Foveavirus,triple gene block 3,Foveavirus_triple_gene_block_3_step5_consensus,70,0.87,122.57,31.49,Stable,7510.89,0.11,7.78,0.57,Non_surface,Plant,Acute,Reoviridae
+HCV1a_core_step4_consensus,HCV1a,core,HCV1a_core_step4_consensus,191,-0.52,71.52,54.59,Unstable,20765.71,0.07,11.46,21.55,Non_surface,Human,Cronic,Flaviviridae
+HCV1a_core_step5_consensus,HCV1a,core,HCV1a_core_step5_consensus,191,-0.52,71.52,54.59,Unstable,20765.71,0.07,11.46,21.55,Non_surface,Human,Cronic,Flaviviridae
+HCV1a_E1_step4_consensus,HCV1a,E1,HCV1a_E1_step4_consensus,192,0.35,99.01,26.02,Stable,20907.05,0.09,7.75,1.3,Surface,Human,Cronic,Flaviviridae
+HCV1a_E1_step5_consensus,HCV1a,E1,HCV1a_E1_step5_consensus,192,0.34,98.49,28.7,Stable,20923.05,0.09,7.75,1.3,Surface,Human,Cronic,Flaviviridae
+HCV1a_E2_step4_consensus,HCV1a,E2,HCV1a_E2_step4_consensus,362,-0.11,73.78,39.07,Stable,40104.25,0.12,7.43,1.18,Surface,Human,Cronic,Flaviviridae
+HCV1a_E2_step5_consensus,HCV1a,E2,HCV1a_E2_step5_consensus,362,-0.11,74.86,38.1,Stable,40037.16,0.12,7.08,0.27,Surface,Human,Cronic,Flaviviridae
+HCV1a_NS2_step4_consensus,HCV1a,NS2,HCV1a_NS2_step4_consensus,217,0.55,123.96,37.92,Stable,24039.37,0.1,9.32,7.15,Non_surface,Human,Cronic,Flaviviridae
+HCV1a_NS2_step5_consensus,HCV1a,NS2,HCV1a_NS2_step5_consensus,217,0.54,123.09,37.92,Stable,24011.32,0.1,9.32,7.15,Non_surface,Human,Cronic,Flaviviridae
+HCV1a_NS3_step4_consensus,HCV1a,NS3,HCV1a_NS3_step4_consensus,631,0.05,86.09,38.09,Stable,67182.08,0.07,6.99,-0.05,Non_surface,Human,Cronic,Flaviviridae
+HCV1a_NS3_step5_consensus,HCV1a,NS3,HCV1a_NS3_step5_consensus,631,0.04,85.31,37.99,Stable,67202.06,0.07,6.99,-0.05,Non_surface,Human,Cronic,Flaviviridae
+HCV1a_NS4A_step4_consensus,HCV1a,NS4A,HCV1a_NS4A_step4_consensus,54,0.76,124.44,12.65,Stable,5813.78,0.07,4.49,-3.56,Non_surface,Human,Cronic,Flaviviridae
+HCV1a_NS4A_step5_consensus,HCV1a,NS4A,HCV1a_NS4A_step5_consensus,54,0.76,124.44,12.65,Stable,5813.78,0.07,4.49,-3.56,Non_surface,Human,Cronic,Flaviviridae
+HCV1a_NS4B_step4_consensus,HCV1a,NS4B,HCV1a_NS4B_step4_consensus,261,0.5,108.89,44.36,Unstable,27177.29,0.07,8.51,1.97,Non_surface,Human,Cronic,Flaviviridae
+HCV1a_NS4B_step5_consensus,HCV1a,NS4B,HCV1a_NS4B_step5_consensus,261,0.5,108.89,44.36,Unstable,27177.29,0.07,8.51,1.97,Non_surface,Human,Cronic,Flaviviridae
+HCV1a_NS5A_step4_consensus,HCV1a,NS5A,HCV1a_NS5A_step4_consensus,446,-0.37,70.38,58,Unstable,48742.5,0.07,5.09,-15.81,Non_surface,Human,Cronic,Flaviviridae
+HCV1a_NS5A_step5_consensus,HCV1a,NS5A,HCV1a_NS5A_step5_consensus,446,-0.38,70.16,57.73,Unstable,48730.49,0.07,5.08,-15.81,Non_surface,Human,Cronic,Flaviviridae
+HCV1a_NS5B_step4_consensus,HCV1a,NS5B,HCV1a_NS5B_step4_consensus,591,-0.11,86.53,42.67,Unstable,65345.51,0.09,9.04,18.42,Non_surface,Human,Cronic,Flaviviridae
+HCV1a_NS5B_step5_consensus,HCV1a,NS5B,HCV1a_NS5B_step5_consensus,580,-0.13,85.66,42.69,Unstable,64205.22,0.09,9.04,18.42,Non_surface,Human,Cronic,Flaviviridae
+HCV1a_p7_step4_consensus,HCV1a,p7,HCV1a_p7_step4_consensus,63,1.06,134.92,28.95,Stable,6956.27,0.17,9.05,1.87,Non_surface,Human,Cronic,Flaviviridae
+HCV1a_p7_step5_consensus,HCV1a,p7,HCV1a_p7_step5_consensus,63,1.04,127.14,31.07,Stable,6976.26,0.19,9.05,1.87,Non_surface,Human,Cronic,Flaviviridae
+HepA_1A-VP4a-mature-peptide-alt_step4_consensus,HepA,1A-VP4a-mature-peptide-alt,HepA_1A-VP4a-mature-peptide-alt_step4_consensus,23,0.3,101.74,65.51,Unstable,2475.84,0.04,6.5,-0.41,Non_surface,Human,Acute,Picornaviridae
+HepA_1A-VP4b-mature-peptide-alt_step4_consensus,HepA,1A-VP4b-mature-peptide-alt,HepA_1A-VP4b-mature-peptide-alt_step4_consensus,21,0.44,111.43,63.71,Unstable,2202.53,0.05,6.5,-0.41,Non_surface,Human,Acute,Picornaviridae
+HepA_1B-VP2-mature-peptide_step4_consensus,HepA,1B-VP2-mature-peptide,HepA_1B-VP2-mature-peptide_step4_consensus,222,-0.12,92.16,29.61,Stable,24830.83,0.1,5.97,-4.45,Non_surface,Human,Acute,Picornaviridae
+HepA_1C-VP3-mature-peptide_step4_consensus,HepA,1C-VP3-mature-peptide,HepA_1C-VP3-mature-peptide_step4_consensus,246,-0.11,76.46,19.44,Stable,27792.43,0.12,7.59,0.88,Non_surface,Human,Acute,Picornaviridae
+HepA_1D-VP1-mature-peptide_step4_consensus,HepA,1D-VP1-mature-peptide,HepA_1D-VP1-mature-peptide_step4_consensus,300,-0.31,72.47,47.13,Unstable,33226.83,0.11,5.04,-9.8,Non_surface,Human,Acute,Picornaviridae
+HepA_2A-mature-peptide_step4_consensus,HepA,2A-mature-peptide,HepA_2A-mature-peptide_step4_consensus,178,-0.3,89.83,48.39,Unstable,20706.98,0.09,8.96,5.69,Non_surface,Human,Acute,Picornaviridae
+HepA_2B-mature-peptide_step4_consensus,HepA,2B-mature-peptide,HepA_2B-mature-peptide_step4_consensus,105,0.49,108.48,33.9,Stable,11831.87,0.09,6.44,-0.92,Non_surface,Human,Acute,Picornaviridae
+HepA_2C-mature-peptide_step4_consensus,HepA,2C-mature-peptide,HepA_2C-mature-peptide_step4_consensus,335,-0.32,87.25,33.61,Stable,38431.85,0.09,7.52,1.09,Non_surface,Human,Acute,Picornaviridae
+HepA_3A-mature-peptide_step4_consensus,HepA,3A-mature-peptide,HepA_3A-mature-peptide_step4_consensus,67,-0.06,71.19,35.74,Stable,7252.93,0.15,5.51,-2.05,Non_surface,Human,Acute,Picornaviridae
+HepA_3B-VPg-mature-peptide_step4_consensus,HepA,3B-VPg-mature-peptide,HepA_3B-VPg-mature-peptide_step4_consensus,23,-0.53,88.7,21.22,Stable,2508.82,0.04,6.75,-0.15,Non_surface,Human,Acute,Picornaviridae
+HepA_3C-mature-peptide_step4_consensus,HepA,3C-mature-peptide,HepA_3C-mature-peptide_step4_consensus,215,-0.08,92.84,22.72,Stable,23650.1,0.08,8.77,2.81,Non_surface,Human,Acute,Picornaviridae
+HepA_3D-mature-peptide_step4_consensus,HepA,3D-mature-peptide,HepA_3D-mature-peptide_step4_consensus,483,-0.06,88.61,39.17,Stable,55627.73,0.12,5.57,-9.43,Non_surface,Human,Acute,Picornaviridae
+HIV1A1_Gag_step4_consensus,HIV1A1,Gag,HIV1A1_Gag_step4_consensus,498,-0.6,71.55,41.78,Unstable,55406.07,0.06,9.24,14.35,Non_surface,Human,Cronic,Retroviridae
+HIV1A1_Gag_step5_consensus,HIV1A1,Gag,HIV1A1_Gag_step5_consensus,498,-0.59,72.53,42.58,Unstable,55404.04,0.06,9.23,14.35,Non_surface,Human,Cronic,Retroviridae
+HIV1A1_gp160_step4_consensus,HIV1A1,gp160,HIV1A1_gp160_step4_consensus,850,-0.23,94.4,40.1,Unstable,96422.76,0.08,8.99,18.6,Surface,Human,Cronic,Retroviridae
+HIV1A1_gp160_step5_consensus,HIV1A1,gp160,HIV1A1_gp160_step5_consensus,847,-0.23,94.05,42.16,Unstable,95929.09,0.08,8.82,14.6,Surface,Human,Cronic,Retroviridae
+HIV1A1_Nef_step4_consensus,HIV1A1,Nef,HIV1A1_Nef_step4_consensus,204,-0.68,67.84,43,Unstable,23408.21,0.1,5.91,-4.8,Non_surface,Human,Cronic,Retroviridae
+HIV1A1_Nef_step5_consensus,HIV1A1,Nef,HIV1A1_Nef_step5_consensus,204,-0.68,66.42,44.02,Unstable,23456.26,0.11,5.91,-4.8,Non_surface,Human,Cronic,Retroviridae
+HIV1A1_Pol_step4_consensus,HIV1A1,Pol,HIV1A1_Pol_step4_consensus,1003,-0.45,86.01,34.1,Stable,113475.69,0.09,8.41,7.37,Non_surface,Human,Cronic,Retroviridae
+HIV1A1_Pol_step5_consensus,HIV1A1,Pol,HIV1A1_Pol_step5_consensus,1003,-0.45,86.11,34.1,Stable,113445.66,0.09,8.41,7.37,Non_surface,Human,Cronic,Retroviridae
+HIV1A1_Rev_step4_consensus,HIV1A1,Rev,HIV1A1_Rev_step4_consensus,123,-0.8,77.64,84.83,Unstable,13674.37,0.02,10.12,7.58,Non_surface,Human,Cronic,Retroviridae
+HIV1A1_Rev_step5_consensus,HIV1A1,Rev,HIV1A1_Rev_step5_consensus,123,-0.85,75.28,81.96,Unstable,13660.31,0.02,10.26,7.58,Non_surface,Human,Cronic,Retroviridae
+HIV1A1_Tat_step4_consensus,HIV1A1,Tat,HIV1A1_Tat_step4_consensus,101,-1.28,35.64,50.57,Unstable,11444.87,0.06,9.28,7.7,Non_surface,Human,Cronic,Retroviridae
+HIV1A1_Tat_step5_consensus,HIV1A1,Tat,HIV1A1_Tat_step5_consensus,101,-1.31,35.64,52.91,Unstable,11471.9,0.06,9.28,7.7,Non_surface,Human,Cronic,Retroviridae
+HIV1A1_Vif_step4_consensus,HIV1A1,Vif,HIV1A1_Vif_step4_consensus,192,-0.69,75.57,35.54,Stable,22578.72,0.1,9.9,14.52,Non_surface,Human,Cronic,Retroviridae
+HIV1A1_Vif_step5_consensus,HIV1A1,Vif,HIV1A1_Vif_step5_consensus,192,-0.69,75.57,35.54,Stable,22578.72,0.1,9.9,14.52,Non_surface,Human,Cronic,Retroviridae
+HIV1A1_Vpr_step4_consensus,HIV1A1,Vpr,HIV1A1_Vpr_step4_consensus,96,-0.72,81.25,42.66,Unstable,11299.66,0.09,7.02,0.04,Non_surface,Human,Cronic,Retroviridae
+HIV1A1_Vpr_step5_consensus,HIV1A1,Vpr,HIV1A1_Vpr_step5_consensus,96,-0.72,81.25,44.04,Unstable,11313.68,0.09,7.02,0.04,Non_surface,Human,Cronic,Retroviridae
+HIV1A1_Vpu_step4_consensus,HIV1A1,Vpu,HIV1A1_Vpu_step4_consensus,81,0.01,127.53,27.28,Stable,9102.38,0.04,4.4,-7.48,Non_surface,Human,Cronic,Retroviridae
+HIV1A1_Vpu_step5_consensus,HIV1A1,Vpu,HIV1A1_Vpu_step5_consensus,81,0.01,127.53,27.28,Stable,9102.38,0.04,4.4,-7.48,Non_surface,Human,Cronic,Retroviridae
+HIV2_envelope_step4_consensus,HIV2,envelope,HIV2_envelope_step4_consensus,854,-0.39,78.21,34.26,Stable,98489.3,0.11,8.69,14.35,Surface,Human,Cronic,Retroviridae
+HIV2_gag_step4_consensus,HIV2,gag,HIV2_gag_step4_consensus,521,-0.57,75.28,44.07,Unstable,58085.14,0.06,8.9,11.31,Non_surface,Human,Cronic,Retroviridae
+HIV2_nef_step4_consensus,HIV2,nef,HIV2_nef_step4_consensus,256,-0.93,52.97,50.13,Unstable,29372.34,0.11,5.36,-9.77,Non_surface,Human,Cronic,Retroviridae
+HIV2_pol_step4_consensus,HIV2,pol,HIV2_pol_step4_consensus,1028,-0.46,86.29,35.44,Stable,116268.61,0.08,7.41,1.79,Non_surface,Human,Cronic,Retroviridae
+HIV2_rev_step4_consensus,HIV2,rev,HIV2_rev_step4_consensus,100,-1.11,76.2,82.16,Unstable,11757.14,0.05,10.95,4.69,Non_surface,Human,Cronic,Retroviridae
+HIV2_tat_step4_consensus,HIV2,tat,HIV2_tat_step4_consensus,130,-1.05,51.08,62.37,Unstable,14615.35,0.05,8.97,6.6,Non_surface,Human,Cronic,Retroviridae
+HIV2_vif_step4_consensus,HIV2,vif,HIV2_vif_step4_consensus,215,-0.61,70.7,50.67,Unstable,25302.8,0.13,9.71,15.07,Non_surface,Human,Cronic,Retroviridae
+HIV2_vpr_step4_consensus,HIV2,vpr,HIV2_vpr_step4_consensus,105,-0.58,75.33,37.83,Stable,11833.33,0.07,6.07,-2.13,Non_surface,Human,Cronic,Retroviridae
+HIV2_vpx_step4_consensus,HIV2,vpx,HIV2_vpx_step4_consensus,112,-0.67,54.82,39.1,Stable,12782.41,0.12,6.9,-0.16,Non_surface,Human,Cronic,Retroviridae
+IAVH9N2_HA_step4_consensus,IAVH9N2,HA,IAVH9N2_HA_step4_consensus,560,-0.34,84.96,36.29,Stable,62603.25,0.09,6.8,-0.71,Surface,Avian,Acute,Orthomyxoviridae
+IAVH9N2_HA_step5_consensus,IAVH9N2,HA,IAVH9N2_HA_step5_consensus,560,-0.34,84.43,36.12,Stable,62575.16,0.09,6.65,-1.54,Surface,Avian,Acute,Orthomyxoviridae
+IAVH9N2_M1_step4_consensus,IAVH9N2,M1,IAVH9N2_M1_step4_consensus,252,-0.23,84.09,37.48,Stable,27777.87,0.05,9.28,5.94,Non_surface,Avian,Acute,Orthomyxoviridae
+IAVH9N2_M1_step5_consensus,IAVH9N2,M1,IAVH9N2_M1_step5_consensus,252,-0.24,83.69,37.48,Stable,27807.9,0.05,9.28,5.94,Non_surface,Avian,Acute,Orthomyxoviridae
+IAVH9N2_M2_step4_consensus,IAVH9N2,M2,IAVH9N2_M2_step4_consensus,97,-0.25,96.39,62.39,Unstable,11247.72,0.09,4.99,-5.32,Non_surface,Avian,Acute,Orthomyxoviridae
+IAVH9N2_M2_step5_consensus,IAVH9N2,M2,IAVH9N2_M2_step5_consensus,97,-0.25,96.39,62.39,Unstable,11247.72,0.09,4.99,-5.32,Non_surface,Avian,Acute,Orthomyxoviridae
+IAVH9N2_NA_step4_consensus,IAVH9N2,Neuraminiase,IAVH9N2_NA_step4_consensus,466,-0.3,74.85,31.66,Stable,51431.59,0.08,7.07,0.2,Surface,Avian,Acute,Orthomyxoviridae
+IAVH9N2_NA_step5_consensus,IAVH9N2,Neuraminiase,IAVH9N2_NA_step5_consensus,469,-0.3,74.16,36.7,Stable,51764.87,0.08,7.42,1.2,Surface,Avian,Acute,Orthomyxoviridae
+IAVH9N2_NP_step5_consensus,IAVH9N2,NP,IAVH9N2_NP_step5_consensus,498,-0.57,69.58,44.84,Unstable,56279.12,0.08,9.47,12.06,Non_surface,Avian,Acute,Orthomyxoviridae
+IAVH9N2_NS1_step4_consensus,IAVH9N2,NS1,IAVH9N2_NS1_step4_consensus,217,-0.34,90.32,53.64,Unstable,24605.84,0.06,5.37,-5.2,Non_surface,Avian,Acute,Orthomyxoviridae
+IAVH9N2_NS1_step5_consensus,IAVH9N2,NS1,IAVH9N2_NS1_step5_consensus,230,-0.36,89.04,62.35,Unstable,26083.59,0.06,5.29,-5.28,Non_surface,Avian,Acute,Orthomyxoviridae
+IAVH9N2_NS2_step4_consensus,IAVH9N2,NS2,IAVH9N2_NS2_step4_consensus,121,-0.45,87.02,63.1,Unstable,14280.13,0.08,5.2,-4.29,Non_surface,Avian,Acute,Orthomyxoviridae
+IAVH9N2_NS2_step5_consensus,IAVH9N2,NS2,IAVH9N2_NS2_step5_consensus,121,-0.41,88.6,62.48,Unstable,14338.28,0.08,5.2,-4.29,Non_surface,Avian,Acute,Orthomyxoviridae
+IAVH9N2_PA_step4_consensus,IAVH9N2,PA,IAVH9N2_PA_step4_consensus,716,-0.49,78.06,51.29,Unstable,82662.58,0.09,5.43,-18.35,Non_surface,Avian,Acute,Orthomyxoviridae
+IAVH9N2_PA_step5_consensus,IAVH9N2,PA,IAVH9N2_PA_step5_consensus,716,-0.47,78.06,50.34,Unstable,82521.45,0.09,5.39,-19.34,Non_surface,Avian,Acute,Orthomyxoviridae
+IAVH9N2_PB1_step4_consensus,IAVH9N2,PB1,IAVH9N2_PB1_step4_consensus,757,-0.51,72.02,40.2,Unstable,86429.14,0.09,9.22,18.37,Non_surface,Avian,Acute,Orthomyxoviridae
+IAVH9N2_PB1_step5_consensus,IAVH9N2,PB1,IAVH9N2_PB1_step5_consensus,757,-0.5,72.4,41.07,Unstable,86452.2,0.09,9.29,20.37,Non_surface,Avian,Acute,Orthomyxoviridae
+IAVH9N2_PB2_step4_consensus,IAVH9N2,PB2,IAVH9N2_PB2_step4_consensus,759,-0.32,86.9,46.7,Unstable,85877.22,0.07,9.44,18.45,Non_surface,Avian,Acute,Orthomyxoviridae
+IAVH9N2_PB2_step5_consensus,IAVH9N2,PB2,IAVH9N2_PB2_step5_consensus,759,-0.33,86.52,46.38,Unstable,85907.2,0.07,9.45,18.45,Non_surface,Avian,Acute,Orthomyxoviridae
+IBV_HA_step4.cds_consensus,IBV,HA,IBV_HA_step4.cds_consensus,584,-0.17,87.84,30.39,Stable,63122.47,0.06,7.83,2.88,Surface,Human,Acute,Orthomyxoviridae
+IBV_HA_step5.cds_consensus,IBV,HA,IBV_HA_step5.cds_consensus,584,-0.17,87.67,28.22,Stable,63115.46,0.06,8.22,4.7,Surface,Human,Acute,Orthomyxoviridae
+IBV_M1_step4.cds_consensus,IBV,M1,IBV_M1_step4.cds_consensus,248,-0.29,81.49,39.95,Stable,27386.57,0.06,9.09,7.99,Non_surface,Human,Acute,Orthomyxoviridae
+IBV_M1_step5.cds_consensus,IBV,M1,IBV_M1_step5.cds_consensus,248,-0.29,81.49,42.26,Unstable,27414.59,0.06,9.1,7.99,Non_surface,Human,Acute,Orthomyxoviridae
+IBV_M2_step4.cds_consensus,IBV,M2,IBV_M2_step4.cds_consensus,109,-0.04,114.5,45.77,Unstable,12585.63,0.05,5.71,-4.04,Non_surface,Human,Acute,Orthomyxoviridae
+IBV_M2_step5.cds_consensus,IBV,M2,IBV_M2_step5.cds_consensus,109,-0.05,112.66,45.77,Unstable,12557.57,0.05,5.71,-4.04,Non_surface,Human,Acute,Orthomyxoviridae
+IBV_NA_step4.cds_consensus,IBV,Neuraminiase,IBV_NA_step4.cds_consensus,466,-0.22,74.55,40.63,Unstable,51065.74,0.09,6.82,-0.67,Surface,Human,Acute,Orthomyxoviridae
+IBV_NA_step5.cds_consensus,IBV,Neuraminiase,IBV_NA_step5.cds_consensus,466,-0.23,75.17,42.85,Unstable,51162.85,0.09,6.43,-2.66,Surface,Human,Acute,Orthomyxoviridae
+IBV_NP_step4.cds_consensus,IBV,NP,IBV_NP_step4.cds_consensus,560,-0.37,76.84,44.96,Unstable,61592.3,0.06,9.39,16.94,Non_surface,Human,Acute,Orthomyxoviridae
+IBV_NP_step5.cds_consensus,IBV,NP,IBV_NP_step5.cds_consensus,560,-0.37,77.18,44.81,Unstable,61620.35,0.06,9.39,16.94,Non_surface,Human,Acute,Orthomyxoviridae
+IBV_NS1_step4.cds_consensus,IBV,NS1,IBV_NS1_step4.cds_consensus,281,-0.79,73.56,47.31,Unstable,31947.67,0.06,6.14,-2.95,Non_surface,Human,Acute,Orthomyxoviridae
+IBV_NS1_step5.cds_consensus,IBV,NS1,IBV_NS1_step5.cds_consensus,281,-0.79,73.56,46.53,Unstable,31944.67,0.06,5.96,-3.95,Non_surface,Human,Acute,Orthomyxoviridae
+IBV_NS2_step4.cds_consensus,IBV,NS2,IBV_NS2_step4.cds_consensus,122,-0.25,98.2,55.04,Unstable,14278.38,0.07,6.83,-0.23,Non_surface,Human,Acute,Orthomyxoviridae
+IBV_NS2_step5.cds_consensus,IBV,NS2,IBV_NS2_step5.cds_consensus,122,-0.21,101.39,55.35,Unstable,14291.42,0.07,6.28,-1.23,Non_surface,Human,Acute,Orthomyxoviridae
+IBV_PA_step4.cds_consensus,IBV,PA,IBV_PA_step4.cds_consensus,726,-0.41,81.21,38.88,Stable,83059.18,0.1,5.44,-13.77,Non_surface,Human,Acute,Orthomyxoviridae
+IBV_PA_step5.cds_consensus,IBV,PA,IBV_PA_step5.cds_consensus,726,-0.41,80.81,39.35,Stable,83073.28,0.1,5.55,-11.77,Non_surface,Human,Acute,Orthomyxoviridae
+IBV_PB1_step4.cds_consensus,IBV,PB1,IBV_PB1_step4.cds_consensus,752,-0.34,77.47,31.59,Stable,84294.34,0.09,8.78,12.46,Non_surface,Human,Acute,Orthomyxoviridae
+IBV_PB1_step5.cds_consensus,IBV,PB1,IBV_PB1_step5.cds_consensus,752,-0.34,77.34,32.12,Stable,84336.34,0.09,8.78,12.46,Non_surface,Human,Acute,Orthomyxoviridae
+IBV_PB2_step4.cds_consensus,IBV,PB2,IBV_PB2_step4.cds_consensus,770,-0.35,88.39,39.43,Stable,87906.19,0.08,9.27,20.96,Non_surface,Human,Acute,Orthomyxoviridae
+IBV_PB2_step5.cds_consensus,IBV,PB2,IBV_PB2_step5.cds_consensus,770,-0.35,88.39,39.49,Stable,87922.29,0.08,9.26,20.96,Non_surface,Human,Acute,Orthomyxoviridae
+lyssavirus_glycoprotein_step5_consensus,lyssavirus,glycoprotein,lyssavirus_glycoprotein_step5_consensus,524,-0.18,83.63,38.89,Stable,58505.73,0.09,8.04,3.96,Surface,Mammal,Acute,Rhabdoviridae
+lyssavirus_matrix_protein_step5_consensus,lyssavirus,matrix protein,lyssavirus_matrix_protein_step5_consensus,202,-0.49,83.91,58.01,Unstable,23348.39,0.08,5.51,-4.25,Non_surface,Mammal,Acute,Rhabdoviridae
+lyssavirus_nucleoprotein_step5_consensus,lyssavirus,nucleoprotein,lyssavirus_nucleoprotein_step5_consensus,450,-0.27,78.02,32.62,Stable,50692.91,0.11,6.04,-6.37,Non_surface,Mammal,Acute,Rhabdoviridae
+lyssavirus_phosphoprotein_step5_consensus,lyssavirus,phosphoprotein,lyssavirus_phosphoprotein_step5_consensus,297,-0.64,76.53,45.48,Unstable,33342.04,0.06,4.99,-12.1,Non_surface,Mammal,Acute,Rhabdoviridae
+lyssavirus_polymerase_step5_consensus,lyssavirus,polymerase,lyssavirus_polymerase_step5_consensus,2127,-0.19,94.39,44.83,Unstable,242803.07,0.1,8.57,19.45,Non_surface,Mammal,Acute,Rhabdoviridae
+Mastro1_capsid_step5_consensus,Mastro1,capsid,Mastro1_capsid_step5_consensus,787,-0.49,70.37,36.17,Stable,86013.34,0.08,9.05,11.65,Surface,Mammal,Acute,Picornaviridae
+Mastro1_RdRp_step5_consensus,Mastro1,RdRp,Mastro1_RdRp_step5_consensus,515,-0.58,71.96,36.58,Stable,60150.8,0.13,6.38,-3.86,Non_surface,Mammal,Acute,Picornaviridae
+Mastro1_serine-protease_step5_consensus,Mastro1,serine-protease,Mastro1_serine-protease_step5_consensus,902,-0.16,89.81,35.79,Stable,101396.61,0.09,6.33,-5,Non_surface,Mammal,Acute,Picornaviridae
+measles_C_protein_step5_consensus,measles,C protein,measles_C_protein_step5_consensus,186,-0.46,82.42,57.49,Unstable,21134.23,0.06,10.45,10.95,Non_surface,Human,Acute,Paramyxoviridae
+measles_fusion_protein_step5_consensus,measles,fusion protein,measles_fusion_protein_step5_consensus,550,0.15,109.75,43.06,Unstable,59531.44,0.05,8.78,9.09,Non_surface,Human,Acute,Paramyxoviridae
+measles_hemagglutinin_protein_step5_consensus,measles,hemagglutinin protein,measles_hemagglutinin_protein_step5_consensus,617,-0.11,93,29.11,Stable,69121.65,0.09,6.58,-2.26,Non_surface,Human,Acute,Paramyxoviridae
+measles_large_polymerase_protein_step5_consensus,measles,large polymerase protein,measles_large_polymerase_protein_step5_consensus,2183,-0.14,96.71,37.6,Stable,247658.49,0.09,8.36,18.62,Non_surface,Human,Acute,Paramyxoviridae
+measles_matrix_protein_step5_consensus,measles,matrix protein,measles_matrix_protein_step5_consensus,335,-0.08,98.3,45.44,Unstable,37711.47,0.09,9.07,6.75,Non_surface,Human,Acute,Paramyxoviridae
+measles_nucleocapsid_protein_step5_consensus,measles,nucleocapsid protein,measles_nucleocapsid_protein_step5_consensus,525,-0.32,89.58,53.45,Unstable,58120.95,0.06,5.11,-14.87,Non_surface,Human,Acute,Paramyxoviridae
+measles_phosphoprotein_step5_consensus,measles,phosphoprotein,measles_phosphoprotein_step5_consensus,507,-0.51,80.12,40.81,Unstable,53892.71,0.03,5.07,-16.83,Non_surface,Human,Acute,Paramyxoviridae
+measles_V_protein_step5_consensus,measles,V protein,measles_V_protein_step5_consensus,299,-0.59,65.38,46.74,Unstable,30878.36,0.03,4.53,-21.13,Non_surface,Human,Acute,Paramyxoviridae
+mumps_fusion_protein_step5_consensus,mumps,fusion protein,mumps_fusion_protein_step5_consensus,538,0.29,115.15,46.78,Unstable,58722.26,0.06,8.13,3.09,Surface,Human,Acute,Paramyxoviridae
+mumps_hemagglutinin_step5_consensus,mumps,hemagglutinin,mumps_hemagglutinin_step5_consensus,582,0.03,87.41,32.84,Stable,64023.32,0.1,7.42,0.97,Surface,Human,Acute,Paramyxoviridae
+mumps_large_polymerase_protein_step5_consensus,mumps,large polymerase protein,mumps_large_polymerase_protein_step5_consensus,2261,-0.1,102.38,43.9,Unstable,256759.88,0.09,6.18,-18.3,Non_surface,Human,Acute,Paramyxoviridae
+mumps_matrix_protein_step5_consensus,mumps,matrix protein,mumps_matrix_protein_step5_consensus,375,-0.19,86.37,44.51,Unstable,41582.66,0.07,9.52,18.2,Non_surface,Human,Acute,Paramyxoviridae
+mumps_nucleocapsid_protein_step5_consensus,mumps,nucleocapsid protein,mumps_nucleocapsid_protein_step5_consensus,549,-0.43,80.2,44.67,Unstable,61370.4,0.09,5.15,-13.86,Non_surface,Human,Acute,Paramyxoviridae
+mumps_phosphoprotein_step5_consensus,mumps,phosphoprotein,mumps_phosphoprotein_step5_consensus,390,-0.49,71,35.65,Stable,42422.9,0.05,8.98,7.99,Non_surface,Human,Acute,Paramyxoviridae
+mumps_small_hydrophobic_protein_step5_consensus,mumps,small hydrophobic protein,mumps_small_hydrophobic_protein_step5_consensus,57,0.94,145.44,47.85,Unstable,6826.14,0.19,9.3,1.76,Non_surface,Human,Acute,Paramyxoviridae
+mumps_V_protein_short_step5_consensus,mumps,V protein short,mumps_V_protein_short_step5_consensus,224,-0.55,60.94,30.58,Stable,24176.95,0.06,8.8,4.8,Non_surface,Human,Acute,Paramyxoviridae
+orthobornavirus_glycoprotein_step5_consensus,orthobornavirus,glycoprotein,orthobornavirus_glycoprotein_step5_consensus,503,-0.16,81.39,51.92,Unstable,56607.69,0.12,8.33,5.41,Surface,Mammal,Acute,Bornaviridae
+orthobornavirus_matrix_protein_step5_consensus,orthobornavirus,matrix protein,orthobornavirus_matrix_protein_step5_consensus,142,-0.15,100.14,42.11,Unstable,16257.65,0.11,9.15,2.77,Non_surface,Mammal,Acute,Bornaviridae
+orthobornavirus_nucleoprotein_step5_consensus,orthobornavirus,nucleoprotein,orthobornavirus_nucleoprotein_step5_consensus,370,-0.2,84.68,36.72,Stable,40952.58,0.08,6.57,-1.61,Non_surface,Mammal,Acute,Bornaviridae
+orthobornavirus_phosphoprotein_step5_consensus,orthobornavirus,phosphoprotein,orthobornavirus_phosphoprotein_step5_consensus,201,-0.57,84.98,48.61,Unstable,22462.35,0.02,4.94,-8.28,Non_surface,Mammal,Acute,Bornaviridae
+orthobornavirus_RNA_dependent_RNA_polymerase_step5_consensus,orthobornavirus,RNA dependent RNA polymerase,orthobornavirus_RNA_dependent_RNA_polymerase_step5_consensus,1711,0.05,100.98,41.87,Unstable,191671.91,0.09,8.04,9.13,Non_surface,Mammal,Acute,Bornaviridae
+orthobornavirus_X_protein_step5_consensus,orthobornavirus,X protein,orthobornavirus_X_protein_step5_consensus,87,-0.98,65.06,92.39,Unstable,9443.45,0,7.96,0.61,Non_surface,Mammal,Acute,Bornaviridae
+polio_protein_1b_step5_consensus,polio,protein 1b,polio_protein_1b_step5_consensus,753,-0.29,83.52,41.44,Unstable,84281.61,0.09,7.07,0.32,Non_surface,Human,Acute,Picornaviridae
+polio_protein_2_step5_consensus,polio,protein 2,polio_protein_2_step5_consensus,644,-0.29,82.22,40.82,Unstable,72164.72,0.1,6.42,-3.75,Non_surface,Human,Acute,Picornaviridae
+polio_protein_3b_step5_consensus,polio,protein 3b,polio_protein_3b_step5_consensus,575,-0.24,84.33,42,Unstable,64626.42,0.09,7.56,1.87,Non_surface,Human,Acute,Picornaviridae
+polio_protein_4b_step5_consensus,polio,protein 4b,polio_protein_4b_step5_consensus,461,-0.34,82.08,41.8,Unstable,52571.64,0.11,6.11,-5.18,Non_surface,Human,Acute,Picornaviridae
+polio_protein_5b_step5_consensus,polio,protein 5b,polio_protein_5b_step5_consensus,426,-0.21,89.53,39.91,Stable,48048.05,0.08,8.61,6.39,Non_surface,Human,Acute,Picornaviridae
+polio_protein_X_step5_consensus,polio,protein X,polio_protein_X_step5_consensus,329,-0.36,80.36,41.65,Unstable,37358.67,0.08,8.72,6.4,Non_surface,Human,Acute,Picornaviridae
+polio_VP1_step5_consensus,polio,VP1,polio_VP1_step5_consensus,302,-0.32,73.28,32.05,Stable,33462.28,0.11,8.39,2.37,Surface,Human,Acute,Picornaviridae
+polio_VP2_step5_consensus,polio,VP2,polio_VP2_step5_consensus,272,-0.24,74.96,49.04,Unstable,30052.49,0.11,5.64,-5.07,Surface,Human,Acute,Picornaviridae
+polio_VP3_step5_consensus,polio,VP3,polio_VP3_step5_consensus,238,-0.11,81.93,40.19,Unstable,26523.24,0.09,5.18,-6.83,Surface,Human,Acute,Picornaviridae
+polio_VP4_step5_consensus,polio,VP4,polio_VP4_step5_consensus,69,-0.72,56.67,27.97,Stable,7516.18,0.09,8.03,0.59,Surface,Human,Acute,Picornaviridae
+Potato_12_kD_membrane-bound_step5_consensus,Potato,12 kD membrane-bound,Potato_12_kD_membrane-bound_step5_consensus,115,0.02,100.96,38.47,Stable,12337.93,0.07,9.76,6.17,Non_surface,Plant,Acute,Secoviridae
+Potato_8_kD_membrane-bound_step5_consensus,Potato,8 kD membrane-bound,Potato_8_kD_membrane-bound_step5_consensus,70,0.88,149,13.13,Stable,7594.99,0.03,5.64,-1.42,Non_surface,Plant,Acute,Secoviridae
+Potato_capsid_protein_step5_consensus,Potato,capsid protein,Potato_capsid_protein_step5_consensus,237,-0.13,66.12,31.01,Stable,25081.07,0.08,6.73,-0.33,Surface,Plant,Acute,Secoviridae
+Potato_NTP-binding_helicase_step5_consensus,Potato,NTP-binding helicase,Potato_NTP-binding_helicase_step5_consensus,226,-0.06,93.19,26.97,Stable,24655.84,0.08,6.31,-1.96,Non_surface,Plant,Acute,Secoviridae
+Potato_RNA-replicating_protein_step5_consensus,Potato,RNA-replicating protein,Potato_RNA-replicating_protein_step5_consensus,1456,-0.43,79.86,39.3,Stable,165513,0.09,6.35,-10.82,Non_surface,Plant,Acute,Secoviridae
+PotatoY_6K1_step4_consensus,PotatoY,6K1,PotatoY_6K1_step4_consensus,51,0.14,97.25,28.15,Stable,5735.61,0.08,6.67,-0.37,Non_surface,Plant,Acute,Potyviridae
+PotatoY_6K1_step5_consensus,PotatoY,6K1,PotatoY_6K1_step5_consensus,51,0.14,97.25,28.15,Stable,5735.61,0.08,6.67,-0.37,Non_surface,Plant,Acute,Potyviridae
+PotatoY_6K2_step4_consensus,PotatoY,6K2,PotatoY_6K2_step4_consensus,52,0.41,118.27,4.86,Stable,5486.36,0.08,9.61,2.88,Non_surface,Plant,Acute,Potyviridae
+PotatoY_6K2_step5_consensus,PotatoY,6K2,PotatoY_6K2_step5_consensus,52,0.47,123.85,7.75,Stable,5528.44,0.08,9.61,2.88,Non_surface,Plant,Acute,Potyviridae
+PotatoY_CI_step4_consensus,PotatoY,CI,PotatoY_CI_step4_consensus,634,-0.09,93.26,36.8,Stable,71393.23,0.09,7.28,1.11,Non_surface,Plant,Acute,Potyviridae
+PotatoY_CI_step5_consensus,PotatoY,CI,PotatoY_CI_step5_consensus,634,-0.08,93.56,36.8,Stable,71421.28,0.09,7.28,1.11,Non_surface,Plant,Acute,Potyviridae
+PotatoY_coat_step4_consensus,PotatoY,coat,PotatoY_coat_step4_consensus,267,-0.61,69.06,41.08,Unstable,29805.46,0.06,6.36,-1.65,Surface,Plant,Acute,Potyviridae
+PotatoY_coat_step5_consensus,PotatoY,coat,PotatoY_coat_step5_consensus,267,-0.61,69.06,41.08,Unstable,29834.5,0.06,6.69,-0.65,Surface,Plant,Acute,Potyviridae
+PotatoY_HC-Pro_step4_consensus,PotatoY,HC-Pro,PotatoY_HC-Pro_step4_consensus,456,-0.41,79.58,35.32,Stable,51865.69,0.1,8.25,4.58,Non_surface,Plant,Acute,Potyviridae
+PotatoY_HC-Pro_step5_consensus,PotatoY,HC-Pro,PotatoY_HC-Pro_step5_consensus,456,-0.44,78.51,29.75,Stable,51989.75,0.11,8.08,3.67,Non_surface,Plant,Acute,Potyviridae
+PotatoY_NIa-Pro_step4_consensus,PotatoY,NIa-Pro,PotatoY_NIa-Pro_step4_consensus,244,-0.31,80.61,25.5,Stable,27798.37,0.11,7.87,1.65,Non_surface,Plant,Acute,Potyviridae
+PotatoY_NIa-Pro_step5_consensus,PotatoY,NIa-Pro,PotatoY_NIa-Pro_step5_consensus,244,-0.31,80.61,25.5,Stable,27798.37,0.11,7.87,1.65,Non_surface,Plant,Acute,Potyviridae
+PotatoY_NIa-VPg_step4_consensus,PotatoY,NIa-VPg,PotatoY_NIa-VPg_step4_consensus,188,-0.87,65.37,37.11,Stable,21707.25,0.09,6.52,-0.85,Non_surface,Plant,Acute,Potyviridae
+PotatoY_NIa-VPg_step5_consensus,PotatoY,NIa-VPg,PotatoY_NIa-VPg_step5_consensus,188,-0.88,63.3,37.11,Stable,21741.26,0.1,6.52,-0.85,Non_surface,Plant,Acute,Potyviridae
+PotatoY_NIb_step4_consensus,PotatoY,NIb,PotatoY_NIb_step4_consensus,521,-0.21,87.06,45.94,Unstable,59893.94,0.11,5.15,-19.19,Non_surface,Plant,Acute,Potyviridae
+PotatoY_NIb_step5_consensus,PotatoY,NIb,PotatoY_NIb_step5_consensus,521,-0.2,87.06,44.43,Unstable,59907.95,0.12,5.15,-19.18,Non_surface,Plant,Acute,Potyviridae
+PotatoY_P1_step4_consensus,PotatoY,P1,PotatoY_P1_step4_consensus,284,-0.49,76.48,33.26,Stable,32183.9,0.07,9.99,23.43,Non_surface,Plant,Acute,Potyviridae
+PotatoY_P1_step5_consensus,PotatoY,P1,PotatoY_P1_step5_consensus,284,-0.46,78.94,36.7,Stable,32144.92,0.07,10.25,26.34,Non_surface,Plant,Acute,Potyviridae
+PotatoY_P3_step4_consensus,PotatoY,P3,PotatoY_P3_step4_consensus,365,0.07,106.36,43.89,Unstable,41617.05,0.1,9,6.92,Non_surface,Plant,Acute,Potyviridae
+PotatoY_P3_step5_consensus,PotatoY,P3,PotatoY_P3_step5_consensus,365,0.06,105.56,43.57,Unstable,41639.08,0.1,9,6.92,Non_surface,Plant,Acute,Potyviridae
+RhinoA_1A_step4_consensus,RhinoA,1A,RhinoA_1A_step4_consensus,69,-0.61,60.72,27.29,Stable,7440.06,0.09,6.52,-0.41,Surface,Human,Acute,Picornaviridae
+RhinoA_1A_step5_consensus,RhinoA,1A,RhinoA_1A_step5_consensus,69,-0.61,60.72,27.29,Stable,7440.06,0.09,6.52,-0.41,Surface,Human,Acute,Picornaviridae
+RhinoA_1B_step4_consensus,RhinoA,1B,RhinoA_1B_step4_consensus,261,-0.31,74.75,30.51,Stable,28714.9,0.1,6.03,-3.86,Non_surface,Human,Acute,Picornaviridae
+RhinoA_1B_step5_consensus,RhinoA,1B,RhinoA_1B_step5_consensus,261,-0.31,74.75,30.51,Stable,28714.9,0.1,6.03,-3.86,Non_surface,Human,Acute,Picornaviridae
+RhinoA_1C_step4_consensus,RhinoA,1C,RhinoA_1C_step4_consensus,238,0.03,81.51,25.55,Stable,26488.35,0.11,7.73,1.14,Non_surface,Human,Acute,Picornaviridae
+RhinoA_1C_step5_consensus,RhinoA,1C,RhinoA_1C_step5_consensus,238,0.03,81.51,27.19,Stable,26425.26,0.1,7.74,1.14,Non_surface,Human,Acute,Picornaviridae
+RhinoA_1D_step4_consensus,RhinoA,1D,RhinoA_1D_step4_consensus,285,-0.6,69.05,43.56,Unstable,32646.64,0.11,8.68,4.62,Non_surface,Human,Acute,Picornaviridae
+RhinoA_1D_step5_consensus,RhinoA,1D,RhinoA_1D_step5_consensus,285,-0.59,69.72,43.75,Unstable,32661.61,0.11,8.23,2.62,Non_surface,Human,Acute,Picornaviridae
+RhinoA_2A_step4_consensus,RhinoA,2A,RhinoA_2A_step4_consensus,142,-0.41,77.54,38.01,Stable,16209.99,0.12,5.45,-8.42,Surface,Human,Acute,Picornaviridae
+RhinoA_2A_step5_consensus,RhinoA,2A,RhinoA_2A_step5_consensus,142,-0.41,77.54,38.01,Stable,16209.99,0.12,5.45,-8.42,Surface,Human,Acute,Picornaviridae
+RhinoA_2B_step4_consensus,RhinoA,2B,RhinoA_2B_step4_consensus,95,0.09,107.79,26.45,Stable,10837.64,0.09,9.3,3.92,Surface,Human,Acute,Picornaviridae
+RhinoA_2B_step5_consensus,RhinoA,2B,RhinoA_2B_step5_consensus,95,0.12,107.79,27.14,Stable,10824.64,0.09,9.3,3.92,Surface,Human,Acute,Picornaviridae
+RhinoA_2C_step4_consensus,RhinoA,2C,RhinoA_2C_step4_consensus,322,-0.35,82.05,36.89,Stable,36793.31,0.09,8.77,6.73,Non_surface,Human,Acute,Picornaviridae
+RhinoA_2C_step5_consensus,RhinoA,2C,RhinoA_2C_step5_consensus,322,-0.3,82.95,37.07,Stable,36797.38,0.09,8.77,6.73,Non_surface,Human,Acute,Picornaviridae
+RhinoA_3A_step4_consensus,RhinoA,3A,RhinoA_3A_step4_consensus,77,0.42,129.22,65.56,Unstable,8570.07,0.06,4.81,-2.26,Non_surface,Human,Acute,Picornaviridae
+RhinoA_3A_step5_consensus,RhinoA,3A,RhinoA_3A_step5_consensus,77,0.41,129.22,59.85,Unstable,8570.07,0.06,4.81,-2.26,Non_surface,Human,Acute,Picornaviridae
+RhinoA_3B_step4_consensus,RhinoA,3B,RhinoA_3B_step4_consensus,21,-1.26,50.95,41.65,Unstable,2337.68,0.05,9.99,2.76,Non_surface,Human,Acute,Picornaviridae
+RhinoA_3B_step5_consensus,RhinoA,3B,RhinoA_3B_step5_consensus,21,-1.26,50.95,41.65,Unstable,2337.68,0.05,9.99,2.76,Non_surface,Human,Acute,Picornaviridae
+RhinoA_3C_step4_consensus,RhinoA,3C,RhinoA_3C_step4_consensus,183,-0.43,85.68,29.01,Stable,20447.9,0.09,5.43,-3.98,Non_surface,Human,Acute,Picornaviridae
+RhinoA_3C_step5_consensus,RhinoA,3C,RhinoA_3C_step5_consensus,183,-0.43,85.68,29.01,Stable,20447.9,0.09,5.43,-3.98,Non_surface,Human,Acute,Picornaviridae
+RhinoA_3D_step4_consensus,RhinoA,3D,RhinoA_3D_step4_consensus,460,-0.3,86.43,30.07,Stable,52534.03,0.11,7.68,1.78,Non_surface,Human,Acute,Picornaviridae
+RhinoA_3D_step5_consensus,RhinoA,3D,RhinoA_3D_step5_consensus,460,-0.27,88.35,31.92,Stable,52434.78,0.11,6.35,-3.21,Non_surface,Human,Acute,Picornaviridae
+RotaA_NSP1_step4_consensus,RotaA,NSP1,RotaA_NSP1_step4_consensus,486,-0.39,83.56,46.03,Unstable,57999.07,0.13,8.53,8.56,Non_surface,Human,Acute,Reoviridae
+RotaA_NSP1_step5_consensus,RotaA,NSP1,RotaA_NSP1_step5_consensus,486,-0.39,88.6,48.78,Unstable,57961.91,0.13,8.15,4.66,Non_surface,Human,Acute,Reoviridae
+RotaA_NSP2_step4_consensus,RotaA,NSP2,RotaA_NSP2_step4_consensus,317,-0.34,86.09,31.49,Stable,36565.75,0.1,9,8.16,Non_surface,Human,Acute,Reoviridae
+RotaA_NSP2_step5_consensus,RotaA,NSP2,RotaA_NSP2_step5_consensus,317,-0.35,86.69,34.15,Stable,36595.8,0.1,9.04,8.26,Non_surface,Human,Acute,Reoviridae
+RotaA_NSP3_step4_consensus,RotaA,NSP3,RotaA_NSP3_step4_consensus,310,-0.52,88.32,39.26,Stable,35905.48,0.08,5.22,-5.49,Non_surface,Human,Acute,Reoviridae
+RotaA_NSP3_step5_consensus,RotaA,NSP3,RotaA_NSP3_step5_consensus,310,-0.57,82.68,36.6,Stable,35895.34,0.08,5.32,-5.4,Non_surface,Human,Acute,Reoviridae
+RotaA_NSP4_step4_consensus,RotaA,NSP4,RotaA_NSP4_step4_consensus,175,-0.23,102.46,22.22,Stable,20315.67,0.06,7.71,0.76,Non_surface,Human,Acute,Reoviridae
+RotaA_NSP4_step5_consensus,RotaA,NSP4,RotaA_NSP4_step5_consensus,175,-0.27,100.8,25.57,Stable,20405.75,0.07,6.84,-0.23,Non_surface,Human,Acute,Reoviridae
+RotaA_NSP5_step4_consensus,RotaA,NSP5,RotaA_NSP5_step4_consensus,197,-0.73,62.89,58.61,Unstable,21573.68,0.06,5.75,-2.34,Non_surface,Human,Acute,Reoviridae
+RotaA_NSP5_step5_consensus,RotaA,NSP5,RotaA_NSP5_step5_consensus,198,-0.79,62.07,55.33,Unstable,21657.74,0.06,6.73,-0.34,Non_surface,Human,Acute,Reoviridae
+RotaA_VP1_step4_consensus,RotaA,VP1,RotaA_VP1_step4_consensus,1088,-0.23,95.24,37.82,Stable,124828.93,0.11,8.2,4.67,Non_surface,Human,Acute,Reoviridae
+RotaA_VP1_step5_consensus,RotaA,VP1,RotaA_VP1_step5_consensus,1088,-0.25,94.08,37.94,Stable,124939.9,0.11,7.17,0.59,Non_surface,Human,Acute,Reoviridae
+RotaA_VP2_step4_consensus,RotaA,VP2,RotaA_VP2_step4_consensus,863,-0.31,98.27,42.65,Unstable,100415.17,0.09,5.53,-13.46,Non_surface,Human,Acute,Reoviridae
+RotaA_VP2_step5_consensus,RotaA,VP2,RotaA_VP2_step5_consensus,862,-0.33,98.16,42.29,Unstable,100377.16,0.09,5.78,-9.47,Non_surface,Human,Acute,Reoviridae
+RotaA_VP3_step4_consensus,RotaA,VP3,RotaA_VP3_step4_consensus,835,-0.29,90.22,38.56,Stable,98119.81,0.15,8.48,7.4,Non_surface,Human,Acute,Reoviridae
+RotaA_VP3_step5_consensus,RotaA,VP3,RotaA_VP3_step5_consensus,835,-0.31,90.32,37.16,Stable,98085.63,0.15,8.1,4.4,Non_surface,Human,Acute,Reoviridae
+RotaA_VP4_step4_consensus,RotaA,VP4,RotaA_VP4_step4_consensus,774,-0.34,83.07,28.51,Stable,87396.44,0.1,5.76,-6.85,Non_surface,Human,Acute,Reoviridae
+RotaA_VP4_step5_consensus,RotaA,VP4,RotaA_VP4_step5_consensus,775,-0.32,81.88,32.19,Stable,86983.84,0.1,5.24,-10.29,Non_surface,Human,Acute,Reoviridae
+RotaA_VP6_step4_consensus,RotaA,VP6,RotaA_VP6_step4_consensus,397,-0.16,88.21,40.79,Unstable,44860.45,0.1,5.82,-4.04,Surface,Human,Acute,Reoviridae
+RotaA_VP6_step5_consensus,RotaA,VP6,RotaA_VP6_step5_consensus,397,-0.14,88.46,41.92,Unstable,44892.56,0.1,5.64,-5.04,Surface,Human,Acute,Reoviridae
+RotaA_VP7_step4_consensus,RotaA,VP7,RotaA_VP7_step4_consensus,326,0.01,95.92,33.63,Stable,37315.41,0.12,4.7,-10.46,Surface,Human,Acute,Reoviridae
+RotaA_VP7_step5_consensus,RotaA,VP7,RotaA_VP7_step5_consensus,326,0.04,97.18,35.49,Stable,37243.35,0.12,4.6,-12.46,Surface,Human,Acute,Reoviridae
+rsv_attachment_protein_step4_consensus,rsv,attachment protein,rsv_attachment_protein_step4_consensus,319,-0.64,67.59,33.08,Stable,34958.19,0.05,9.8,19.98,Surface,Human,Acute,Paramyxoviridae
+rsv_fusion_protein_step4_consensus,rsv,fusion protein,rsv_fusion_protein_step4_consensus,574,-0.01,100.99,41.82,Unstable,63304.4,0.07,9.06,15.63,Surface,Human,Acute,Paramyxoviridae
+rsv_large_protein_step4_consensus,rsv,large protein,rsv_large_protein_step4_consensus,2165,-0.19,101.56,35.88,Stable,250313.78,0.1,8.96,47.82,Non_surface,Human,Acute,Paramyxoviridae
+rsv_matrix_protein_2-1_step4_consensus,rsv,matrix protein 2-1,rsv_matrix_protein_2-1_step4_consensus,194,-0.65,85.41,48.45,Unstable,22123.94,0.05,9.13,6.09,Non_surface,Human,Acute,Paramyxoviridae
+rsv_matrix_protein_2-2_step4_consensus,rsv,matrix protein 2-2,rsv_matrix_protein_2-2_step4_consensus,88,-0.33,96.36,36.5,Stable,10316.63,0.1,5.26,-3.26,Non_surface,Human,Acute,Paramyxoviridae
+rsv_nonstructural_protein_1_step4_consensus,rsv,nonstructural protein 1,rsv_nonstructural_protein_1_step4_consensus,139,0.05,103.02,20.97,Stable,15557.88,0.06,5.47,-3.27,Non_surface,Human,Acute,Paramyxoviridae
+rsv_nonstructural_protein_2_step4_consensus,rsv,nonstructural protein 2,rsv_nonstructural_protein_2_step4_consensus,124,-0.36,86.45,25.71,Stable,14688.96,0.11,8.83,3.01,Non_surface,Human,Acute,Paramyxoviridae
+rsv_nucleoprotein_step4_consensus,rsv,nucleoprotein,rsv_nucleoprotein_step4_consensus,391,-0.21,94.3,37.26,Stable,43448.43,0.08,6.84,-0.52,Non_surface,Human,Acute,Paramyxoviridae
+rsv_phosphoprotein_step4_consensus,rsv,phosphoprotein,rsv_phosphoprotein_step4_consensus,241,-0.88,71.24,39.75,Stable,27173.65,0.05,4.52,-21.24,Non_surface,Human,Acute,Paramyxoviridae
+rsv_small_hydrophobic_protein_step4_consensus,rsv,small hydrophobic protein,rsv_small_hydrophobic_protein_step4_consensus,64,0.59,121.88,35.54,Stable,7535.91,0.12,7.94,0.67,Non_surface,Human,Acute,Paramyxoviridae
+TBEV_core_protein_step5_consensus,TBEV,core protein,TBEV_core_protein_step5_consensus,111,-0.13,95.77,65.35,Unstable,12257.71,0.05,12,21.87,Non_surface,Mammal,Acute,Flaviviridae
+TBEV_envelope_protein_E_step5_consensus,TBEV,envelope protein E,TBEV_envelope_protein_E_step5_consensus,496,-0.12,83.31,22.58,Stable,53668.94,0.07,8.17,4.05,Surface,Mammal,Acute,Flaviviridae
+TBEV_matrix_protein_M_step5_consensus,TBEV,matrix protein M,TBEV_matrix_protein_M_step5_consensus,75,0.69,138.8,34.2,Stable,8211.63,0.07,9.1,1.72,Non_surface,Mammal,Acute,Flaviviridae
+TBEV_non-structural_protein_NS1_step5_consensus,TBEV,non-structural protein NS1,TBEV_non-structural_protein_NS1_step5_consensus,352,-0.32,73.86,41.98,Unstable,39216.19,0.09,5.59,-5.85,Non_surface,Mammal,Acute,Flaviviridae
+TBEV_non-structural_protein_NS2a_step5_consensus,TBEV,non-structural protein NS2a,TBEV_non-structural_protein_NS2a_step5_consensus,230,0.77,134.3,35.17,Stable,24978.49,0.08,8.71,2.13,Non_surface,Mammal,Acute,Flaviviridae
+TBEV_non-structural_protein_NS2b_step5_consensus,TBEV,non-structural protein NS2b,TBEV_non-structural_protein_NS2b_step5_consensus,131,0.39,104.2,38.79,Stable,14521.9,0.08,5.76,-3.18,Non_surface,Mammal,Acute,Flaviviridae
+TBEV_non-structural_protein_NS3_step5_consensus,TBEV,non-structural protein NS3,TBEV_non-structural_protein_NS3_step5_consensus,621,-0.51,75.96,34.75,Stable,69109.05,0.08,7.27,0.99,Non_surface,Mammal,Acute,Flaviviridae
+TBEV_non-structural_protein_NS4a_step5_consensus,TBEV,non-structural protein NS4a,TBEV_non-structural_protein_NS4a_step5_consensus,149,0.69,113.89,43.84,Unstable,16095.93,0.08,5.59,-2.38,Non_surface,Mammal,Acute,Flaviviridae
+TBEV_non-structural_protein_NS4b_step5_consensus,TBEV,non-structural protein NS4b,TBEV_non-structural_protein_NS4b_step5_consensus,252,0.38,104.84,38.04,Stable,26956.04,0.08,7.15,0.21,Non_surface,Mammal,Acute,Flaviviridae
+TBEV_non-structural_protein_NS5_step5_consensus,TBEV,non-structural protein NS5,TBEV_non-structural_protein_NS5_step5_consensus,903,-0.48,75.47,34.51,Stable,102988.42,0.09,8.55,9.78,Non_surface,Mammal,Acute,Flaviviridae
+TBEV_pre_protein_step5_consensus,TBEV,pre protein,TBEV_pre_protein_step5_consensus,93,-0.47,70.11,24.12,Stable,10240.28,0.05,4.65,-5.3,Non_surface,Mammal,Acute,Flaviviridae
+Tobacco_coat_protein_step5_consensus,Tobacco,coat protein,Tobacco_coat_protein_step5_consensus,159,-0.17,85.22,34.48,Stable,17609.48,0.09,5.09,-2.49,Surface,Plant,Acute,Virgaviridae
+Tobacco_movement_protein_step5_consensus,Tobacco,movement protein,Tobacco_movement_protein_step5_consensus,268,-0.21,87.13,35.84,Stable,30005.49,0.07,8.9,5.56,Non_surface,Plant,Acute,Virgaviridae
+Tobacco_replication_protein_step5_consensus,Tobacco,replication protein,Tobacco_replication_protein_step5_consensus,1116,-0.17,89.77,41.07,Unstable,126056.79,0.09,6.41,-6.91,Non_surface,Plant,Acute,Virgaviridae
+VEEV_6K_step5_consensus,VEEV,6K,VEEV_6K_step5_consensus,56,0.83,125.36,21.34,Stable,6135.21,0.09,6.02,-1.02,Non_surface, Mosquito,Acute,Togaviridae
+VEEV_capsid_step5_consensus,VEEV,capsid,VEEV_capsid_step5_consensus,275,-0.97,50,39.24,Stable,30987.51,0.09,10.11,28.83,Non_surface, Mosquito,Acute,Togaviridae
+VEEV_E1_step5_consensus,VEEV,E1,VEEV_E1_step5_consensus,442,-0.08,76.18,33.16,Stable,47906.78,0.1,6.28,-4.15,Surface, Mosquito,Acute,Togaviridae
+VEEV_E2_step5_consensus,VEEV,E2,VEEV_E2_step5_consensus,423,-0.3,73.1,45.84,Unstable,46858.06,0.08,8.45,7.16,Surface, Mosquito,Acute,Togaviridae
+VEEV_E3_step5_consensus,VEEV,E3,VEEV_E3_step5_consensus,55,0.08,90.36,37,Stable,6010.93,0.05,4.58,-3.48,Surface, Mosquito,Acute,Togaviridae
+VEEV_nsp1_step5_consensus,VEEV,nsp1,VEEV_nsp1_step5_consensus,535,-0.45,78.95,46.59,Unstable,60665.56,0.08,6.31,-4.35,Non_surface, Mosquito,Acute,Togaviridae
+VEEV_nsp2_step5_consensus,VEEV,nsp2,VEEV_nsp2_step5_consensus,794,-0.33,85.29,36.17,Stable,89114.15,0.08,8.98,20.19,Non_surface, Mosquito,Acute,Togaviridae
+VEEV_nsp3_step5_consensus,VEEV,nsp3,VEEV_nsp3_step5_consensus,330,-0.27,83.97,44.07,Unstable,36023.76,0.06,7.7,1.45,Non_surface, Mosquito,Acute,Togaviridae
+VEEV_nsp4_step5_consensus,VEEV,nsp4,VEEV_nsp4_step5_consensus,607,-0.12,91.78,45.28,Unstable,67792.57,0.07,7.25,0.77,Non_surface, Mosquito,Acute,Togaviridae
+wnv_2K_protein_step5_consensus,wnv,2K protein,wnv_2K_protein_step5_consensus,27,0.54,115.56,35.14,Stable,2936.41,0.04,6.16,-0.17,Non_surface,Avian,Acute,Flaviviridae
+wnv_anchored_capsid_protein_step5_consensus,wnv,anchored capsid protein,wnv_anchored_capsid_protein_step5_consensus,123,0.03,99.19,37.65,Stable,13314.99,0.05,12,22.58,Non_surface,Avian,Acute,Flaviviridae
+wnv_envelope_protein_step5_consensus,wnv,envelope protein,wnv_envelope_protein_step5_consensus,501,0.05,84.07,24.1,Stable,53591.69,0.09,7.66,1.82,Surface,Avian,Acute,Flaviviridae
+wnv_membrane_protein_step5_consensus,wnv,membrane protein,wnv_membrane_protein_step5_consensus,75,0.35,107.87,36.64,Stable,8225.56,0.09,9.87,3.55,Non_surface,Avian,Acute,Flaviviridae
+wnv_nonstructural_protein_1_step5_consensus,wnv,nonstructural protein 1,wnv_nonstructural_protein_1_step5_consensus,352,-0.58,73.1,45.87,Unstable,39749.36,0.08,5.73,-6.59,Non_surface,Avian,Acute,Flaviviridae
+wnv_nonstructural_protein_2A_step5_consensus,wnv,nonstructural protein 2A,wnv_nonstructural_protein_2A_step5_consensus,220,-0.47,58.59,58.86,Unstable,25828.37,0.13,8.85,8.07,Non_surface,Avian,Acute,Flaviviridae
+wnv_nonstructural_protein_2B_step5_consensus,wnv,nonstructural protein 2B,wnv_nonstructural_protein_2B_step5_consensus,131,0.37,96.11,28.53,Stable,14466.65,0.11,4.22,-8.23,Non_surface,Avian,Acute,Flaviviridae
+wnv_nonstructural_protein_3_step5_consensus,wnv,nonstructural protein 3,wnv_nonstructural_protein_3_step5_consensus,619,-0.46,76.56,31.42,Stable,68994.56,0.08,7.32,0.94,Non_surface,Avian,Acute,Flaviviridae
+wnv_nonstructural_protein_4A_step5_consensus,wnv,nonstructural protein 4A,wnv_nonstructural_protein_4A_step5_consensus,122,0.81,123.93,31.19,Stable,13143.86,0.07,6.06,-1.36,Non_surface,Avian,Acute,Flaviviridae
+wnv_nonstructural_protein_4B_step5_consensus,wnv,nonstructural protein 4B,wnv_nonstructural_protein_4B_step5_consensus,255,0.43,109.02,30.82,Stable,27588.05,0.07,8.93,4,Non_surface,Avian,Acute,Flaviviridae
+wnv_nonstructural_protein_5_step5_consensus,wnv,nonstructural protein 5,wnv_nonstructural_protein_5_step5_consensus,905,-0.58,72.87,36.25,Stable,103681.9,0.09,8.63,10.54,Non_surface,Avian,Acute,Flaviviridae
+wnv_pre-membrane_protein_step5_consensus,wnv,pre-membrane protein,wnv_pre-membrane_protein_step5_consensus,92,-0.22,71.96,46.98,Unstable,10257.68,0.07,8.29,1.77,Non_surface,Avian,Acute,Flaviviridae
+YFV_2K_protein_step4_consensus,YFV,2K protein,YFV_2K_protein_step4_consensus,23,1.48,186.52,16.07,Stable,2428.86,0.04,4.05,-1.6,Non_surface, Mosquito,Acute,Flaviviridae
+YFV_anchored_core_protein_C_step4_consensus,YFV,anchored core protein C,YFV_anchored_core_protein_C_step4_consensus,121,-0.08,98.93,49.72,Unstable,13522.23,0.06,12,24.58,Non_surface, Mosquito,Acute,Flaviviridae
+YFV_core_protein_C_step4_consensus,YFV,core protein C,YFV_core_protein_C_step4_consensus,101,-0.41,86.73,45.13,Unstable,11432.67,0.06,12,25.58,Non_surface, Mosquito,Acute,Flaviviridae
+YFV_envelope_protein_step4_consensus,YFV,envelope protein,YFV_envelope_protein_step4_consensus,493,-0.04,82.45,20.43,Stable,53220.41,0.08,6.21,-4.22,Surface, Mosquito,Acute,Flaviviridae
+YFV_M_protein_precursor_step4_consensus,YFV,M protein precursor,YFV_M_protein_precursor_step4_consensus,164,-0.35,82.62,60.25,Unstable,18640.16,0.09,8.99,4.87,Non_surface, Mosquito,Acute,Flaviviridae
+YFV_matrix_protein_M_step4_consensus,YFV,matrix protein M,YFV_matrix_protein_M_step4_consensus,75,0.02,102.8,39.36,Stable,8448.81,0.08,10.15,3.98,Non_surface, Mosquito,Acute,Flaviviridae
+YFV_non-structural_protein_NS1_step4_consensus,YFV,non-structural protein NS1,YFV_non-structural_protein_NS1_step4_consensus,352,-0.51,61.11,46.2,Unstable,39556.06,0.11,5.91,-6.34,Non_surface, Mosquito,Acute,Flaviviridae
+YFV_non-structural_protein_NS2a_step4_consensus,YFV,non-structural protein NS2a,YFV_non-structural_protein_NS2a_step4_consensus,224,0.85,129.29,34.88,Stable,24121.12,0.06,10.03,9.09,Non_surface, Mosquito,Acute,Flaviviridae
+YFV_non-structural_protein_NS2b_step4_consensus,YFV,non-structural protein NS2b,YFV_non-structural_protein_NS2b_step4_consensus,130,0.53,120,30.95,Stable,13816.91,0.07,4.72,-7.33,Non_surface, Mosquito,Acute,Flaviviridae
+YFV_non-structural_protein_NS3_step4_consensus,YFV,non-structural protein NS3,YFV_non-structural_protein_NS3_step4_consensus,623,-0.35,80.63,38.57,Stable,68974.78,0.08,6.93,-0.29,Non_surface, Mosquito,Acute,Flaviviridae
+YFV_non-structural_protein_NS4a_step4_consensus,YFV,non-structural protein NS4a,YFV_non-structural_protein_NS4a_step4_consensus,126,0.73,102.86,38.98,Stable,13571.23,0.08,6.1,-1.06,Non_surface, Mosquito,Acute,Flaviviridae
+YFV_non-structural_protein_NS4b_step4_consensus,YFV,non-structural protein NS4b,YFV_non-structural_protein_NS4b_step4_consensus,250,0.36,105.72,33.03,Stable,27314.14,0.09,9.08,5.09,Non_surface, Mosquito,Acute,Flaviviridae
+YFV_RNA-dependent_RNA_polymerase_step4_consensus,YFV,RNA-dependent RNA polymerase,YFV_RNA-dependent_RNA_polymerase_step4_consensus,905,-0.53,77.31,37.43,Stable,103854.5,0.09,8.82,15.11,Non_surface, Mosquito,Acute,Flaviviridae
+zika_anchored_capsid_protein_C_step5_consensus,zika,anchored capsid protein C,zika_anchored_capsid_protein_C_step5_consensus,122,0.12,109.59,31.13,Stable,13320.18,0.05,11.95,21.58,Non_surface, Mosquito,Acute,Flaviviridae
+zika_capsid_protein_C_step5_consensus,zika,capsid protein C,zika_capsid_protein_C_step5_consensus,104,-0.09,105.1,40.76,Unstable,11648.23,0.06,12,22.58,Non_surface, Mosquito,Acute,Flaviviridae
+zika_envelope_protein_E_step5_consensus,zika,envelope protein E,zika_envelope_protein_E_step5_consensus,504,-0.08,81.45,22.77,Stable,54379.62,0.07,6.51,-2.82,Surface, Mosquito,Acute,Flaviviridae
+zika_membrane_glycoprotein_M_step5_consensus,zika,membrane glycoprotein M,zika_membrane_glycoprotein_M_step5_consensus,75,0.19,110.67,42.39,Unstable,8486.8,0.11,10.27,4.97,Non_surface, Mosquito,Acute,Flaviviridae
+zika_membrane_glycoprotein_precursor_M_step5_consensus,zika,membrane glycoprotein precursor M,zika_membrane_glycoprotein_precursor_M_step5_consensus,168,-0.23,77.86,51.46,Unstable,19095.67,0.1,7.81,1.19,Non_surface, Mosquito,Acute,Flaviviridae
+zika_nonstructural_protein_NS1_step5_consensus,zika,nonstructural protein NS1,zika_nonstructural_protein_NS1_step5_consensus,352,-0.56,68.61,41.78,Unstable,40097.03,0.09,6.5,-2.23,Non_surface, Mosquito,Acute,Flaviviridae
+zika_nonstructural_protein_NS2A_step4_consensus,zika,nonstructural protein NS2A,zika_nonstructural_protein_NS2A_step4_consensus,226,0.88,132.57,25.1,Stable,23984.84,0.05,10.34,10.01,Non_surface, Mosquito,Acute,Flaviviridae
+zika_nonstructural_protein_NS2A_step5_consensus,zika,nonstructural protein NS2A,zika_nonstructural_protein_NS2A_step5_consensus,226,0.88,132.57,25.1,Stable,23984.84,0.05,10.34,10.01,Non_surface, Mosquito,Acute,Flaviviridae
+zika_nonstructural_protein_NS2B_step5_consensus,zika,nonstructural protein NS2B,zika_nonstructural_protein_NS2B_step5_consensus,130,0.38,102.77,25.41,Stable,13792.88,0.08,4.41,-7.54,Non_surface, Mosquito,Acute,Flaviviridae
+zika_nonstructural_protein_NS3_step5_consensus,zika,nonstructural protein NS3,zika_nonstructural_protein_NS3_step5_consensus,617,-0.35,79.17,40.64,Unstable,68552.42,0.08,7.6,1.7,Non_surface, Mosquito,Acute,Flaviviridae
+zika_nonstructural_protein_NS4A_step5_consensus,zika,nonstructural protein NS4A,zika_nonstructural_protein_NS4A_step5_consensus,127,0.68,119.84,37.25,Stable,13730.33,0.07,5.82,-1.14,Non_surface, Mosquito,Acute,Flaviviridae
+zika_nonstructural_protein_NS4B_step5_consensus,zika,nonstructural protein NS4B,zika_nonstructural_protein_NS4B_step5_consensus,245,-0.44,65.39,45.48,Unstable,26964.75,0.1,6.47,-2.86,Non_surface, Mosquito,Acute,Flaviviridae
+zika_protein_2K_step5_consensus,zika,protein 2K,zika_protein_2K_step5_consensus,23,1.27,156.96,43.81,Unstable,2368.85,0,4.05,-1.54,Non_surface, Mosquito,Acute,Flaviviridae
+zika_protein_pr_step5_consensus,zika,protein pr,zika_protein_pr_step5_consensus,93,-0.57,51.4,58.67,Unstable,10626.88,0.1,5.21,-3.99,Non_surface, Mosquito,Acute,Flaviviridae
+zika_RNA-dependent_RNA_polymerase_NS5_step5_consensus,zika,RNA-dependent RNA polymerase NS5,zika_RNA-dependent_RNA_polymerase_NS5_step5_consensus,903,-0.53,74.77,40.46,Unstable,102902.14,0.09,8.74,12.6,Non_surface, Mosquito,Acute,Flaviviridae
