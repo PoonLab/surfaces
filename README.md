@@ -100,7 +100,7 @@ for f in *_step3.nwk; do python3 scripts/prunetree.py "$f" > "${f%_step3.nwk}_st
 - It is necessary to include the "path in quotes"
   
 ```bash
-Rscript step4_filter.R  "/home/hugocastelan/Documents/projects/surfaces_data/dengue/step4/*.csv"  "/home/hugocastelan/Documents/projects/surfaces_data/dengue/step4/figure.png"
+Rscript step4_filter.R  "/home/hugocastelan/Documents/projects/surfaces_data/dengue/step4/*.csv"  "/home/hugocastelan/Documents/projects/surfaces_data/dengue/step4/figure.png" > step4_filter.csv
 ```
 **NOTE: If length of entire tree is below some threshold (0.5) then abandon alignment (stop here)**
 
