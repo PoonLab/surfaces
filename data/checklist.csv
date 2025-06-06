@@ -216,7 +216,7 @@ zika,anchored_capsid_protein_C,N,Y
 zika,capsid_protein_C,N,Y
 zika,envelope_protein_E,N,Y
 zika,membrane_glycoprotein_M,N,Y
-zika,membrane_glycoprotein_precursor_M,N ,Y
+zika,membrane_glycoprotein_precursor_M,N,Y
 zika,nonstructural_protein_NS1,N,Y
 zika,nonstructural_protein_NS2A,Y,Y
 zika,nonstructural_protein_NS2B,N,Y
