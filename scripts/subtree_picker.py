@@ -23,6 +23,8 @@ parser.add_argument("--branch", type=str,
                     help="option, label to situate subtree from")
 parser.add_argument("--outfile", type=argparse.FileType('w'), default=sys.stdout,
                     help="option, path to write down-sampled FASTA (default: stdout)")
+parser.add_argument("--midpoint", action="store_true", 
+                    help="option, set to re-root the tree at its midpoint")
 args = parser.parse_args()
 
 # import data from FASTA file
@@ -33,6 +35,9 @@ for record in records:
 
 # import tree and check labels against FASTA
 tree = Phylo.read(args.tree, 'newick')
+if args.midpoint:
+    tree.root_at_midpoint()
+
 branch = None
 for tip in tree.get_terminals():
     if tip.name not in fasta:
