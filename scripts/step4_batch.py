@@ -24,7 +24,9 @@ for f in files:
         sys.stderr.write("ERROR: filename must end with _step3.nwk suffix\n")
         sys.stderr.write(f"Failed {f}\n")
         sys.exit()
-    prot = os.path.basename(f).split('_')[1]
+        
+    tokens = os.path.basename(f).split('_')
+    prot = '_'.join(tokens[1:-1])
     if prot not in cutoffs:
         sys.stderr.write(f"ERROR: unrecognized protein {prot} in filename {f}\n")
     

@@ -34,17 +34,17 @@ dengue2,nonstructural_protein_NS4B,Y,Y
 dengue2,protein_2K,Y,Y
 dengue2,protein_pr,Y,Y
 dengue2,RNA-dependent_RNA_polymerase_NS5,Y,Y
-enterov1,A71_2A,N,Y
-enterov1,A71_2B,N,Y
-enterov1,A71_2C,N,Y
-enterov1,A71_3A,N,Y
-enterov1,A71_3B,N,Y
-enterov1,A71_3C,N,Y
-enterov1,A71_3D,N,Y
-enterov1,A71_VP1,N,Y
-enterov1,A71_VP2,N,Y
-enterov1,A71_VP3,N,Y
-enterov1,A71_VP4,N,Y
+enterov1,A71_2A,Y,Y
+enterov1,A71_2B,Y,Y
+enterov1,A71_2C,Y,Y
+enterov1,A71_3A,Y,Y
+enterov1,A71_3B,Y,Y
+enterov1,A71_3C,Y,Y
+enterov1,A71_3D,Y,Y
+enterov1,A71_VP1,Y,Y
+enterov1,A71_VP2,Y,Y
+enterov1,A71_VP3,Y,Y
+enterov1,A71_VP4,Y,Y
 Foveavirus,coat_protein,N,Y
 Foveavirus,RNA_polymerase,N ,Y
 Foveavirus,triple_gene_block_1,N ,Y
