@@ -65,8 +65,8 @@ tlens = [st.total_branch_length() for st in subtrees]
 delta = [abs(tl-args.target) for tl in tlens]
 idx = delta.index(min(delta))
 best = subtrees[idx]
-
-sys.stderr.write(f"Selected subtree with length {best.total_branch_length()} and {best.count_terminals()} tips\n")
+sys.stderr.write(f"Selected subtree with length {best.total_branch_length(): .3f} "
+                 f"and {best.count_terminals()} tips\n")
 
 # export sequences in this subtree
 for tip in best.get_terminals():
