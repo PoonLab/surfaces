@@ -33,19 +33,28 @@ for record in records:
 
 # import tree and check labels against FASTA
 tree = Phylo.read(args.tree, 'newick')
-tips = [tip.name for tip in tree.get_terminals()]
-for tip in tips:
-    if tip not in fasta:
-        sys.stderr(f"ERROR: Could not locate {tip} in FASTA!\n")
+branch = None
+for tip in tree.get_terminals():
+    if tip.name not in fasta:
+        sys.stderr(f"ERROR: Could not locate {tip.name} in FASTA!\n")
         sys.exit(1)
-if args.branch:
-    assert args.branch in tips, f"--branch {args.branch} is not in tree!"
+    if args.branch and args.branch in tip.name:
+        if branch is not None:
+            sys.stderr.write("ERROR: found multiple hits in FASTA for --branch\n")
+            sys.exit()
+        else:
+            branch = tip  # store Clade object
+
+if args.branch and branch is None:
+    sys.stderr.write(f"ERROR: --branch {args.branch} is not in tree!\n")
+    sys.exit()
+
 
 # by default, export only sequences that appear in the tree
 if args.target is None or args.branch is None:
     sys.stderr.write("No target set by user, writing all tips in tree to FASTA by default...\n")
-    for tip in tips:
-        args.outfile.write(f">{tip}\n{fasta[tip]}\n")
+    for tip in tree.get_terminals():
+        args.outfile.write(f">{tip.name}\n{fasta[tip.name]}\n")
     args.outfile.close()
     sys.exit()
 
@@ -54,7 +63,7 @@ assert args.target > 0, "--target must be greater than zero!"
 assert args.target < tree.total_branch_length(), "--target exceeds length of entire tree!"
 
 # otherwise traverse from user-specified tip toward root
-nodes = tree.get_path(args.branch)
+nodes = tree.get_path(branch)
 nodes.reverse()  # start with tip
 
 # get lengths of all subtrees rooted at each node on path
