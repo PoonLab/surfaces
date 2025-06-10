@@ -43,7 +43,7 @@ if args.branch:
 
 # by default, export only sequences that appear in the tree
 if args.target is None or args.branch is None:
-    sys.stderr.write("No target set by user, writing all tips in tree to FASTA by default...")
+    sys.stderr.write("No target set by user, writing all tips in tree to FASTA by default...\n")
     for tip in tips:
         args.outfile.write(f">{tip}\n{fasta[tip]}\n")
     args.outfile.close()
