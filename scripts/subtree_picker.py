@@ -25,6 +25,8 @@ parser.add_argument("--outfile", type=argparse.FileType('w'), default=sys.stdout
                     help="option, path to write down-sampled FASTA (default: stdout)")
 parser.add_argument("--midpoint", action="store_true", 
                     help="option, set to re-root the tree at its midpoint")
+parser.add_argument("--csvfile", type=argparse.FileType('w'),
+                    help="option, path to write CSV file of identical sequence labels")
 args = parser.parse_args()
 
 # import data from FASTA file
@@ -83,7 +85,23 @@ sys.stderr.write(f"Selected subtree with length {best.total_branch_length(): .3f
                  f"and {best.count_terminals()} tips\n")
 
 # export sequences in this subtree
+unique = {}
 for tip in best.get_terminals():
-    args.outfile.write(f">{tip.name}\n{fasta[tip.name]}\n")
+    seq = fasta[tip.name]
+    if seq in unique:
+        # skip redundant sequences
+        unique[seq].append(tip.name)
+    else:
+        unique.update({seq: [tip.name]})
+        args.outfile.write(f">{tip.name}\n{seq}\n")
 
 args.outfile.close()
+
+if args.csvfile:
+    for seq, labels in unique.items():
+        if len(labels) == 1:
+            continue
+        key = labels[0]
+        for label in labels[1:]:
+            args.csvfile.write(f"{key},{label}\n")
+    args.csvfile.close()
