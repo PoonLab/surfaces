@@ -4,6 +4,7 @@ import tempfile
 import json
 import csv
 import os
+import sys
 
 
 description = """
@@ -57,11 +58,15 @@ def fubar(aln, json_file, hyphy_bin="hyphy", ft2_bin="fasttree", verbose=False):
     tree_file.close()
     
     # Run FUBAR
-    subprocess.run([
+    result = subprocess.run([
         'hyphy', 'fubar', clean_file.name, tree_file.name,
         '--cache', '/dev/null', 
         '--output', json_file
         ], stdout=subprocess.PIPE, stderr=stderr)
+    
+    if verbose:
+        for line in result.stdout:
+            sys.stdout.write(line.decode('utf-8'))
     
     # load JSON into Python
     with open(json_file) as fp:
