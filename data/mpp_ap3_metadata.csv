@@ -34,7 +34,7 @@ dengue2,nonstructural protein NS4B,Y,248,0.28,107.06,29.29,Stable,26747.08,0.06,
 dengue2,protein 2K,N,23,0.99,135.65,36.77,Stable,2432.83,0.04,4.05,-1.6,Non_surface, Mosquito,Acute,Flaviviridae
 dengue2,protein pr,Y,91,-0.7,57.8,42.17,Unstable,10503.81,0.07,5.55,-3.01,Non_surface, Mosquito,Acute,Flaviviridae
 dengue2,RNA-dependent RNA polymerase NS5,Y,900,-0.61,72.01,36.78,Stable,103181.37,0.09,8.77,12.72,Non_surface, Mosquito,Acute,Flaviviridae
-enteroA71,2A,Y,150,-0.27,76.0,36.85,Stable,16538.29,0.1,5.58,-4.76,Non_surface,Human,Acute,Picornaviridae
+enteroA71,2A,Y,150,-0.27,76,36.85,Stable,16538.29,0.1,5.58,-4.76,Non_surface,Human,Acute,Picornaviridae
 enteroA71,2B,Y,99,0.44,122.22,19.48,Stable,10519.19,0.07,8.06,0.84,Non_surface,Human,Acute,Picornaviridae
 enteroA71,2C,Y,329,-0.31,83.31,37.35,Stable,37073.06,0.09,8.65,4.77,Non_surface,Human,Acute,Picornaviridae
 enteroA71,3A,Y,86,0.09,108.72,34.75,Stable,9653.06,0.08,5.74,-1.15,Non_surface,Human,Acute,Picornaviridae
@@ -187,76 +187,75 @@ RotaA,VP3,Y,835,-0.31,90.32,37.16,Stable,98085.63,0.15,8.1,4.4,Non_surface,Human
 RotaA,VP4,Y,775,-0.32,81.88,32.19,Stable,86983.84,0.1,5.24,-10.29,Non_surface,Human,Acute,Reoviridae
 RotaA,VP6,Y,397,-0.14,88.46,41.92,Unstable,44892.56,0.1,5.64,-5.04,Surface,Human,Acute,Reoviridae
 RotaA,VP7,Y,326,0.04,97.18,35.49,Stable,37243.35,0.12,4.6,-12.46,Surface,Human,Acute,Reoviridae
-rsv,attachment protein,,319,-0.64,67.59,33.08,Stable,34958.19,0.05,9.8,19.98,Surface,Human,Acute,Paramyxoviridae
-rsv,fusion protein,,574,-0.01,100.99,41.82,Unstable,63304.4,0.07,9.06,15.63,Surface,Human,Acute,Paramyxoviridae
-rsv,large protein,,2165,-0.19,101.56,35.88,Stable,250313.78,0.1,8.96,47.82,Non_surface,Human,Acute,Paramyxoviridae
-rsv,matrix protein 2-1,,194,-0.65,85.41,48.45,Unstable,22123.94,0.05,9.13,6.09,Non_surface,Human,Acute,Paramyxoviridae
-rsv,matrix protein 2-2,,88,-0.33,96.36,36.5,Stable,10316.63,0.1,5.26,-3.26,Non_surface,Human,Acute,Paramyxoviridae
-rsv,nonstructural protein 1,,139,0.05,103.02,20.97,Stable,15557.88,0.06,5.47,-3.27,Non_surface,Human,Acute,Paramyxoviridae
-rsv,nonstructural protein 2,,124,-0.36,86.45,25.71,Stable,14688.96,0.11,8.83,3.01,Non_surface,Human,Acute,Paramyxoviridae
-rsv,nucleoprotein,,391,-0.21,94.3,37.26,Stable,43448.43,0.08,6.84,-0.52,Non_surface,Human,Acute,Paramyxoviridae
-rsv,phosphoprotein,,241,-0.88,71.24,39.75,Stable,27173.65,0.05,4.52,-21.24,Non_surface,Human,Acute,Paramyxoviridae
-rsv,small hydrophobic protein,,64,0.59,121.88,35.54,Stable,7535.91,0.12,7.94,0.67,Non_surface,Human,Acute,Paramyxoviridae
-TBEV,core protein,,111,-0.13,95.77,65.35,Unstable,12257.71,0.05,12,21.87,Non_surface,Mammal,Acute,Flaviviridae
-TBEV,envelope protein E,,496,-0.12,83.31,22.58,Stable,53668.94,0.07,8.17,4.05,Surface,Mammal,Acute,Flaviviridae
-TBEV,matrix protein M,,75,0.69,138.8,34.2,Stable,8211.63,0.07,9.1,1.72,Non_surface,Mammal,Acute,Flaviviridae
-TBEV,non-structural protein NS1,,352,-0.32,73.86,41.98,Unstable,39216.19,0.09,5.59,-5.85,Non_surface,Mammal,Acute,Flaviviridae
-TBEV,non-structural protein NS2a,,230,0.77,134.3,35.17,Stable,24978.49,0.08,8.71,2.13,Non_surface,Mammal,Acute,Flaviviridae
-TBEV,non-structural protein NS2b,,131,0.39,104.2,38.79,Stable,14521.9,0.08,5.76,-3.18,Non_surface,Mammal,Acute,Flaviviridae
-TBEV,non-structural protein NS3,,621,-0.51,75.96,34.75,Stable,69109.05,0.08,7.27,0.99,Non_surface,Mammal,Acute,Flaviviridae
-TBEV,non-structural protein NS4a,,149,0.69,113.89,43.84,Unstable,16095.93,0.08,5.59,-2.38,Non_surface,Mammal,Acute,Flaviviridae
-TBEV,non-structural protein NS4b,,252,0.38,104.84,38.04,Stable,26956.04,0.08,7.15,0.21,Non_surface,Mammal,Acute,Flaviviridae
-TBEV,non-structural protein NS5,,903,-0.48,75.47,34.51,Stable,102988.42,0.09,8.55,9.78,Non_surface,Mammal,Acute,Flaviviridae
-TBEV,pre protein,,93,-0.47,70.11,24.12,Stable,10240.28,0.05,4.65,-5.3,Non_surface,Mammal,Acute,Flaviviridae
-Tobacco,coat protein,,159,-0.17,85.22,34.48,Stable,17609.48,0.09,5.09,-2.49,Surface,Plant,Acute,Virgaviridae
-Tobacco,movement protein,,268,-0.21,87.13,35.84,Stable,30005.49,0.07,8.9,5.56,Non_surface,Plant,Acute,Virgaviridae
-Tobacco,replication protein,,1116,-0.17,89.77,41.07,Unstable,126056.79,0.09,6.41,-6.91,Non_surface,Plant,Acute,Virgaviridae
-VEEV,6K,,56,0.83,125.36,21.34,Stable,6135.21,0.09,6.02,-1.02,Non_surface, Mosquito,Acute,Togaviridae
-VEEV,capsid,,275,-0.97,50,39.24,Stable,30987.51,0.09,10.11,28.83,Non_surface, Mosquito,Acute,Togaviridae
-VEEV,E1,,442,-0.08,76.18,33.16,Stable,47906.78,0.1,6.28,-4.15,Surface, Mosquito,Acute,Togaviridae
-VEEV,E2,,423,-0.3,73.1,45.84,Unstable,46858.06,0.08,8.45,7.16,Surface, Mosquito,Acute,Togaviridae
-VEEV,E3,,55,0.08,90.36,37,Stable,6010.93,0.05,4.58,-3.48,Surface, Mosquito,Acute,Togaviridae
-VEEV,nsp1,,535,-0.45,78.95,46.59,Unstable,60665.56,0.08,6.31,-4.35,Non_surface, Mosquito,Acute,Togaviridae
-VEEV,nsp2,,794,-0.33,85.29,36.17,Stable,89114.15,0.08,8.98,20.19,Non_surface, Mosquito,Acute,Togaviridae
-VEEV,nsp3,,330,-0.27,83.97,44.07,Unstable,36023.76,0.06,7.7,1.45,Non_surface, Mosquito,Acute,Togaviridae
-VEEV,nsp4,,607,-0.12,91.78,45.28,Unstable,67792.57,0.07,7.25,0.77,Non_surface, Mosquito,Acute,Togaviridae
-wnv,2K protein,,27,0.54,115.56,35.14,Stable,2936.41,0.04,6.16,-0.17,Non_surface,Avian,Acute,Flaviviridae
-wnv,anchored capsid protein,,123,0.03,99.19,37.65,Stable,13314.99,0.05,12,22.58,Non_surface,Avian,Acute,Flaviviridae
-wnv,envelope protein,,501,0.05,84.07,24.1,Stable,53591.69,0.09,7.66,1.82,Surface,Avian,Acute,Flaviviridae
-wnv,membrane protein,,75,0.35,107.87,36.64,Stable,8225.56,0.09,9.87,3.55,Non_surface,Avian,Acute,Flaviviridae
-wnv,nonstructural protein 1,,352,-0.58,73.1,45.87,Unstable,39749.36,0.08,5.73,-6.59,Non_surface,Avian,Acute,Flaviviridae
-wnv,nonstructural protein 2A,,220,-0.47,58.59,58.86,Unstable,25828.37,0.13,8.85,8.07,Non_surface,Avian,Acute,Flaviviridae
-wnv,nonstructural protein 2B,,131,0.37,96.11,28.53,Stable,14466.65,0.11,4.22,-8.23,Non_surface,Avian,Acute,Flaviviridae
-wnv,nonstructural protein 3,,619,-0.46,76.56,31.42,Stable,68994.56,0.08,7.32,0.94,Non_surface,Avian,Acute,Flaviviridae
-wnv,nonstructural protein 4A,,122,0.81,123.93,31.19,Stable,13143.86,0.07,6.06,-1.36,Non_surface,Avian,Acute,Flaviviridae
-wnv,nonstructural protein 4B,,255,0.43,109.02,30.82,Stable,27588.05,0.07,8.93,4,Non_surface,Avian,Acute,Flaviviridae
-wnv,nonstructural protein 5,,905,-0.58,72.87,36.25,Stable,103681.9,0.09,8.63,10.54,Non_surface,Avian,Acute,Flaviviridae
-wnv,pre-membrane protein,,92,-0.22,71.96,46.98,Unstable,10257.68,0.07,8.29,1.77,Non_surface,Avian,Acute,Flaviviridae
-YFV,2K protein,,23,1.48,186.52,16.07,Stable,2428.86,0.04,4.05,-1.6,Non_surface, Mosquito,Acute,Flaviviridae
-YFV,anchored core protein C,,121,-0.08,98.93,49.72,Unstable,13522.23,0.06,12,24.58,Non_surface, Mosquito,Acute,Flaviviridae
-YFV,core protein C,,101,-0.41,86.73,45.13,Unstable,11432.67,0.06,12,25.58,Non_surface, Mosquito,Acute,Flaviviridae
-YFV,envelope protein,,493,-0.04,82.45,20.43,Stable,53220.41,0.08,6.21,-4.22,Surface, Mosquito,Acute,Flaviviridae
-YFV,M protein precursor,,164,-0.35,82.62,60.25,Unstable,18640.16,0.09,8.99,4.87,Non_surface, Mosquito,Acute,Flaviviridae
-YFV,matrix protein M,,75,0.02,102.8,39.36,Stable,8448.81,0.08,10.15,3.98,Non_surface, Mosquito,Acute,Flaviviridae
-YFV,non-structural protein NS1,,352,-0.51,61.11,46.2,Unstable,39556.06,0.11,5.91,-6.34,Non_surface, Mosquito,Acute,Flaviviridae
-YFV,non-structural protein NS2a,,224,0.85,129.29,34.88,Stable,24121.12,0.06,10.03,9.09,Non_surface, Mosquito,Acute,Flaviviridae
-YFV,non-structural protein NS2b,,130,0.53,120,30.95,Stable,13816.91,0.07,4.72,-7.33,Non_surface, Mosquito,Acute,Flaviviridae
-YFV,non-structural protein NS3,,623,-0.35,80.63,38.57,Stable,68974.78,0.08,6.93,-0.29,Non_surface, Mosquito,Acute,Flaviviridae
-YFV,non-structural protein NS4a,,126,0.73,102.86,38.98,Stable,13571.23,0.08,6.1,-1.06,Non_surface, Mosquito,Acute,Flaviviridae
-YFV,non-structural protein NS4b,,250,0.36,105.72,33.03,Stable,27314.14,0.09,9.08,5.09,Non_surface, Mosquito,Acute,Flaviviridae
-YFV,RNA-dependent RNA polymerase,,905,-0.53,77.31,37.43,Stable,103854.5,0.09,8.82,15.11,Non_surface, Mosquito,Acute,Flaviviridae
-zika,anchored capsid protein C,,122,0.12,109.59,31.13,Stable,13320.18,0.05,11.95,21.58,Non_surface, Mosquito,Acute,Flaviviridae
-zika,capsid protein C,,104,-0.09,105.1,40.76,Unstable,11648.23,0.06,12,22.58,Non_surface, Mosquito,Acute,Flaviviridae
-zika,envelope protein E,,504,-0.08,81.45,22.77,Stable,54379.62,0.07,6.51,-2.82,Surface, Mosquito,Acute,Flaviviridae
-zika,membrane glycoprotein M,,75,0.19,110.67,42.39,Unstable,8486.8,0.11,10.27,4.97,Non_surface, Mosquito,Acute,Flaviviridae
-zika,membrane glycoprotein precursor M,,168,-0.23,77.86,51.46,Unstable,19095.67,0.1,7.81,1.19,Non_surface, Mosquito,Acute,Flaviviridae
-zika,nonstructural protein NS1,,352,-0.56,68.61,41.78,Unstable,40097.03,0.09,6.5,-2.23,Non_surface, Mosquito,Acute,Flaviviridae
-zika,nonstructural protein NS2A,,226,0.88,132.57,25.1,Stable,23984.84,0.05,10.34,10.01,Non_surface, Mosquito,Acute,Flaviviridae
-zika,nonstructural protein NS2A,,226,0.88,132.57,25.1,Stable,23984.84,0.05,10.34,10.01,Non_surface, Mosquito,Acute,Flaviviridae
-zika,nonstructural protein NS2B,,130,0.38,102.77,25.41,Stable,13792.88,0.08,4.41,-7.54,Non_surface, Mosquito,Acute,Flaviviridae
-zika,nonstructural protein NS3,,617,-0.35,79.17,40.64,Unstable,68552.42,0.08,7.6,1.7,Non_surface, Mosquito,Acute,Flaviviridae
-zika,nonstructural protein NS4A,,127,0.68,119.84,37.25,Stable,13730.33,0.07,5.82,-1.14,Non_surface, Mosquito,Acute,Flaviviridae
-zika,nonstructural protein NS4B,,245,-0.44,65.39,45.48,Unstable,26964.75,0.1,6.47,-2.86,Non_surface, Mosquito,Acute,Flaviviridae
-zika,protein 2K,,23,1.27,156.96,43.81,Unstable,2368.85,0,4.05,-1.54,Non_surface, Mosquito,Acute,Flaviviridae
-zika,protein pr,,93,-0.57,51.4,58.67,Unstable,10626.88,0.1,5.21,-3.99,Non_surface, Mosquito,Acute,Flaviviridae
-zika,RNA-dependent RNA polymerase NS5,,903,-0.53,74.77,40.46,Unstable,102902.14,0.09,8.74,12.6,Non_surface, Mosquito,Acute,Flaviviridae
+rsv,attachment protein,Y,319,-0.64,67.59,33.08,Stable,34958.19,0.05,9.8,19.98,Surface,Human,Acute,Paramyxoviridae
+rsv,fusion protein,Y,574,-0.01,100.99,41.82,Unstable,63304.4,0.07,9.06,15.63,Surface,Human,Acute,Paramyxoviridae
+rsv,large protein,Y,2165,-0.19,101.56,35.88,Stable,250313.78,0.1,8.96,47.82,Non_surface,Human,Acute,Paramyxoviridae
+rsv,matrix protein 2-1,Y,194,-0.65,85.41,48.45,Unstable,22123.94,0.05,9.13,6.09,Non_surface,Human,Acute,Paramyxoviridae
+rsv,matrix protein 2-2,Y,88,-0.33,96.36,36.5,Stable,10316.63,0.1,5.26,-3.26,Non_surface,Human,Acute,Paramyxoviridae
+rsv,nonstructural protein 1,Y,139,0.05,103.02,20.97,Stable,15557.88,0.06,5.47,-3.27,Non_surface,Human,Acute,Paramyxoviridae
+rsv,nonstructural protein 2,Y,124,-0.36,86.45,25.71,Stable,14688.96,0.11,8.83,3.01,Non_surface,Human,Acute,Paramyxoviridae
+rsv,nucleoprotein,Y,391,-0.21,94.3,37.26,Stable,43448.43,0.08,6.84,-0.52,Non_surface,Human,Acute,Paramyxoviridae
+rsv,phosphoprotein,Y,241,-0.88,71.24,39.75,Stable,27173.65,0.05,4.52,-21.24,Non_surface,Human,Acute,Paramyxoviridae
+rsv,small hydrophobic protein,Y,64,0.59,121.88,35.54,Stable,7535.91,0.12,7.94,0.67,Non_surface,Human,Acute,Paramyxoviridae
+TBEV,core protein,Y,111,-0.13,95.77,65.35,Unstable,12257.71,0.05,12,21.87,Non_surface,Mammal,Acute,Flaviviridae
+TBEV,envelope protein E,Y,496,-0.12,83.31,22.58,Stable,53668.94,0.07,8.17,4.05,Surface,Mammal,Acute,Flaviviridae
+TBEV,matrix protein M,Y,75,0.69,138.8,34.2,Stable,8211.63,0.07,9.1,1.72,Non_surface,Mammal,Acute,Flaviviridae
+TBEV,non-structural protein NS1,Y,352,-0.32,73.86,41.98,Unstable,39216.19,0.09,5.59,-5.85,Non_surface,Mammal,Acute,Flaviviridae
+TBEV,non-structural protein NS2a,Y,230,0.77,134.3,35.17,Stable,24978.49,0.08,8.71,2.13,Non_surface,Mammal,Acute,Flaviviridae
+TBEV,non-structural protein NS2b,Y,131,0.39,104.2,38.79,Stable,14521.9,0.08,5.76,-3.18,Non_surface,Mammal,Acute,Flaviviridae
+TBEV,non-structural protein NS3,Y,621,-0.51,75.96,34.75,Stable,69109.05,0.08,7.27,0.99,Non_surface,Mammal,Acute,Flaviviridae
+TBEV,non-structural protein NS4a,Y,149,0.69,113.89,43.84,Unstable,16095.93,0.08,5.59,-2.38,Non_surface,Mammal,Acute,Flaviviridae
+TBEV,non-structural protein NS4b,Y,252,0.38,104.84,38.04,Stable,26956.04,0.08,7.15,0.21,Non_surface,Mammal,Acute,Flaviviridae
+TBEV,non-structural protein NS5,Y,903,-0.48,75.47,34.51,Stable,102988.42,0.09,8.55,9.78,Non_surface,Mammal,Acute,Flaviviridae
+TBEV,pre protein,Y,93,-0.47,70.11,24.12,Stable,10240.28,0.05,4.65,-5.3,Non_surface,Mammal,Acute,Flaviviridae
+Tobacco,coat protein,Y,159,-0.17,85.22,34.48,Stable,17609.48,0.09,5.09,-2.49,Surface,Plant,Acute,Virgaviridae
+Tobacco,movement protein,Y,268,-0.21,87.13,35.84,Stable,30005.49,0.07,8.9,5.56,Non_surface,Plant,Acute,Virgaviridae
+Tobacco,replication protein,Y,1116,-0.17,89.77,41.07,Unstable,126056.79,0.09,6.41,-6.91,Non_surface,Plant,Acute,Virgaviridae
+VEEV,6K,Y,56,0.83,125.36,21.34,Stable,6135.21,0.09,6.02,-1.02,Non_surface, Mosquito,Acute,Togaviridae
+VEEV,capsid,Y,275,-0.97,50,39.24,Stable,30987.51,0.09,10.11,28.83,Non_surface, Mosquito,Acute,Togaviridae
+VEEV,E1,Y,442,-0.08,76.18,33.16,Stable,47906.78,0.1,6.28,-4.15,Surface, Mosquito,Acute,Togaviridae
+VEEV,E2,Y,423,-0.3,73.1,45.84,Unstable,46858.06,0.08,8.45,7.16,Surface, Mosquito,Acute,Togaviridae
+VEEV,E3,Y,55,0.08,90.36,37,Stable,6010.93,0.05,4.58,-3.48,Surface, Mosquito,Acute,Togaviridae
+VEEV,nsp1,Y,535,-0.45,78.95,46.59,Unstable,60665.56,0.08,6.31,-4.35,Non_surface, Mosquito,Acute,Togaviridae
+VEEV,nsp2,Y,794,-0.33,85.29,36.17,Stable,89114.15,0.08,8.98,20.19,Non_surface, Mosquito,Acute,Togaviridae
+VEEV,nsp3,Y,330,-0.27,83.97,44.07,Unstable,36023.76,0.06,7.7,1.45,Non_surface, Mosquito,Acute,Togaviridae
+VEEV,nsp4,Y,607,-0.12,91.78,45.28,Unstable,67792.57,0.07,7.25,0.77,Non_surface, Mosquito,Acute,Togaviridae
+wnv,2K protein,N,27,0.54,115.56,35.14,Stable,2936.41,0.04,6.16,-0.17,Non_surface,Avian,Acute,Flaviviridae
+wnv,anchored capsid protein,Y,123,0.03,99.19,37.65,Stable,13314.99,0.05,12,22.58,Non_surface,Avian,Acute,Flaviviridae
+wnv,envelope protein,Y,501,0.05,84.07,24.1,Stable,53591.69,0.09,7.66,1.82,Surface,Avian,Acute,Flaviviridae
+wnv,membrane protein,Y,75,0.35,107.87,36.64,Stable,8225.56,0.09,9.87,3.55,Non_surface,Avian,Acute,Flaviviridae
+wnv,nonstructural protein 1,Y,352,-0.58,73.1,45.87,Unstable,39749.36,0.08,5.73,-6.59,Non_surface,Avian,Acute,Flaviviridae
+wnv,nonstructural protein 2A,Y,220,-0.47,58.59,58.86,Unstable,25828.37,0.13,8.85,8.07,Non_surface,Avian,Acute,Flaviviridae
+wnv,nonstructural protein 2B,Y,131,0.37,96.11,28.53,Stable,14466.65,0.11,4.22,-8.23,Non_surface,Avian,Acute,Flaviviridae
+wnv,nonstructural protein 3,Y,619,-0.46,76.56,31.42,Stable,68994.56,0.08,7.32,0.94,Non_surface,Avian,Acute,Flaviviridae
+wnv,nonstructural protein 4A,Y,122,0.81,123.93,31.19,Stable,13143.86,0.07,6.06,-1.36,Non_surface,Avian,Acute,Flaviviridae
+wnv,nonstructural protein 4B,Y,255,0.43,109.02,30.82,Stable,27588.05,0.07,8.93,4,Non_surface,Avian,Acute,Flaviviridae
+wnv,nonstructural protein 5,Y,905,-0.58,72.87,36.25,Stable,103681.9,0.09,8.63,10.54,Non_surface,Avian,Acute,Flaviviridae
+wnv,pre-membrane protein,Y,92,-0.22,71.96,46.98,Unstable,10257.68,0.07,8.29,1.77,Non_surface,Avian,Acute,Flaviviridae
+YFV,2K protein,N,23,1.48,186.52,16.07,Stable,2428.86,0.04,4.05,-1.6,Non_surface, Mosquito,Acute,Flaviviridae
+YFV,anchored core protein C,Y,121,-0.08,98.93,49.72,Unstable,13522.23,0.06,12,24.58,Non_surface, Mosquito,Acute,Flaviviridae
+YFV,core protein C,Y,101,-0.41,86.73,45.13,Unstable,11432.67,0.06,12,25.58,Non_surface, Mosquito,Acute,Flaviviridae
+YFV,envelope protein,Y,493,-0.04,82.45,20.43,Stable,53220.41,0.08,6.21,-4.22,Surface, Mosquito,Acute,Flaviviridae
+YFV,M protein precursor,Y,164,-0.35,82.62,60.25,Unstable,18640.16,0.09,8.99,4.87,Non_surface, Mosquito,Acute,Flaviviridae
+YFV,matrix protein M,Y,75,0.02,102.8,39.36,Stable,8448.81,0.08,10.15,3.98,Non_surface, Mosquito,Acute,Flaviviridae
+YFV,non-structural protein NS1,Y,352,-0.51,61.11,46.2,Unstable,39556.06,0.11,5.91,-6.34,Non_surface, Mosquito,Acute,Flaviviridae
+YFV,non-structural protein NS2a,Y,224,0.85,129.29,34.88,Stable,24121.12,0.06,10.03,9.09,Non_surface, Mosquito,Acute,Flaviviridae
+YFV,non-structural protein NS2b,Y,130,0.53,120,30.95,Stable,13816.91,0.07,4.72,-7.33,Non_surface, Mosquito,Acute,Flaviviridae
+YFV,non-structural protein NS3,Y,623,-0.35,80.63,38.57,Stable,68974.78,0.08,6.93,-0.29,Non_surface, Mosquito,Acute,Flaviviridae
+YFV,non-structural protein NS4a,Y,126,0.73,102.86,38.98,Stable,13571.23,0.08,6.1,-1.06,Non_surface, Mosquito,Acute,Flaviviridae
+YFV,non-structural protein NS4b,Y,250,0.36,105.72,33.03,Stable,27314.14,0.09,9.08,5.09,Non_surface, Mosquito,Acute,Flaviviridae
+YFV,RNA-dependent RNA polymerase,Y,905,-0.53,77.31,37.43,Stable,103854.5,0.09,8.82,15.11,Non_surface, Mosquito,Acute,Flaviviridae
+zika,anchored capsid protein C,Y,122,0.12,109.59,31.13,Stable,13320.18,0.05,11.95,21.58,Non_surface, Mosquito,Acute,Flaviviridae
+zika,capsid protein C,N,104,-0.09,105.1,40.76,Unstable,11648.23,0.06,12,22.58,Non_surface, Mosquito,Acute,Flaviviridae
+zika,envelope protein E,Y,504,-0.08,81.45,22.77,Stable,54379.62,0.07,6.51,-2.82,Surface, Mosquito,Acute,Flaviviridae
+zika,membrane glycoprotein M,N,75,0.19,110.67,42.39,Unstable,8486.8,0.11,10.27,4.97,Non_surface, Mosquito,Acute,Flaviviridae
+zika,membrane glycoprotein precursor M,Y,168,-0.23,77.86,51.46,Unstable,19095.67,0.1,7.81,1.19,Non_surface, Mosquito,Acute,Flaviviridae
+zika,nonstructural protein NS1,Y,352,-0.56,68.61,41.78,Unstable,40097.03,0.09,6.5,-2.23,Non_surface, Mosquito,Acute,Flaviviridae
+zika,nonstructural protein NS2A,Y,226,0.88,132.57,25.1,Stable,23984.84,0.05,10.34,10.01,Non_surface, Mosquito,Acute,Flaviviridae
+zika,nonstructural protein NS2B,Y,130,0.38,102.77,25.41,Stable,13792.88,0.08,4.41,-7.54,Non_surface, Mosquito,Acute,Flaviviridae
+zika,nonstructural protein NS3,Y,617,-0.35,79.17,40.64,Unstable,68552.42,0.08,7.6,1.7,Non_surface, Mosquito,Acute,Flaviviridae
+zika,nonstructural protein NS4A,Y,127,0.68,119.84,37.25,Stable,13730.33,0.07,5.82,-1.14,Non_surface, Mosquito,Acute,Flaviviridae
+zika,nonstructural protein NS4B,Y,245,-0.44,65.39,45.48,Unstable,26964.75,0.1,6.47,-2.86,Non_surface, Mosquito,Acute,Flaviviridae
+zika,protein 2K,N,23,1.27,156.96,43.81,Unstable,2368.85,0,4.05,-1.54,Non_surface, Mosquito,Acute,Flaviviridae
+zika,protein pr,Y,93,-0.57,51.4,58.67,Unstable,10626.88,0.1,5.21,-3.99,Non_surface, Mosquito,Acute,Flaviviridae
+zika,RNA-dependent RNA polymerase NS5,Y,903,-0.53,74.77,40.46,Unstable,102902.14,0.09,8.74,12.6,Non_surface, Mosquito,Acute,Flaviviridae
