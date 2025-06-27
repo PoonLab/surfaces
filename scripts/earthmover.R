@@ -71,14 +71,16 @@ dev.off()
 
 
 # generate a graph
+par(mar=c(5,5,1,1))
 hist(wmat[upper.tri(wmat)], breaks=100, xlim=c(0, 1))
 rug(wmat[upper.tri(wmat)])
 table(wmat[upper.tri(wmat)] < 1.0)
 
-cutoff <- max(apply(wmat, 1, function(x) min(x[x>0])))
+#cutoff <- max(apply(wmat, 1, function(x) min(x[x>0])))
+cutoff <- 1.
 n <- nrow(wmat)
-nm <- gsub("protein|non.*structural", "", names(wmat))
-k <- 2
+nm <- gsub("protein|non.*structural", "", names(wpps)) #names(wmat))
+k <- 3
 adj <- matrix(0, nrow=n, ncol=n, dimnames=list(nm, nm))
 for (i in 1:n) {
   row <- as.numeric(wmat[i,])
@@ -91,7 +93,9 @@ for (i in 1:n) {
 require(igraph)
 g <- graph_from_adjacency_matrix(adj, mode="max")
 pdf("graph.pdf", width=8, height=8)
-plot(g, layout=layout_with_gem, vertex.label.cex=0.6, vertex.size=1.5)
+plot(g, #layout=layout_with_gem, 
+     vertex.label.cex=0.8, vertex.size=2, 
+     vertex.color=pal, vertex.border=NA)
 dev.off()
 
 write.csv(adj, file="adjmat.csv", quote=FALSE)
