@@ -7,7 +7,6 @@ from Bioplus.pair_align import mafft
 import tempfile
 import sys
 
-
 # parse annotation CSV
 accns = {}
 accns_set = set()
@@ -15,6 +14,8 @@ handle = open("/home/paula/surfaces_project/repos/surfaces/data/annotation_with_
 reader = csv.DictReader(handle)
 for row in reader:
     virus = row['virus']
+    # if virus == "enterov1": # manully updated
+    #     virus = "enteroA71"
     if virus not in accns:
         accns.update({virus: {}})
     accn = row['refseq'].split('.')[0]
@@ -31,44 +32,51 @@ for fn in glob("/home/surfaces/1_rawdata/refseq/*.gb"):
     refseqs.update({accn: record.seq})
 
 
-# process fasta files
-types = ("*.fasta", "*.fa")
-path5 = r"/home/surfaces/5_alt/"
-path4 = r"/home/surfaces/4_filter/"
-
-# retrieve step 4 & 5 files
-files_5 = []
+# # process fasta files
+types = ("*step3.fasta", "*step3.cds.fa", "measles*step2.fasta") # measles only step 2 fasta present
+filepath = r"/home/surfaces/3_codaln/"
+files_3 = []
 for t in types:
-    files_5.extend(glob(f"{path5}{t}"))
+    files_3.extend(glob(f"{filepath}{t}"))
 
-files_4 = []
-for t in types:
-    files_4.extend(glob(f"{path4}{t}"))
+## deprecated - only using step 3 fasta 
+# path5 = r"/home/surfaces/5_alt/"
+# path4 = r"/home/surfaces/4_filter/"
 
-virus_5 = set()
-for fn in files_5:
-    virus_5.add(os.path.basename(fn).split('_')[0])
+# # retrieve step 4 & 5 files
+# files_5 = []
+# for t in types:
+#     files_5.extend(glob(f"{path5}{t}"))
 
-virus_4 = set()
-for fn in files_4:
-    virus_4.add(os.path.basename(fn).split('_')[0])
+# files_4 = []
+# for t in types:
+#     files_4.extend(glob(f"{path4}{t}"))
 
-missing = virus_4 - virus_5
-print(f"these viruses were present in step4 folder but not in step5 folder: \n {missing}")
+# virus_5 = set()
+# for fn in files_5:
+#     virus_5.add(os.path.basename(fn).split('_')[0])
 
-# print(f"there are {len(files_5)} files")
+# virus_4 = set()
+# for fn in files_4:
+#     virus_4.add(os.path.basename(fn).split('_')[0])
 
-added = 0
-for fn in files_4:
-    if os.path.basename(fn).split('_')[0] in missing:
-        # print(fn)
-        added +=1
-        files_5.append(fn)
-print(f"there are {len(files_5)} files with an addition of {added}")
+# missing = virus_4 - virus_5
+# print(f"these viruses were present in step4 folder but not in step5 folder: \n {missing}")
+
+# # print(f"there are {len(files_5)} files")
+
+# added = 0
+# for fn in files_4:
+#     if os.path.basename(fn).split('_')[0] in missing:
+#         # print(fn)
+#         added +=1
+#         files_5.append(fn)
+# print(f"there are {len(files_5)} files with an addition of {added}")
+
 
 coord_dict = {}
 aligns = {}
-for fn in files_5:
+for fn in files_3:
     # map to accession
     tokens = os.path.basename(fn).split('_')
     virus = tokens[0]
@@ -78,9 +86,12 @@ for fn in files_5:
     
     protein = ' '.join(tokens[1:-1])
     if protein not in accns[virus]:
-        sys.stderr.write(
-            f"ERROR: Could not find {virus} protein '{protein}' in annotations\n")
-        sys.exit()
+        if ".fasta" in protein or ".fa" in protein: # handling misnamed files 
+            protein = protein.split('.')[0]
+        else:
+            sys.stderr.write(
+                f"ERROR: Could not find {virus} protein '{protein}' in annotations\n")
+            sys.exit()
 
     accn = accns[virus][protein]
 
@@ -101,9 +112,8 @@ for fn in files_5:
       
     # align to corresponding reference
     aquery, aref = mafft(cseq, refseq)
-    gap = 0
 
-    ref_seqid = f"{virus}_ref"
+    ref_seqid = f"ref_{virus}_full"
     query_seqid = f"{virus}_{protein}"
     aligns.setdefault(virus, {})
     aligns[virus].update({ref_seqid: aref})
@@ -137,20 +147,10 @@ for fn in files_5:
     mapped_start = ranges[0][0]
     mapped_stop = ranges[-1][-1]
     loc = '.'.join('{}_{}'.format(r[0], r[1]) for r in ranges)
-
     coord_dict[virus][protein].update({"mapped_start": mapped_start, "mapped_stop": mapped_stop, "mapped_ranges": loc})
-
-# write out alignment
-
-for virus, seqs in aligns.items():
-    seqout = open(f"/home/paula/surfaces_project/annotate/alignments/{virus}_alignment.fasta", 'w')     
-    for seqid, seq in seqs.items():
-        seqout.write(f">{seqid}\n{seq}\n")
-    seqout.close()
             
-# print(coord_dict)
 handle = open("/home/paula/surfaces_project/repos/surfaces/data/annotation_with_uniprot.csv", 'r')
-outfile = open("/home/paula/surfaces_project/repos/surfaces/data/annotation_with_uniprot_coords.csv", 'w')
+outfile = open("/home/paula/surfaces_project/repos/surfaces/data/annotation_with_uniprot_step3_coords.csv", 'w')
 reader = csv.DictReader(handle)
 header = reader.fieldnames
 header.extend(['mapped_start', 'mapped_stop', 'ranges'])
@@ -161,6 +161,7 @@ writer.writeheader()
 for row in reader:
     virus = row['virus']
     protein = row['protein']
+    # print(f"virus: protein") # debugging
     coord_data = coord_dict[virus][protein]
     row.update({"mapped_start": coord_data["mapped_start"], "mapped_stop": coord_data["mapped_stop"], "ranges": coord_data["mapped_ranges"]})
 
@@ -170,62 +171,11 @@ outfile.close()
 
 
 ## SANITY CHECK
-# exceptions = ['Mamastrovirus 1'] # not sure what a good sub reference is for this
-
-# identify the actual refseq coord for each virus/protein to check if ranges make sense
-# need to account for polyprotein versus cds annotation
-refseq_coords = {}
-for accn in accns_set:
-    record = SeqIO.read(f"/home/surfaces/1_rawdata/refseq/{accn}.gb", format="genbank")
-    
-    # get the virus name
-    for feat in record.features:
-        if feat.type == "source":
-            virus = feat.qualifiers["organism"][0]
-
-    mat_peptides = [feat for feat in record.features if feat.type == 'mat_peptide']
-    refseq_coords.setdefault(virus, {})
-    if mat_peptides:
-        # treat as mature peptides
-        for mat_peptide in mat_peptides:
-            q = mat_peptide.qualifiers
-
-            header = f"{virus}_{protein}_ref"
-            nucseq = str(mat_peptide.seq)
-
-            parts = []
-            for part in mat_peptide.location.parts:
-                parts.append((part.start, part.end))
-            loc = '.'.join('{}_{}'.format(p[0], p[1]) for p in parts)
-            product = q.get('product', '')
-            product = product[0]
-            print(product)
-            refseq_coords[virus].setdefault(product, {})
-            refseq_coords[virus][product] = (loc, accn)
-    
-    else: # look at cds for proteins
-        cds_annot = [feat for feat in record.features if feat.type == 'CDS']
-        for cds in cds_annot:
-            q = cds.qualifiers
-
-            header = f"{virus}_{protein}_ref"
-            nucseq = str(cds.seq)
-
-            parts = []
-            for part in cds.location.parts:
-                parts.append((part.start, part.end))
-            loc = '.'.join('{}_{}'.format(p[0], p[1]) for p in parts)
-
-            product = q.get('product', '')
-            product = product[0]
-            print(product)
-            refseq_coords[virus].setdefault(product, {})
-            refseq_coords[virus][product] = (loc, accn)
 
 abbrev_dict = {
     "Chikungunya virus": "chikv",
     "dengue virus type 2": "dengue2",
-    "Enterovirus A": "enterov1/coxsacki",
+    "Enterovirus A": "enteroA71/coxsacki",
     "Hepatitis C virus genotype 1": "HCV1a",
     "Human immunodeficiency virus 2": "HIV2",
     "Influenza A virus (A/Hong Kong/1073/99(H9N2))": "IAVH9N2",
@@ -251,9 +201,76 @@ abbrev_dict = {
     "Yellow fever virus": "YFV",
     "Hepatovirus A": "HepA"
 }
+# exceptions = ['Mamastrovirus 1'] # not sure what a good sub reference is for this
+
+# identify the actual refseq coord for each virus/protein to check if ranges make sense
+# need to account for polyprotein versus cds annotation
+refseq_coords = {}
+for accn in accns_set:
+    record = SeqIO.read(f"/home/surfaces/1_rawdata/refseq/{accn}.gb", format="genbank")
+    whole_nucseq = record.seq
+
+    # get the virus name
+    for feat in record.features:
+        if feat.type == "source":
+            virus = feat.qualifiers["organism"][0]
+            abbrev_virus = abbrev_dict[virus] # get abbrev to align w file naming convention
+            if abbrev_virus == "enteroA71/coxsacki": # this one appears to have used the same ref - identify more appopriate ref for enterov1 if possible
+                abbrev_virus = "coxsacki"
+
+
+    mat_peptides = [feat for feat in record.features if feat.type == 'mat_peptide']
+    refseq_coords.setdefault(virus, {})
+    if mat_peptides:
+        # treat as mature peptides
+        for mat_peptide in mat_peptides:
+            q = mat_peptide.qualifiers
+
+            parts = []
+            for part in mat_peptide.location.parts:
+                parts.append((part.start, part.end))
+            loc = '.'.join('{}_{}'.format(p[0], p[1]) for p in parts)
+            product = q.get('product', '')
+            product = product[0]
+            print(product)
+
+            # get aligned segment seq for comp
+            header = f"ref_{abbrev_virus}_{product}"
+            segment_nucseq = str(mat_peptide.location.extract(record).seq)
+            aquery, aref = mafft(segment_nucseq, whole_nucseq)
+
+
+            aligns[abbrev_virus].update({header: aquery})
+
+            # get exact coordinates for refseq proteins
+            refseq_coords[virus].setdefault(product, {})
+            refseq_coords[virus][product] = (loc, accn)
+    
+    else: # look at cds for proteins
+        cds_annot = [feat for feat in record.features if feat.type == 'CDS']
+        for cds in cds_annot:
+            q = cds.qualifiers
+
+            parts = []
+            for part in cds.location.parts:
+                parts.append((part.start, part.end))
+            loc = '.'.join('{}_{}'.format(p[0], p[1]) for p in parts)
+
+            product = q.get('product', '')
+            product = product[0]
+            print(product)
+
+            header = f"ref_{abbrev_virus}_{product}"
+            segment_nucseq = cds.location.extract(record).seq
+            aquery, aref = mafft(segment_nucseq, whole_nucseq)
+            aligns[abbrev_virus].update({header: aquery})
+
+            # get exact coordinates for refseq proteins
+            refseq_coords[virus].setdefault(product, {})
+            refseq_coords[virus][product] = (loc, accn)
 
 header = ["virus", "abbrev", "protein", "accession", "refseq_coords"]
-with open("/home/paula/surfaces_project/repos/surfaces/data/refseq_coords.csv", "w") as outfile_refseq:
+with open("/home/paula/surfaces_project/repos/surfaces/data/refseq_step3_coords.csv", "w") as outfile_refseq:
     writer = csv.DictWriter(outfile_refseq, fieldnames=header)
     writer.writeheader()
 
@@ -266,3 +283,11 @@ with open("/home/paula/surfaces_project/repos/surfaces/data/refseq_coords.csv", 
                 "accession": data[1],
                 "refseq_coords": data[0]
             })
+
+
+# write out alignment - this should include whole genome, ref segments and aligned consesus fasta
+for virus, seqs in aligns.items():
+    seqout = open(f"/home/paula/surfaces_project/annotate/alignments/{virus}_step3_alignment.fasta", 'w')     
+    for seqid, seq in seqs.items():
+        seqout.write(f">{seqid}\n{seq}\n")
+    seqout.close()
