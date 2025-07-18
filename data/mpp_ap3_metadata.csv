@@ -21,9 +21,9 @@ coxsacki,VP2-protein,Y,,254,0.02,84.45,26.04,Stable,27566.92,0.1,5.38,-6.99,Surf
 coxsacki,VP3-protein,Y,,242,-0.02,83.84,30.38,Stable,26634.09,0.1,5.44,-5.74,Surface,Human,Acute,Picornaviridae
 coxsacki,VP4-protein,Y,,69,-0.88,43.91,51.86,Unstable,7543.16,0.07,5.45,-2.32,Surface,Human,Acute,Picornaviridae
 dengue2,anchored capsid protein ancC,Y,,114,-0.18,97.54,53.63,Unstable,13208.97,0.06,12,23.5,Non_surface, Mosquito,Acute,Flaviviridae
-dengue2,capsid protein C,Y,,100,-0.48,90.7,58.79,Unstable,11765.09,0.07,12,23.5,Non_surface, Mosquito,Acute,Flaviviridae
+dengue2,capsid protein C,N,"Redundant, part of anchored capsid protein",100,-0.48,90.7,58.79,Unstable,11765.09,0.07,12,23.5,Non_surface, Mosquito,Acute,Flaviviridae
 dengue2,envelope protein E,Y,,495,-0.09,85.01,27.8,Stable,54241.2,0.07,7.91,2.41,Surface, Mosquito,Acute,Flaviviridae
-dengue2,membrane glycoprotein M,Y,,75,0.44,102.8,43.95,Unstable,8364.75,0.09,8.39,0.82,Non_surface, Mosquito,Acute,Flaviviridae
+dengue2,membrane glycoprotein M,N,"Redundant, part of precursor prM",75,0.44,102.8,43.95,Unstable,8364.75,0.09,8.39,0.82,Non_surface, Mosquito,Acute,Flaviviridae
 dengue2,membrane glycoprotein precursor prM,Y,,166,-0.18,78.13,45.68,Unstable,18850.54,0.08,6.4,-1.66,Non_surface, Mosquito,Acute,Flaviviridae
 dengue2,nonstructural protein NS1,Y,,352,-0.52,70.91,41.92,Unstable,39928.01,0.09,6.41,-2.42,Non_surface, Mosquito,Acute,Flaviviridae
 dengue2,nonstructural protein NS2A,Y,,218,0.72,128.35,27.99,Stable,23622.27,0.05,9.82,7.93,Non_surface, Mosquito,Acute,Flaviviridae
@@ -31,7 +31,7 @@ dengue2,nonstructural protein NS2B,Y,,130,0.33,118.54,43.99,Unstable,14045.12,0.
 dengue2,nonstructural protein NS3,Y,,618,-0.5,78.92,36.98,Stable,69407.58,0.08,8.5,4.74,Non_surface, Mosquito,Acute,Flaviviridae
 dengue2,nonstructural protein NS4A,Y,,127,0.63,129.92,34.22,Stable,13965.52,0.07,6.25,-1.28,Non_surface, Mosquito,Acute,Flaviviridae
 dengue2,nonstructural protein NS4B,Y,,248,0.28,107.06,29.29,Stable,26747.08,0.06,9.01,3.92,Non_surface, Mosquito,Acute,Flaviviridae
-dengue2,protein 2K,N,,23,0.99,135.65,36.77,Stable,2432.83,0.04,4.05,-1.6,Non_surface, Mosquito,Acute,Flaviviridae
+dengue2,protein 2K,N,"too short",23,0.99,135.65,36.77,Stable,2432.83,0.04,4.05,-1.6,Non_surface, Mosquito,Acute,Flaviviridae
 dengue2,protein pr,Y,,91,-0.7,57.8,42.17,Unstable,10503.81,0.07,5.55,-3.01,Non_surface, Mosquito,Acute,Flaviviridae
 dengue2,RNA-dependent RNA polymerase NS5,Y,,900,-0.61,72.01,36.78,Stable,103181.37,0.09,8.77,12.72,Non_surface, Mosquito,Acute,Flaviviridae
 enteroA71,2A,Y,,150,-0.27,76,36.85,Stable,16538.29,0.1,5.58,-4.76,Non_surface,Human,Acute,Picornaviridae
