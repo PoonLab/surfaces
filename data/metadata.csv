@@ -104,23 +104,22 @@ IBV,NS2,N,N,N,N,mediate nuclear export of viral ribonucleoprotein
 IBV,PA,N,Y,N,N,subunit of RdRp complex (endonuclease)
 IBV,PB1,N,Y,N,N,subunit of RdRp complex (primary component)
 IBV,PB2,N,Y,N,N,subunit of RdRp complex
-lyssavirus,glycoprotein,,,,,
-lyssavirus,matrix protein,,,,,
-lyssavirus,nucleoprotein,,,,,
-lyssavirus,phosphoprotein,,,,,
-lyssavirus,polymerase,,,,,
-Mastro1,capsid,,,,,
-Mastro1,RdRp,,,,,
-Mastro1,serine-protease,,,,,
-Mastro1,VP27,,,,,
-Mastro1,VP34,,,,,
-measles,fusion protein,,,,,
-measles,hemagglutinin protein,,,,,
-measles,large polymerase protein,,,,,
-measles,matrix protein,,,,,
-measles,nucleocapsid protein,,,,,
-measles,phosphoprotein,,,,,
-mumps,fusion protein,,,,,
+lyssavirus,glycoprotein,Y,N,N,Y,spike glycoprotein
+lyssavirus,matrix protein,N,N,N,Y,"virus assembly, innate immune evasion"
+lyssavirus,nucleoprotein,N,N,N,Y,"nucleoprotein, RNA binding"
+lyssavirus,phosphoprotein,N,N,N,Y,"polymerase cofactor, inhibits interferon signaling"
+lyssavirus,polymerase,N,Y,N,Y,polymerase
+Mastro1,RdRp,N,Y,N,N,RdRp
+Mastro1,serine-protease,N,N,Y,N,protease
+Mastro1,VP27,Y,N,N,Y,capsid spike
+Mastro1,VP34,Y,N,N,Y,capsid core domain / shell
+measles,fusion protein,Y,N,N,Y,"glycoprotein, membrane fusion"
+measles,hemagglutinin protein,Y,N,N,Y,"glycoprotein, host receptor binding"
+measles,large polymerase protein,N,Y,N,N,RdRp
+measles,matrix protein,N,N,N,Y,virus assembly
+measles,nucleocapsid protein,N,N,N,Y,encapsidates genomic RNA
+measles,phosphoprotein,N,Y,N,N,component of polymerase complex
+mumps,fusion protein,,,,,glycoprotein
 mumps,hemagglutinin,,,,,
 mumps,large polymerase protein,,,,,
 mumps,matrix protein,,,,,
