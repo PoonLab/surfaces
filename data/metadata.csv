@@ -60,50 +60,50 @@ HepA,2C-mature-peptide,N,N,N,N,"ATPase, ribonuclease"
 HepA,3A-mature-peptide,N,N,N,N,RNA binding
 HepA,3C-mature-peptide,N,N,Y,N,protease
 HepA,3D-mature-peptide,N,Y,N,N,RdRp
-HIV1A1,Gag,,,,,
-HIV1A1,gp120,,,,,
-HIV1A1,gp41,,,,,
-HIV1A1,Integrase,,,,,
-HIV1A1,Nef,,,,,
-HIV1A1,PR,,,,,
-HIV1A1,RNAse,,,,,
-HIV1A1,RT,,,,,
-HIV1A1,Tat,,,,,
-HIV1A1,Vif,,,,,
-HIV1A1,Vpr,,,,,
-HIV1A1,Vpu,,,,,
-HIV2,gag,,,,,
-HIV2,gp120,,,,,
-HIV2,gp41,,,,,
-HIV2,Integrase,,,,,
-HIV2,nef,,,,,
-HIV2,PR,,,,,
-HIV2,RNAse,,,,,
-HIV2,RT,,,,,
-HIV2,tat,,,,,
-HIV2,vif,,,,,
-HIV2,vpr,,,,,
-HIV2,vpx,,,,,
-IAVH9N2,HA,,,,,
-IAVH9N2,M1,,,,,
-IAVH9N2,M2,,,,,
-IAVH9N2,NA,,,,,
-IAVH9N2,NP,,,,,
-IAVH9N2,NS1,,,,,
-IAVH9N2,NS2,,,,,
-IAVH9N2,PA,,,,,
-IAVH9N2,PB1,,,,,
-IAVH9N2,PB2,,,,,
-IBV,HA,,,,,
-IBV,M1,,,,,
-IBV,M2,,,,,
-IBV,NA,,,,,
-IBV,NP,,,,,
-IBV,NS1,,,,,
-IBV,NS2,,,,,
-IBV,PA,,,,,
-IBV,PB1,,,,,
-IBV,PB2,,,,,
+HIV1A1,Gag,N,N,N,Y,"polyprotein, virus assembly, maturation; matrix, capsid and nucleocapsid"
+HIV1A1,gp120,Y,N,N,Y,surface glycoprotein
+HIV1A1,gp41,N,N,N,Y,transmembrane glycoprotein
+HIV1A1,Integrase,N,N,N,N,integration of HIV DNA into host genome
+HIV1A1,Nef,N,N,N,N,"multifunction, promote virus replication and immune evasion"
+HIV1A1,PR,N,N,Y,N,protease
+HIV1A1,RNAse,N,Y,N,N,component of reverse transcriptase
+HIV1A1,RT,N,Y,N,N,reverse transcriptase
+HIV1A1,Tat,N,N,N,N,"transactivator, enhances HIV transcription"
+HIV1A1,Vif,N,N,N,N,counteracts innate immune response
+HIV1A1,Vpr,N,N,N,N,"multifunctional, cytoplasmic-nuclear transport"
+HIV1A1,Vpu,N,N,N,N,degradation of CD4
+HIV2,gag,N,N,N,Y,"polyprotein, virus assembly, maturation; matrix, capsid and nucleocapsid"
+HIV2,gp120,Y,N,N,Y,surface glycoprotein
+HIV2,gp41,Y,N,N,Y,transmembrane glycoprotein
+HIV2,Integrase,N,N,N,N,integration of HIV DNA into host genome
+HIV2,nef,N,N,N,N,"multifunctional, promotes virus replication"
+HIV2,PR,N,N,Y,N,protease
+HIV2,RNAse,N,Y,N,N,component of reverse transcriptase
+HIV2,RT,N,Y,N,N,reverse transcriptase
+HIV2,tat,N,N,N,N,"transactivator, enhances HIV transcription"
+HIV2,vif,N,N,N,N,counteracts innate immune response
+HIV2,vpr,N,N,N,N,"multifunctional, engages DNA damage response"
+HIV2,vpx,N,N,N,N,induces degradation of host restriction factor
+IAVH9N2,HA,Y,N,N,Y,"glycoprotein, host cell attachment and membrane fusion"
+IAVH9N2,M1,N,N,N,Y,encapsidation within envelope
+IAVH9N2,M2,Y,N,N,Y,viroporin in virus envelope
+IAVH9N2,NA,Y,N,N,Y,"exosialidase, release and spread of progeny virions"
+IAVH9N2,NP,N,N,N,Y,"nucleoprotein, multifunctional, RNA-binding, nuclear import/export"
+IAVH9N2,NS1,N,N,N,N,prevents polyadenylation of cellular mRNAs
+IAVH9N2,NS2,N,N,N,N,mediate nuclear export of viral ribonucleoprotein
+IAVH9N2,PA,N,Y,N,N,subunit of RdRp complex (endonuclease)
+IAVH9N2,PB1,N,Y,N,N,subunit of RdRp complex (primary component)
+IAVH9N2,PB2,N,Y,N,N,subunit of RdRp complex
+IBV,HA,Y,N,N,Y,"glycoprotein, host cell attachment and membrane fusion"
+IBV,M1,N,N,N,Y,encapsidation within envelope
+IBV,M2,Y,N,N,Y,viroporin in virus envelope
+IBV,NA,Y,N,N,Y,"exosialidase, release and spread of progeny virions"
+IBV,NP,N,N,N,Y,"nucleoprotein, multifunctional, RNA-binding, nuclear import/export"
+IBV,NS1,N,N,N,N,prevents polyadenylation of cellular mRNAs
+IBV,NS2,N,N,N,N,mediate nuclear export of viral ribonucleoprotein
+IBV,PA,N,Y,N,N,subunit of RdRp complex (endonuclease)
+IBV,PB1,N,Y,N,N,subunit of RdRp complex (primary component)
+IBV,PB2,N,Y,N,N,subunit of RdRp complex
 lyssavirus,glycoprotein,,,,,
 lyssavirus,matrix protein,,,,,
 lyssavirus,nucleoprotein,,,,,

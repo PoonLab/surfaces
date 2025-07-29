@@ -4,7 +4,7 @@ breaks <- (50*(0:19)^5)/19^5  # from Murrell et al. 2016
 
 
 setwd("~/git/surfaces/data/")
-grids <- read_json("fingerprints.json")
+#grids <- read_json("fingerprints.json")
 
 
 # calculate Earth mover's distance
@@ -39,19 +39,26 @@ ix <- lower.tri(wmat, diag=FALSE)
 wmat[ix] <- t(wmat)[ix]  
 rownames(wmat) <- names(wpps)
 colnames(wmat) <- names(wpps)  
-write.csv(wmat, file="wdist-revised.csv", quote=F)
+#write.csv(wmat, file="wdist-revised.csv", quote=F)
+write.csv(wmat, file="wdist-clean.csv", quote=F)
 
-wmat <- read.csv("wdist-revised.csv", row.names=1)
+#wmat <- read.csv("wdist-revised.csv", row.names=1)
 
 wdist <- as.dist(wmat)
 
 mds <- cmdscale(wdist, k=2)
-pal <- ifelse(mdat$protein_classification[mdat$include=="Y"]=="Surface", "red", "cadetblue")
+#pal <- ifelse(mdat$protein_classification[mdat$include=="Y"]=="Surface", "red", "cadetblue")
+labels <- gsub("protein", "", names(wpps))
+
+pdf("mds.pdf", width=11, height=8)
 par(mfrow=c(1,1), mar=c(0,0,0,0))
 plot(mds[,1:2], type='n')
-points(mds[,1], mds[,2], pch=19, col=pal)
-text(mds[,1], mds[,2], labels=mdat$keys[mdat$include=='Y'], cex=0.5, col=pal)
-text(mds[,1], mds[,2], labels=names(wpps), cex=0.5, col=pal)
+#points(mds[,1], mds[,2], pch=19) #, col=pal)
+text(mds[,1], mds[,2], labels=labels, cex=0.5) #, labels=mdat$keys[mdat$include=='Y'], cex=0.5) #, col=pal)
+#text(mds[,1], mds[,2]) #, labels=names(wpps), cex=0.5, col=pal)
+dev.off()
+
+
 
 require(uwot)
 u <- uwot::umap(wdist, n_components=2)
