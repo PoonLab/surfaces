@@ -1,0 +1,236 @@
+virus,protein,exposed,polymerase,protease,structural,function
+chikv,6K protein,N,N,N,Y,putative ion channel
+chikv,capsid protein,N,N,N,Y,encapsidates genomic RNA
+chikv,E1 envelope glycoprotein,Y,N,N,Y,Virus-host cell membrane fusion
+chikv,E2 envelope glycoprotein,Y,N,N,Y,receptor binding and cell entry
+chikv,E3 protein,Y,N,N,Y,"leader peptide, may shield E1 during egress"
+chikv,mRNA-capping enzyme nsp1,N,N,N,N,"caps viral RNA, membrane anchor for replicase complex"
+chikv,non-structural protein nsp3,N,N,N,N,"Minus-strand synthesis, likely interacts with host proteins"
+coxsacki,2A-protein,N,N,Y,N,"protease, cleavage of viral polyprotein"
+coxsacki,2B-protein,N,N,N,N,"modifies membrane permeability, promotes virus release"
+coxsacki,2C-protein,N,N,N,N,RNA remodeling
+coxsacki,3AB-protein,N,N,N,N,"suppression of RNA interference, RNA replication"
+coxsacki,3C-protein,N,N,Y,N,"protease, cleaves host protein SNAP29"
+coxsacki,3D-protein,N,Y,N,N,RdRp
+coxsacki,VP1-protein,Y,N,N,Y,"Major viral capsid protein, host receptor binding (GH loop)"
+coxsacki,VP2-protein,Y,N,N,Y,"capsid protein, host receptor binding (EF loop)"
+coxsacki,VP3-protein,Y,N,N,Y,capsid protein
+coxsacki,VP4-protein,N,N,N,Y,inner surface of capsid
+dengue2,anchored capsid protein ancC,N,N,N,Y,capsid protein
+dengue2,envelope protein E,Y,N,N,Y,spike glycoprotein
+dengue2,membrane glycoprotein precursor prM,Y,N,N,Y,"contained in membrane of immature virus particle, requires furin cleavage, pH dependent, targeted by nAbs"
+dengue2,nonstructural protein NS1,Y,N,N,N,"glycoprotein, forms part of replication complex, is found on cell surface, is secreted from cells as a hexamer"
+dengue2,nonstructural protein NS2A,N,N,N,N,virion assembly
+dengue2,nonstructural protein NS2B,N,N,Y,N,cofactor for NS3 protease
+dengue2,nonstructural protein NS3,N,N,Y,N,serine protease
+dengue2,nonstructural protein NS4A,N,N,N,N,ER membrane-associated replication complex
+dengue2,nonstructural protein NS4B,N,N,N,N,ER membrane-associated replication complex
+dengue2,RNA-dependent RNA polymerase NS5,N,Y,N,N,RdRp
+enteroA71,2A,N,N,Y,N,"protease, cleavage of viral polyprotein"
+enteroA71,2B,N,N,N,N,"modifies membrane permeability, promotes virus release"
+enteroA71,2C,N,N,N,N,RNA remodeling
+enteroA71,3AB,N,N,N,N,"suppression of RNA interference, RNA replication"
+enteroA71,3C,N,N,Y,N,"protease, cleaves host protein SNAP29"
+enteroA71,3D,N,Y,N,N,RdRp
+enteroA71,VP1,Y,N,N,Y,"Major viral capsid protein, host receptor binding (GH loop)"
+enteroA71,VP2,Y,N,N,Y,"capsid protein, host receptor binding (EF loop)"
+enteroA71,VP3,Y,N,N,Y,capsid protein
+enteroA71,VP4,N,N,N,Y,inner surface of capsid
+Foveavirus,coat protein,N,N,N,Y,coat protein
+Foveavirus,RNA polymerase,N,Y,N,N,RdRp
+Foveavirus,triple gene block 1,N,N,N,N,"RNA binding, cell-to-cell movement"
+Foveavirus,triple gene block 2,N,N,N,N,intracellular movement
+Foveavirus,triple gene block 3,N,N,N,N,intracellular movement
+HCV1a,core,N,N,N,Y,"RNA binding, forms nucleocapsid"
+HCV1a,E1,Y,N,N,Y,envelope glycoprotein
+HCV1a,E2,Y,N,N,Y,envelope glycoprotein
+HCV1a,NS2,N,N,Y,N,component of NS2/3 protease
+HCV1a,NS3,N,N,Y,N,"proteinase, NTPase, helicase"
+HCV1a,NS4A,N,N,Y,N,proteinase cofactor
+HCV1a,NS4B,N,N,N,N,"formation of viral replication complex, membrane structure"
+HCV1a,NS5A,N,N,N,N,phosphoprotein
+HCV1a,NS5B,N,Y,N,N,RdRp
+HCV1a,p7,N,N,N,N,"also known as NS1, promote translocation of NS2 to ER lumen, ion channel"
+HepA,1B-VP2-mature-peptide,Y,N,N,Y,capsid protein
+HepA,1C-VP3-mature-peptide,Y,N,N,Y,"capsid protein, predominantly targeted by nAbs"
+HepA,1D-VP1-mature-peptide,Y,N,N,Y,capsid protein
+HepA,2A-mature-peptide,N,N,N,Y,"Also known as pX, capsid assembly, cleaved off for mature capsid"
+HepA,2B-mature-peptide,N,N,N,N,counteracts innate immune response
+HepA,2C-mature-peptide,N,N,N,N,"ATPase, ribonuclease"
+HepA,3A-mature-peptide,N,N,N,N,RNA binding
+HepA,3C-mature-peptide,N,N,Y,N,protease
+HepA,3D-mature-peptide,N,Y,N,N,RdRp
+HIV1A1,Gag,,,,,
+HIV1A1,gp120,,,,,
+HIV1A1,gp41,,,,,
+HIV1A1,Integrase,,,,,
+HIV1A1,Nef,,,,,
+HIV1A1,PR,,,,,
+HIV1A1,RNAse,,,,,
+HIV1A1,RT,,,,,
+HIV1A1,Tat,,,,,
+HIV1A1,Vif,,,,,
+HIV1A1,Vpr,,,,,
+HIV1A1,Vpu,,,,,
+HIV2,gag,,,,,
+HIV2,gp120,,,,,
+HIV2,gp41,,,,,
+HIV2,Integrase,,,,,
+HIV2,nef,,,,,
+HIV2,PR,,,,,
+HIV2,RNAse,,,,,
+HIV2,RT,,,,,
+HIV2,tat,,,,,
+HIV2,vif,,,,,
+HIV2,vpr,,,,,
+HIV2,vpx,,,,,
+IAVH9N2,HA,,,,,
+IAVH9N2,M1,,,,,
+IAVH9N2,M2,,,,,
+IAVH9N2,NA,,,,,
+IAVH9N2,NP,,,,,
+IAVH9N2,NS1,,,,,
+IAVH9N2,NS2,,,,,
+IAVH9N2,PA,,,,,
+IAVH9N2,PB1,,,,,
+IAVH9N2,PB2,,,,,
+IBV,HA,,,,,
+IBV,M1,,,,,
+IBV,M2,,,,,
+IBV,NA,,,,,
+IBV,NP,,,,,
+IBV,NS1,,,,,
+IBV,NS2,,,,,
+IBV,PA,,,,,
+IBV,PB1,,,,,
+IBV,PB2,,,,,
+lyssavirus,glycoprotein,,,,,
+lyssavirus,matrix protein,,,,,
+lyssavirus,nucleoprotein,,,,,
+lyssavirus,phosphoprotein,,,,,
+lyssavirus,polymerase,,,,,
+Mastro1,capsid,,,,,
+Mastro1,RdRp,,,,,
+Mastro1,serine-protease,,,,,
+Mastro1,VP27,,,,,
+Mastro1,VP34,,,,,
+measles,fusion protein,,,,,
+measles,hemagglutinin protein,,,,,
+measles,large polymerase protein,,,,,
+measles,matrix protein,,,,,
+measles,nucleocapsid protein,,,,,
+measles,phosphoprotein,,,,,
+mumps,fusion protein,,,,,
+mumps,hemagglutinin,,,,,
+mumps,large polymerase protein,,,,,
+mumps,matrix protein,,,,,
+mumps,nucleocapsid protein,,,,,
+mumps,phosphoprotein,,,,,
+mumps,small hydrophobic protein,,,,,
+orthobornavirus,glycoprotein,,,,,
+orthobornavirus,matrix protein,,,,,
+orthobornavirus,nucleoprotein,,,,,
+orthobornavirus,phosphoprotein,,,,,
+orthobornavirus,RNA dependent RNA polymerase,,,,,
+polio,protein-2A,,,,,
+polio,protein-2B,,,,,
+polio,protein-2C,,,,,
+polio,protein-3AB,,,,,
+polio,protein-3C,,,,,
+polio,protein-3D,,,,,
+polio,protein-VP1,,,,,
+polio,protein-VP2,,,,,
+polio,protein-VP3,,,,,
+polio,protein-VP4,,,,,
+PotatoX,CP,,,,,
+PotatoX,RdRp,,,,,
+PotatoX,TGB2,,,,,
+PotatoX,TGB3,,,,,
+PotatoX,TGP1,,,,,
+PotatoY,6K1,,,,,
+PotatoY,6K2,,,,,
+PotatoY,CI,,,,,
+PotatoY,coat,,,,,
+PotatoY,HC-Pro,,,,,
+PotatoY,NIa-Pro,,,,,
+PotatoY,NIa-VPg,,,,,
+PotatoY,NIb,,,,,
+PotatoY,P1,,,,,
+PotatoY,P3,,,,,
+RhinoA,1A,,,,,
+RhinoA,1B,,,,,
+RhinoA,1C,,,,,
+RhinoA,1D,,,,,
+RhinoA,2A,,,,,
+RhinoA,2B,,,,,
+RhinoA,2C,,,,,
+RhinoA,3AB,,,,,
+RhinoA,3C,,,,,
+RhinoA,3D,,,,,
+RotaA,NSP1,,,,,
+RotaA,NSP2,,,,,
+RotaA,NSP3,,,,,
+RotaA,NSP4,,,,,
+RotaA,NSP5,,,,,
+RotaA,VP1,,,,,
+RotaA,VP2,,,,,
+RotaA,VP3,,,,,
+RotaA,VP4,,,,,
+RotaA,VP6,,,,,
+RotaA,VP7,,,,,
+rsv,attachment protein,,,,,
+rsv,fusion protein,,,,,
+rsv,large protein,,,,,
+rsv,matrix protein 2-1,,,,,
+rsv,matrix protein 2-2,,,,,
+rsv,nonstructural protein 1,,,,,
+rsv,nonstructural protein 2,,,,,
+rsv,nucleoprotein,,,,,
+rsv,phosphoprotein,,,,,
+rsv,small hydrophobic protein,,,,,
+TBEV,core protein,,,,,
+TBEV,envelope protein E,,,,,
+TBEV,matrix protein M,,,,,
+TBEV,non-structural protein NS1,,,,,
+TBEV,non-structural protein NS2a,,,,,
+TBEV,non-structural protein NS2b,,,,,
+TBEV,non-structural protein NS3,,,,,
+TBEV,non-structural protein NS4a,,,,,
+TBEV,non-structural protein NS4b,,,,,
+TBEV,non-structural protein NS5,,,,,
+TBEV,pre protein,,,,,
+Tobacco,coat protein,,,,,
+Tobacco,movement protein,,,,,
+Tobacco,RdRp,,,,,
+Tobacco,replication protein,,,,,
+wnv,anchored capsid protein,,,,,
+wnv,envelope protein,,,,,
+wnv,membrane protein,,,,,
+wnv,nonstructural protein 1,,,,,
+wnv,nonstructural protein 2A,,,,,
+wnv,nonstructural protein 2B,,,,,
+wnv,nonstructural protein 3,,,,,
+wnv,nonstructural protein 4A,,,,,
+wnv,nonstructural protein 4B,,,,,
+wnv,nonstructural protein 5,,,,,
+wnv,pre-membrane protein,,,,,
+YFV,anchored core protein C,,,,,
+YFV,envelope protein,,,,,
+YFV,M protein precursor,,,,,
+YFV,non-structural protein NS1,,,,,
+YFV,non-structural protein NS2a,,,,,
+YFV,non-structural protein NS2b,,,,,
+YFV,non-structural protein NS3,,,,,
+YFV,non-structural protein NS4a,,,,,
+YFV,non-structural protein NS4b,,,,,
+YFV,RNA-dependent RNA polymerase,,,,,
+zika,anchored capsid protein C,,,,,
+zika,envelope protein E,,,,,
+zika,membrane glycoprotein precursor M,,,,,
+zika,nonstructural protein NS1,,,,,
+zika,nonstructural protein NS2A,,,,,
+zika,nonstructural protein NS2B,,,,,
+zika,nonstructural protein NS3,,,,,
+zika,nonstructural protein NS4A,,,,,
+zika,nonstructural protein NS4B,,,,,
+zika,RNA-dependent RNA polymerase NS5,,,,,
