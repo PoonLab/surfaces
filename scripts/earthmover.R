@@ -5,7 +5,7 @@ breaks <- (50*(0:19)^5)/19^5  # from Murrell et al. 2016
 
 setwd("~/git/surfaces/data/")
 #grids <- read_json("fingerprints.json")
-
+mdat <- read.csv("metadata.csv", na.strings="")
 
 # calculate Earth mover's distance
 require(transport)
@@ -19,6 +19,10 @@ wpps <- lapply(grids, function(g) {
 virus <- sapply(grids, function(g) g$virus)
 protein <- sapply(grids, function(g) g$protein)
 names(wpps) <- paste(virus, protein, sep='.')
+
+# these should be the same, but just make sure
+idx <- match(paste(virus, protein), paste(mdat$virus, mdat$protein))
+mdat <- mdat[idx, ]
 
 # this takes a minute
 require(parallel)
@@ -48,16 +52,24 @@ wdist <- as.dist(wmat)
 
 mds <- cmdscale(wdist, k=2)
 #pal <- ifelse(mdat$protein_classification[mdat$include=="Y"]=="Surface", "red", "cadetblue")
-labels <- gsub("protein", "", names(wpps))
+#labels <- gsub("protein", "", names(wpps))
+labels <- paste(mdat$abbrv, mdat$short)
 
-pdf("mds.pdf", width=11, height=8)
+pdf("mds.pdf", width=11, height=18)
 par(mfrow=c(1,1), mar=c(0,0,0,0))
 plot(mds[,1:2], type='n')
 #points(mds[,1], mds[,2], pch=19) #, col=pal)
-text(mds[,1], mds[,2], labels=labels, cex=0.5) #, labels=mdat$keys[mdat$include=='Y'], cex=0.5) #, col=pal)
-#text(mds[,1], mds[,2]) #, labels=names(wpps), cex=0.5, col=pal)
+#idx <- which(virus=="IBV")
+#text(mds[idx,1], mds[idx,2], labels=labels[idx], cex=0.5) #, labels=mdat$keys[mdat$include=='Y'], cex=0.5) #, col=pal)
+text(mds[,1], mds[,2], labels=labels, cex=0.5,
+     col=ifelse(mdat$exposed, 'red', 'blue')) #, labels=names(wpps), cex=0.5, col=pal)
 dev.off()
 
+
+require(rgl)
+mds3 <- cmdscale(wdist, k=3)
+plot3d(mds3)
+text3d(mds3, texts=labels, col=ifelse(mdat$exposed, 'red', 'blue'))
 
 
 require(uwot)
@@ -66,8 +78,9 @@ u <- uwot::umap(wdist, n_components=2)
 pdf("umap.pdf", width=8, height=8)
 par(mar=c(0,0,0,0))
 plot(u, type='n')
-labels <- gsub("nonstructural|protein", "", row.names(u))
-text(u[,1], u[,2], labels=labels, cex=0.7, col=pal)
+#labels <- gsub("nonstructural|protein", "", row.names(u))
+text(u[,1], u[,2], labels=labels, cex=0.7,
+     col=ifelse(mdat$exposed, 'red', 'blue'))#, col=pal)
 dev.off()
 
 hc <- hclust(wdist)

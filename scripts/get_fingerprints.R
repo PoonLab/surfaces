@@ -49,11 +49,12 @@ keys <- paste(virus, protein)
 
 
 #mdat <- read.csv("mpp_ap3_metadata.csv", na.strings="")
+mdat <- read.csv("metadata.csv", na.strings="")
 
 ## match to metadata
-#mdat$keys <- paste(mdat$virus, mdat$protein)
-#idx <- which(!is.element(keys, mdat$keys))
-#length(keys[idx])==0
+mdat$keys <- paste(mdat$virus, mdat$protein)
+idx <- which(!is.element(keys, mdat$keys))
+length(keys[idx])==0
 #idx <- which(!is.element(mdat$keys, keys))
 #idx2 <- which(mdat$include=="N")
 #all(is.element(idx, idx2))
