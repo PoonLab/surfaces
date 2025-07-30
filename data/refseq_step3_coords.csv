@@ -1,41 +1,101 @@
 virus,abbrev,protein,accession,refseq_coords
+rhinovirus A1,RhinoA,1A,NC_038311,626_833
+rhinovirus A1,RhinoA,1B,NC_038311,833_1622
+rhinovirus A1,RhinoA,1C,NC_038311,1622_2336
+rhinovirus A1,RhinoA,1D,NC_038311,2336_3197
+rhinovirus A1,RhinoA,2A,NC_038311,3197_3623
+rhinovirus A1,RhinoA,2B,NC_038311,3623_3908
+rhinovirus A1,RhinoA,2C,NC_038311,3908_4874
+rhinovirus A1,RhinoA,3A,NC_038311,4874_5105
+rhinovirus A1,RhinoA,3B,NC_038311,5105_5168
+rhinovirus A1,RhinoA,3C,NC_038311,5168_5717
+rhinovirus A1,RhinoA,3D,NC_038311,5717_7097
+Hepatitis C virus genotype 1,HCV1a,core protein,NC_004102,341_914
+Hepatitis C virus genotype 1,HCV1a,envelope protein E1,NC_004102,914_1490
+Hepatitis C virus genotype 1,HCV1a,envelope protein E2,NC_004102,1490_2579
+Hepatitis C virus genotype 1,HCV1a,protein p7,NC_004102,2579_2768
+Hepatitis C virus genotype 1,HCV1a,nonstructural protein NS2,NC_004102,2768_3419
+Hepatitis C virus genotype 1,HCV1a,protease/helicase protein NS3,NC_004102,3419_5312
+Hepatitis C virus genotype 1,HCV1a,nonstructural protein NS4A,NC_004102,5312_5474
+Hepatitis C virus genotype 1,HCV1a,nonstructural protein NS4B,NC_004102,5474_6257
+Hepatitis C virus genotype 1,HCV1a,nonstructural protein NS5A,NC_004102,6257_7601
+Hepatitis C virus genotype 1,HCV1a,RNA-dependent RNA polymerase NS5B,NC_004102,7601_9374
+Influenza A virus (A/Hong Kong/1073/99(H9N2)),IAVH9N2,Hemagglutinin,NC_004908,31_1714
+Influenza A virus (A/Hong Kong/1073/99(H9N2)),IAVH9N2,polymerase_Pb2,NC_004910,27_2307
+Influenza A virus (A/Hong Kong/1073/99(H9N2)),IAVH9N2,nucleoprotein,NC_004905,39_1536
+Influenza A virus (A/Hong Kong/1073/99(H9N2)),IAVH9N2,polymerase_Pb1,NC_004911,23_2300
+Influenza A virus (A/Hong Kong/1073/99(H9N2)),IAVH9N2,matrix_protein_2,NC_004907,32_59.747_1014
+Influenza A virus (A/Hong Kong/1073/99(H9N2)),IAVH9N2,matrix_protein_1,NC_004907,32_791
+Influenza A virus (A/Hong Kong/1073/99(H9N2)),IAVH9N2,nuclear_export_protein,NC_004906,26_56.528_864
+Influenza A virus (A/Hong Kong/1073/99(H9N2)),IAVH9N2,nonstructural_protein_1,NC_004906,26_719
+Influenza A virus (A/Hong Kong/1073/99(H9N2)),IAVH9N2,neuraminidase,NC_004909,0_1404
+Influenza A virus (A/Hong Kong/1073/99(H9N2)),IAVH9N2,polymerase_PA,NC_004912,20_2171
+Measles morbillivirus,measles,nucleocapsid_protein,NC_001498,107_1685
+Measles morbillivirus,measles,phosphoprotein,NC_001498,1806_3330
+Measles morbillivirus,measles,V_protein,NC_001498,1806_2499.2498_2705
+Measles morbillivirus,measles,C_protein,NC_001498,1828_2389
+Measles morbillivirus,measles,matrix_protein,NC_001498,3437_4445
+Measles morbillivirus,measles,fusion_protein,NC_001498,5457_7110
+Measles morbillivirus,measles,hemagglutinin_protein,NC_001498,7270_9124
+Measles morbillivirus,measles,large_polymerase_protein,NC_001498,9233_15785
+Influenza B virus (B/Lee/1940),IBV,nucleoprotein,NC_002208,57_1740
+Influenza B virus (B/Lee/1940),IBV,nonstructural_protein_NS-2,NC_002211,42_75.730_1066
+Influenza B virus (B/Lee/1940),IBV,nonstructural_protein_NS-1,NC_002211,42_888
+Influenza B virus (B/Lee/1940),IBV,polymerase_PA,NC_002206,0_2181
+Influenza B virus (B/Lee/1940),IBV,polymerase_PB1,NC_002204,20_2279
+Influenza B virus (B/Lee/1940),IBV,matrix_protein_M1,NC_002210,24_771
+Influenza B virus (B/Lee/1940),IBV,hemagglutinin,NC_002207,33_1788
+Influenza B virus (B/Lee/1940),IBV,polymerase_PB2,NC_002205,0_2313
+Influenza B virus (B/Lee/1940),IBV,NB_protein,NC_002209,46_349
+Influenza B virus (B/Lee/1940),IBV,neuraminidase,NC_002209,53_1454
+Human immunodeficiency virus 2,HIV2,gag-pol_fusion_polyprotein,NC_001722,1102_2398.2397_5754
+Human immunodeficiency virus 2,HIV2,gag_polyprotein,NC_001722,1102_2668
+Human immunodeficiency virus 2,HIV2,vif_protein,NC_001722,5422_6070
+Human immunodeficiency virus 2,HIV2,vpx_protein,NC_001722,5897_6239
+Human immunodeficiency virus 2,HIV2,vpr_protein,NC_001722,6238_6502
+Human immunodeficiency virus 2,HIV2,tat_protein,NC_001722,6401_6697.8860_8957
+Human immunodeficiency virus 2,HIV2,rev_protein,NC_001722,6627_6697.8860_9102
+Human immunodeficiency virus 2,HIV2,env_polyprotein,NC_001722,6703_9286
+Human immunodeficiency virus 2,HIV2,nef_protein,NC_001722,9119_9893
+Potato virus Y,PotatoY,P1 protein,NC_001616,184_1036
+Potato virus Y,PotatoY,HC-Pro protein,NC_001616,1036_2404
+Potato virus Y,PotatoY,P3 protein,NC_001616,2404_3499
+Potato virus Y,PotatoY,6K1 protein,NC_001616,3499_3655
+Potato virus Y,PotatoY,CI protein,NC_001616,3655_5557
+Potato virus Y,PotatoY,6K2 protein,NC_001616,5557_5713
+Potato virus Y,PotatoY,NIa-VPg protein,NC_001616,5713_6277
+Potato virus Y,PotatoY,NIa-Pro protein,NC_001616,6277_7009
+Potato virus Y,PotatoY,NIb protein,NC_001616,7009_8572
+Potato virus Y,PotatoY,coat protein,NC_001616,8572_9373
+Rotavirus A,RotaA,outer_capsid_spike_protein_VP4,NC_011510,9_2340
+Rotavirus A,RotaA,VP1,NC_011507,18_3285
 Rotavirus A,RotaA,VP6,NC_011509,23_1217
+Rotavirus A,RotaA,VP3,NC_011508,49_2557
+Rotavirus A,RotaA,NSP2,NC_011502,46_1000
 Rotavirus A,RotaA,VP7,NC_011503,48_1029
 Rotavirus A,RotaA,NSP1,NC_011500,30_1521
-Rotavirus A,RotaA,VP1,NC_011507,18_3285
-Rotavirus A,RotaA,NSP2,NC_011502,46_1000
-Rotavirus A,RotaA,VP2,NC_011506,16_2665
-Rotavirus A,RotaA,outer capsid spike protein VP4,NC_011510,9_2340
-Rotavirus A,RotaA,NSP5,NC_011505,21_618
-Rotavirus A,RotaA,NSP6,NC_011505,79_358
 Rotavirus A,RotaA,NSP3,NC_011501,25_973
 Rotavirus A,RotaA,NSP4,NC_011504,41_569
-Rotavirus A,RotaA,VP3,NC_011508,49_2557
-Foveavirus mali,Foveavirus,RNA-dependent RNA polymerase,NC_003462,59_6611
-Foveavirus mali,Foveavirus,ORF2,NC_003462,6710_7382
-Foveavirus mali,Foveavirus,ORF3,NC_003462,7383_7746
-Foveavirus mali,Foveavirus,ORF4,NC_003462,7654_7867
-Foveavirus mali,Foveavirus,coat protein,NC_003462,7955_9200
-Human respiratory syncytial virus A,rsv,non-structural protein 1 (1C),NC_001803,98_518
-Human respiratory syncytial virus A,rsv,non-structural protein 2 (1B),NC_001803,627_1002
-Human respiratory syncytial virus A,rsv,Nucleoprotein (N),NC_001803,1139_2315
-Human respiratory syncytial virus A,rsv,Phosphoprotein (P),NC_001803,2347_3073
-Human respiratory syncytial virus A,rsv,Matrix protein (M),NC_001803,3232_4003
-Human respiratory syncytial virus A,rsv,Small hydrophobic protein (SH),NC_001803,4273_4468
-Human respiratory syncytial virus A,rsv,Attachment glycoprotein (G),NC_001803,4658_5555
-Human respiratory syncytial virus A,rsv,Fusion protein (F),NC_001803,5631_7356
-Human respiratory syncytial virus A,rsv,matrix (M2/22K),NC_001803,7575_8160
-Human respiratory syncytial virus A,rsv,Polymerase (L),NC_001803,8467_14965
-Influenza B virus (B/Lee/1940),IBV,polymerase PB2,NC_002205,0_2313
-Influenza B virus (B/Lee/1940),IBV,polymerase PB1,NC_002204,20_2279
-Influenza B virus (B/Lee/1940),IBV,NB protein,NC_002209,46_349
-Influenza B virus (B/Lee/1940),IBV,neuraminidase,NC_002209,53_1454
-Influenza B virus (B/Lee/1940),IBV,polymerase PA,NC_002206,0_2181
-Influenza B virus (B/Lee/1940),IBV,hemagglutinin,NC_002207,33_1788
-Influenza B virus (B/Lee/1940),IBV,nucleoprotein,NC_002208,57_1740
-Influenza B virus (B/Lee/1940),IBV,matrix protein M1,NC_002210,24_771
-Influenza B virus (B/Lee/1940),IBV,nonstructural protein NS-2,NC_002211,42_75.730_1066
-Influenza B virus (B/Lee/1940),IBV,nonstructural protein NS-1,NC_002211,42_888
+Rotavirus A,RotaA,NSP5,NC_011505,21_618
+Rotavirus A,RotaA,NSP6,NC_011505,79_358
+Rotavirus A,RotaA,VP2,NC_011506,16_2665
+Potato virus X,Potato,replicase,NC_011620,84_4455
+Potato virus X,Potato,25K_protein,NC_011620,4485_5166
+Potato virus X,Potato,12K_protein,NC_011620,5146_5494
+Potato virus X,Potato,8K_protein,NC_011620,5426_5639
+Potato virus X,Potato,coat_protein,NC_011620,5649_6363
+Hepatovirus A,HepA,1A VP4a mature peptide (alt.),NC_001489,734_803
+Hepatovirus A,HepA,1A VP4b mature peptide (alt.),NC_001489,740_803
+Hepatovirus A,HepA,1B VP2 mature peptide,NC_001489,803_1469
+Hepatovirus A,HepA,1C VP3 mature peptide,NC_001489,1469_2207
+Hepatovirus A,HepA,1D VP1 mature peptide,NC_001489,2207_3107
+Hepatovirus A,HepA,2A mature peptide,NC_001489,3107_3674
+Hepatovirus A,HepA,2B mature peptide,NC_001489,3674_3995
+Hepatovirus A,HepA,2C mature peptide,NC_001489,3995_5000
+Hepatovirus A,HepA,3A mature peptide,NC_001489,5000_5222
+Hepatovirus A,HepA,3B (VPg) mature peptide,NC_001489,5222_5291
+Hepatovirus A,HepA,3C mature peptide,NC_001489,5291_5948
+Hepatovirus A,HepA,3D mature peptide,NC_001489,5948_7415
 Chikungunya virus,chikv,mRNA-capping enzyme nsp1,KY704002,49_1654
 Chikungunya virus,chikv,protease nsp2,KY704002,1654_4048
 Chikungunya virus,chikv,non-structural protein nsp3,KY704002,4048_5617
@@ -46,59 +106,43 @@ Chikungunya virus,chikv,E2 envelope glycoprotein,KY704002,8502_9771
 Chikungunya virus,chikv,6K protein,KY704002,9771_9954
 Chikungunya virus,chikv,E1 envelope glycoprotein,KY704002,9954_11271
 Chikungunya virus,chikv,transframe fusion protein,KY704002,9771_9930.9929_9998
-Influenza A virus (A/Hong Kong/1073/99(H9N2)),IAVH9N2,matrix protein 2,NC_004907,32_59.747_1014
-Influenza A virus (A/Hong Kong/1073/99(H9N2)),IAVH9N2,matrix protein 1,NC_004907,32_791
-Influenza A virus (A/Hong Kong/1073/99(H9N2)),IAVH9N2,polymerase PA,NC_004912,20_2171
-Influenza A virus (A/Hong Kong/1073/99(H9N2)),IAVH9N2,Hemagglutinin,NC_004908,31_1714
-Influenza A virus (A/Hong Kong/1073/99(H9N2)),IAVH9N2,polymerase Pb2,NC_004910,27_2307
-Influenza A virus (A/Hong Kong/1073/99(H9N2)),IAVH9N2,neuraminidase,NC_004909,0_1404
-Influenza A virus (A/Hong Kong/1073/99(H9N2)),IAVH9N2,polymerase Pb1,NC_004911,23_2300
-Influenza A virus (A/Hong Kong/1073/99(H9N2)),IAVH9N2,nucleoprotein,NC_004905,39_1536
-Influenza A virus (A/Hong Kong/1073/99(H9N2)),IAVH9N2,nuclear export protein,NC_004906,26_56.528_864
-Influenza A virus (A/Hong Kong/1073/99(H9N2)),IAVH9N2,nonstructural protein 1,NC_004906,26_719
-Yellow fever virus,YFV,anchored core protein C,NC_002031,118_481
-Yellow fever virus,YFV,core protein C,NC_002031,118_421
-Yellow fever virus,YFV,M protein precursor,NC_002031,481_973
-Yellow fever virus,YFV,matrix protein M,NC_002031,748_973
-Yellow fever virus,YFV,envelope protein,NC_002031,973_2452
-Yellow fever virus,YFV,non-structural protein NS1,NC_002031,2452_3508
-Yellow fever virus,YFV,non-structural protein NS2a,NC_002031,3508_4180
-Yellow fever virus,YFV,non-structural protein NS2b,NC_002031,4180_4570
-Yellow fever virus,YFV,non-structural protein NS3,NC_002031,4570_6439
-Yellow fever virus,YFV,non-structural protein NS4a,NC_002031,6439_6817
-Yellow fever virus,YFV,2K protein,NC_002031,6817_6886
-Yellow fever virus,YFV,non-structural protein NS4b,NC_002031,6886_7636
-Yellow fever virus,YFV,RNA-dependent RNA polymerase,NC_002031,7636_10351
-Mamastrovirus 1,Mastro1,nonstructural protein,NC_030922,0_4296
-Mamastrovirus 1,Mastro1,capsid protein,NC_030922,4288_6673
-Rhinovirus A,RhinoA,capsid protein VP4,NC_001617,618_825
-Rhinovirus A,RhinoA,capsid protein VP2,NC_001617,825_1626
-Rhinovirus A,RhinoA,capsid protein VP3,NC_001617,1626_2340
-Rhinovirus A,RhinoA,capsid protein VP1,NC_001617,2340_3234
-Rhinovirus A,RhinoA,P2-A polypeptide,NC_001617,3234_3642
-Rhinovirus A,RhinoA,P2-B polypeptide,NC_001617,3642_3927
-Rhinovirus A,RhinoA,P2-C polypeptide,NC_001617,3927_4890
-Rhinovirus A,RhinoA,P-3A polypeptide,NC_001617,4890_5118
-Rhinovirus A,RhinoA,VPg polypeptide,NC_001617,5118_5181
-Rhinovirus A,RhinoA,protease 3C,NC_001617,5181_5730
-Rhinovirus A,RhinoA,RNA-directed RNA polymerase,NC_001617,5730_7110
-Human immunodeficiency virus 2,HIV2,gag-pol fusion polyprotein,NC_001722,1102_2398.2397_5754
-Human immunodeficiency virus 2,HIV2,gag polyprotein,NC_001722,1102_2668
-Human immunodeficiency virus 2,HIV2,vif protein,NC_001722,5422_6070
-Human immunodeficiency virus 2,HIV2,vpx protein,NC_001722,5897_6239
-Human immunodeficiency virus 2,HIV2,vpr protein,NC_001722,6238_6502
-Human immunodeficiency virus 2,HIV2,tat protein,NC_001722,6401_6697.8860_8957
-Human immunodeficiency virus 2,HIV2,rev protein,NC_001722,6627_6697.8860_9102
-Human immunodeficiency virus 2,HIV2,env polyprotein,NC_001722,6703_9286
-Human immunodeficiency virus 2,HIV2,nef protein,NC_001722,9119_9893
-Measles morbillivirus,measles,nucleocapsid protein,NC_001498,107_1685
-Measles morbillivirus,measles,phosphoprotein,NC_001498,1806_3330
-Measles morbillivirus,measles,V protein,NC_001498,1806_2499.2498_2705
-Measles morbillivirus,measles,C protein,NC_001498,1828_2389
-Measles morbillivirus,measles,matrix protein,NC_001498,3437_4445
-Measles morbillivirus,measles,fusion protein,NC_001498,5457_7110
-Measles morbillivirus,measles,hemagglutinin protein,NC_001498,7270_9124
-Measles morbillivirus,measles,large polymerase protein,NC_001498,9233_15785
+Enterovirus A,enteroA71/coxsacki,VP4 (1A),NC_001612,750_957
+Enterovirus A,enteroA71/coxsacki,VP2 (1B),NC_001612,957_1719
+Enterovirus A,enteroA71/coxsacki,VP3 (1C),NC_001612,1719_2445
+Enterovirus A,enteroA71/coxsacki,VP1 (1D),NC_001612,2445_3336
+Enterovirus A,enteroA71/coxsacki,protease 2A,NC_001612,3336_3786
+Enterovirus A,enteroA71/coxsacki,protien 2B,NC_001612,3786_4083
+Enterovirus A,enteroA71/coxsacki,protein 2C,NC_001612,4083_5070
+Enterovirus A,enteroA71/coxsacki,protein 3A,NC_001612,5070_5328
+Enterovirus A,enteroA71/coxsacki,3B,NC_001612,5328_5394
+Enterovirus A,enteroA71/coxsacki,protease 3C,NC_001612,5394_5943
+Enterovirus A,enteroA71/coxsacki,3D,NC_001612,5943_7329
+Human respiratory syncytial virus A,rsv,non-structural_protein_1_(1C),NC_001803,98_518
+Human respiratory syncytial virus A,rsv,non-structural_protein_2_(1B),NC_001803,627_1002
+Human respiratory syncytial virus A,rsv,Nucleoprotein_(N),NC_001803,1139_2315
+Human respiratory syncytial virus A,rsv,Phosphoprotein_(P),NC_001803,2347_3073
+Human respiratory syncytial virus A,rsv,Matrix_protein_(M),NC_001803,3232_4003
+Human respiratory syncytial virus A,rsv,Small_hydrophobic_protein_(SH),NC_001803,4273_4468
+Human respiratory syncytial virus A,rsv,Attachment_glycoprotein_(G),NC_001803,4658_5555
+Human respiratory syncytial virus A,rsv,Fusion_protein_(F),NC_001803,5631_7356
+Human respiratory syncytial virus A,rsv,matrix_(M2/22K),NC_001803,7575_8160
+Human respiratory syncytial virus A,rsv,Polymerase_(L),NC_001803,8467_14965
+Venezuelan equine encephalitis virus,VEEV,mRNA-capping enzyme nsP1,NC_001449,44_1649
+Venezuelan equine encephalitis virus,VEEV,protease nsP2,NC_001449,1649_4031
+Venezuelan equine encephalitis virus,VEEV,non-structural protein nsp3,NC_001449,4031_5702
+Venezuelan equine encephalitis virus,VEEV,RNA-directed RNA polymerase nsP4,NC_001449,5702_7520
+Venezuelan equine encephalitis virus,VEEV,core protein,NC_001449,7561_8386
+Venezuelan equine encephalitis virus,VEEV,E3 envelope protein,NC_001449,8386_8563
+Venezuelan equine encephalitis virus,VEEV,E2 envelope glycoprotein,NC_001449,8563_9832
+Venezuelan equine encephalitis virus,VEEV,6K membrane protein,NC_001449,9832_10000
+Venezuelan equine encephalitis virus,VEEV,E1 envelope glycoprotein,NC_001449,10000_11326
+Venezuelan equine encephalitis virus,VEEV,transframe fusion protein,NC_001449,9832_9970.9969_10044
+Borna disease virus 1,orthobornavirus,nucleoprotein,OR468838,0_1113
+Borna disease virus 1,orthobornavirus,X_protein,OR468838,1169_1433
+Borna disease virus 1,orthobornavirus,phosphoprotein,OR468838,1218_1824
+Borna disease virus 1,orthobornavirus,matrix_protein,OR468838,1839_2268
+Borna disease virus 1,orthobornavirus,glycoprotein,OR468838,2182_3694
+Borna disease virus 1,orthobornavirus,RNA-dependent_RNA_polymerase,OR468838,2339_2356.3650_8769
 West Nile virus,wnv,anchored capsid protein ancC,NC_009942,96_465
 West Nile virus,wnv,capsid protein C,NC_009942,96_411
 West Nile virus,wnv,membrane glycoprotein precursor prM,NC_009942,465_966
@@ -115,38 +159,36 @@ West Nile virus,wnv,nonstructural protein NS4B,NC_009942,6915_7680
 West Nile virus,wnv,RNA-dependent RNA polymerase NS5,NC_009942,7680_10395
 West Nile virus,wnv,N-NS4B/WARF4,NC_009942,6915_7311.7310_7754
 West Nile virus,wnv,nonstructural protein NS1 prime,NC_009942,2469_3552.3551_3680
-Potato virus X,Potato,replicase,NC_011620,84_4455
-Potato virus X,Potato,25K protein,NC_011620,4485_5166
-Potato virus X,Potato,12K protein,NC_011620,5146_5494
-Potato virus X,Potato,8K protein,NC_011620,5426_5639
-Potato virus X,Potato,coat protein,NC_011620,5649_6363
-Enterovirus A,enteroA71/coxsacki,VP4 (1A),NC_001612,750_957
-Enterovirus A,enteroA71/coxsacki,VP2 (1B),NC_001612,957_1719
-Enterovirus A,enteroA71/coxsacki,VP3 (1C),NC_001612,1719_2445
-Enterovirus A,enteroA71/coxsacki,VP1 (1D),NC_001612,2445_3336
-Enterovirus A,enteroA71/coxsacki,protease 2A,NC_001612,3336_3786
-Enterovirus A,enteroA71/coxsacki,protien 2B,NC_001612,3786_4083
-Enterovirus A,enteroA71/coxsacki,protein 2C,NC_001612,4083_5070
-Enterovirus A,enteroA71/coxsacki,protein 3A,NC_001612,5070_5328
-Enterovirus A,enteroA71/coxsacki,3B,NC_001612,5328_5394
-Enterovirus A,enteroA71/coxsacki,protease 3C,NC_001612,5394_5943
-Enterovirus A,enteroA71/coxsacki,3D,NC_001612,5943_7329
-Venezuelan equine encephalitis virus,VEEV,nonstructural protein nsP1,NC_075022,44_1649
-Venezuelan equine encephalitis virus,VEEV,nonstructural protein nsP2,NC_075022,1649_4031
-Venezuelan equine encephalitis virus,VEEV,nonstructural protein nsP3,NC_075022,4031_5702
-Venezuelan equine encephalitis virus,VEEV,nonstructural protein nsP4,NC_075022,5702_7523
-Venezuelan equine encephalitis virus,VEEV,capsid protein,NC_075022,7561_8386
-Venezuelan equine encephalitis virus,VEEV,6K polypeptide,NC_075022,9832_10000
-Hepatitis C virus genotype 1,HCV1a,core protein,NC_004102,341_914
-Hepatitis C virus genotype 1,HCV1a,envelope protein E1,NC_004102,914_1490
-Hepatitis C virus genotype 1,HCV1a,envelope protein E2,NC_004102,1490_2579
-Hepatitis C virus genotype 1,HCV1a,protein p7,NC_004102,2579_2768
-Hepatitis C virus genotype 1,HCV1a,nonstructural protein NS2,NC_004102,2768_3419
-Hepatitis C virus genotype 1,HCV1a,protease/helicase protein NS3,NC_004102,3419_5312
-Hepatitis C virus genotype 1,HCV1a,nonstructural protein NS4A,NC_004102,5312_5474
-Hepatitis C virus genotype 1,HCV1a,nonstructural protein NS4B,NC_004102,5474_6257
-Hepatitis C virus genotype 1,HCV1a,nonstructural protein NS5A,NC_004102,6257_7601
-Hepatitis C virus genotype 1,HCV1a,RNA-dependent RNA polymerase NS5B,NC_004102,7601_9374
+Human astrovirus 1,Mastro1,putative_serine_protease,PQ510858,84_2847
+Human astrovirus 1,Mastro1,RNA-dependent_RNA_polymerase,PQ510858,<2786_4334
+Human astrovirus 1,Mastro1,capsid_protein,PQ510858,4326_6690
+Human immunodeficiency virus 1,HIV1A1,gag_protein,DQ676872,0_1500
+Human immunodeficiency virus 1,HIV1A1,pol_protein,DQ676872,<1292_4304
+Human immunodeficiency virus 1,HIV1A1,vif_protein,DQ676872,4248_4827
+Human immunodeficiency virus 1,HIV1A1,vpr_protein,DQ676872,4766_5057
+Human immunodeficiency virus 1,HIV1A1,tat_protein,DQ676872,5037_5252.7616_7707
+Human immunodeficiency virus 1,HIV1A1,rev_protein,DQ676872,5176_5252.7616_7912
+Human immunodeficiency virus 1,HIV1A1,vpu_protein,DQ676872,5278_5524
+Human immunodeficiency virus 1,HIV1A1,env_protein,DQ676872,5441_8054
+Human immunodeficiency virus 1,HIV1A1,nef_protein,DQ676872,8055_>8667
+Foveavirus mali,Foveavirus,RNA-dependent_RNA_polymerase,NC_003462,59_6611
+Foveavirus mali,Foveavirus,ORF2,NC_003462,6710_7382
+Foveavirus mali,Foveavirus,ORF3,NC_003462,7383_7746
+Foveavirus mali,Foveavirus,ORF4,NC_003462,7654_7867
+Foveavirus mali,Foveavirus,coat_protein,NC_003462,7955_9200
+Yellow fever virus,YFV,anchored core protein C,NC_002031,118_481
+Yellow fever virus,YFV,core protein C,NC_002031,118_421
+Yellow fever virus,YFV,M protein precursor,NC_002031,481_973
+Yellow fever virus,YFV,matrix protein M,NC_002031,748_973
+Yellow fever virus,YFV,envelope protein,NC_002031,973_2452
+Yellow fever virus,YFV,non-structural protein NS1,NC_002031,2452_3508
+Yellow fever virus,YFV,non-structural protein NS2a,NC_002031,3508_4180
+Yellow fever virus,YFV,non-structural protein NS2b,NC_002031,4180_4570
+Yellow fever virus,YFV,non-structural protein NS3,NC_002031,4570_6439
+Yellow fever virus,YFV,non-structural protein NS4a,NC_002031,6439_6817
+Yellow fever virus,YFV,2K protein,NC_002031,6817_6886
+Yellow fever virus,YFV,non-structural protein NS4b,NC_002031,6886_7636
+Yellow fever virus,YFV,RNA-dependent RNA polymerase,NC_002031,7636_10351
 Tick-borne encephalitis virus,TBEV,anchored core protein C,NC_001672,132_468
 Tick-borne encephalitis virus,TBEV,core protein C,NC_001672,132_420
 Tick-borne encephalitis virus,TBEV,PreM protein,NC_001672,468_972
@@ -160,40 +202,6 @@ Tick-borne encephalitis virus,TBEV,non-structural protein NS4a,NC_001672,6462_68
 Tick-borne encephalitis virus,TBEV,2K protein,NC_001672,6840_6909
 Tick-borne encephalitis virus,TBEV,non-structural protein NS4b,NC_001672,6909_7665
 Tick-borne encephalitis virus,TBEV,RNA-dependent RNA polymerase,NC_001672,7665_10374
-Hepatovirus A,HepA,1A VP4a mature peptide (alt.),NC_001489,734_803
-Hepatovirus A,HepA,1A VP4b mature peptide (alt.),NC_001489,740_803
-Hepatovirus A,HepA,1B VP2 mature peptide,NC_001489,803_1469
-Hepatovirus A,HepA,1C VP3 mature peptide,NC_001489,1469_2207
-Hepatovirus A,HepA,1D VP1 mature peptide,NC_001489,2207_3107
-Hepatovirus A,HepA,2A mature peptide,NC_001489,3107_3674
-Hepatovirus A,HepA,2B mature peptide,NC_001489,3674_3995
-Hepatovirus A,HepA,2C mature peptide,NC_001489,3995_5000
-Hepatovirus A,HepA,3A mature peptide,NC_001489,5000_5222
-Hepatovirus A,HepA,3B (VPg) mature peptide,NC_001489,5222_5291
-Hepatovirus A,HepA,3C mature peptide,NC_001489,5291_5948
-Hepatovirus A,HepA,3D mature peptide,NC_001489,5948_7415
-Zika virus,zika,anchored capsid protein C,NC_035889,107_473
-Zika virus,zika,capsid protein C,NC_035889,107_419
-Zika virus,zika,membrane glycoprotein precursor M,NC_035889,473_977
-Zika virus,zika,protein pr,NC_035889,473_752
-Zika virus,zika,membrane glycoprotein M,NC_035889,752_977
-Zika virus,zika,envelope protein E,NC_035889,977_2489
-Zika virus,zika,nonstructural protein NS1,NC_035889,2489_3545
-Zika virus,zika,nonstructural protein NS2A,NC_035889,3545_4223
-Zika virus,zika,nonstructural protein NS2B,NC_035889,4223_4613
-Zika virus,zika,nonstructural protein NS3,NC_035889,4613_6464
-Zika virus,zika,nonstructural protein NS4A,NC_035889,6464_6845
-Zika virus,zika,protein 2K,NC_035889,6845_6914
-Zika virus,zika,nonstructural protein NS4B,NC_035889,6914_7667
-Zika virus,zika,RNA-dependent RNA polymerase NS5,NC_035889,7667_10376
-Mumps orthorubulavirus,mumps,nucleocapsid protein,NC_002200,145_1795
-Mumps orthorubulavirus,mumps,phoshoprotein,NC_002200,1978_3152
-Mumps orthorubulavirus,mumps,V protein,NC_002200,1978_2653
-Mumps orthorubulavirus,mumps,membrane protein,NC_002200,3263_4391
-Mumps orthorubulavirus,mumps,fusion protein,NC_002200,4545_6162
-Mumps orthorubulavirus,mumps,small hydrophobic protein,NC_002200,6267_6441
-Mumps orthorubulavirus,mumps,hemagglutinin-neuraminidase,NC_002200,6613_8362
-Mumps orthorubulavirus,mumps,large protein,NC_002200,8437_15223
 Enterovirus C,polio,capsid protein VP4,NC_002058,745_949
 Enterovirus C,polio,capsid protein VP2,NC_002058,949_1765
 Enterovirus C,polio,capsid protein VP3,NC_002058,1765_2479
@@ -207,41 +215,11 @@ Enterovirus C,polio,viral protein genome-linked,NC_002058,5371_5437
 Enterovirus C,polio,protein 3CD,NC_002058,5437_7369
 Enterovirus C,polio,protease 3C,NC_002058,5437_5986
 Enterovirus C,polio,RNA-directed RNA polymerase,NC_002058,5986_7369
-Borna disease virus 1,orthobornavirus,nucleoprotein,OR468838,0_1113
-Borna disease virus 1,orthobornavirus,X protein,OR468838,1169_1433
-Borna disease virus 1,orthobornavirus,phosphoprotein,OR468838,1218_1824
-Borna disease virus 1,orthobornavirus,matrix protein,OR468838,1839_2268
-Borna disease virus 1,orthobornavirus,glycoprotein,OR468838,2182_3694
-Borna disease virus 1,orthobornavirus,RNA-dependent RNA polymerase,OR468838,2339_2356.3650_8769
-Potato virus Y,PotatoY,P1 protein,NC_001616,184_1036
-Potato virus Y,PotatoY,HC-Pro protein,NC_001616,1036_2404
-Potato virus Y,PotatoY,P3 protein,NC_001616,2404_3499
-Potato virus Y,PotatoY,6K1 protein,NC_001616,3499_3655
-Potato virus Y,PotatoY,CI protein,NC_001616,3655_5557
-Potato virus Y,PotatoY,6K2 protein,NC_001616,5557_5713
-Potato virus Y,PotatoY,NIa-VPg protein,NC_001616,5713_6277
-Potato virus Y,PotatoY,NIa-Pro protein,NC_001616,6277_7009
-Potato virus Y,PotatoY,NIb protein,NC_001616,7009_8572
-Potato virus Y,PotatoY,coat protein,NC_001616,8572_9373
-Lyssavirus rabies,lyssavirus,nucleoprotein N,NC_001542,70_1423
-Lyssavirus rabies,lyssavirus,phosphoprotein M1,NC_001542,1513_2407
-Lyssavirus rabies,lyssavirus,M2 protein,NC_001542,2495_3104
-Lyssavirus rabies,lyssavirus,transmembrane glycoprotein G,NC_001542,3317_4892
-Lyssavirus rabies,lyssavirus,L protein,NC_001542,5417_11846
-Human immunodeficiency virus 1,HIV1A1,Gag-Pol Transframe peptide,NC_001802,1631_1637.1636_1798
-Human immunodeficiency virus 1,HIV1A1,Pol,NC_001802,1654_4639
-Human immunodeficiency virus 1,HIV1A1,aspartic peptidase,NC_001802,1798_2095
-Human immunodeficiency virus 1,HIV1A1,p66 subunit,NC_001802,2095_3775
-Human immunodeficiency virus 1,HIV1A1,reverse transcriptase p51 subunit,NC_001802,2095_3415
-Human immunodeficiency virus 1,HIV1A1,integrase,NC_001802,3775_4639
-Human immunodeficiency virus 1,HIV1A1,matrix,NC_001802,335_731
-Human immunodeficiency virus 1,HIV1A1,capsid,NC_001802,731_1424
-Human immunodeficiency virus 1,HIV1A1,p2,NC_001802,1424_1466
-Human immunodeficiency virus 1,HIV1A1,nucleocapsid,NC_001802,1466_1631
-Human immunodeficiency virus 1,HIV1A1,p1,NC_001802,1631_1679
-Human immunodeficiency virus 1,HIV1A1,p6,NC_001802,1679_1835
-Human immunodeficiency virus 1,HIV1A1,Envelope surface glycoprotein gp120,NC_001802,5854_7303
-Human immunodeficiency virus 1,HIV1A1,Envelope transmembrane domain,NC_001802,7303_8338
+Lyssavirus rabies,lyssavirus,nucleoprotein_N,NC_001542,70_1423
+Lyssavirus rabies,lyssavirus,phosphoprotein_M1,NC_001542,1513_2407
+Lyssavirus rabies,lyssavirus,M2_protein,NC_001542,2495_3104
+Lyssavirus rabies,lyssavirus,transmembrane_glycoprotein_G,NC_001542,3317_4892
+Lyssavirus rabies,lyssavirus,L_protein,NC_001542,5417_11846
 dengue virus type 2,dengue2,anchored capsid protein ancC,NC_001474,96_438
 dengue virus type 2,dengue2,capsid protein C,NC_001474,96_396
 dengue virus type 2,dengue2,membrane glycoprotein precursor prM,NC_001474,438_936
@@ -256,8 +234,30 @@ dengue virus type 2,dengue2,nonstructural protein NS4A,NC_001474,6375_6756
 dengue virus type 2,dengue2,protein 2K,NC_001474,6756_6825
 dengue virus type 2,dengue2,nonstructural protein NS4B,NC_001474,6825_7569
 dengue virus type 2,dengue2,RNA-dependent RNA polymerase NS5,NC_001474,7569_10269
+Mumps orthorubulavirus,mumps,nucleocapsid_protein,NC_002200,145_1795
+Mumps orthorubulavirus,mumps,phoshoprotein,NC_002200,1978_3152
+Mumps orthorubulavirus,mumps,V_protein,NC_002200,1978_2653
+Mumps orthorubulavirus,mumps,membrane_protein,NC_002200,3263_4391
+Mumps orthorubulavirus,mumps,fusion_protein,NC_002200,4545_6162
+Mumps orthorubulavirus,mumps,small_hydrophobic_protein,NC_002200,6267_6441
+Mumps orthorubulavirus,mumps,hemagglutinin-neuraminidase,NC_002200,6613_8362
+Mumps orthorubulavirus,mumps,large_protein,NC_002200,8437_15223
+Zika virus,zika,anchored capsid protein C,NC_035889,107_473
+Zika virus,zika,capsid protein C,NC_035889,107_419
+Zika virus,zika,membrane glycoprotein precursor M,NC_035889,473_977
+Zika virus,zika,protein pr,NC_035889,473_752
+Zika virus,zika,membrane glycoprotein M,NC_035889,752_977
+Zika virus,zika,envelope protein E,NC_035889,977_2489
+Zika virus,zika,nonstructural protein NS1,NC_035889,2489_3545
+Zika virus,zika,nonstructural protein NS2A,NC_035889,3545_4223
+Zika virus,zika,nonstructural protein NS2B,NC_035889,4223_4613
+Zika virus,zika,nonstructural protein NS3,NC_035889,4613_6464
+Zika virus,zika,nonstructural protein NS4A,NC_035889,6464_6845
+Zika virus,zika,protein 2K,NC_035889,6845_6914
+Zika virus,zika,nonstructural protein NS4B,NC_035889,6914_7667
+Zika virus,zika,RNA-dependent RNA polymerase NS5,NC_035889,7667_10376
 Tobacco mosaic virus,Tobacco,Replicase,NC_001367,68_3419
-Tobacco mosaic virus,Tobacco,RNA polymerase,NC_001367,3494_4919
-Tobacco mosaic virus,Tobacco,Movement protein,NC_001367,4902_5709
-Tobacco mosaic virus,Tobacco,Charged protein,NC_001367,5665_5788
-Tobacco mosaic virus,Tobacco,Coat protein,NC_001367,5711_6191
+Tobacco mosaic virus,Tobacco,RNA_polymerase,NC_001367,3494_4919
+Tobacco mosaic virus,Tobacco,Movement_protein,NC_001367,4902_5709
+Tobacco mosaic virus,Tobacco,Charged_protein,NC_001367,5665_5788
+Tobacco mosaic virus,Tobacco,Coat_protein,NC_001367,5711_6191

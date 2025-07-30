@@ -52,17 +52,17 @@ HIV2,tat,HIV2_tat,NC_001722.1,P05909.1,P12453.1,6402,8954,6402_6694.8855_8954,,,
 HIV2,vif,HIV2_vif,NC_001722.1,P20878.1,P04595.1,5423,6073,5423_6073,,,Y,
 HIV2,vpr,HIV2_vpr,NC_001722.1,P12455.1,P05930.1,6239,6568,6239_6568,,,Y,
 HIV2,vpx,HIV2_vpx,NC_001722.1,P24110.1,P20881.1,5898,6239,5898_6191.6195_6239,,,Y,
-IAVH9N2,HA,IAVH9N2_HA,NC_004908.1,,,26,1909,26_1909,,,,
-IAVH9N2,M1,IAVH9N2_M1,NC_004907.1,,,33,788,33_788,,,,
-IAVH9N2,M2,IAVH9N2_M2,NC_004907.1,,,33,1011,33_58.747_1011,,,,
-IAVH9N2,NA,IAVH9N2_NA,NC_004909.1,,,1,1542,1_1525.1538_1542,,,,
-IAVH9N2,NP,IAVH9N2_NP,NC_004905.2,,,22,1554,22_1554,,,,
-IAVH9N2,NS1,IAVH9N2_NS1,NC_004906.1,,,27,743,27_743,,,,
-IAVH9N2,NS2,IAVH9N2_NS2,NC_004906.1,,,27,861,27_49.522_861,,,,
-IAVH9N2,PA,IAVH9N2_PA,NC_004912.1,,,21,2213,21_2213,,,,
-IAVH9N2,PB1,IAVH9N2_PB1,NC_004911.1,,,9,2351,9_2351,,,,
-IAVH9N2,PB2,IAVH9N2_PB2,NC_004910.1,,,1,2391,1_2391,,,,
-IBV,HA,IBV_HA,NC_002207.1,,,34,1788,34_1788,,,,
+IAVH9N2,HA,IAVH9N2_HA,NC_004908.1,,,26,1909,26_1909,Y,,N,Segment 4
+IAVH9N2,M1,IAVH9N2_M1,NC_004907.1,,,33,788,33_788,Y,,Y,Segment 7
+IAVH9N2,M2,IAVH9N2_M2,NC_004907.1,,,33,1011,33_58.747_1011,Y,,Y,Segment 7
+IAVH9N2,NA,IAVH9N2_NA,NC_004909.1,,,1,1542,1_1525.1538_1542,Y,,N,Segment 6
+IAVH9N2,NP,IAVH9N2_NP,NC_004905.2,,,22,1554,22_1554,Y,,N,Segment 5
+IAVH9N2,NS1,IAVH9N2_NS1,NC_004906.1,,,27,743,27_743,N,Clean,Y,Segment 8; step3 has internal gap for all seqa
+IAVH9N2,NS2,IAVH9N2_NS2,NC_004906.1,,,27,861,27_49.522_861,N,27_53.526_861,Y,Segment 8; updated to reflect ref mapping of `cttt`
+IAVH9N2,PA,IAVH9N2_PA,NC_004912.1,,,21,2213,21_2213,Y,,U,Segment 3
+IAVH9N2,PB1,IAVH9N2_PB1,NC_004911.1,,,9,2351,9_2351,Y,,U,Segment 2
+IAVH9N2,PB2,IAVH9N2_PB2,NC_004910.1,,,1,2391,1_2391,Y,,U,Segment 1
+IBV,HA,IBV_HA,NC_002207.1,,,34,1788,34_1788,,,U,
 IBV,M1,IBV_M1,NC_002210.1,,,25,768,25_768,,,,
 IBV,M2,IBV_M2,NC_002210.1,,,768,1181,768_1088.1170_1181,,,,
 IBV,NA,IBV_NA,NC_002209.1,,,54,1460,54_1460,,,,
@@ -77,9 +77,9 @@ lyssavirus,matrix protein,lyssavirus_matrix_protein,NC_001542.1,A3RM21.1,Q66T63.
 lyssavirus,nucleoprotein,lyssavirus_nucleoprotein,NC_001542.1,Q8B6J9.1,A3RM19.1,71,11916,71_1425.11904_11916,N,71_1425,N,
 lyssavirus,phosphoprotein,lyssavirus_phosphoprotein,NC_001542.1,A3RM20.1,P22363.1,1514,2416,1514_2416,Y,,U,apparently there are alt initiation for this protein
 lyssavirus,polymerase,lyssavirus_polymerase,NC_001542.1,,,5415,11804,5415_11804,Y,,N,
-Mastro1,capsid,Mastro1_capsid,NC_030922.1,,,4289,6850,4289_4946.4957_5050.5059_5071.5077_5090.5098_6850,,,,
-Mastro1,RdRp,Mastro1_RdRp,NC_030922.1,,,2730,4295,2730_2757.2767_4295,,,,
-Mastro1,serine-protease,Mastro1_serine_protease,NC_030922.1,,,1,2886,1_2886,,,,
+Mastro1,capsid,Mastro1_capsid,PQ510858.1,,,4327,6858,4327_6858,Y,,Y,this virus is tricky because of a lot of diversity (insertions and deletions among seqs) – it does seem to have overlapping reading frames though so no modifications
+Mastro1,RdRp,Mastro1_RdRp,PQ510858.1,,,2775,4331,2775_4331,Y,,Y,
+Mastro1,serine-protease,Mastro1_serine_protease,PQ510858.1,,,85,2970,85_2970,Y,,Y,
 measles,C protein,measles_C_protein,NC_001498.1,Q9YZN9.1,P03424.1,1829,2386,1829_2386,Y,,Y,
 measles,fusion protein,measles_fusion_protein,NC_001498.1,,,5449,7107,5449_7107,Y,,N,
 measles,hemagglutinin protein,measles_hemagglutinin_protein,NC_001498.1,P08362.1,P35971.1,7271,9133,7271_9133,Y,,N,
@@ -102,37 +102,38 @@ orthobornavirus,nucleoprotein,orthobornavirus_nucleoprotein,OR468838.1,P0C796.1,
 orthobornavirus,phosphoprotein,orthobornavirus_phosphoprotein,OR468838.1,P0C798.1,P0C799.1,1219,1821,1219_1821,Y,,Y,note that this protein overlaps with X protein and should be considered when excluding regions of overlap
 orthobornavirus,RNA dependent RNA polymerase,orthobornavirus_RNA_dependent_RNA_polymerase,OR468838.1,Q8JMN0.1,P52639.2,2340,8766,2340_2354.3649_8766,Y,,Y,
 orthobornavirus,X protein,orthobornavirus_X_protein,OR468838.1,,,1170,1430,1170_1430,TD,,Y,
-polio,protein 1b,polio_protein_1b,NC_002058.3,,,5111,7369,5111_7369,N,,U,"These proteins seem to align with the 2A, 2B, 2C but w many overlaps that shouldn’t be and the notation seems strange"
-polio,protein 3b,polio_protein_3b,NC_002058.3,,,3386,5110,3386_5110,N,,U,"These proteins seem to align with the 2A, 2B, 2C but w many overlaps that shouldn’t be and the notation seems strange"
-polio,protein 4b,polio_protein_4b,NC_002058.3,,,5987,7369,5987_7369,N,,U,"These proteins seem to align with the 2A, 2B, 2C but w many overlaps that shouldn’t be and the notation seems strange"
-polio,protein 5b,polio_protein_5b,NC_002058.3,,,3833,5110,3833_5110,N,,U,"These proteins seem to align with the 2A, 2B, 2C but w many overlaps that shouldn’t be and the notation seems strange"
-polio,protein X,polio_protein_X,NC_002058.3,,,4124,5110,4124_5110,N,,U,"These proteins seem to align with the 2A, 2B, 2C but w many overlaps that shouldn’t be and the notation seems strange"
-polio,protein 2,polio_protein_2,NC_002058.3,,,5438,7369,5438_7369,N,,U,"These proteins seem to align with the 2A, 2B, 2C but w many overlaps that shouldn’t be and the notation seems strange"
-polio,VP1,polio_VP1,NC_002058.3,,,2480,3385,2480_3385,Y,,N,
-polio,VP2,polio_VP2,NC_002058.3,,,950,1765,950_1765,Y,,N,
-polio,VP3,polio_VP3,NC_002058.3,,,1766,2479,1766_2479,Y,,N,
-polio,VP4,polio_VP4,NC_002058.3,,,743,949,743_949,Y,,N,
-PotatoY,6K1,PotatoY_6K1,NC_001616.1,,,3503,3655,3503_3655,,,,
-PotatoY,6K2,PotatoY_6K2,NC_001616.1,,,5558,5716,5558_5716,,,,
-PotatoY,CI,PotatoY_CI,NC_001616.1,,,3656,5557,3656_5557,,,,
-PotatoY,coat,PotatoY_coat,NC_001616.1,,,8573,9373,8573_9373,,,,
-PotatoY,HC-Pro,PotatoY_HC_Pro,NC_001616.1,,,1037,2404,1037_2404,,,,
-PotatoY,NIa-Pro,PotatoY_NIa_Pro,NC_001616.1,,,6278,7009,6278_7009,,,,
-PotatoY,NIa-VPg,PotatoY_NIa_VPg,NC_001616.1,,,5714,6277,5714_6277,,,,
-PotatoY,NIb,PotatoY_NIb,NC_001616.1,,,7010,8588,7010_7321.7323_8588,,,,
-PotatoY,P1,PotatoY_P1,NC_001616.1,,,185,1045,185_1045,,,,
-PotatoY,P3,PotatoY_P3,NC_001616.1,,,2405,3500,2405_3015.3017_3500,,,,
-RhinoA,1A,RhinoA_1A,NC_001617.1,,,619,6615,619_826.6611_6615,N,,,many weird maps for this virus likely due to high divergence in step 3 fasta
-RhinoA,1B,RhinoA_1B,NC_001617.1,,,826,6603,826_1294.1296_1307.1313_1604.2402_2407.4113_4132.6590_6603,N,,,
-RhinoA,1C,RhinoA_1C,NC_001617.1,,,1627,2355,1627_2355,N,1627_2340,,constrained (overhang likely due to insertions)
-RhinoA,1D,RhinoA_1D,NC_001617.1,,,2341,5991,2341_2425.2435_3172.3482_3491.4374_4392.4786_4807.5969_5991,N,,,
-RhinoA,2A,RhinoA_2A,NC_001617.1,,,1324,3645,1324_1334.3228_3645,N,,,
-RhinoA,2B,RhinoA_2B,NC_001617.1,,,2506,3927,2506_2521.2827_2834.3667_3927,N,,,
-RhinoA,2C,RhinoA_2C,NC_001617.1,,,3928,6834,3928_4871.4881_4898.6819_6834,N,,,
-RhinoA,3A,RhinoA_3A,NC_001617.1,,,533,5118,533_551.4271_4278.4912_5118,N,,,
-RhinoA,3B,RhinoA_3B,NC_001617.1,,,5119,5181,5119_5181,Y,,,
-RhinoA,3C,RhinoA_3C,NC_001617.1,,,5182,6212,5182_5700.5770_5790.6195_6212,N,,,
-RhinoA,3D,RhinoA_3D,NC_001617.1,,,1325,7110,1325_1338.2632_2642.3734_3745.5059_5076.5780_7110,N,,,
+polio,protein-2A,polio_protein-2A,NC_002058.3,,,3386,3832,3386_3832,Y,,,
+polio,protein-2B,polio_protein-2B,NC_002058.3,,,3833,4123,3833_4123,Y,,U,
+polio,protein-2C,polio_protein-2C,NC_002058.3,,,4124,5110,4124_5110,Y,,U,
+polio,protein-3A,polio_protein-3A,NC_002058.3,,,5111,5371,5111_5371,Y,,U,3A and 3AB overlaps
+polio,protein-3B,polio_protein-3B,NC_002058.3,,,5372,5437,5372_5437,Y,,U,
+polio,protein-3C,polio_protein-3C,NC_002058.3,,,5438,5989,5438_5989,N,5438_5986,U,Overlap likely driven by insertion in one seq
+polio,protein-3D,polio_protein-3D,NC_002058.3,,,5987,7369,5987_7369,Y,,U,3CD and RNA directed RNA polymerase in refseq overlap
+polio,protein-VP1,polio_protein-VP1,NC_002058.3,,,2480,3385,2480_3385,Y,,N,
+polio,protein-VP2,polio_protein-VP2,NC_002058.3,,,950,1765,950_1765,Y,,N,
+polio,protein-VP3,polio_protein-VP3,NC_002058.3,,,1766,2479,1766_2479,Y,,N,
+polio,protein-VP4,polio_protein-VP4,NC_002058.3,,,743,949,743_949,Y,,N,
+PotatoY,6K1,PotatoY_6K1,NC_001616.1,,,3503,3655,3503_3655,Y,,,
+PotatoY,6K2,PotatoY_6K2,NC_001616.1,,,5558,5716,5558_5716,N,Clean,,overlap driven by internal gap in fasta file
+PotatoY,CI,PotatoY_CI,NC_001616.1,,,3656,5557,3656_5557,Y,,,
+PotatoY,coat,PotatoY_coat,NC_001616.1,,,8573,9373,8573_9373,Y,,,
+PotatoY,HC-Pro,PotatoY_HC_Pro,NC_001616.1,,,1037,2404,1037_2404,Y,,,
+PotatoY,NIa-Pro,PotatoY_NIa_Pro,NC_001616.1,,,6278,7009,6278_7009,Y,,,
+PotatoY,NIa-VPg,PotatoY_NIa_VPg,NC_001616.1,,,5714,6277,5714_6277,Y,,,
+PotatoY,NIb,PotatoY_NIb,NC_001616.1,,,7010,8588,7010_7321.7323_8588,Y,7010_7321.7323_8572,N,overlap driven by inserion in one seq (not real overlap)
+PotatoY,P1,PotatoY_P1,NC_001616.1,,,185,1045,185_1045,N,185_1036,N,overlap driven by insertion in one seq
+PotatoY,P3,PotatoY_P3,NC_001616.1,,,2405,3500,2405_3015.3017_3500,Y,,U,P3N-PIPO is expressed by polymerase slippage mechanism from the P3 ORF and probably acts as a movement protein (viral zone)
+RhinoA,1A,RhinoA_1A,NC_038311.1,,,627,5679,627_834.5675_5679,N,627_833,N,gap at end 
+RhinoA,1B,RhinoA_1B,NC_038311.1,,,834,3860,834_1637.3852_3860,N,834_1637,N,lots of diversity in alignment but not known to overlap – constrained
+RhinoA,1C,RhinoA_1C,NC_038311.1,,,1623,2351,1623_2351,N,1627_2336,N,constrained (overhang likely due to insertions in minority seq)
+RhinoA,1D,RhinoA_1D,NC_038311.1,,,2337,3233,2337_3233,N,2337_3197,N,lots of diversity in alignment but not known to overlap – constrained
+RhinoA,2A,RhinoA_2A,NC_038311.1,,,3198,3626,3198_3626,N,3198_3623,N,constrained (overhang likely due to insertions in minority seq)
+RhinoA,2B,RhinoA_2B,NC_038311.1,,,3624,3908,3624_3908,Y,,N,
+RhinoA,2C,RhinoA_2C,NC_038311.1,,,3909,4886,3909_4886,N,3909_4874,N,constrained (overhang likely due to insertions in 1 seq)
+RhinoA,3A,RhinoA_3A,NC_038311.1,,,4875,5108,4875_5108,N,4875_5105,N,constrained (overhang likely due to insertions in minority seq)
+RhinoA,3B,RhinoA_3B,NC_038311.1,,,5106,5168,5106_5168,Y,,N,
+RhinoA,3C,RhinoA_3C,NC_038311.1,,,5169,5726,5169_5726,N,5169_5717,N,constrained (overhang likely due to insertions in 1 seq)
+RhinoA,3D,RhinoA_3D,NC_038311.1,,,400,7097,400_406.5272_5292.5740_7097,N,5718_7097,N,"constrained, some insertion and no known overlap"
 RotaA,NSP1,RotaA_NSP1,NC_011500.2,B3SRS0.1,Q82045.1,31,1651,31_87.90_814.816_918.922_1002.1012_1232.1236_1555.1607_1613.1621_1651,,,,
 RotaA,NSP2,RotaA_NSP2,NC_011502.2,B3SRS2.1,B3SRV4.1,47,1009,47_1009,,,,
 RotaA,NSP3,RotaA_NSP3,NC_011501.2,Q9ICB2.1,B3SRS1.1,35,991,35_991,,,,
@@ -154,15 +155,15 @@ rsv,nonstructural protein 2,rsv_nonstructural_protein_2,NC_001803.1,P04543.2,Q86
 rsv,nucleoprotein,rsv_nucleoprotein,NC_001803.1,P24566.1,O42053.1,1140,2312,1140_2312,Y,,N,
 rsv,phosphoprotein,rsv_phosphoprotein,NC_001803.1,P03421.1,P12579.2,2348,3070,2348_3070,Y,,N,
 rsv,small hydrophobic protein,rsv_small_hydrophobic_protein,NC_001803.1,Q4KRW6.1,O36632.1,4274,4465,4274_4465,Y,,N,
-VEEV,6K,VEEV_6K,NC_075022.1,,,9833,10000,9833_10000,,,,the reference listed doesn’t have E1-3 proteins and is not the validated one – switching
-VEEV,capsid,VEEV_capsid,NC_075022.1,,,7562,8563,7562_8563,,,,
-VEEV,E1,VEEV_E1,NC_075022.1,,,10001,11335,10001_11335,,,,
-VEEV,E2,VEEV_E2,NC_075022.1,,,8564,9832,8564_9832,,,,
-VEEV,E3,VEEV_E3,NC_075022.1,,,8387,8551,8387_8551,,,,
-VEEV,nsp1,VEEV_nsp1,NC_075022.1,,,45,1649,45_1649,Y,,,
-VEEV,nsp2,VEEV_nsp2,NC_075022.1,,,1650,4031,1650_4031,Y,,,
-VEEV,nsp3,VEEV_nsp3,NC_075022.1,,,4032,5021,4032_5021,Y,,,
-VEEV,nsp4,VEEV_nsp4,NC_075022.1,,,5700,7526,5700_7526,Y,,,
+VEEV,6K,VEEV_6K,NC_001449.1,,,9833,10000,9833_10000,Y,,N,the reference listed doesn’t have E1-3 proteins and is not the validated one – switching
+VEEV,capsid,VEEV_capsid,NC_001449.1,,,7562,8563,7562_8563,N,7562_8386,N,"overlap may not be valid (driven my minority seq insertion), constraining to ref"
+VEEV,E1,VEEV_E1,NC_001449.1,,,10001,11335,10001_11335,Y,,N,
+VEEV,E2,VEEV_E2,NC_001449.1,,,8564,9832,8564_9832,Y,,N,
+VEEV,E3,VEEV_E3,NC_001449.1,,,8387,8551,8387_8551,Y,,N,
+VEEV,nsp1,VEEV_nsp1,NC_001449.1,,,45,1649,45_1649,Y,,N,
+VEEV,nsp2,VEEV_nsp2,NC_001449.1,,,1650,4031,1650_4031,Y,,N,
+VEEV,nsp3,VEEV_nsp3,NC_001449.1,,,4032,5021,4032_5021,Y,,N,
+VEEV,nsp4,VEEV_nsp4,NC_001449.1,,,5700,7526,5700_7526,Y,,N,
 wnv,2K protein,wnv_2K_protein,NC_009942.1,,,6835,6915,6835_6915,D,,N,
 wnv,anchored capsid protein,wnv_anchored_capsid_protein,NC_009942.1,,,97,7273,97_477.923_947.3860_3867.6740_6751.6790_6809.7264_7273,N,97_465,N,
 wnv,envelope protein,wnv_envelope_protein,NC_009942.1,,,967,2469,967_2469,Y,,N,
