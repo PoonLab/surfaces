@@ -4,6 +4,7 @@ import os
 from Bio import AlignIO, Phylo
 from glob import glob
 import argparse
+import sys
 
 
 def get_stats(fasta, hyphy_bin="hyphy", ft2_bin="fasttree", verbose=False):
@@ -48,5 +49,12 @@ def get_stats(fasta, hyphy_bin="hyphy", ft2_bin="fasttree", verbose=False):
     return {'ncod': ncod, 'nseq': nseq, 'treelen': treelen}
 
 
-parser = argparse.ArgumentParser()
-files = glob()
+sys.stdout.write("virus,protein,nseq,ncod,treelen\n")
+files = glob("data/8_fubar/*_step7.fasta")
+for f in files:
+    res = get_stats(f)
+    tokens = os.basename(f).split('.')[0].split('_')
+    virus = tokens[0]
+    protein = ' '.join(tokens[1:-1])
+
+    sys.stdout.write(f"{virus},{protein},{res['nseq']},{res['ncod']},{res['treelen']}\n")
