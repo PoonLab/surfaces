@@ -18,18 +18,15 @@ def sample_codons(msa, k, reps=1, replace=False):
     """
     ln = msa.get_alignment_length()
     if ln % 3 != 0:
-        sys.stderr.write(f"Error in bundle_codons(): alignment length ({ln}) is not "
+        sys.stderr.write(f"Error in sample_codons(): alignment length ({ln}) is not "
                          "divisible by 3!\n")
         sys.exit()
     
     # partition alignment into codon sites
     columns = [msa.alignment[:, i:(i+3)] for i in range(0, ln, 3)]
     
-    # take a random sample of codon sites
-    samp = random.choices(columns, k) if replace else random.sample(columns, k)
-    
-    # merge sampled columns into sequences
     for _ in range(reps):
+        samp = random.choices(columns, k) if replace else random.sample(columns, k)
         res = None
         for block in samp:
             if res is None:
@@ -67,9 +64,12 @@ if __name__ == "__main__":
         random.seed(args.seed)
     
     msa = AlignIO.read(args.infile, args.format)
-    ln = msa.get_alignment_length()
+    ln = msa.get_alignment_length() // 3
     if ln <= args.num:
-        sys.stderr.write(f"Error: input alignment is already <= target length {args.num}\n")
+        sys.stderr.write(f"Input alignment is already <= target length {args.num}\n")
+        of = f"{args.prefix}_0.{args.outfmt}"
+        with open(of, 'w') as handle:
+            handle.write(format(msa, args.outfmt))
         sys.exit()
     
     sampler = sample_codons(msa, k=args.num, reps=args.reps, replace=args.replace)
