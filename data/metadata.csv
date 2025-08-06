@@ -203,6 +203,15 @@ Tobacco,TMV,coat protein,CP,F,F,F,T,coat protein
 Tobacco,TMV,movement protein,MP,F,F,F,F,intercellular movement
 Tobacco,TMV,RdRp,RdRp,F,T,F,F,RdRp
 Tobacco,TMV,replication protein,RP,F,T,F,F,"methyltransferase, RNA helicase"
+VEEV,VEEV,6K,6K,F,F,F,F,ion channel
+VEEV,VEEV,capsid,CA,F,F,F,F,capsid protein
+VEEV,VEEV,E1,E1,T,F,F,T,envelope glycoprotein
+VEEV,VEEV,E2,E2,T,F,F,T,"envelope glycoprotein, spike"
+VEEV,VEEV,E3,E3,F,F,F,F,"binds E1/E2 spike complex, preventing premature fusion"
+VEEV,VEEV,nsp1,nsp1,F,F,F,F,"capping of viral mRNA, methyltransferase, guanylylation activity"
+VEEV,VEEV,nsp2,nsp2,F,F,T,F,polyprotein major protease
+VEEV,VEEV,nsp3,nsp3,F,F,F,F,ADP-Ribosylhydrolase
+VEEV,VEEV,nsp4,RdRp,F,T,F,F,RdRp
 wnv,WNV,anchored capsid protein,CA,F,F,F,T,structural component of nucleocapsid
 wnv,WNV,envelope protein,E,T,F,F,T,"envelope protein, bind host cell receptor, main target for nAbs"
 wnv,WNV,membrane protein,M,F,F,F,T,chaperone supporting E protein folding and maturation

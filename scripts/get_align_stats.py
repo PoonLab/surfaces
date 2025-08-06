@@ -50,7 +50,7 @@ def get_stats(fasta, hyphy_bin="hyphy", ft2_bin="fasttree", verbose=False):
 
 
 sys.stdout.write("virus,protein,nseq,ncod,treelen\n")
-files = glob("data/8_fubar/*_step7.fasta")
+files = glob("data/7_clean/*_step7.fasta")
 for f in files:
     res = get_stats(f)
     tokens = os.path.basename(f).split('.')[0].split('_')

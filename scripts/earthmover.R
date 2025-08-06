@@ -6,6 +6,16 @@ breaks <- (50*(0:19)^5)/19^5  # from Murrell et al. 2016
 setwd("~/git/surfaces/data/")
 #grids <- read_json("fingerprints.json")
 mdat <- read.csv("metadata.csv", na.strings="")
+mdat$key <- paste(mdat$virus, mdat$protein)
+
+# import alignment stats
+astats <- read.csv("align_stats.csv")
+# unscramble the rows
+idx <- match(mdat$key, paste(astats$virus, astats$protein))
+astats <- astats[idx, ]
+mdat$ncod <- astats$ncod
+mdat$nseq <- astats$nseq
+mdat$tree.len <- astats$treelen
 
 # calculate Earth mover's distance
 require(transport)
@@ -21,7 +31,7 @@ protein <- sapply(grids, function(g) g$protein)
 names(wpps) <- paste(virus, protein, sep='.')
 
 # these should be the same, but just make sure
-idx <- match(paste(virus, protein), paste(mdat$virus, mdat$protein))
+idx <- match(paste(virus, protein), mdat$key)
 mdat <- mdat[idx, ]
 
 # this takes a minute
@@ -43,27 +53,28 @@ ix <- lower.tri(wmat, diag=FALSE)
 wmat[ix] <- t(wmat)[ix]  
 rownames(wmat) <- names(wpps)
 colnames(wmat) <- names(wpps)  
-#write.csv(wmat, file="wdist-revised.csv", quote=F)
-write.csv(wmat, file="wdist-clean.csv", quote=F)
 
+#write.csv(wmat, file="wdist-clean.csv", quote=F)
 #wmat <- read.csv("wdist-revised.csv", row.names=1)
 
 wdist <- as.dist(wmat)
 
-mds <- cmdscale(wdist, k=2)
+mds <- cmdscale(wdist, k=2, eig=T)
 #pal <- ifelse(mdat$protein_classification[mdat$include=="Y"]=="Surface", "red", "cadetblue")
 #labels <- gsub("protein", "", names(wpps))
 labels <- paste(mdat$abbrv, mdat$short)
 
-pdf("mds.pdf", width=11, height=18)
+#pdf("mds.pdf", width=11, height=18)
 par(mfrow=c(1,1), mar=c(0,0,0,0))
-plot(mds[,1:2], type='n')
-#points(mds[,1], mds[,2], pch=19) #, col=pal)
+plot(mds$points[,1:2], type='n')
+points(mds$points[,1], mds$points[,2], pch=19, cex=sqrt(mdat$ncod)/10) #, col=pal)
+idx <- order(mdat$ncod)[1:20]
+points(mds[idx, 1], mds[idx,2], cex=2, col='red')
 #idx <- which(virus=="IBV")
 #text(mds[idx,1], mds[idx,2], labels=labels[idx], cex=0.5) #, labels=mdat$keys[mdat$include=='Y'], cex=0.5) #, col=pal)
 text(mds[,1], mds[,2], labels=labels, cex=0.5,
      col=ifelse(mdat$exposed, 'red', 'blue')) #, labels=names(wpps), cex=0.5, col=pal)
-dev.off()
+#dev.off()
 
 
 require(rgl)
