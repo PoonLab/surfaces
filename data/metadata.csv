@@ -143,9 +143,9 @@ polio,PV,protein-VP3,VP3,T,F,F,T,capsid protein
 polio,PV,protein-VP4,VP4,F,F,F,T,inner surface of capsid
 PotatoX,PVX,CP,CP,F,F,F,T,"coat protein, encapsidation of virus genome, forms ribonucleoprotein complexes"
 PotatoX,PVX,RdRp,RdRp,F,T,F,F,RdRp
+PotatoX,PVX,TGB1,TGB1,F,F,F,F,intercellular movement
 PotatoX,PVX,TGB2,TGB2,F,F,F,F,intercellular movement
 PotatoX,PVX,TGB3,TGB3,F,F,F,F,intercellular movement
-PotatoX,PVX,TGP1,TGP1,F,F,F,F,intercellular movement
 PotatoY,PVY,6K1,6K1,F,F,F,F,interferes with host defence proteins
 PotatoY,PVY,6K2,6K2,F,F,F,F,induces replication vesicle migration to chloroplast
 PotatoY,PVY,CI,CI,F,F,F,F,"cylindrical inclusion; ATP binding, NTPase and RNA helicase activities"
