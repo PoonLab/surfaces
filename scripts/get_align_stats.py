@@ -26,7 +26,7 @@ def get_stats(fasta, hyphy_bin="hyphy", ft2_bin="fasttree", verbose=False):
         ], stdout=subprocess.PIPE, stderr=stderr)
     clean_file.close()
     
-    aln = AlignIO.read(clean_file, format='fasta')
+    aln = AlignIO.read(clean_file.name, format='fasta')
     ncod = aln.get_alignment_length()//3
     nseq = len(aln)
 
@@ -53,7 +53,7 @@ sys.stdout.write("virus,protein,nseq,ncod,treelen\n")
 files = glob("data/8_fubar/*_step7.fasta")
 for f in files:
     res = get_stats(f)
-    tokens = os.basename(f).split('.')[0].split('_')
+    tokens = os.path.basename(f).split('.')[0].split('_')
     virus = tokens[0]
     protein = ' '.join(tokens[1:-1])
 
