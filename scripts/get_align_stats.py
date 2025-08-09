@@ -39,8 +39,8 @@ def get_stats(fasta, hyphy_bin="hyphy", ft2_bin="fasttree", verbose=False):
         ], stdout=subprocess.PIPE, stderr=stderr)
     tree_file.close()
     
-    phy = Phylo.read(tree_file, 'newick')
-    treelen = phy.get_total_branch_length()
+    phy = Phylo.read(tree_file.name, 'newick')
+    treelen = phy.total_branch_length()
     
     # clean up temp files
     os.remove(clean_file.name)
@@ -50,11 +50,12 @@ def get_stats(fasta, hyphy_bin="hyphy", ft2_bin="fasttree", verbose=False):
 
 
 sys.stdout.write("virus,protein,nseq,ncod,treelen\n")
-files = glob("data/8_fubar/*_step7.fasta")
+files = glob("data/7_clean/*_step7.fasta")
 for f in files:
     res = get_stats(f)
     tokens = os.path.basename(f).split('.')[0].split('_')
     virus = tokens[0]
     protein = ' '.join(tokens[1:-1])
+    sys.stderr.write(f"{virus} {protein}\n")
+    sys.stdout.write(f"{virus},{protein},{res['nseq']},{res['ncod']},{res['treelen']:.5f}\n")
 
-    sys.stdout.write(f"{virus},{protein},{res['nseq']},{res['ncod']},{res['treelen']}\n")

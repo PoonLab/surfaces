@@ -39,12 +39,12 @@ parse.json <- function(f) {
 
 # default Dirichlet parameter at 0.5
 #files <- Sys.glob("6_fubar/*.fubar.json")
-files <- Sys.glob("8_fubar/*.fubar.json")
+files <- Sys.glob("8_sample/*.fubar.json")
 
 # load FUBAR grids
 grids <- lapply(files, function(f) parse.json(f))
 virus <- sapply(grids, function(x) x$virus)
-protein <- sapply(grids, function(x) x$protein)
+protein <- sapply(grids, function(x) gsub(" step8", "", x$protein))
 keys <- paste(virus, protein)
 
 
