@@ -8,31 +8,52 @@ import argparse
 import random
 import sys
 import os
-    
 
-def sample_codons(msa, k, reps=1, replace=False):
+
+def parse_fasta(handle):
+    """ Parse headers and sequences from a FASTA file """
+    header = None
+    headers = []
+    sequences = []
+    seq = ''
+    for line in handle:
+        if line.startswith(">"):
+            if len(seq) > 0:
+                headers.append(header)
+                sequences.append(seq)
+                seq = ''   # reset containers
+            header = line.strip('>\n')
+        else:
+            seq += line.strip()
+    # handle last record
+    headers.append(header)
+    sequences.append(seq)
+
+    return headers, sequences
+
+
+def transpose_fasta(seqs, step=3):
+    """ Convert list of sequences to list of columns """
+    n_columns = len(seqs[0]) // step
+    columns = [[] for i in range(n_columns)]
+    for seq in seqs:
+        for i in range(n_columns):
+            columns[i].append(seq[(step*i):(step*(i+1))])
+    return columns
+
+
+def sample_codons(columns, k, reps=1, replace=False):
     """
     Sample codon sites without replacement
-    :param msa:  object of class AlignIO.MultipleSeqAlignment
+    :param columns:  list of lists, each storing one codon site (column)
     :return:  a new AlignIO.MultipleSeqAlignment object
     """
-    ln = msa.get_alignment_length()
-    if ln % 3 != 0:
-        sys.stderr.write(f"Error in sample_codons(): alignment length ({ln}) is not "
-                         "divisible by 3!\n")
-        sys.exit()
-    
-    # partition alignment into codon sites
-    columns = [msa.alignment[:, i:(i+3)] for i in range(0, ln, 3)]
-    
     for _ in range(reps):
         samp = random.choices(columns, k) if replace else random.sample(columns, k)
-        res = None
-        for block in samp:
-            if res is None:
-                res = block
-                continue
-            res += block
+        res = samp[0]
+        for block in samp[1:]:
+            for i in range(len(res)):
+                res[i] += block[i]  # append codon
         yield res
     
 
@@ -63,16 +84,21 @@ if __name__ == "__main__":
     if args.seed:
         random.seed(args.seed)
     
-    msa = AlignIO.read(args.infile, args.format)
-    ln = msa.get_alignment_length() // 3
+    #msa = AlignIO.read(args.infile, args.format)
+    #ln = msa.get_alignment_length() // 3
+    headers, sequences = parse_fasta(args.infile)
+    ln = len(sequences[0]) // 3
+
     if ln <= args.num:
         sys.stderr.write(f"Input alignment is already <= target length {args.num}\n")
         of = f"{args.prefix}_0.{args.outfmt}"
         with open(of, 'w') as handle:
-            handle.write(format(msa, args.outfmt))
+            for h, s in zip(headers, sequences):
+                handle.write(f">{h}\n{s}\n")
         sys.exit()
-    
-    sampler = sample_codons(msa, k=args.num, reps=args.reps, replace=args.replace)
+
+    columns = transpose_fasta(sequences, step=3)
+    sampler = sample_codons(columns, k=args.num, reps=args.reps, replace=args.replace)
     
     for i, res in enumerate(sampler):
         of = f"{args.prefix}_{i}.{args.outfmt}"
@@ -83,4 +109,7 @@ if __name__ == "__main__":
             
         with open(of, 'w') as handle:
             #SeqIO.write(res.sequences, handle, args.outfmt)
-            handle.write(format(res, args.outfmt))
+            #handle.write(format(res, args.outfmt))
+            for h, s in zip(headers, res):
+                handle.write(f">{h}\n{s}\n")
+
