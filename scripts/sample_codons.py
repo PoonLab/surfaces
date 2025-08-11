@@ -35,26 +35,28 @@ def parse_fasta(handle):
 def transpose_fasta(seqs, step=3):
     """ Convert list of sequences to list of columns """
     n_columns = len(seqs[0]) // step
-    columns = [[] for i in range(n_columns)]
+    columns = [[] for _ in range(n_columns)]
     for seq in seqs:
         for i in range(n_columns):
             columns[i].append(seq[(step*i):(step*(i+1))])
     return columns
 
 
-def sample_codons(columns, k, reps=1, replace=False):
+def sample_codons(columns, k, replace=False):
     """
     Sample codon sites without replacement
     :param columns:  list of lists, each storing one codon site (column)
-    :return:  a new AlignIO.MultipleSeqAlignment object
+    :param k:  int, number of sites to sample
+    :param replace:  bool, if True then sample with replacement
+    :return:  list, strings produced by concatenating sampled columns
     """
-    for _ in range(reps):
-        samp = random.choices(columns, k) if replace else random.sample(columns, k)
-        res = samp[0]
-        for block in samp[1:]:
-            for i in range(len(res)):
-                res[i] += block[i]  # append codon
-        yield res
+    pop = range(len(columns))
+    samp = random.choices(pop, k) if replace else random.sample(pop, k)
+    res = columns[samp[0]]  # a list of strings
+    for i in samp[1:]:
+        for j in range(len(res)):
+            res[j] += columns[i][j]  # append codon to sequence
+    return res
     
 
 if __name__ == "__main__":
@@ -98,9 +100,9 @@ if __name__ == "__main__":
         sys.exit()
 
     columns = transpose_fasta(sequences, step=3)
-    sampler = sample_codons(columns, k=args.num, reps=args.reps, replace=args.replace)
     
-    for i, res in enumerate(sampler):
+    for i in range(args.reps):
+        res = sample_codons(columns, k=args.num, replace=args.replace)
         of = f"{args.prefix}_{i}.{args.outfmt}"
         if os.path.exists(of) and not args.overwrite:
             sys.stderr.write(f"ERROR: file {of} already exists! "
