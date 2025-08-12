@@ -3,7 +3,6 @@ Sample codon sites from an alignment at random with or without replacement.
 Write the result to a new file.
 """
 
-from Bio import AlignIO, SeqIO
 import argparse
 import random
 import sys
@@ -12,19 +11,21 @@ import os
 
 def parse_fasta(handle):
     """ Parse headers and sequences from a FASTA file """
-    header = None
     headers = []
     sequences = []
     seq = ''
+
     for line in handle:
         if line.startswith(">"):
             if len(seq) > 0:
+                # output preceding record
                 headers.append(header)
                 sequences.append(seq)
-                seq = ''   # reset containers
+                seq = ''   # reset container
             header = line.strip('>\n')
         else:
             seq += line.strip()
+
     # handle last record
     headers.append(header)
     sequences.append(seq)
@@ -35,10 +36,11 @@ def parse_fasta(handle):
 def transpose_fasta(seqs, step=3):
     """ Convert list of sequences to list of columns """
     n_columns = len(seqs[0]) // step
-    columns = [[] for _ in range(n_columns)]
-    for seq in seqs:
-        for i in range(n_columns):
-            columns[i].append(seq[(step*i):(step*(i+1))])
+    columns = []
+    for i in range(n_columns):
+        l = step*i
+        r = l + step
+        columns.append([s[l:r] for s in seqs])
     return columns
 
 
@@ -52,10 +54,11 @@ def sample_codons(columns, k, replace=False):
     """
     pop = range(len(columns))
     samp = random.choices(pop, k) if replace else random.sample(pop, k)
-    res = columns[samp[0]]  # a list of strings
-    for i in samp[1:]:
-        for j in range(len(res)):
-            res[j] += columns[i][j]  # append codon to sequence
+    res = [cod for cod in columns[samp[0]]]  # a list of strings
+
+    for ci in samp[1:]:  # codon index
+        for si in range(len(res)):  # sequence index
+            res[si] += columns[ci][si]  # append codon to sequence
     return res
     
 
