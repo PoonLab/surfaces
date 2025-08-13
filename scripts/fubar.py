@@ -27,6 +27,45 @@ def parse_args():
     return parser.parse_args()
 
 
+def clean_names(aln, hyphy_bin="hyphy", code="Universal", keep="No/No", stderr=None):
+    """
+    Clean stop codons and sequence names
+    
+    :param aln:  str, path to FASTA
+    :param hyphy_bin:  str, path to HyPhy executable
+    :param code:  str, genetic code (default: 'Universal')
+    :param keep:  str, response to query "Keep all sequences and sites?"
+    :param stderr:  for subprocess call, default to None
+    :return:  str, path to temporary file with cleaned sequences
+    """
+    clean_file = tempfile.NamedTemporaryFile(delete=False)
+    subprocess.run([
+        hyphy_bin, 'cln', code, aln, keep, 
+        clean_file.name  # destination file
+        ], stdout=subprocess.PIPE, stderr=stderr)
+    clean_file.close()
+    return clean_file.name
+
+
+def fasttree(infile, ft2_bin="fasttree", stderr=None):
+    """
+    Wrapper for fasttree
+
+    :param infile:  str, path to input alignment file
+    :param ft2_bin:  str, path to Fasttree binary
+    :param stderr:  for subprocess call (default: None)
+    :return:  str, path to temporary file with Newick tree string
+    """
+    tree_file = tempfile.NamedTemporaryFile(delete=False)
+    subprocess.run([
+        ft2_bin, '-nt',
+        "-out", tree_file.name,
+        infile
+        ], stdout=subprocess.PIPE, stderr=stderr)
+    tree_file.close()
+    return tree_file.name
+
+
 def fubar(aln, json_file, hyphy_bin="hyphy", ft2_bin="fasttree", verbose=False):
     """    
     :param aln: str, path to codon alignment
@@ -38,28 +77,12 @@ def fubar(aln, json_file, hyphy_bin="hyphy", ft2_bin="fasttree", verbose=False):
     """
     stderr = None if verbose else subprocess.DEVNULL
     
-    # Clean stop codons and sequence names
-    clean_file = tempfile.NamedTemporaryFile(delete=False)
-    subprocess.run([
-        hyphy_bin, 'cln',
-        'Universal',  # genetic code 
-        aln, 'No/No',  # Keep all sequences and sites
-        clean_file.name  # destination file
-        ], stdout=subprocess.PIPE, stderr=stderr)
-    clean_file.close()
-
-    # Regenerate tree, sequence names may have changed
-    tree_file = tempfile.NamedTemporaryFile(delete=False)
-    subprocess.run([
-        ft2_bin, '-nt',
-        "-out", tree_file.name,
-        clean_file.name
-        ], stdout=subprocess.PIPE, stderr=stderr)
-    tree_file.close()
+    clean_file = clean_names(aln, hyphy=hyphy_bin, stderr=stderr)
+    tree_file = fasttree(clean_file, ft2_bin=ft2_bin, stderr=stderr)
     
     # Run FUBAR
     result = subprocess.run([
-        'hyphy', 'fubar', clean_file.name, tree_file.name,
+        'hyphy', 'fubar', clean_file, tree_file,
         '--cache', '/dev/null', 
         '--output', json_file
         ], stdout=subprocess.PIPE, stderr=stderr)
@@ -73,8 +96,8 @@ def fubar(aln, json_file, hyphy_bin="hyphy", ft2_bin="fasttree", verbose=False):
         results = json.load(fp)
 
     # clean up temp files
-    os.remove(clean_file.name)
-    os.remove(tree_file.name)
+    os.remove(clean_file)
+    os.remove(tree_file)
     
     return results
     
