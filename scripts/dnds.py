@@ -5,6 +5,7 @@ import sys
 import os
 import tempfile
 from glob import glob
+import csv
 
 from fubar import clean_names, fasttree
 
@@ -91,9 +92,15 @@ if __name__ == "__main__":
                         help="p-value reporting threshold (default: 0.1)")
     parser.add_argument("--verbose", action="store_true", 
                         help="option, display messages")
+    parser.add_argument("-o", "--outfile", type=argparse.FileType('w'),
+                        default=sys.stdout, 
+                        help="File to write CSV output (default: stdout)")
     args = parser.parse_args()
 
     files = glob(args.glob)
+    writer = csv.writer(args.outfile)
+    writer.writerow(['virus', 'protein', 'dnds'])
+
     for path in files:
         fn = os.path.basename(path)
         tokens = fn.split('.')[0].split('_')
@@ -103,5 +110,5 @@ if __name__ == "__main__":
         dnds = mean_dnds(path, hyphy_bin=args.hyphy, ft2_bin=args.ft2, 
                          verbose=args.verbose, pval=args.pval)
 
-        sys.stdout.write(f"{virus},{protein},{dnds}\n")
+        writer.writerow([virus, protein, dnds])
 
