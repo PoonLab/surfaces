@@ -4,6 +4,7 @@ import subprocess
 import sys
 import os
 import tempfile
+from glob import glob
 
 from fubar import clean_names, fasttree
 
@@ -79,11 +80,9 @@ def mean_dnds(aln, code='Universal', branches='All', samples=0, pval=0.1,
 if __name__ == "__main__":
     # Command line interface
     parser = argparse.ArgumentParser(description=description)
-    parser.add_argument("cds", type=str,
-                        help="Path to codon alignment")
-    parser.add_argument("prefix", type=str,
-                        help="Path to write outputs as .fubar.csv and "
-                        ".fubar.json")
+    parser.add_argument("glob", type=str,
+                        help="UNIX glob for input files")
+
     parser.add_argument("--hyphy", type=str, default="hyphy", 
                         help="Path to HyPhy executable")
     parser.add_argument("--ft2", type=str, default="fasttree", 
@@ -94,7 +93,15 @@ if __name__ == "__main__":
                         help="option, display messages")
     args = parser.parse_args()
 
-    res = mean_dnds(args.cds, hyphy_bin=args.hyphy, ft2_bin=args.ft2, 
-               verbose=args.verbose, pval=args.pval)
-    
+    files = glob(args.glob)
+    for path in files:
+        fn = os.path.basename(path)
+        tokens = fn.split('.')[0].split('_')
+        virus = tokens[0]
+        protein = ' '.join(tokens[1:-1])
+
+        dnds = mean_dnds(path, hyphy_bin=args.hyphy, ft2_bin=args.ft2, 
+                         verbose=args.verbose, pval=args.pval)
+
+        sys.stdout.write(f"{virus},{protein},{dnds}\n")
 
