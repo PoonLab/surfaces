@@ -39,12 +39,23 @@ parse.json <- function(f) {
 
 # default Dirichlet parameter at 0.5
 #files <- Sys.glob("6_fubar/*.fubar.json")
-files <- Sys.glob("8_sample/*.fubar.json")
+#files <- Sys.glob("8_sample/*.fubar.json")
+files <- Sys.glob("9_longer/*.fubar.json")
 
-# load FUBAR grids
+# load FUBAR grids - this takes a minute
 grids <- lapply(files, function(f) parse.json(f))
-virus <- sapply(grids, function(x) x$virus)
-protein <- sapply(grids, function(x) gsub(" step8", "", x$protein))
+
+save(grids, file="step9_grids.RData")  # can use this later in earthmover.R
+
+
+##################################
+# this later code is for visualization of individual fingerprints
+grids.0 <- grids[grepl("_0.fubar.json", files)]
+grids.1 <- grids[grepl("_1.fubar.json", files)]
+grids.2 <- grids[grepl("_2.fubar.json", files)]
+
+virus <- sapply(grids.0, function(x) x$virus)
+protein <- sapply(grids.0, function(x) gsub(" step9", "", x$protein))
 keys <- paste(virus, protein)
 
 
@@ -53,51 +64,47 @@ mdat <- read.csv("metadata.csv", na.strings="")
 
 ## match to metadata
 mdat$keys <- paste(mdat$virus, mdat$protein)
-idx <- which(!is.element(keys, mdat$keys))
-length(keys[idx])==0
+#idx <- which(!is.element(keys, mdat$keys))
+#length(keys[idx])==0
+
+idx <- match(mdat$keys, keys)
+
 #idx <- which(!is.element(mdat$keys, keys))
 #idx2 <- which(mdat$include=="N")
 #all(is.element(idx, idx2))
 
-## take out grid entries that have a 6_fubar/*.json file but should have been
-## excluded
-#remove <- idx2[which(!is.element(idx2, idx))]
-#mdat[remove, 1:4]
-#idx <- match(mdat$keys[remove], keys)
-#grids <- grids[-idx]
-
-
-write_json(grids, path="fingerprints.json", pretty=TRUE)
-
-# concentration (Dirichlet) parameter set to 1.0
-#files.2 <- Sys.glob("6_fubar/concentration_1/*.fubar.json")
-#grids.2 <- lapply(files.2, function(f) parse.json(f))
 
 # visualize results
-for (start in seq(1, length(grids), 25)) {
-  end <- min(start + 24, length(grids))
-  png(paste("fpt", start, "-", end, ".png", sep=''), 
+for (start in seq(1, length(grids.0), 25)) {
+  end <- min(start + 24, length(grids.0))
+  png(paste("fpt.cod50.n0.", start, "-", end, ".png", sep=''), 
       width=6*300, height=6*300, res=300)
   par(mfrow=c(5, 5), mar=c(0,0,0,0))
   for (i in start:end) {
-    image(grids[[i]]$grid, xaxt='n', yaxt='n')
+    image(grids.0[[i]]$grid, xaxt='n', yaxt='n')
     abline(a=0, b=1, col=rgb(0,0,0,0.2))
     text(x=0.5, y=0.95, cex=0.8,
-         label=paste(grids[[i]]$virus, grids[[i]]$protein, sep=" "))
+         label=paste(grids.0[[i]]$virus, grids.0[[i]]$protein, sep=" "))
   }
   dev.off()  
 }
 
 
-#png(paste("fpt", start, "-", end, "_c1.0.png", sep=''), 
-#    width=6*300, height=6*300, res=300)
-#par(mfrow=c(5, 5), mar=c(0,0,0,0))
-#for (i in start:end) {
-#  image(grids.2[[i]]$grid, xaxt='n', yaxt='n')
-#  abline(a=0, b=1, col=rgb(0,0,0,0.2))
-#  text(x=0.5, y=0.95, cex=0.8,
-#       label=paste(grids.2[[i]]$virus, grids.2[[i]]$protein, sep=" "))
-# }
-#dev.off()
+# compare replicates
+png("set1.png", width=6*300, height=6*300, res=300)
+par(mfrow=c(5,5), mar=c(0,0,0,0))
+for (i in 1:25) {
+  image(grids.1[[i]]$grid, xaxt='n', yaxt='n')
+  abline(a=0, b=1, col=rgb(0,0,0,0.2))
+  text(x=0.5, y=0.95, cex=0.8, label=keys[i])
+}
+dev.off()
 
-
+png("set2.png", width=6*300, height=6*300, res=300)
+par(mfrow=c(5,5), mar=c(0,0,0,0))
+for (i in 1:25) {
+  image(grids.2[[i]]$grid, xaxt='n', yaxt='n')
+  abline(a=0, b=1, col=rgb(0,0,0,0.2))
+  text(x=0.5, y=0.95, cex=0.8, label=keys[i])
+}
+dev.off()

@@ -22,20 +22,24 @@ require(transport)
 n <- length(breaks)
 coords <- expand.grid(1:n, 1:n)
 
+# load `grids` object from get_fingerprints.R
+#load("grids.RData")
+load("step9_grids.RData")
+
 # calculate weighted point pattern for each fingerprint
 wpps <- lapply(grids, function(g) {
   wpp(coords, mass=as.numeric(g$grid))
 })
 virus <- sapply(grids, function(g) g$virus)
-protein <- sapply(grids, function(g) gsub(" step8", "", g$protein))
+protein <- sapply(grids, function(g) gsub(" step9", "", g$protein))
 names(wpps) <- paste(virus, protein, sep='.')
 
 # these should be the same, but just make sure
 idx <- match(paste(virus, protein), mdat$key)
-sum(is.na(idx))
+sum(is.na(idx)) == 0  # check
 mdatx <- mdat[idx, ]  # expand metadata for replicates
 
-# this takes a minute
+# this takes a minute - about an hour for replicate samples
 require(parallel)
 n <- length(wpps)
 res <- mclapply(0:(n*n-1), function(k) {
@@ -46,7 +50,11 @@ res <- mclapply(0:(n*n-1), function(k) {
   } else {
     0
   }
-}, mc.cores = 32)
+}, mc.cores = 24)
+
+
+#save(res, file="wasserstein-res-step9.RData")
+load("wasserstein-res-step9.RData")
 
 wmat <- matrix(unlist(res), nrow=n, ncol=n, byrow=T)
 # reflect upper triangular portion of matrix
@@ -61,6 +69,8 @@ colnames(wmat) <- names(wpps)
 wdist <- as.dist(wmat)
 
 mds <- cmdscale(wdist, k=2, eig=T)
+
+barplot(head(mds$eig)/sum(mds$eig))
 #pal <- ifelse(mdat$protein_classification[mdat$include=="Y"]=="Surface", "red", "cadetblue")
 #labels <- gsub("protein", "", names(wpps))
 labels <- paste(mdatx$abbrv, mdatx$short)
@@ -73,23 +83,58 @@ plot(mds$points[,1:2], type='n')
 #points(mds[idx, 1], mds[idx,2], cex=2, col='red')
 #idx <- which(virus=="IBV")
 #text(mds[idx,1], mds[idx,2], labels=labels[idx], cex=0.5) #, labels=mdat$keys[mdat$include=='Y'], cex=0.5) #, col=pal)
-text(mds$points[,1], mds$points[,2], labels=labels, cex=0.5,
+text(mds$points[,1], mds$points[,2], labels=labels, cex=0.6,
      col=ifelse(mdatx$exposed, 'red', 'blue')) #, labels=names(wpps), cex=0.5, col=pal)
 #dev.off()
 
 # calculate centroids for each virus-protein combo
+
+
 cents <- t(sapply(split(1:nrow(mds$points), mdatx$key), function(i) {
   c(mean(mds$points[i, 1]), mean(mds$points[i, 2]))
 }))
-labels <- paste(mdat$abbrv, mdat$short)
-plot(cents, type='n')
-text(cents[,1], cents[,2], labels, cex=0.7, col=ifelse(mdat$exposed, 'red', 'blue'))
 
+idx <- match(row.names(cents), mdat$key)
+mdat <- mdat[idx, ]
+labels <- paste(mdat$abbrv, mdat$short)
+
+plot(cents, type='n')
+#text(cents[,1], cents[,2], labels, cex=0.7, col=ifelse(mdat$enveloped, 'red', 'blue'))
+
+text(cents[,1], cents[,2], labels, cex=0.7, font=ifelse(mdat$exposed, 2, 1),
+     col=ifelse(!mdat$exposed, 'cadetblue',
+                ifelse(mdat$enveloped, 'firebrick', 'darkorange')), 
+     )
+
+text(cents[,1], cents[,2], labels, cex=0.7, font=ifelse(!mdat$exposed, 2, 1),
+     col=ifelse(mdat$exposed, 'cadetblue',
+                ifelse(mdat$enveloped, 'firebrick', 'darkorange')), 
+)
+
+text(cents[,1], cents[,2], labels, cex=0.7, font=ifelse(mdat$polymerase, 2, 1),
+     col=ifelse(!mdat$polymerase, 'cadetblue',
+                ifelse(mdat$enveloped, 'firebrick', 'darkorange')), 
+)
+     
+#points(cents[mdat$enveloped, 1], cents[mdat$enveloped, 2], cex=2)
+#idx <- is.element(mdat$virus, c("Foveavirus", "PotatoX", "PotatoY", "Tobacco"))
+#text(cents[,1], cents[,2], labels, cex=0.7, col=ifelse(idx, 'red', 'blue'))
+
+plot(cents, cex=sqrt(mdat$ncod)/10)
+plot(cents, cex=sqrt(mdat$nseq)/5)
+plot(cents, cex=mdat$tree.len)
 
 require(rgl)
 mds3 <- cmdscale(wdist, k=3)
-plot3d(mds3)
-text3d(mds3, texts=labels, col=ifelse(mdat$exposed, 'red', 'blue'))
+cents3 <- t(sapply(split(1:nrow(mds3), mdatx$key), function(i) {
+  apply(mds3[i,], 2, mean)
+}))
+
+plot3d(cents3, type='n')
+text3d(cents3, texts=labels, 
+       col=ifelse(!mdat$exposed, 'cadetblue',
+                  ifelse(mdat$enveloped, 'firebrick', 'darkorange'))
+       )
 
 
 require(uwot)

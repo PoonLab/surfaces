@@ -1,245 +1,245 @@
-virus,abbrv,protein,short,exposed,polymerase,protease,structural,function
-chikv,CHIKV,6K protein,6K,F,F,F,T,putative ion channel
-chikv,CHIKV,capsid protein,CA,F,F,F,T,encapsidates genomic RNA
-chikv,CHIKV,E1 envelope glycoprotein,E1,T,F,F,T,Virus-host cell membrane fusion
-chikv,CHIKV,E2 envelope glycoprotein,E2,T,F,F,T,receptor binding and cell entry
-chikv,CHIKV,E3 protein,E3,T,F,F,T,"leader peptide, may shield E1 during egress"
-chikv,CHIKV,mRNA-capping enzyme nsp1,nsp1,F,F,F,F,"caps viral RNA, membrane anchor for replicase complex"
-chikv,CHIKV,non-structural protein nsp3,nsp3,F,F,F,F,"Minus-strand synthesis, likely interacts with host proteins"
-coxsacki,CA16,2A-protein,2A,F,F,T,F,"protease, cleavage of viral polyprotein"
-coxsacki,CA16,2B-protein,2B,F,F,F,F,"modifies membrane permeability, promotes virus release"
-coxsacki,CA16,2C-protein,3C,F,F,F,F,RNA remodeling
-coxsacki,CA16,3AB-protein,3AB,F,F,F,F,"suppression of RNA interference, RNA replication"
-coxsacki,CA16,3C-protein,3C,F,F,T,F,"protease, cleaves host protein SNAP29"
-coxsacki,CA16,3D-protein,3D,F,T,F,F,RdRp
-coxsacki,CA16,VP1-protein,VP1,T,F,F,T,"Major viral capsid protein, host receptor binding (GH loop)"
-coxsacki,CA16,VP2-protein,VP2,T,F,F,T,"capsid protein, host receptor binding (EF loop)"
-coxsacki,CA16,VP3-protein,VP3,T,F,F,T,capsid protein
-coxsacki,CA16,VP4-protein,VP4,F,F,F,T,inner surface of capsid
-dengue2,DENV,anchored capsid protein ancC,CA,F,F,F,T,capsid protein
-dengue2,DENV,envelope protein E,E,T,F,F,T,spike glycoprotein
-dengue2,DENV,membrane glycoprotein precursor prM,prM,T,F,F,T,"contained in membrane of immature virus particle, requires furin cleavage, pH dependent, targeted by nAbs"
-dengue2,DENV,nonstructural protein NS1,NS1,T,F,F,F,"glycoprotein, forms part of replication complex, is found on cell surface, is secreted from cells as a hexamer"
-dengue2,DENV,nonstructural protein NS2A,NS2A,F,F,F,F,virion assembly
-dengue2,DENV,nonstructural protein NS2B,NS2B,F,F,T,F,cofactor for NS3 protease
-dengue2,DENV,nonstructural protein NS3,NS3,F,F,T,F,serine protease
-dengue2,DENV,nonstructural protein NS4A,NS4A,F,F,F,F,ER membrane-associated replication complex
-dengue2,DENV,nonstructural protein NS4B,NS4B,F,F,F,F,ER membrane-associated replication complex
-dengue2,DENV,RNA-dependent RNA polymerase NS5,RdRp,F,T,F,F,RdRp
-enteroA71,EV,2A,2A,F,F,T,F,"protease, cleavage of viral polyprotein"
-enteroA71,EV,2B,2B,F,F,F,F,"modifies membrane permeability, promotes virus release"
-enteroA71,EV,2C,2C,F,F,F,F,RNA remodeling
-enteroA71,EV,3AB,3AB,F,F,F,F,"suppression of RNA interference, RNA replication"
-enteroA71,EV,3C,3C,F,F,T,F,"protease, cleaves host protein SNAP29"
-enteroA71,EV,3D,3D,F,T,F,F,RdRp
-enteroA71,EV,VP1,VP1,T,F,F,T,"Major viral capsid protein, host receptor binding (GH loop)"
-enteroA71,EV,VP2,VP2,T,F,F,T,"capsid protein, host receptor binding (EF loop)"
-enteroA71,EV,VP3,VP3,T,F,F,T,capsid protein
-enteroA71,EV,VP4,VP4,F,F,F,T,inner surface of capsid
-Foveavirus,ASPV,coat protein,CP,F,F,F,T,coat protein
-Foveavirus,ASPV,RNA polymerase,RdRp,F,T,F,F,RdRp
-Foveavirus,ASPV,triple gene block 1,TGB1,F,F,F,F,"RNA binding, cell-to-cell movement"
-Foveavirus,ASPV,triple gene block 2,TGB2,F,F,F,F,intracellular movement
-Foveavirus,ASPV,triple gene block 3,TGB3,F,F,F,F,intracellular movement
-HCV1a,HCV,core,Core,F,F,F,T,"RNA binding, forms nucleocapsid"
-HCV1a,HCV,E1,E1,T,F,F,T,envelope glycoprotein
-HCV1a,HCV,E2,E2,T,F,F,T,envelope glycoprotein
-HCV1a,HCV,NS2,NS2,F,F,T,F,component of NS2/3 protease
-HCV1a,HCV,NS3,NS3,F,F,T,F,"proteinase, NTPase, helicase"
-HCV1a,HCV,NS4A,NS4A,F,F,T,F,proteinase cofactor
-HCV1a,HCV,NS4B,NS4B,F,F,F,F,"formation of viral replication complex, membrane structure"
-HCV1a,HCV,NS5A,NS5A,F,F,F,F,phosphoprotein
-HCV1a,HCV,NS5B,RdRp,F,T,F,F,RdRp
-HCV1a,HCV,p7,p7,F,F,F,F,"also known as NS1, promote translocation of NS2 to ER lumen, ion channel"
-HepA,HAV,1B-VP2-mature-peptide,VP2,T,F,F,T,capsid protein
-HepA,HAV,1C-VP3-mature-peptide,VP3,T,F,F,T,"capsid protein, predominantly targeted by nAbs"
-HepA,HAV,1D-VP1-mature-peptide,VP1,T,F,F,T,capsid protein
-HepA,HAV,2A-mature-peptide,2A,F,F,F,T,"Also known as pX, capsid assembly, cleaved off for mature capsid"
-HepA,HAV,2B-mature-peptide,2B,F,F,F,F,counteracts innate immune response
-HepA,HAV,2C-mature-peptide,2C,F,F,F,F,"ATPase, ribonuclease"
-HepA,HAV,3A-mature-peptide,3A,F,F,F,F,RNA binding
-HepA,HAV,3C-mature-peptide,3C,F,F,T,F,protease
-HepA,HAV,3D-mature-peptide,RdRp,F,T,F,F,RdRp
-HIV1A1,HIV1,Gag,Gag,F,F,F,T,"polyprotein, virus assembly, maturation; matrix, capsid and nucleocapsid"
-HIV1A1,HIV1,gp120,gp120,T,F,F,T,surface glycoprotein
-HIV1A1,HIV1,gp41,gp41,F,F,F,T,transmembrane glycoprotein
-HIV1A1,HIV1,Integrase,Int,F,F,F,F,integration of HIV DNA into host genome
-HIV1A1,HIV1,Nef,Nef,F,F,F,F,"multifunction, promote virus replication and immune evasion"
-HIV1A1,HIV1,PR,PR,F,F,T,F,protease
-HIV1A1,HIV1,RNAse,RNAse,F,T,F,F,component of reverse transcriptase
-HIV1A1,HIV1,RT,RT,F,T,F,F,reverse transcriptase
-HIV1A1,HIV1,Tat,Tat,F,F,F,F,"transactivator, enhances HIV transcription"
-HIV1A1,HIV1,Vif,Vif,F,F,F,F,counteracts innate immune response
-HIV1A1,HIV1,Vpr,Vpr,F,F,F,F,"multifunctional, cytoplasmic-nuclear transport"
-HIV1A1,HIV1,Vpu,Vpu,F,F,F,F,degradation of CD4
-HIV2,HIV2,gag,Gag,F,F,F,T,"polyprotein, virus assembly, maturation; matrix, capsid and nucleocapsid"
-HIV2,HIV2,gp120,gp120,T,F,F,T,surface glycoprotein
-HIV2,HIV2,gp41,gp41,T,F,F,T,transmembrane glycoprotein
-HIV2,HIV2,Integrase,Int,F,F,F,F,integration of HIV DNA into host genome
-HIV2,HIV2,nef,Nef,F,F,F,F,"multifunctional, promotes virus replication"
-HIV2,HIV2,PR,PR,F,F,T,F,protease
-HIV2,HIV2,RNAse,RNAse,F,T,F,F,component of reverse transcriptase
-HIV2,HIV2,RT,RT,F,T,F,F,reverse transcriptase
-HIV2,HIV2,tat,Tat,F,F,F,F,"transactivator, enhances HIV transcription"
-HIV2,HIV2,vif,Vif,F,F,F,F,counteracts innate immune response
-HIV2,HIV2,vpr,Vpr,F,F,F,F,"multifunctional, engages DNA damage response"
-HIV2,HIV2,vpx,Vpx,F,F,F,F,induces degradation of host restriction factor
-IAVH9N2,IAV,HA,HA,T,F,F,T,"glycoprotein, host cell attachment and membrane fusion"
-IAVH9N2,IAV,M1,M1,F,F,F,T,encapsidation within envelope
-IAVH9N2,IAV,M2,M2,T,F,F,T,viroporin in virus envelope
-IAVH9N2,IAV,NA,NA,T,F,F,T,"exosialidase, release and spread of progeny virions"
-IAVH9N2,IAV,NP,NP,F,F,F,T,"nucleoprotein, multifunctional, RNA-binding, nuclear import/export"
-IAVH9N2,IAV,NS1,NS1,F,F,F,F,prevents polyadenylation of cellular mRNAs
-IAVH9N2,IAV,NS2,NS2,F,F,F,F,mediate nuclear export of viral ribonucleoprotein
-IAVH9N2,IAV,PA,PA,F,T,F,F,subunit of RdRp complex (endonuclease)
-IAVH9N2,IAV,PB1,PB1,F,T,F,F,subunit of RdRp complex (primary component)
-IAVH9N2,IAV,PB2,PB2,F,T,F,F,subunit of RdRp complex
-IBV,IBV,HA,HA,T,F,F,T,"glycoprotein, host cell attachment and membrane fusion"
-IBV,IBV,M1,M1,F,F,F,T,encapsidation within envelope
-IBV,IBV,M2,M2,T,F,F,T,viroporin in virus envelope
-IBV,IBV,NA,NA,T,F,F,T,"exosialidase, release and spread of progeny virions"
-IBV,IBV,NP,NP,F,F,F,T,"nucleoprotein, multifunctional, RNA-binding, nuclear import/export"
-IBV,IBV,NS1,NS1,F,F,F,F,prevents polyadenylation of cellular mRNAs
-IBV,IBV,NS2,NS2,F,F,F,F,mediate nuclear export of viral ribonucleoprotein
-IBV,IBV,PA,PA,F,T,F,F,subunit of RdRp complex (endonuclease)
-IBV,IBV,PB1,PB1,F,T,F,F,subunit of RdRp complex (primary component)
-IBV,IBV,PB2,PB2,F,T,F,F,subunit of RdRp complex
-lyssavirus,RABV,glycoprotein,G,T,F,F,T,spike glycoprotein
-lyssavirus,RABV,matrix protein,M,F,F,F,T,"virus assembly, innate immune evasion"
-lyssavirus,RABV,nucleoprotein,F,F,F,F,T,"nucleoprotein, RNA binding"
-lyssavirus,RABV,phosphoprotein,P,F,F,F,T,"polymerase cofactor, inhibits interferon signaling"
-lyssavirus,RABV,polymerase,L,F,T,F,T,polymerase
-Mastro1,MastV,RdRp,RdRp,F,T,F,F,RdRp
-Mastro1,MastV,serine-protease,Pro,F,F,T,F,protease
-Mastro1,MastV,VP27,VP27,T,F,F,T,capsid spike
-Mastro1,MastV,VP34,VP34,T,F,F,T,capsid core domain / shell
-measles,MeV,fusion protein,F,T,F,F,T,"glycoprotein, membrane fusion"
-measles,MeV,hemagglutinin protein,H,T,F,F,T,"glycoprotein, host receptor binding"
-measles,MeV,large polymerase protein,L,F,T,F,F,RdRp
-measles,MeV,matrix protein,M,F,F,F,T,virus assembly
-measles,MeV,nucleocapsid protein,F,F,F,F,T,encapsidates genomic RNA
-measles,MeV,phosphoprotein,P,F,T,F,F,component of polymerase complex
-mumps,MuV,fusion protein,F,T,F,F,T,"glycoprotein, membrane fusion"
-mumps,MuV,hemagglutinin,H,T,F,F,T,"glycoprotein, host cell attachment"
-mumps,MuV,large polymerase protein,L,F,T,F,F,RdRp
-mumps,MuV,matrix protein,M,F,F,F,T,linkage of core to inner surface of membrane
-mumps,MuV,nucleocapsid protein,F,F,F,F,T,"nucleoprotein, RNA binding"
-mumps,MuV,phosphoprotein,P,F,T,F,F,component of polymerase complex
-mumps,MuV,small hydrophobic protein,SH,F,F,F,F,prevents cell apoptosis
-orthobornavirus,BDV,glycoprotein,G,T,F,F,T,envelope glycoprotein
-orthobornavirus,BDV,matrix protein,M,F,F,F,T,linkage of core to inner surface of membrane
-orthobornavirus,BDV,nucleoprotein,F,F,F,F,T,"nucleoprotein, RNA binding"
-orthobornavirus,BDV,phosphoprotein,P,F,T,F,F,component of polymerase complex
-orthobornavirus,BDV,RNA dependent RNA polymerase,L,F,T,F,F,RdRp
-polio,PV,protein-2A,2A,F,F,T,F,"protease, cleavage of viral polyprotein"
-polio,PV,protein-2B,2B,F,F,F,F,"modifies membrane permeability, promotes virus release"
-polio,PV,protein-2C,2C,F,F,F,F,RNA remodeling
-polio,PV,protein-3AB,3AB,F,F,F,F,"suppression of RNA interference, RNA replication"
-polio,PV,protein-3C,3C,F,F,T,F,"protease, cleaves host protein SNAP29"
-polio,PV,protein-3D,3D,F,T,F,F,RdRp
-polio,PV,protein-VP1,VP1,T,F,F,T,"Major viral capsid protein, host receptor binding (GH loop)"
-polio,PV,protein-VP2,VP2,T,F,F,T,"capsid protein, host receptor binding (EF loop)"
-polio,PV,protein-VP3,VP3,T,F,F,T,capsid protein
-polio,PV,protein-VP4,VP4,F,F,F,T,inner surface of capsid
-PotatoX,PVX,CP,CP,F,F,F,T,"coat protein, encapsidation of virus genome, forms ribonucleoprotein complexes"
-PotatoX,PVX,RdRp,RdRp,F,T,F,F,RdRp
-PotatoX,PVX,TGB1,TGB1,F,F,F,F,intercellular movement
-PotatoX,PVX,TGB2,TGB2,F,F,F,F,intercellular movement
-PotatoX,PVX,TGB3,TGB3,F,F,F,F,intercellular movement
-PotatoY,PVY,6K1,6K1,F,F,F,F,interferes with host defence proteins
-PotatoY,PVY,6K2,6K2,F,F,F,F,induces replication vesicle migration to chloroplast
-PotatoY,PVY,CI,CI,F,F,F,F,"cylindrical inclusion; ATP binding, NTPase and RNA helicase activities"
-PotatoY,PVY,coat,CP,F,F,F,T,"coat protein, virus assembly"
-PotatoY,PVY,HC-Pro,HC-Pro,F,F,F,F,"helper component protease, RNA silencing suppressor"
-PotatoY,PVY,NIa-Pro,NIa-Pro,F,F,T,F,"cysteine protease, polyprotein cleavage"
-PotatoY,PVY,NIa-VPg,NIa-VPg,F,F,F,F,"genome-linked protein, promotes viral RNA translation"
-PotatoY,PVY,NIb,NIb,F,T,F,F,RdRp
-PotatoY,PVY,P1,P1,F,F,T,F,serine protease
-PotatoY,PVY,P3,P3,F,F,F,F,ER membrane-associated replication complex
-RhinoA,RV,1A,VP4,F,F,F,T,inner surface of capsid
-RhinoA,RV,1B,VP2,T,F,F,T,"capsid protein, host receptor binding (EF loop)"
-RhinoA,RV,1C,VP3,T,F,F,T,capsid protein
-RhinoA,RV,1D,VP1,T,F,F,T,"Major viral capsid protein, host receptor binding (GH loop)"
-RhinoA,RV,2A,2A,F,F,T,F,"protease, cleavage of viral polyprotein"
-RhinoA,RV,2B,2B,F,F,F,F,"modifies membrane permeability, promotes virus release"
-RhinoA,RV,2C,2C,F,F,F,F,RNA remodeling
-RhinoA,RV,3AB,3AB,F,F,F,F,"suppression of RNA interference, RNA replication"
-RhinoA,RV,3C,3C,F,F,T,F,"protease, cleaves host protein SNAP29"
-RhinoA,RV,3D,RdRp,F,T,F,F,RdRp
-RotaA,RotV,NSP1,NSP1,F,F,F,F,interferon antagonist
-RotaA,RotV,NSP2,NSP2,F,F,F,F,"multifunctional, viroplasm formation, genome replication, encapsidation"
-RotaA,RotV,NSP3,NSP3,F,F,F,F,"promote translation, suppress host protein synthesis"
-RotaA,RotV,NSP4,NSP4,F,F,F,F,"multifunctional, ER transmembrane glycoprotein, cellular/viral protein interactions"
-RotaA,RotV,NSP5,NSP5,F,F,F,F,binding partner of NSP2 in formation of viroplasm
-RotaA,RotV,VP1,RdRp,F,T,F,F,RdRp
-RotaA,RotV,VP2,VP2,F,F,F,T,inner capsid
-RotaA,RotV,VP3,VP3,F,F,F,F,RNA capping enzyme
-RotaA,RotV,VP4,VP4,T,F,F,T,"spike protein, cleaved to form VP8 and VP5"
-RotaA,RotV,VP6,VP6,F,F,F,T,"adapter for outer capsid proteins, mediating entry"
-RotaA,RotV,VP7,VP7,T,F,F,T,"outer capsid, coat"
-rsv,RSV,attachment protein,G,T,F,F,T,"glycoprotein, host cell attachment"
-rsv,RSV,fusion protein,F,T,F,F,T,"glycoprotein, membrane fusion"
-rsv,RSV,large protein,L,F,T,F,F,polymerase
-rsv,RSV,matrix protein,M,F,F,F,T,"virus assembly into filaments, budding"
-rsv,RSV,matrix protein 2-1,M2-1,F,F,F,F,transcription elongation factor
-rsv,RSV,matrix protein 2-2,M2-2,F,F,F,F,regulation of viral transcription
-rsv,RSV,nonstructural protein 1,nsp1,F,F,F,F,interferon antagonist
-rsv,RSV,nonstructural protein 2,nsp2,F,F,F,F,interferon antagonist
-rsv,RSV,nucleoprotein,F,F,F,F,T,"nucleocapsid protein, RNA binding"
-rsv,RSV,phosphoprotein,P,F,T,F,F,component of polymerase complex
-rsv,RSV,small hydrophobic protein,SH,T,F,F,T,ion channel
-TBEV,TBEV,core protein,CP,F,F,F,T,structural component of nucleocapsid
-TBEV,TBEV,envelope protein E,E,T,F,F,T,"envelope protein, bind host cell receptor, main target for nAbs"
-TBEV,TBEV,matrix protein M,M,F,F,F,T,chaperone supporting E protein folding and maturation
-TBEV,TBEV,non-structural protein NS1,NS1,F,F,F,F,"glycoprotein, immunogenic?, RNA replication"
-TBEV,TBEV,non-structural protein NS2a,NS2a,F,F,F,F,"replication assembly, interferes with interferon signaling"
-TBEV,TBEV,non-structural protein NS2b,NS2b,F,F,F,F,NS3 cofactor
-TBEV,TBEV,non-structural protein NS3,NS3,F,F,T,F,serine protease
-TBEV,TBEV,non-structural protein NS4a,NS4a,F,F,F,F,"replication, membrane rearrangement"
-TBEV,TBEV,non-structural protein NS4b,NS4b,F,F,F,F,"replication, stress response"
-TBEV,TBEV,non-structural protein NS5,RdRp,F,T,F,F,RdRp
-TBEV,TBEV,pre protein,pr,F,F,F,T,chaperone supporting E protein folding and maturation
-Tobacco,TMV,coat protein,CP,F,F,F,T,coat protein
-Tobacco,TMV,movement protein,MP,F,F,F,F,intercellular movement
-Tobacco,TMV,RdRp,RdRp,F,T,F,F,RdRp
-Tobacco,TMV,replication protein,RP,F,T,F,F,"methyltransferase, RNA helicase"
-VEEV,VEEV,6K,6K,F,F,F,F,ion channel
-VEEV,VEEV,capsid,CA,F,F,F,F,capsid protein
-VEEV,VEEV,E1,E1,T,F,F,T,envelope glycoprotein
-VEEV,VEEV,E2,E2,T,F,F,T,"envelope glycoprotein, spike"
-VEEV,VEEV,E3,E3,F,F,F,F,"binds E1/E2 spike complex, preventing premature fusion"
-VEEV,VEEV,nsp1,nsp1,F,F,F,F,"capping of viral mRNA, methyltransferase, guanylylation activity"
-VEEV,VEEV,nsp2,nsp2,F,F,T,F,polyprotein major protease
-VEEV,VEEV,nsp3,nsp3,F,F,F,F,ADP-Ribosylhydrolase
-VEEV,VEEV,nsp4,RdRp,F,T,F,F,RdRp
-wnv,WNV,anchored capsid protein,CA,F,F,F,T,structural component of nucleocapsid
-wnv,WNV,envelope protein,E,T,F,F,T,"envelope protein, bind host cell receptor, main target for nAbs"
-wnv,WNV,membrane protein,M,F,F,F,T,chaperone supporting E protein folding and maturation
-wnv,WNV,nonstructural protein 1,NS1,F,F,F,F,"glycoprotein, immunogenic?, RNA replication"
-wnv,WNV,nonstructural protein 2A,NS2A,F,F,F,F,"replication assembly, interferes with interferon signaling"
-wnv,WNV,nonstructural protein 2B,NS2B,F,F,F,F,NS3 cofactor
-wnv,WNV,nonstructural protein 3,NS3,F,F,T,F,serine protease
-wnv,WNV,nonstructural protein 4A,NS4A,F,F,F,F,"replication, membrane rearrangement"
-wnv,WNV,nonstructural protein 4B,NS4B,F,F,F,F,"replication, stress response"
-wnv,WNV,nonstructural protein 5,RdRp,F,T,F,F,RdRp
-wnv,WNV,pre-membrane protein,pr,F,F,F,T,chaperone supporting E protein folding and maturation
-YFV,YFV,anchored core protein C,CA,F,F,F,T,structural component of nucleocapsid
-YFV,YFV,envelope protein,E,T,F,F,T,"envelope protein, bind host cell receptor, main target for nAbs"
-YFV,YFV,M protein precursor,prM,F,F,F,T,chaperone supporting E protein folding and maturation
-YFV,YFV,non-structural protein NS1,NS1,F,F,F,F,"glycoprotein, immunogenic?, RNA replication"
-YFV,YFV,non-structural protein NS2a,NS2a,F,F,F,F,"replication assembly, interferes with interferon signaling"
-YFV,YFV,non-structural protein NS2b,NS2b,F,F,F,F,NS3 cofactor
-YFV,YFV,non-structural protein NS3,NS3,F,F,T,F,serine protease
-YFV,YFV,non-structural protein NS4a,NS4a,F,F,F,F,"replication, membrane rearrangement"
-YFV,YFV,non-structural protein NS4b,NS4b,F,F,F,F,"replication, stress response"
-YFV,YFV,RNA-dependent RNA polymerase,RdRp,F,T,F,F,RdRp
-zika,ZIKV,anchored capsid protein C,CA,F,F,F,T,structural component of nucleocapsid
-zika,ZIKV,envelope protein E,E,T,F,F,T,"envelope protein, bind host cell receptor, main target for nAbs"
-zika,ZIKV,membrane glycoprotein precursor M,prM,F,F,F,T,chaperone supporting E protein folding and maturation
-zika,ZIKV,nonstructural protein NS1,NS1,F,F,F,F,"glycoprotein, immunogenic?, RNA replication"
-zika,ZIKV,nonstructural protein NS2A,NS2A,F,F,F,F,"replication assembly, interferes with interferon signaling"
-zika,ZIKV,nonstructural protein NS2B,NS2B,F,F,F,F,NS3 cofactor
-zika,ZIKV,nonstructural protein NS3,NS3,F,F,T,F,serine protease
-zika,ZIKV,nonstructural protein NS4A,NS4A,F,F,F,F,"replication, membrane rearrangement"
-zika,ZIKV,nonstructural protein NS4B,NS4B,F,F,F,F,"replication, stress response"
-zika,ZIKV,RNA-dependent RNA polymerase NS5,RdRp,F,T,F,F,RdRp
+virus,abbrv,family,enveloped,protein,short,exposed,polymerase,protease,structural,function
+chikv,CHIKV,Togaviridae,T,6K protein,6K,F,F,F,T,putative ion channel
+chikv,CHIKV,Togaviridae,T,capsid protein,CA,F,F,F,T,encapsidates genomic RNA
+chikv,CHIKV,Togaviridae,T,E1 envelope glycoprotein,E1,T,F,F,T,Virus-host cell membrane fusion
+chikv,CHIKV,Togaviridae,T,E2 envelope glycoprotein,E2,T,F,F,T,receptor binding and cell entry
+chikv,CHIKV,Togaviridae,T,E3 protein,E3,T,F,F,T,"leader peptide, may shield E1 during egress"
+chikv,CHIKV,Togaviridae,T,mRNA-capping enzyme nsp1,nsp1,F,F,F,F,"caps viral RNA, membrane anchor for replicase complex"
+chikv,CHIKV,Togaviridae,T,non-structural protein nsp3,nsp3,F,F,F,F,"Minus-strand synthesis, likely interacts with host proteins"
+coxsacki,CA16,Picornaviridiae,F,2A-protein,2A,F,F,T,F,"protease, cleavage of viral polyprotein"
+coxsacki,CA16,Picornaviridiae,F,2B-protein,2B,F,F,F,F,"modifies membrane permeability, promotes virus release"
+coxsacki,CA16,Picornaviridiae,F,2C-protein,3C,F,F,F,F,RNA remodeling
+coxsacki,CA16,Picornaviridiae,F,3AB-protein,3AB,F,F,F,F,"suppression of RNA interference, RNA replication"
+coxsacki,CA16,Picornaviridiae,F,3C-protein,3C,F,F,T,F,"protease, cleaves host protein SNAP29"
+coxsacki,CA16,Picornaviridiae,F,3D-protein,3D,F,T,F,F,RdRp
+coxsacki,CA16,Picornaviridiae,F,VP1-protein,VP1,T,F,F,T,"Major viral capsid protein, host receptor binding (GH loop)"
+coxsacki,CA16,Picornaviridiae,F,VP2-protein,VP2,T,F,F,T,"capsid protein, host receptor binding (EF loop)"
+coxsacki,CA16,Picornaviridiae,F,VP3-protein,VP3,T,F,F,T,capsid protein
+coxsacki,CA16,Picornaviridiae,F,VP4-protein,VP4,F,F,F,T,inner surface of capsid
+dengue2,DENV,Flaviviridae,T,anchored capsid protein ancC,CA,F,F,F,T,capsid protein
+dengue2,DENV,Flaviviridae,T,envelope protein E,E,T,F,F,T,spike glycoprotein
+dengue2,DENV,Flaviviridae,T,membrane glycoprotein precursor prM,prM,T,F,F,T,"contained in membrane of immature virus particle, requires furin cleavage, pH dependent, targeted by nAbs"
+dengue2,DENV,Flaviviridae,T,nonstructural protein NS1,NS1,T,F,F,F,"glycoprotein, forms part of replication complex, is found on cell surface, is secreted from cells as a hexamer"
+dengue2,DENV,Flaviviridae,T,nonstructural protein NS2A,NS2A,F,F,F,F,virion assembly
+dengue2,DENV,Flaviviridae,T,nonstructural protein NS2B,NS2B,F,F,T,F,cofactor for NS3 protease
+dengue2,DENV,Flaviviridae,T,nonstructural protein NS3,NS3,F,F,T,F,serine protease
+dengue2,DENV,Flaviviridae,T,nonstructural protein NS4A,NS4A,F,F,F,F,ER membrane-associated replication complex
+dengue2,DENV,Flaviviridae,T,nonstructural protein NS4B,NS4B,F,F,F,F,ER membrane-associated replication complex
+dengue2,DENV,Flaviviridae,T,RNA-dependent RNA polymerase NS5,RdRp,F,T,F,F,RdRp
+enteroA71,EV,Picornaviridiae,F,2A,2A,F,F,T,F,"protease, cleavage of viral polyprotein"
+enteroA71,EV,Picornaviridiae,F,2B,2B,F,F,F,F,"modifies membrane permeability, promotes virus release"
+enteroA71,EV,Picornaviridiae,F,2C,2C,F,F,F,F,RNA remodeling
+enteroA71,EV,Picornaviridiae,F,3AB,3AB,F,F,F,F,"suppression of RNA interference, RNA replication"
+enteroA71,EV,Picornaviridiae,F,3C,3C,F,F,T,F,"protease, cleaves host protein SNAP29"
+enteroA71,EV,Picornaviridiae,F,3D,3D,F,T,F,F,RdRp
+enteroA71,EV,Picornaviridiae,F,VP1,VP1,T,F,F,T,"Major viral capsid protein, host receptor binding (GH loop)"
+enteroA71,EV,Picornaviridiae,F,VP2,VP2,T,F,F,T,"capsid protein, host receptor binding (EF loop)"
+enteroA71,EV,Picornaviridiae,F,VP3,VP3,T,F,F,T,capsid protein
+enteroA71,EV,Picornaviridiae,F,VP4,VP4,F,F,F,T,inner surface of capsid
+Foveavirus,ASPV,Betaflexiviridae,F,coat protein,CP,F,F,F,T,coat protein
+Foveavirus,ASPV,Betaflexiviridae,F,RNA polymerase,RdRp,F,T,F,F,RdRp
+Foveavirus,ASPV,Betaflexiviridae,F,triple gene block 1,TGB1,F,F,F,F,"RNA binding, cell-to-cell movement"
+Foveavirus,ASPV,Betaflexiviridae,F,triple gene block 2,TGB2,F,F,F,F,intracellular movement
+Foveavirus,ASPV,Betaflexiviridae,F,triple gene block 3,TGB3,F,F,F,F,intracellular movement
+HCV1a,HCV,Flaviviridae,T,core,Core,F,F,F,T,"RNA binding, forms nucleocapsid"
+HCV1a,HCV,Flaviviridae,T,E1,E1,T,F,F,T,envelope glycoprotein
+HCV1a,HCV,Flaviviridae,T,E2,E2,T,F,F,T,envelope glycoprotein
+HCV1a,HCV,Flaviviridae,T,NS2,NS2,F,F,T,F,component of NS2/3 protease
+HCV1a,HCV,Flaviviridae,T,NS3,NS3,F,F,T,F,"proteinase, NTPase, helicase"
+HCV1a,HCV,Flaviviridae,T,NS4A,NS4A,F,F,T,F,proteinase cofactor
+HCV1a,HCV,Flaviviridae,T,NS4B,NS4B,F,F,F,F,"formation of viral replication complex, membrane structure"
+HCV1a,HCV,Flaviviridae,T,NS5A,NS5A,F,F,F,F,phosphoprotein
+HCV1a,HCV,Flaviviridae,T,NS5B,RdRp,F,T,F,F,RdRp
+HCV1a,HCV,Flaviviridae,T,p7,p7,F,F,F,F,"also known as NS1, promote translocation of NS2 to ER lumen, ion channel"
+HepA,HAV,Picornaviridiae,F,1B-VP2-mature-peptide,VP2,T,F,F,T,capsid protein
+HepA,HAV,Picornaviridiae,F,1C-VP3-mature-peptide,VP3,T,F,F,T,"capsid protein, predominantly targeted by nAbs"
+HepA,HAV,Picornaviridiae,F,1D-VP1-mature-peptide,VP1,T,F,F,T,capsid protein
+HepA,HAV,Picornaviridiae,F,2A-mature-peptide,2A,F,F,F,T,"Also known as pX, capsid assembly, cleaved off for mature capsid"
+HepA,HAV,Picornaviridiae,F,2B-mature-peptide,2B,F,F,F,F,counteracts innate immune response
+HepA,HAV,Picornaviridiae,F,2C-mature-peptide,2C,F,F,F,F,"ATPase, ribonuclease"
+HepA,HAV,Picornaviridiae,F,3A-mature-peptide,3A,F,F,F,F,RNA binding
+HepA,HAV,Picornaviridiae,F,3C-mature-peptide,3C,F,F,T,F,protease
+HepA,HAV,Picornaviridiae,F,3D-mature-peptide,RdRp,F,T,F,F,RdRp
+HIV1A1,HIV1,Retroviridae,T,Gag,Gag,F,F,F,T,"polyprotein, virus assembly, maturation; matrix, capsid and nucleocapsid"
+HIV1A1,HIV1,Retroviridae,T,gp120,gp120,T,F,F,T,surface glycoprotein
+HIV1A1,HIV1,Retroviridae,T,gp41,gp41,F,F,F,T,transmembrane glycoprotein
+HIV1A1,HIV1,Retroviridae,T,Integrase,Int,F,F,F,F,integration of HIV DNA into host genome
+HIV1A1,HIV1,Retroviridae,T,Nef,Nef,F,F,F,F,"multifunction, promote virus replication and immune evasion"
+HIV1A1,HIV1,Retroviridae,T,PR,PR,F,F,T,F,protease
+HIV1A1,HIV1,Retroviridae,T,RNAse,RNAse,F,T,F,F,component of reverse transcriptase
+HIV1A1,HIV1,Retroviridae,T,RT,RT,F,T,F,F,reverse transcriptase
+HIV1A1,HIV1,Retroviridae,T,Tat,Tat,F,F,F,F,"transactivator, enhances HIV transcription"
+HIV1A1,HIV1,Retroviridae,T,Vif,Vif,F,F,F,F,counteracts innate immune response
+HIV1A1,HIV1,Retroviridae,T,Vpr,Vpr,F,F,F,F,"multifunctional, cytoplasmic-nuclear transport"
+HIV1A1,HIV1,Retroviridae,T,Vpu,Vpu,F,F,F,F,degradation of CD4
+HIV2,HIV2,Retroviridae,T,gag,Gag,F,F,F,T,"polyprotein, virus assembly, maturation; matrix, capsid and nucleocapsid"
+HIV2,HIV2,Retroviridae,T,gp120,gp120,T,F,F,T,surface glycoprotein
+HIV2,HIV2,Retroviridae,T,gp41,gp41,T,F,F,T,transmembrane glycoprotein
+HIV2,HIV2,Retroviridae,T,Integrase,Int,F,F,F,F,integration of HIV DNA into host genome
+HIV2,HIV2,Retroviridae,T,nef,Nef,F,F,F,F,"multifunctional, promotes virus replication"
+HIV2,HIV2,Retroviridae,T,PR,PR,F,F,T,F,protease
+HIV2,HIV2,Retroviridae,T,RNAse,RNAse,F,T,F,F,component of reverse transcriptase
+HIV2,HIV2,Retroviridae,T,RT,RT,F,T,F,F,reverse transcriptase
+HIV2,HIV2,Retroviridae,T,tat,Tat,F,F,F,F,"transactivator, enhances HIV transcription"
+HIV2,HIV2,Retroviridae,T,vif,Vif,F,F,F,F,counteracts innate immune response
+HIV2,HIV2,Retroviridae,T,vpr,Vpr,F,F,F,F,"multifunctional, engages DNA damage response"
+HIV2,HIV2,Retroviridae,T,vpx,Vpx,F,F,F,F,induces degradation of host restriction factor
+IAVH9N2,IAV,Orthomyxoviridae,T,HA,HA,T,F,F,T,"glycoprotein, host cell attachment and membrane fusion"
+IAVH9N2,IAV,Orthomyxoviridae,T,M1,M1,F,F,F,T,encapsidation within envelope
+IAVH9N2,IAV,Orthomyxoviridae,T,M2,M2,T,F,F,T,viroporin in virus envelope
+IAVH9N2,IAV,Orthomyxoviridae,T,NA,NA,T,F,F,T,"exosialidase, release and spread of progeny virions"
+IAVH9N2,IAV,Orthomyxoviridae,T,NP,NP,F,F,F,T,"nucleoprotein, multifunctional, RNA-binding, nuclear import/export"
+IAVH9N2,IAV,Orthomyxoviridae,T,NS1,NS1,F,F,F,F,prevents polyadenylation of cellular mRNAs
+IAVH9N2,IAV,Orthomyxoviridae,T,NS2,NS2,F,F,F,F,mediate nuclear export of viral ribonucleoprotein
+IAVH9N2,IAV,Orthomyxoviridae,T,PA,PA,F,T,F,F,subunit of RdRp complex (endonuclease)
+IAVH9N2,IAV,Orthomyxoviridae,T,PB1,PB1,F,T,F,F,subunit of RdRp complex (primary component)
+IAVH9N2,IAV,Orthomyxoviridae,T,PB2,PB2,F,T,F,F,subunit of RdRp complex
+IBV,IBV,Orthomyxoviridae,T,HA,HA,T,F,F,T,"glycoprotein, host cell attachment and membrane fusion"
+IBV,IBV,Orthomyxoviridae,T,M1,M1,F,F,F,T,encapsidation within envelope
+IBV,IBV,Orthomyxoviridae,T,M2,M2,T,F,F,T,viroporin in virus envelope
+IBV,IBV,Orthomyxoviridae,T,NA,NA,T,F,F,T,"exosialidase, release and spread of progeny virions"
+IBV,IBV,Orthomyxoviridae,T,NP,NP,F,F,F,T,"nucleoprotein, multifunctional, RNA-binding, nuclear import/export"
+IBV,IBV,Orthomyxoviridae,T,NS1,NS1,F,F,F,F,prevents polyadenylation of cellular mRNAs
+IBV,IBV,Orthomyxoviridae,T,NS2,NS2,F,F,F,F,mediate nuclear export of viral ribonucleoprotein
+IBV,IBV,Orthomyxoviridae,T,PA,PA,F,T,F,F,subunit of RdRp complex (endonuclease)
+IBV,IBV,Orthomyxoviridae,T,PB1,PB1,F,T,F,F,subunit of RdRp complex (primary component)
+IBV,IBV,Orthomyxoviridae,T,PB2,PB2,F,T,F,F,subunit of RdRp complex
+lyssavirus,RABV,Rhabdoviridae,T,glycoprotein,G,T,F,F,T,spike glycoprotein
+lyssavirus,RABV,Rhabdoviridae,T,matrix protein,M,F,F,F,T,"virus assembly, innate immune evasion"
+lyssavirus,RABV,Rhabdoviridae,T,nucleoprotein,F,F,F,F,T,"nucleoprotein, RNA binding"
+lyssavirus,RABV,Rhabdoviridae,T,phosphoprotein,P,F,F,F,T,"polymerase cofactor, inhibits interferon signaling"
+lyssavirus,RABV,Rhabdoviridae,T,polymerase,L,F,T,F,T,polymerase
+Mastro1,MastV,Astroviridae,F,RdRp,RdRp,F,T,F,F,RdRp
+Mastro1,MastV,Astroviridae,F,serine-protease,Pro,F,F,T,F,protease
+Mastro1,MastV,Astroviridae,F,VP27,VP27,T,F,F,T,capsid spike
+Mastro1,MastV,Astroviridae,F,VP34,VP34,T,F,F,T,capsid core domain / shell
+measles,MeV,Paramyxoviridae,T,fusion protein,F,T,F,F,T,"glycoprotein, membrane fusion"
+measles,MeV,Paramyxoviridae,T,hemagglutinin protein,H,T,F,F,T,"glycoprotein, host receptor binding"
+measles,MeV,Paramyxoviridae,T,large polymerase protein,L,F,T,F,F,RdRp
+measles,MeV,Paramyxoviridae,T,matrix protein,M,F,F,F,T,virus assembly
+measles,MeV,Paramyxoviridae,T,nucleocapsid protein,F,F,F,F,T,encapsidates genomic RNA
+measles,MeV,Paramyxoviridae,T,phosphoprotein,P,F,T,F,F,component of polymerase complex
+mumps,MuV,Paramyxoviridae,T,fusion protein,F,T,F,F,T,"glycoprotein, membrane fusion"
+mumps,MuV,Paramyxoviridae,T,hemagglutinin,H,T,F,F,T,"glycoprotein, host cell attachment"
+mumps,MuV,Paramyxoviridae,T,large polymerase protein,L,F,T,F,F,RdRp
+mumps,MuV,Paramyxoviridae,T,matrix protein,M,F,F,F,T,linkage of core to inner surface of membrane
+mumps,MuV,Paramyxoviridae,T,nucleocapsid protein,F,F,F,F,T,"nucleoprotein, RNA binding"
+mumps,MuV,Paramyxoviridae,T,phosphoprotein,P,F,T,F,F,component of polymerase complex
+mumps,MuV,Paramyxoviridae,T,small hydrophobic protein,SH,F,F,F,F,prevents cell apoptosis
+orthobornavirus,BDV,Bornaviridae,T,glycoprotein,G,T,F,F,T,envelope glycoprotein
+orthobornavirus,BDV,Bornaviridae,T,matrix protein,M,F,F,F,T,linkage of core to inner surface of membrane
+orthobornavirus,BDV,Bornaviridae,T,nucleoprotein,F,F,F,F,T,"nucleoprotein, RNA binding"
+orthobornavirus,BDV,Bornaviridae,T,phosphoprotein,P,F,T,F,F,component of polymerase complex
+orthobornavirus,BDV,Bornaviridae,T,RNA dependent RNA polymerase,L,F,T,F,F,RdRp
+polio,PV,Picornaviridiae,F,protein-2A,2A,F,F,T,F,"protease, cleavage of viral polyprotein"
+polio,PV,Picornaviridiae,F,protein-2B,2B,F,F,F,F,"modifies membrane permeability, promotes virus release"
+polio,PV,Picornaviridiae,F,protein-2C,2C,F,F,F,F,RNA remodeling
+polio,PV,Picornaviridiae,F,protein-3AB,3AB,F,F,F,F,"suppression of RNA interference, RNA replication"
+polio,PV,Picornaviridiae,F,protein-3C,3C,F,F,T,F,"protease, cleaves host protein SNAP29"
+polio,PV,Picornaviridiae,F,protein-3D,3D,F,T,F,F,RdRp
+polio,PV,Picornaviridiae,F,protein-VP1,VP1,T,F,F,T,"Major viral capsid protein, host receptor binding (GH loop)"
+polio,PV,Picornaviridiae,F,protein-VP2,VP2,T,F,F,T,"capsid protein, host receptor binding (EF loop)"
+polio,PV,Picornaviridiae,F,protein-VP3,VP3,T,F,F,T,capsid protein
+polio,PV,Picornaviridiae,F,protein-VP4,VP4,F,F,F,T,inner surface of capsid
+PotatoX,PVX,Alphaflexiviridae,F,CP,CP,F,F,F,T,"coat protein, encapsidation of virus genome, forms ribonucleoprotein complexes"
+PotatoX,PVX,Alphaflexiviridae,F,RdRp,RdRp,F,T,F,F,RdRp
+PotatoX,PVX,Alphaflexiviridae,F,TGB1,TGB1,F,F,F,F,intercellular movement
+PotatoX,PVX,Alphaflexiviridae,F,TGB2,TGB2,F,F,F,F,intercellular movement
+PotatoX,PVX,Alphaflexiviridae,F,TGB3,TGB3,F,F,F,F,intercellular movement
+PotatoY,PVY,Potyviridae,F,6K1,6K1,F,F,F,F,interferes with host defence proteins
+PotatoY,PVY,Potyviridae,F,6K2,6K2,F,F,F,F,induces replication vesicle migration to chloroplast
+PotatoY,PVY,Potyviridae,F,CI,CI,F,F,F,F,"cylindrical inclusion; ATP binding, NTPase and RNA helicase activities"
+PotatoY,PVY,Potyviridae,F,coat,CP,F,F,F,T,"coat protein, virus assembly"
+PotatoY,PVY,Potyviridae,F,HC-Pro,HC-Pro,F,F,F,F,"helper component protease, RNA silencing suppressor"
+PotatoY,PVY,Potyviridae,F,NIa-Pro,NIa-Pro,F,F,T,F,"cysteine protease, polyprotein cleavage"
+PotatoY,PVY,Potyviridae,F,NIa-VPg,NIa-VPg,F,F,F,F,"genome-linked protein, promotes viral RNA translation"
+PotatoY,PVY,Potyviridae,F,NIb,NIb,F,T,F,F,RdRp
+PotatoY,PVY,Potyviridae,F,P1,P1,F,F,T,F,serine protease
+PotatoY,PVY,Potyviridae,F,P3,P3,F,F,F,F,ER membrane-associated replication complex
+RhinoA,RV,Picornaviridiae,F,1A,VP4,F,F,F,T,inner surface of capsid
+RhinoA,RV,Picornaviridiae,F,1B,VP2,T,F,F,T,"capsid protein, host receptor binding (EF loop)"
+RhinoA,RV,Picornaviridiae,F,1C,VP3,T,F,F,T,capsid protein
+RhinoA,RV,Picornaviridiae,F,1D,VP1,T,F,F,T,"Major viral capsid protein, host receptor binding (GH loop)"
+RhinoA,RV,Picornaviridiae,F,2A,2A,F,F,T,F,"protease, cleavage of viral polyprotein"
+RhinoA,RV,Picornaviridiae,F,2B,2B,F,F,F,F,"modifies membrane permeability, promotes virus release"
+RhinoA,RV,Picornaviridiae,F,2C,2C,F,F,F,F,RNA remodeling
+RhinoA,RV,Picornaviridiae,F,3AB,3AB,F,F,F,F,"suppression of RNA interference, RNA replication"
+RhinoA,RV,Picornaviridiae,F,3C,3C,F,F,T,F,"protease, cleaves host protein SNAP29"
+RhinoA,RV,Picornaviridiae,F,3D,RdRp,F,T,F,F,RdRp
+RotaA,RotV,Sedoreoviridae,F,NSP1,NSP1,F,F,F,F,interferon antagonist
+RotaA,RotV,Sedoreoviridae,F,NSP2,NSP2,F,F,F,F,"multifunctional, viroplasm formation, genome replication, encapsidation"
+RotaA,RotV,Sedoreoviridae,F,NSP3,NSP3,F,F,F,F,"promote translation, suppress host protein synthesis"
+RotaA,RotV,Sedoreoviridae,F,NSP4,NSP4,F,F,F,F,"multifunctional, ER transmembrane glycoprotein, cellular/viral protein interactions"
+RotaA,RotV,Sedoreoviridae,F,NSP5,NSP5,F,F,F,F,binding partner of NSP2 in formation of viroplasm
+RotaA,RotV,Sedoreoviridae,F,VP1,RdRp,F,T,F,F,RdRp
+RotaA,RotV,Sedoreoviridae,F,VP2,VP2,F,F,F,T,inner capsid
+RotaA,RotV,Sedoreoviridae,F,VP3,VP3,F,F,F,F,RNA capping enzyme
+RotaA,RotV,Sedoreoviridae,F,VP4,VP4,T,F,F,T,"spike protein, cleaved to form VP8 and VP5"
+RotaA,RotV,Sedoreoviridae,F,VP6,VP6,F,F,F,T,"adapter for outer capsid proteins, mediating entry"
+RotaA,RotV,Sedoreoviridae,F,VP7,VP7,T,F,F,T,"outer capsid, coat"
+rsv,RSV,Pneumoviridae,T,attachment protein,G,T,F,F,T,"glycoprotein, host cell attachment"
+rsv,RSV,Pneumoviridae,T,fusion protein,F,T,F,F,T,"glycoprotein, membrane fusion"
+rsv,RSV,Pneumoviridae,T,large protein,L,F,T,F,F,polymerase
+rsv,RSV,Pneumoviridae,T,matrix protein,M,F,F,F,T,"virus assembly into filaments, budding"
+rsv,RSV,Pneumoviridae,T,matrix protein 2-1,M2-1,F,F,F,F,transcription elongation factor
+rsv,RSV,Pneumoviridae,T,matrix protein 2-2,M2-2,F,F,F,F,regulation of viral transcription
+rsv,RSV,Pneumoviridae,T,nonstructural protein 1,nsp1,F,F,F,F,interferon antagonist
+rsv,RSV,Pneumoviridae,T,nonstructural protein 2,nsp2,F,F,F,F,interferon antagonist
+rsv,RSV,Pneumoviridae,T,nucleoprotein,F,F,F,F,T,"nucleocapsid protein, RNA binding"
+rsv,RSV,Pneumoviridae,T,phosphoprotein,P,F,T,F,F,component of polymerase complex
+rsv,RSV,Pneumoviridae,T,small hydrophobic protein,SH,T,F,F,T,ion channel
+TBEV,TBEV,Flaviviridae,T,core protein,CP,F,F,F,T,structural component of nucleocapsid
+TBEV,TBEV,Flaviviridae,T,envelope protein E,E,T,F,F,T,"envelope protein, bind host cell receptor, main target for nAbs"
+TBEV,TBEV,Flaviviridae,T,matrix protein M,M,F,F,F,T,chaperone supporting E protein folding and maturation
+TBEV,TBEV,Flaviviridae,T,non-structural protein NS1,NS1,F,F,F,F,"glycoprotein, immunogenic?, RNA replication"
+TBEV,TBEV,Flaviviridae,T,non-structural protein NS2a,NS2a,F,F,F,F,"replication assembly, interferes with interferon signaling"
+TBEV,TBEV,Flaviviridae,T,non-structural protein NS2b,NS2b,F,F,F,F,NS3 cofactor
+TBEV,TBEV,Flaviviridae,T,non-structural protein NS3,NS3,F,F,T,F,serine protease
+TBEV,TBEV,Flaviviridae,T,non-structural protein NS4a,NS4a,F,F,F,F,"replication, membrane rearrangement"
+TBEV,TBEV,Flaviviridae,T,non-structural protein NS4b,NS4b,F,F,F,F,"replication, stress response"
+TBEV,TBEV,Flaviviridae,T,non-structural protein NS5,RdRp,F,T,F,F,RdRp
+TBEV,TBEV,Flaviviridae,T,pre protein,pr,F,F,F,T,chaperone supporting E protein folding and maturation
+Tobacco,TMV,Virgaviridae,F,coat protein,CP,F,F,F,T,coat protein
+Tobacco,TMV,Virgaviridae,F,movement protein,MP,F,F,F,F,intercellular movement
+Tobacco,TMV,Virgaviridae,F,RdRp,RdRp,F,T,F,F,RdRp
+Tobacco,TMV,Virgaviridae,F,replication protein,RP,F,T,F,F,"methyltransferase, RNA helicase"
+VEEV,VEEV,Togaviridae,T,6K,6K,F,F,F,F,ion channel
+VEEV,VEEV,Togaviridae,T,capsid,CA,F,F,F,F,capsid protein
+VEEV,VEEV,Togaviridae,T,E1,E1,T,F,F,T,envelope glycoprotein
+VEEV,VEEV,Togaviridae,T,E2,E2,T,F,F,T,"envelope glycoprotein, spike"
+VEEV,VEEV,Togaviridae,T,E3,E3,F,F,F,F,"binds E1/E2 spike complex, preventing premature fusion"
+VEEV,VEEV,Togaviridae,T,nsp1,nsp1,F,F,F,F,"capping of viral mRNA, methyltransferase, guanylylation activity"
+VEEV,VEEV,Togaviridae,T,nsp2,nsp2,F,F,T,F,polyprotein major protease
+VEEV,VEEV,Togaviridae,T,nsp3,nsp3,F,F,F,F,ADP-Ribosylhydrolase
+VEEV,VEEV,Togaviridae,T,nsp4,RdRp,F,T,F,F,RdRp
+wnv,WNV,Flaviviridae,T,anchored capsid protein,CA,F,F,F,T,structural component of nucleocapsid
+wnv,WNV,Flaviviridae,T,envelope protein,E,T,F,F,T,"envelope protein, bind host cell receptor, main target for nAbs"
+wnv,WNV,Flaviviridae,T,membrane protein,M,F,F,F,T,chaperone supporting E protein folding and maturation
+wnv,WNV,Flaviviridae,T,nonstructural protein 1,NS1,F,F,F,F,"glycoprotein, immunogenic?, RNA replication"
+wnv,WNV,Flaviviridae,T,nonstructural protein 2A,NS2A,F,F,F,F,"replication assembly, interferes with interferon signaling"
+wnv,WNV,Flaviviridae,T,nonstructural protein 2B,NS2B,F,F,F,F,NS3 cofactor
+wnv,WNV,Flaviviridae,T,nonstructural protein 3,NS3,F,F,T,F,serine protease
+wnv,WNV,Flaviviridae,T,nonstructural protein 4A,NS4A,F,F,F,F,"replication, membrane rearrangement"
+wnv,WNV,Flaviviridae,T,nonstructural protein 4B,NS4B,F,F,F,F,"replication, stress response"
+wnv,WNV,Flaviviridae,T,nonstructural protein 5,RdRp,F,T,F,F,RdRp
+wnv,WNV,Flaviviridae,T,pre-membrane protein,pr,F,F,F,T,chaperone supporting E protein folding and maturation
+YFV,YFV,Flaviviridae,T,anchored core protein C,CA,F,F,F,T,structural component of nucleocapsid
+YFV,YFV,Flaviviridae,T,envelope protein,E,T,F,F,T,"envelope protein, bind host cell receptor, main target for nAbs"
+YFV,YFV,Flaviviridae,T,M protein precursor,prM,F,F,F,T,chaperone supporting E protein folding and maturation
+YFV,YFV,Flaviviridae,T,non-structural protein NS1,NS1,F,F,F,F,"glycoprotein, immunogenic?, RNA replication"
+YFV,YFV,Flaviviridae,T,non-structural protein NS2a,NS2a,F,F,F,F,"replication assembly, interferes with interferon signaling"
+YFV,YFV,Flaviviridae,T,non-structural protein NS2b,NS2b,F,F,F,F,NS3 cofactor
+YFV,YFV,Flaviviridae,T,non-structural protein NS3,NS3,F,F,T,F,serine protease
+YFV,YFV,Flaviviridae,T,non-structural protein NS4a,NS4a,F,F,F,F,"replication, membrane rearrangement"
+YFV,YFV,Flaviviridae,T,non-structural protein NS4b,NS4b,F,F,F,F,"replication, stress response"
+YFV,YFV,Flaviviridae,T,RNA-dependent RNA polymerase,RdRp,F,T,F,F,RdRp
+zika,ZIKV,Flaviviridae,T,anchored capsid protein C,CA,F,F,F,T,structural component of nucleocapsid
+zika,ZIKV,Flaviviridae,T,envelope protein E,E,T,F,F,T,"envelope protein, bind host cell receptor, main target for nAbs"
+zika,ZIKV,Flaviviridae,T,membrane glycoprotein precursor M,prM,F,F,F,T,chaperone supporting E protein folding and maturation
+zika,ZIKV,Flaviviridae,T,nonstructural protein NS1,NS1,F,F,F,F,"glycoprotein, immunogenic?, RNA replication"
+zika,ZIKV,Flaviviridae,T,nonstructural protein NS2A,NS2A,F,F,F,F,"replication assembly, interferes with interferon signaling"
+zika,ZIKV,Flaviviridae,T,nonstructural protein NS2B,NS2B,F,F,F,F,NS3 cofactor
+zika,ZIKV,Flaviviridae,T,nonstructural protein NS3,NS3,F,F,T,F,serine protease
+zika,ZIKV,Flaviviridae,T,nonstructural protein NS4A,NS4A,F,F,F,F,"replication, membrane rearrangement"
+zika,ZIKV,Flaviviridae,T,nonstructural protein NS4B,NS4B,F,F,F,F,"replication, stress response"
+zika,ZIKV,Flaviviridae,T,RNA-dependent RNA polymerase NS5,RdRp,F,T,F,F,RdRp

@@ -83,6 +83,8 @@ if __name__ == "__main__":
                         help="set to overwrite existing output files.")
     parser.add_argument("--seed", type=int, default=None,
                         help="set random seed")
+    parser.add_argument("--keep", action="store_true",
+                        help="Copy over alignments that are too short.")
 
     args = parser.parse_args()
     assert args.reps > 0, "Error, -n must be greater than zero!"
@@ -95,7 +97,10 @@ if __name__ == "__main__":
     ln = len(sequences[0]) // 3
 
     if ln <= args.num:
-        sys.stderr.write(f"Input alignment is already <= target length {args.num}\n")
+        sys.stderr.write(f"Input alignment <= target length {args.num}\n")
+        if ln < args.num and not args.keep:
+            sys.exit()
+        
         of = f"{args.prefix}_0.{args.outfmt}"
         with open(of, 'w') as handle:
             for h, s in zip(headers, sequences):
