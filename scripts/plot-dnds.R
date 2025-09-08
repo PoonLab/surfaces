@@ -40,14 +40,25 @@ dev.off()
 
 hist(log(dnds$dnds))
 
+# naive model
+fit <- lm(log(dnds$dnds) ~ dnds$exposed)
+summary(fit)
+confint(fit)
+
+fit <- glm(dnds ~ exposed, data=dnds, family=Gamma(link='log'))
+summary(fit)
+confint(fit)
+
 require(lme4)
-fit <- lmer(log(dnds$dnds) ~ dnds$exposed*dnds$enveloped + (1|dnds$virus))
+fit <- lmer(log(dnds$dnds) ~ dnds$exposed + dnds$enveloped + (1|dnds$virus))
 summary(fit)
 confint(fit)
 
 require(BSDA)
 EDA(residuals(fit))
 
-fit2 <- glmer(dnds ~ exposed * enveloped + (1|virus), data=dnds, family='Gamma')
+
+fit2 <- glmer(dnds ~ exposed  + (1|virus), data=dnds, family=Gamma(link='log'))
 summary(fit2)
 EDA(residuals(fit2))
+confint(fit2, method='boot', boot.type='basic')
