@@ -1,3 +1,0 @@
-Retrieving all accns of viruses with "1" listed number of proteins 
-seg and non-segmented viruses retrieved separatly then combined 
-
