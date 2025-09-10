@@ -62,7 +62,7 @@ HepA,HAV,Picornaviridiae,F,3C-mature-peptide,3C,F,F,T,F,protease
 HepA,HAV,Picornaviridiae,F,3D-mature-peptide,RdRp,F,T,F,F,RdRp
 HIV1A1,HIV1,Retroviridae,T,Gag,Gag,F,F,F,T,"polyprotein, virus assembly, maturation; matrix, capsid and nucleocapsid"
 HIV1A1,HIV1,Retroviridae,T,gp120,gp120,T,F,F,T,surface glycoprotein
-HIV1A1,HIV1,Retroviridae,T,gp41,gp41,F,F,F,T,transmembrane glycoprotein
+HIV1A1,HIV1,Retroviridae,T,gp41,gp41,T,F,F,T,transmembrane glycoprotein
 HIV1A1,HIV1,Retroviridae,T,Integrase,Int,F,F,F,F,integration of HIV DNA into host genome
 HIV1A1,HIV1,Retroviridae,T,Nef,Nef,F,F,F,F,"multifunction, promote virus replication and immune evasion"
 HIV1A1,HIV1,Retroviridae,T,PR,PR,F,F,T,F,protease

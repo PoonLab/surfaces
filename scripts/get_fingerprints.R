@@ -67,27 +67,44 @@ mdat$keys <- paste(mdat$virus, mdat$protein)
 #idx <- which(!is.element(keys, mdat$keys))
 #length(keys[idx])==0
 
-idx <- match(mdat$keys, keys)
-
+idx <- match(keys, mdat$keys)
+mdat <- mdat[idx, ]
+mdat$label <- paste(mdat$abbrv, mdat$short)
 #idx <- which(!is.element(mdat$keys, keys))
 #idx2 <- which(mdat$include=="N")
 #all(is.element(idx, idx2))
 
 
 # visualize results
+pal <- colorRampPalette(c('white', 'steelblue3', 'grey10'))(24)
 for (start in seq(1, length(grids.0), 25)) {
   end <- min(start + 24, length(grids.0))
-  png(paste("fpt.cod50.n0.", start, "-", end, ".png", sep=''), 
-      width=6*300, height=6*300, res=300)
+  #png(paste("fpt.cod50.n0.", start, "-", end, ".png", sep=''), 
+  #    width=6*300, height=6*300, res=300)
+  pdf(paste("fpt.step9.n0.", start, "-", end, ".pdf", sep=''))
   par(mfrow=c(5, 5), mar=c(0,0,0,0))
   for (i in start:end) {
-    image(grids.0[[i]]$grid, xaxt='n', yaxt='n')
+    image(grids.0[[i]]$grid, xaxt='n', yaxt='n', 
+          col=pal)  #hcl.colors(12, 'Purples', rev=T))
     abline(a=0, b=1, col=rgb(0,0,0,0.2))
     text(x=0.5, y=0.95, cex=0.8,
          label=paste(grids.0[[i]]$virus, grids.0[[i]]$protein, sep=" "))
   }
   dev.off()  
 }
+
+# do a random sample
+set.seed(127)
+idx <- sample(1:length(grids.0), 25)
+pdf("~/papers/surfaces/img/fingerprint-sample.pdf", width=6, height=6)
+par(mar=c(0,0,0,0), mfrow=c(5,5))
+for (i in idx) {
+  image(grids.0[[i]]$grid, xaxt='n', yaxt='n', 
+        col=pal)  #hcl.colors(12, 'Purples', rev=T))
+  abline(a=0, b=1, col=rgb(0,0,0,0.2))
+  text(x=0.5, y=0.95, cex=1, label=mdat$label[i])
+}
+dev.off()
 
 
 # compare replicates

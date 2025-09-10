@@ -98,18 +98,27 @@ idx <- match(row.names(cents), mdat$key)
 mdat <- mdat[idx, ]
 labels <- paste(mdat$abbrv, mdat$short)
 
+require(dichromat)
+
+pdf("~/papers/surfaces/img/mds.pdf", width=10, height=5)
+par(mfrow=c(1,2), mar=c(0,0,0,0))
 plot(cents, type='n')
 #text(cents[,1], cents[,2], labels, cex=0.7, col=ifelse(mdat$enveloped, 'red', 'blue'))
-
-text(cents[,1], cents[,2], labels, cex=0.7, font=ifelse(mdat$exposed, 2, 1),
+text(cents[,1], cents[,2], labels, 
+     cex=ifelse(mdat$exposed, 0.7, 0.5), 
+     font=ifelse(mdat$exposed, 2, 1),
      col=ifelse(!mdat$exposed, 'cadetblue',
-                ifelse(mdat$enveloped, 'firebrick', 'darkorange')), 
+                ifelse(mdat$enveloped, 'firebrick', 'darkorange'))
      )
-
-text(cents[,1], cents[,2], labels, cex=0.7, font=ifelse(!mdat$exposed, 2, 1),
+plot(cents, type='n', yaxt='n')
+text(cents[,1], cents[,2], labels, 
+     cex=ifelse(mdat$exposed, 0.5, 0.7), 
+     font=ifelse(mdat$exposed, 1, 2),
      col=ifelse(mdat$exposed, 'cadetblue',
-                ifelse(mdat$enveloped, 'firebrick', 'darkorange')), 
+                ifelse(mdat$enveloped, 'firebrick', 'darkorange'))
 )
+dev.off()
+
 
 text(cents[,1], cents[,2], labels, cex=0.7, font=ifelse(mdat$polymerase, 2, 1),
      col=ifelse(!mdat$polymerase, 'cadetblue',
