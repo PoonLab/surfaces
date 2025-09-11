@@ -17,6 +17,18 @@ mdat$ncod <- astats$ncod
 mdat$nseq <- astats$nseq
 mdat$tree.len <- astats$treelen
 
+# supplementary figure
+pdf("~/papers/surfaces/img/align-stats.pdf", width=9, height=4)
+par(mar=c(5,5,1,1), mfrow=c(1,2))
+hist(mdat$ncod, main=NA, xlab="Alignment length (codons)")
+rug(mdat$ncod)
+abline(v=100, lty=2)
+hist(mdat$tree.len, main=NA, xlab="Tree length")
+rug(mdat$tree.len)
+abline(v=c(0.5, 2), lty=2)
+dev.off()
+
+
 # calculate Earth mover's distance
 require(transport)
 n <- length(breaks)
@@ -91,7 +103,7 @@ text(mds$points[,1], mds$points[,2], labels=labels, cex=0.6,
 
 # show that replicates are clustered
 idx <- as.integer(as.factor(labels))
-set.seed(101)
+set.seed(1)
 pick <- sample(1:max(idx), 25)
 pick.lab <- unique(labels)[pick]
 
