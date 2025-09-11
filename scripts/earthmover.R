@@ -75,6 +75,7 @@ barplot(head(mds$eig)/sum(mds$eig))
 #labels <- gsub("protein", "", names(wpps))
 labels <- paste(mdatx$abbrv, mdatx$short)
 
+
 #pdf("mds.pdf", width=11, height=18)
 par(mfrow=c(1,1), mar=c(0,0,0,0))
 plot(mds$points[,1:2], type='n')
@@ -87,9 +88,28 @@ text(mds$points[,1], mds$points[,2], labels=labels, cex=0.6,
      col=ifelse(mdatx$exposed, 'red', 'blue')) #, labels=names(wpps), cex=0.5, col=pal)
 #dev.off()
 
+
+# show that replicates are clustered
+idx <- as.integer(as.factor(labels))
+set.seed(101)
+pick <- sample(1:max(idx), 25)
+pick.lab <- unique(labels)[pick]
+
+#pdf("~/papers/surfaces/img/samples-cluster.pdf", width=6, height=6)
+png("~/papers/surfaces/img/samples-cluster.png", width=6*600, 
+    height=6*600, res=600)
+par(mar=c(0,0,0,0), mfrow=c(5,5))
+for (i in 1:25) {
+  plot(mds$points[,1:2], pch=19, col='grey', cex=0.2, main=pick.lab[i], 
+       line=-1, xaxt='n', yaxt='n', xlab=NA, ylab=NA, cex.main=1, font.main=1)
+  points(mds$points[which(idx==pick[i]), 1], mds$points[which(idx==pick[i]), 2])
+}
+dev.off()
+
+
+
+
 # calculate centroids for each virus-protein combo
-
-
 cents <- t(sapply(split(1:nrow(mds$points), mdatx$key), function(i) {
   c(mean(mds$points[i, 1]), mean(mds$points[i, 2]))
 }))
@@ -102,7 +122,7 @@ require(dichromat)
 
 pdf("~/papers/surfaces/img/mds.pdf", width=10, height=5)
 par(mfrow=c(1,2), mar=c(0,0,0,0))
-plot(cents, type='n')
+plot(cents, type='n', bty='n', xaxt='n', yaxt='n')
 #text(cents[,1], cents[,2], labels, cex=0.7, col=ifelse(mdat$enveloped, 'red', 'blue'))
 text(cents[,1], cents[,2], labels, 
      cex=ifelse(mdat$exposed, 0.7, 0.5), 
@@ -110,21 +130,39 @@ text(cents[,1], cents[,2], labels,
      col=ifelse(!mdat$exposed, 'cadetblue',
                 ifelse(mdat$enveloped, 'firebrick', 'darkorange'))
      )
+text(max(cents[,1]), max(cents[,2]), label="Surface-exposed", adj=1, cex=1.2)
+abline(v=par('usr')[2])
+plot(cents, type='n', yaxt='n', bty='n', xaxt='n', yaxt='n')
+text(cents[,1], cents[,2], labels, 
+     cex=ifelse(mdat$polymerase, 0.7, 0.5), 
+     font=ifelse(mdat$polymerase, 2, 1),
+     col=ifelse(!mdat$polymerase, 'cadetblue',
+                ifelse(mdat$enveloped, 'firebrick', 'darkorange')), 
+)
+text(max(cents[,1]), max(cents[,2]), label="Polymerase", adj=1, cex=1.2)
+dev.off()
+
+
+# generate a similar figure that labels enzymes
+pdf(file="~/papers/surfaces/img/rdrp.pdf", width=10, height=5)
+par(mar=c(0,0,0,0), mfrow=c(1,2))
 plot(cents, type='n', yaxt='n')
 text(cents[,1], cents[,2], labels, 
-     cex=ifelse(mdat$exposed, 0.5, 0.7), 
-     font=ifelse(mdat$exposed, 1, 2),
-     col=ifelse(mdat$exposed, 'cadetblue',
-                ifelse(mdat$enveloped, 'firebrick', 'darkorange'))
+     cex=ifelse(mdat$polymerase, 0.7, 0.5), 
+     font=ifelse(mdat$polymerase, 2, 1),
+     col=ifelse(!mdat$polymerase, 'cadetblue',
+                ifelse(mdat$enveloped, 'firebrick', 'darkorange')), 
+)
+plot(cents, type='n', yaxt='n')
+text(cents[,1], cents[,2], labels,
+     cex=ifelse(mdat$protease, 0.7, 0.5), 
+     font=ifelse(mdat$protease, 2, 1),
+     col=ifelse(!mdat$protease, 'cadetblue',
+                ifelse(mdat$enveloped, 'firebrick', 'darkorange')), 
 )
 dev.off()
 
 
-text(cents[,1], cents[,2], labels, cex=0.7, font=ifelse(mdat$polymerase, 2, 1),
-     col=ifelse(!mdat$polymerase, 'cadetblue',
-                ifelse(mdat$enveloped, 'firebrick', 'darkorange')), 
-)
-     
 #points(cents[mdat$enveloped, 1], cents[mdat$enveloped, 2], cex=2)
 #idx <- is.element(mdat$virus, c("Foveavirus", "PotatoX", "PotatoY", "Tobacco"))
 #text(cents[,1], cents[,2], labels, cex=0.7, col=ifelse(idx, 'red', 'blue'))

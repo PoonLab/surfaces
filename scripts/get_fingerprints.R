@@ -39,14 +39,14 @@ parse.json <- function(f) {
 
 # default Dirichlet parameter at 0.5
 #files <- Sys.glob("6_fubar/*.fubar.json")
-#files <- Sys.glob("8_sample/*.fubar.json")
-files <- Sys.glob("9_longer/*.fubar.json")
+#files <- Sys.glob("8_sample/*.fubar.json")  # sample 50 codons
+files <- Sys.glob("9_longer/*.fubar.json")  # sample 100 codons
 
 # load FUBAR grids - this takes a minute
 grids <- lapply(files, function(f) parse.json(f))
 
-save(grids, file="step9_grids.RData")  # can use this later in earthmover.R
-
+#save(grids, file="step9_grids.RData")  # can use this later in earthmover.R
+load("step9_grids.RData")
 
 ##################################
 # this later code is for visualization of individual fingerprints
@@ -96,7 +96,7 @@ for (start in seq(1, length(grids.0), 25)) {
 # do a random sample
 set.seed(127)
 idx <- sample(1:length(grids.0), 25)
-pdf("~/papers/surfaces/img/fingerprint-sample.pdf", width=6, height=6)
+png("~/papers/surfaces/img/fingerprint-sample.pdf", width=6*600, height=6*600, res=600)
 par(mar=c(0,0,0,0), mfrow=c(5,5))
 for (i in idx) {
   image(grids.0[[i]]$grid, xaxt='n', yaxt='n', 
