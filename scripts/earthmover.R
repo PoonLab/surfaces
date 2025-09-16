@@ -16,6 +16,16 @@ astats <- astats[idx, ]
 mdat$ncod <- astats$ncod
 mdat$nseq <- astats$nseq
 mdat$tree.len <- astats$treelen
+mdat$label <- paste(mdat$abbrv, mdat$short)
+
+
+# generate content for supplementary table
+require(knitr)
+kable(mdat[order(mdat$family, mdat$abbrv) , 
+           c('abbrv', 'protein', 'short', 
+             'exposed', #'polymerase', 'protease', 'structural', 
+             'ncod', 'nseq', 'tree.len')],
+      format='latex', row.names=FALSE, booktabs=TRUE, digits=3, linesep='')
 
 # supplementary figure
 pdf("~/papers/surfaces/img/align-stats.pdf", width=9, height=4)
@@ -35,15 +45,15 @@ n <- length(breaks)
 coords <- expand.grid(1:n, 1:n)
 
 # load `grids` object from get_fingerprints.R
-#load("grids.RData")
-load("step9_grids.RData")
+#load("grids.RData")  # L=50, supfig
+load("step9_grids.RData")  # L=100
 
 # calculate weighted point pattern for each fingerprint
 wpps <- lapply(grids, function(g) {
   wpp(coords, mass=as.numeric(g$grid))
 })
 virus <- sapply(grids, function(g) g$virus)
-protein <- sapply(grids, function(g) gsub(" step9", "", g$protein))
+protein <- sapply(grids, function(g) gsub(" step[689]", "", g$protein))
 names(wpps) <- paste(virus, protein, sep='.')
 
 # these should be the same, but just make sure
@@ -62,11 +72,13 @@ res <- mclapply(0:(n*n-1), function(k) {
   } else {
     0
   }
-}, mc.cores = 24)
+}, mc.cores = 12)
 
 
 #save(res, file="wasserstein-res-step9.RData")
-load("wasserstein-res-step9.RData")
+load("wasserstein-res-step9.RData")  # L=100
+#load("wasserstein-res-step6.RData")
+#load("wasserstein-res4.RData")  # L=50, sup fig
 
 wmat <- matrix(unlist(res), nrow=n, ncol=n, byrow=T)
 # reflect upper triangular portion of matrix
@@ -88,10 +100,21 @@ barplot(head(mds$eig)/sum(mds$eig))
 labels <- paste(mdatx$abbrv, mdatx$short)
 
 
+### STEP 6 ONLY ###
+#count.ncod <- read.csv("5_alt/count_ncod.csv")
+#idx <- match(names(wpps), count.ncod$key)
+#ncod <- count.ncod$ncod[idx]
+#pdf("~/papers/surfaces/img/ncodons-raw.pdf", width=5, height=5)
+#par(mar=c(0,0,0,0))
+#plot(mds$points, cex=sqrt(ncod)/10)
+#dev.off()
+##text(mds$points[,1], mds$points[,2], labels=names(wpps), cex=0.5)
+
+
 #pdf("mds.pdf", width=11, height=18)
 par(mfrow=c(1,1), mar=c(0,0,0,0))
 plot(mds$points[,1:2], type='n')
-#points(mds$points[,1], mds$points[,2], pch=19, cex=sqrt(mdat$ncod)/10) #, col=pal)
+points(mds$points[,1], mds$points[,2], pch=1, cex=sqrt(mdat$ncod)/10) #, col=pal)
 #idx <- order(mdat$ncod)[1:20]
 #points(mds[idx, 1], mds[idx,2], cex=2, col='red')
 #idx <- which(virus=="IBV")
@@ -130,9 +153,17 @@ idx <- match(row.names(cents), mdat$key)
 mdat <- mdat[idx, ]
 labels <- paste(mdat$abbrv, mdat$short)
 
+
+# compare to ncodons-raw.pdf (see above using step 6 data)
+pdf("~/papers/surfaces/img/ncodons-adjusted.pdf", width=5, height=5)
+par(mar=c(0,0,0,0), mfrow=c(1,1))
+plot(cents, cex=sqrt(mdat$ncod)/10)
+dev.off()
+
 require(dichromat)
 
-pdf("~/papers/surfaces/img/mds.pdf", width=10, height=5)
+#pdf("~/papers/surfaces/img/mds.pdf", width=10, height=5)
+pdf("~/papers/surfaces/img/mds50.pdf", width=10, height=5)  # sup fig
 par(mfrow=c(1,2), mar=c(0,0,0,0))
 plot(cents, type='n', bty='n', xaxt='n', yaxt='n')
 #text(cents[,1], cents[,2], labels, cex=0.7, col=ifelse(mdat$enveloped, 'red', 'blue'))
