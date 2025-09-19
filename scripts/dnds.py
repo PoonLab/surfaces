@@ -70,12 +70,41 @@ def slac(aln, code='Universal', branches='All', samples=0, pval=0.1,
     
 
 def mean_dnds(aln, code='Universal', branches='All', samples=0, pval=0.1, 
-         hyphy_bin="hyphy", ft2_bin="fasttree", verbose=False):
-    """ Wrapper to extract mean dN/dS ratio from SLAC analysis """
+         hyphy_bin="hyphy", ft2_bin="fasttree", verbose=False, ambig='AVERAGED'):
+    """ 
+    Wrapper to extract mean dN/dS ratio from SLAC analysis 
+    
+    :param aln:  str, path to codon alignment
+    :param code:  str, genetic code (default: 'Universal')
+    :param branches:  str, branches to test (default: 'All')
+    :param samples:  int, number of samples to measure uncertainty in 
+                     ancestral reconstruction (default: 0)
+    :param pval:  float, p-value threshold for reporting (default: 0.1)
+    :param hyphy_bin:  str, path to HYPHY executable
+    :param ft2_bin:  str, path to Fasttree2 executable
+    :param verbose:  bool, if True, stream messages to console
+    :param ambig:  str, AVERAGED (default) or RESOLVED.  If AVERAGED, then 
+                   all possible resolutions of an ambiguous character contribute 
+                   to calculating dN and dS.
+    :return:  tuple, (global dN-dS, number of sites under negative (purifying) selection,
+              number of sites under positive (diversifying) selection, and total number 
+              of codon sites)
+    """
     res = slac(aln, code=code, branches=branches, samples=samples, pval=pval,
                hyphy_bin=hyphy_bin, ft2_bin=ft2_bin, verbose=verbose)
-    return res['fits']['Global MG94xREV']['Rate Distributions'][
+    global_dnds = res['fits']['Global MG94xREV']['Rate Distributions'][
         'non-synonymous/synonymous rate ratio for *test*'][0][0]
+    
+    n_pos, n_neg, n_cod = 0, 0, 0
+    for row in res['MLE']['content']['0']['by-site'][ambig]:
+        es, en, s, n, ps, ds, dn, dnds, p_pos, p_neg, tbl = row
+        n_cod += 1
+        if p_pos < pval:
+            n_pos += 1
+        if p_neg < pval:
+            n_neg += 1
+    
+    return global_dnds, n_pos, n_neg, n_cod
 
 
 if __name__ == "__main__":
@@ -99,7 +128,7 @@ if __name__ == "__main__":
 
     files = glob(args.glob)
     writer = csv.writer(args.outfile)
-    writer.writerow(['virus', 'protein', 'dnds'])
+    writer.writerow(['virus', 'protein', 'dnds', 'n.pos', 'n.neg', 'codons'])
 
     for path in files:
         fn = os.path.basename(path)
@@ -107,8 +136,10 @@ if __name__ == "__main__":
         virus = tokens[0]
         protein = ' '.join(tokens[1:-1])
 
-        dnds = mean_dnds(path, hyphy_bin=args.hyphy, ft2_bin=args.ft2, 
-                         verbose=args.verbose, pval=args.pval)
+        dnds, n_pos, n_neg, total = mean_dnds(path, hyphy_bin=args.hyphy, ft2_bin=args.ft2, 
+                                    verbose=args.verbose, pval=args.pval)
 
-        writer.writerow([virus, protein, dnds])
+        writer.writerow([virus, protein, dnds, n_pos, n_neg, total])
+        args.outfile.flush()
+ 
 

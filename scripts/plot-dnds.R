@@ -73,3 +73,60 @@ confint(fit2, method='boot', boot.type='basic')
 
 fit3 <- glmer(dnds ~ exposed*enveloped  + (1|virus), data=dnds, family=Gamma(link='log'))
 confint(fit3, method='boot')
+
+
+counts <- read.csv("~/git/surfaces/data/step7_dnds_counts.csv")
+idx <- match(paste(counts$virus, counts$protein), paste(mdat$virus, mdat$protein)) 
+counts <- cbind(counts, mdat[idx, !is.element(names(mdat), c('virus', 'protein'))])
+
+
+
+# =========================================
+
+set.seed(12)
+
+temp <- counts[counts$enveloped, ]
+temp1 <- temp[temp$n.pos > 0, ]
+temp2 <- temp[temp$n.pos==0, ]
+
+pdf("~/papers/surfaces/img/dnds-sites.pdf", width=3.2, height=6.4)
+par(mar=c(5,5,0.5,0.5), mfrow=c(2, 1))
+plot(temp1$n.neg / temp1$total, 
+     temp1$n.pos / temp1$total, ylim=c(1e-4, 0.1),
+     bty='n', las=1, cex.axis=0.8, xlim=c(0, 1), log='y',
+     xlab="Prop. signif. dN < dS",
+     ylab="Prop. signif. dN > dS", yaxt='n',
+     cex=0.9, pch=ifelse(temp1$exposed, 19, 1), col='darkorange2')
+axis(side=2, at=c(1e-3, 0.01, 0.1), las=1, cex.axis=0.8)
+abline(h=3e-4, lty=2)
+points(temp2$n.neg / temp2$total,
+       jitter(rep(1.7e-4, nrow(temp2)), 20),
+       cex=0.9, col='darkorange2',
+       pch=ifelse(temp2$exposed, 19, 1))
+axis(side=2, at=1.7e-4, label=0, las=1, cex.axis=0.8)
+
+temp <- counts[!counts$enveloped, ]
+temp1 <- temp[temp$n.pos > 0, ]
+temp2 <- temp[temp$n.pos==0, ]
+
+plot(temp1$n.neg/temp1$total, temp1$n.pos / temp1$total, log='y',
+     bty='n', las=1, cex.axis=0.8, xlim=c(0, 1), ylim=c(4e-4, 0.02),
+     xlab="Prop. signif. dN < dS",
+     ylab="Prop. signif. dN > dS", yaxt='n',
+     cex=0.8, pch=ifelse(counts$exposed, 23, 5), 
+     col='cadetblue4', bg='cadetblue4')
+axis(side=2, at=c(1e-3, 0.002, 0.005, 0.01, 0.02), las=1, cex.axis=0.8)
+abline(h=8e-4, lty=2)
+points(temp2$n.neg/temp2$total, jitter(rep(5.5e-4, nrow(temp2)), 12),
+       cex=0.9, col='cadetblue4', pch=ifelse(temp2$exposed, 19, 1))
+axis(side=2, at=5.5e-4, label=0, las=1, cex.axis=0.8)
+dev.off()
+
+# =========================================
+
+fit <- glm(cbind(n.pos, total) ~ I(n.neg/(total-n.pos)) + exposed * enveloped, 
+           data=counts, family='binomial')
+#require(lme4)
+#fit2 <- glmer(cbind(n.pos, total) ~ I(n.neg/total) + (1|virus), data=counts, family='binomial')
+summary(fit)
+confint(fit)

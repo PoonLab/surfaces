@@ -76,9 +76,9 @@ res <- mclapply(0:(n*n-1), function(k) {
 
 
 #save(res, file="wasserstein-res-step9.RData")
-load("wasserstein-res-step9.RData")  # L=100
+load("wasserstein-res-step9.RData")  # L=100 codons
 #load("wasserstein-res-step6.RData")
-#load("wasserstein-res4.RData")  # L=50, sup fig
+#load("wasserstein-res4.RData")  # L=50 codons, sup fig
 
 wmat <- matrix(unlist(res), nrow=n, ncol=n, byrow=T)
 # reflect upper triangular portion of matrix
@@ -163,7 +163,7 @@ dev.off()
 require(dichromat)
 
 #pdf("~/papers/surfaces/img/mds.pdf", width=10, height=5)
-pdf("~/papers/surfaces/img/mds50.pdf", width=10, height=5)  # sup fig
+#pdf("~/papers/surfaces/img/mds50.pdf", width=10, height=5)  # sup fig
 par(mfrow=c(1,2), mar=c(0,0,0,0))
 plot(cents, type='n', bty='n', xaxt='n', yaxt='n')
 #text(cents[,1], cents[,2], labels, cex=0.7, col=ifelse(mdat$enveloped, 'red', 'blue'))
@@ -183,8 +183,33 @@ text(cents[,1], cents[,2], labels,
                 ifelse(mdat$enveloped, 'firebrick', 'darkorange')), 
 )
 text(max(cents[,1]), max(cents[,2]), label="Polymerase", adj=1, cex=1.2)
-dev.off()
+#dev.off()
 
+
+# calculate silhouette width criterion (SWC) for centroids
+#cdmx <- as.matrix(dist(cents))  # centroid distance matrix
+cdmx <- matrix(0, nrow=nrow(cents), ncol=nrow(cents))
+cdmx[lower.tri(cdmx)] <- dist(cents)
+cdmx[upper.tri(cdmx)] <- t(cdmx[lower.tri(cdmx)])
+
+idx <- which(mdat$exposed & mdat$enveloped)
+idx2 <- which(mdat$exposed & !mdat$enveloped)
+w1 <- cdmx[idx, idx]  # within
+swc.a <- apply(w1, 1, sum) / (nrow(w1)-1)
+b1 <- cdmx[idx, idx2]  # between
+swc.b <- apply (b1, 1, sum) / ncol(b1)
+
+silh <- (swc.b - swc.a) / pmax(swc.a, swc.b)
+barplot(silh[order(silh)])
+swc <- sum(silh) / length(silh)
+
+w1 <- cdmx[idx2, idx2]  # within
+swc.a <- apply(w1, 1, sum) / (nrow(w1)-1)
+b1 <- cdmx[idx2, idx]  # between
+swc.b <- apply (b1, 1, sum) / ncol(b1)
+silh <- (swc.b - swc.a) / pmax(swc.a, swc.b)
+
+############## DEPRECATED ##############
 
 # generate a similar figure that labels enzymes
 pdf(file="~/papers/surfaces/img/rdrp.pdf", width=10, height=5)
