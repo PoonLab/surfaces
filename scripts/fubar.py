@@ -77,7 +77,7 @@ def fubar(aln, json_file, hyphy_bin="hyphy", ft2_bin="fasttree", verbose=False):
     """
     stderr = None if verbose else subprocess.DEVNULL
     
-    clean_file = clean_names(aln, hyphy=hyphy_bin, stderr=stderr)
+    clean_file = clean_names(aln, hyphy_bin=hyphy_bin, stderr=stderr)
     tree_file = fasttree(clean_file, ft2_bin=ft2_bin, stderr=stderr)
     
     # Run FUBAR

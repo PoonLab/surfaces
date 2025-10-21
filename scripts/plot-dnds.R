@@ -45,35 +45,41 @@ segments(x0=left+0.75, x1=right+0.25, y0=1, xpd=NA,
 #       text.col='grey50')
 dev.off()
 
+#############################
 
 hist(log(dnds$dnds))
 
 # naive model
-fit <- lm(log(dnds$dnds) ~ dnds$exposed)
-summary(fit)
-confint(fit)
+#fit <- lm(log(dnds$dnds) ~ dnds$exposed)
+#summary(fit)
+#confint(fit)
 
 fit <- glm(dnds ~ exposed, data=dnds, family=Gamma(link='log'))
 summary(fit)
 confint(fit)
 
 require(lme4)
-fit <- lmer(log(dnds$dnds) ~ dnds$exposed + dnds$enveloped + (1|dnds$virus))
-summary(fit)
-confint(fit)
+#fit <- lmer(log(dnds$dnds) ~ dnds$exposed + dnds$enveloped + (1|dnds$virus))
+#summary(fit)
+#confint(fit)
 
 require(BSDA)
 EDA(residuals(fit))
 
 
 fit2 <- glmer(dnds ~ exposed  + (1|virus), data=dnds, family=Gamma(link='log'))
-# summary(fit2)
+summary(fit2)
 EDA(residuals(fit2))
-confint(fit2, method='boot', boot.type='basic')
+confint(fit2, method='boot')
+anova(fit2, fit)
+AIC(fit2)
 
 fit3 <- glmer(dnds ~ exposed*enveloped  + (1|virus), data=dnds, family=Gamma(link='log'))
+summary(fit3)
+AIC(fit2) - AIC(fit3)
 confint(fit3, method='boot')
 
+anova(fit3, fit, test='F')
 
 counts <- read.csv("~/git/surfaces/data/step7_dnds_counts.csv")
 idx <- match(paste(counts$virus, counts$protein), paste(mdat$virus, mdat$protein)) 
@@ -124,9 +130,13 @@ dev.off()
 
 # =========================================
 
-fit <- glm(cbind(n.pos, total) ~ I(n.neg/(total-n.pos)) + exposed * enveloped, 
+fit.1 <- glm(cbind(n.pos, total) ~ I(n.neg/total) + exposed * enveloped, 
+           data=counts, family='binomial')
+fit.2 <- glm(cbind(n.pos, total) ~ I(n.neg/(total-n.pos)) + exposed * enveloped, 
+           data=counts, family='binomial')
+fit.3 <- glm(cbind(n.pos, total-n.neg) ~ I(n.neg/total) + exposed * enveloped, 
            data=counts, family='binomial')
 #require(lme4)
 #fit2 <- glmer(cbind(n.pos, total) ~ I(n.neg/total) + (1|virus), data=counts, family='binomial')
-summary(fit)
-confint(fit)
+summary(fit.3)
+confint(fit.3)
