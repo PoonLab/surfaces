@@ -1,3 +1,14 @@
+############################# SETTINGS #############################
+
+## uncomment one of the following:
+ncodons <- 50  # set for step 8 data (L=50 codons)
+#ncodons <- 100  # set for step 9 data (L=100 codons)
+# ncodons <- Inf  # set for step 6 data (no down-sampling)
+
+outfile <- "L50.RData"
+
+####################################################################
+
 # load metadata
 setwd("~/git/surfaces/data/")
 mdat <- read.csv("metadata.csv", na.strings="")
@@ -35,13 +46,6 @@ mdat$label <- paste(mdat$abbrv, mdat$short)
 # rug(mdat$tree.len)
 # abline(v=c(0.5, 2), lty=2)
 ## dev.off()
-
-
-## uncomment one of the following:
-
-#ncodons <- 50  # set for step 8 data (L=50 codons)
-ncodons <- 100  # set for step 9 data (L=100 codons)
-# ncodons <- Inf  # set for step 6 data (no down-sampling)
 
 
 # load `grids` object from get_fingerprints.R
@@ -113,4 +117,4 @@ stopifnot(all(keys == mdatx$key))
 
 # `mdatx` and `wmat` will now have the same rows
 # proceed to mds.R or svm.R
-save(wmat, mdatx, file="L100.RData")
+save(wmat, mdatx, file=outfile)
