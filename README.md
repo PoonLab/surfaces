@@ -1,5 +1,14 @@
+# Evolutionary fingerprinting of virus proteins
 
-## Pipeline
+This repository holds scripts that were used in our analysis of protein-coding genes in RNA viruses, using a method called "evolutionary fingerprinting".
+An evolutionary fingerprint is the bivariate posterior distribution of codon site-specific non-synonymous (dN) and synonymous (dS) substitution rates that is inferred by fitting a codon substitution model to the phylogeny and multiple sequence alignment for a gene.
+A manuscript is being prepared for submission to a preprint server and eventually for peer review.
+
+Essential data have been deposited in [Zenodo](https://zenodo.org/) under the [Creative Commons 4.0 Attribution International](https://creativecommons.org/licenses/by/4.0/legalcode) license:
+
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17795003.svg)](https://doi.org/10.5281/zenodo.17795003)
+
+## Workflow
 
 ### Step 1: Data collection 
 #### 1.1. Identify records from NCBI
