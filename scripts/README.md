@@ -8,3 +8,21 @@
 * `dnds.py` - a Python wrapper for the single likelihood ancestor counting (SLAC) method in [HyPhy](https://www.hyphy.org)
 * `earthmover.R` - calculates the Wasserstein distance matrix for evolutionary fingerprints extracted using 
 * `extract_mat_peptides.py` - use Genbank annotations from a reference genome to partition a polypeptide into individual gene products
+* `fubar.py` - Python wrapper for fast unconstrained Bayesian approximation (FUBAR) method in HyPhy
+* `get_align_stats.py` - fix sequence headers for HyPhy and calculate alignment statistics, including tree length
+* `get_all_accns.py` - given a list of Genbank accession numbers, retrieve full genome sequences, coding sequences and metadata using the Entrez API
+* `get_fingerprints.R` - extract the evolutionary fingerprint from the FUBAR JSON output and save the entire set in an RData file - also generate heatmap visualizations
+* `indelible_plus_selection.py` - use INDELible to simulate sequences under different tree lengths to evaluate its impact on measuring selection.  Requires `create_control_indelible.py`
+* `indelible_vs_fubar.R` - Process and visualize results from `indelible_plus_selection.py`
+* `mds.R` - use multidimensional scaling to visualize Wasserstein distance matrices computed in `earthmover.R`.  Calculate centroids for replicate data sets.  Attempts some SVM classification.
+* `mpi_fubar.py` - an MPI-enabled driver script for `fubar.py`
+* `plot-dnds.R` - visualize gene-wide dN/dS estimates - runs some generalized linear model analyses to compare between groups
+* `prunetree.py` - progressively remove the shortest terminal branches in a tree until we reach a target tree length
+* `remove_sequences.py` - remove sequences from one FASTA file that are not found in a second FASTA file (pretty trivial)
+* `sample_codons.py` - sample codon sites from an alignment at random with or without (default) replacement.
+* `sortCDS.py` - use a reference Genbank record to classify CDS records by pairwise alignment
+* `split_genes.py` - split a FASTA file containing two sets of non-homologous gene sequences.  Used for IAV, where one genome segment can encode two genes, e.g., M1 and M2
+* `step4_batch.py` - batch process a set of Newick tree files with `prunetree.py` (automates input and output file naming)
+* `step4_filter.R` - visualize the decay of tree length with the progressive removal of the shortest terminal branches.  Locates an "elbow" if user wants to choose a sample size by that criterion (deprecated).
+* `subtree_picker.py` - Downsample sequences in a FASTA file by progressively growing the subtree containing a terminal branch specified by the user (by label) until a target total length is obtained.
+* `wkkn.R` - R script implementing weighted k-nearest neighbours - deprecated by another version.
