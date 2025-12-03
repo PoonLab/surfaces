@@ -1,6 +1,7 @@
 ## Requires wmat and mdatx from earthmover.R
 setwd("~/git/surfaces/data")
 load("L100.RData")  # provides `wmat` and `mdatx`
+#load("L50.RData")
 
 # make sure labels match up
 keys <- gsub("\\.", " ", rownames(wmat))
@@ -105,6 +106,20 @@ text(cents[,1], cents[,2], labels,
 )
 text(max(cents[,1]), max(cents[,2]), label="Polymerase", adj=1, cex=1.2)
 #dev.off()
+
+
+## Look at flaviviruses
+# flavi <- unique(mdat$abbrv[mdat$family=='Flaviviridae'])
+# pdf("~/papers/surfaces/img/flavi.pdf", width=5, height=7.5)
+# par(mfrow=c(3,2), mar=c(0,0,0,0))
+# for (ab in flavi) {
+#   idx <- which(mdat$abbrv==ab)
+#   plot(cents, type='n', xaxt='n', yaxt='n')
+#   text(cents[idx, 1], cents[idx,2], labels=labels[idx], cex=1,
+#        col=ifelse(grepl("^C", mdat$short[idx]), "red", "grey50"),
+#        font=ifelse(grepl("^C", mdat$short[idx]), 2, 1))  
+# }
+# dev.off()
 
 
 ####################
