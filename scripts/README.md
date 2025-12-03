@@ -6,4 +6,5 @@
 * `consensus.py` - generate a consensus sequence from an alignment
 * `create_control_indelible.py` - generate a control file for running a simulation in [INDELible](https://academic.oup.com/mbe/article/26/8/1879/980884) based on a template - used for analysis of tree length requirements
 * `dnds.py` - a Python wrapper for the single likelihood ancestor counting (SLAC) method in [HyPhy](https://www.hyphy.org)
-* `earthmover.R` - calculates the Wasserstein distance matrix for 
+* `earthmover.R` - calculates the Wasserstein distance matrix for evolutionary fingerprints extracted using 
+* `extract_mat_peptides.py` - use Genbank annotations from a reference genome to partition a polypeptide into individual gene products
