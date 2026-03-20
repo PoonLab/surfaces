@@ -106,6 +106,25 @@ for (i in idx) {
 }
 dev.off()
 
+# grand mean (average over all fingerprints)
+g.mean <- Reduce("+", lapply(grids, function(g) g$grid)) / length(grids)
+
+# average over random sample
+set.seed(9)
+idx <- sample(1:length(grids.0), 9)
+pdf("~/papers/surfaces/img/fingerprint-sample2.pdf", width=5, height=5)
+par(mfrow=c(3,3), mar=rep(0, 4))
+for (i in idx) {
+  lst <- lapply(seq(i, length(grids), 203), function(j) grids[[j]]$grid)
+  mean.g <- Reduce("+", lst) / length(lst)
+  #image(mean.g, xaxt='n', yaxt='n', col=pal)  #hcl.colors(12, 'Purples', rev=T))
+  #abline(a=0, b=1, col=rgb(0,0,0,0.2))
+  persp(mean.g - g.mean, col='pink', phi=15, theta=-30, box=F, shade=T, lphi=30, 
+        ltheta=-90, zlim=c(-0.002, 0.01))
+  #text(x=0.5, y=0.95, cex=1, label=mdat$label[i])
+  title(main=mdat$label[i], cex.main=1, xpd=NA, font.main=1, adj=0, line=-1)
+}
+dev.off()
 
 # compare replicates
 png("set1.png", width=6*300, height=6*300, res=300)
