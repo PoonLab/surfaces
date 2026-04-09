@@ -1,0 +1,245 @@
+virus,abbrv,family,enveloped,protein,short,exposed,polymerase,protease,structural
+chikv,CHIKV,Togaviridae,T,6K protein,6K,F,F,F,T
+chikv,CHIKV,Togaviridae,T,capsid protein,CA,F,F,F,T
+chikv,CHIKV,Togaviridae,T,E1 envelope glycoprotein,E1,T,F,F,T
+chikv,CHIKV,Togaviridae,T,E2 envelope glycoprotein,E2,T,F,F,T
+chikv,CHIKV,Togaviridae,T,E3 protein,E3,T,F,F,T
+chikv,CHIKV,Togaviridae,T,mRNA-capping enzyme nsp1,nsp1,F,F,F,F
+chikv,CHIKV,Togaviridae,T,non-structural protein nsp3,nsp3,F,F,F,F
+coxsacki,CA16,Picornaviridiae,F,2A-protein,2A,F,F,T,F
+coxsacki,CA16,Picornaviridiae,F,2B-protein,2B,F,F,F,F
+coxsacki,CA16,Picornaviridiae,F,2C-protein,3C,F,F,F,F
+coxsacki,CA16,Picornaviridiae,F,3AB-protein,3AB,F,F,F,F
+coxsacki,CA16,Picornaviridiae,F,3C-protein,3C,F,F,T,F
+coxsacki,CA16,Picornaviridiae,F,3D-protein,3D,F,T,F,F
+coxsacki,CA16,Picornaviridiae,F,VP1-protein,VP1,T,F,F,T
+coxsacki,CA16,Picornaviridiae,F,VP2-protein,VP2,T,F,F,T
+coxsacki,CA16,Picornaviridiae,F,VP3-protein,VP3,T,F,F,T
+coxsacki,CA16,Picornaviridiae,F,VP4-protein,VP4,F,F,F,T
+dengue2,DENV,Flaviviridae,T,anchored capsid protein ancC,CA,F,F,F,T
+dengue2,DENV,Flaviviridae,T,envelope protein E,E,T,F,F,T
+dengue2,DENV,Flaviviridae,T,membrane glycoprotein precursor prM,prM,T,F,F,T
+dengue2,DENV,Flaviviridae,T,nonstructural protein NS1,NS1,T,F,F,F
+dengue2,DENV,Flaviviridae,T,nonstructural protein NS2A,NS2A,F,F,F,F
+dengue2,DENV,Flaviviridae,T,nonstructural protein NS2B,NS2B,F,F,T,F
+dengue2,DENV,Flaviviridae,T,nonstructural protein NS3,NS3,F,F,T,F
+dengue2,DENV,Flaviviridae,T,nonstructural protein NS4A,NS4A,F,F,F,F
+dengue2,DENV,Flaviviridae,T,nonstructural protein NS4B,NS4B,F,F,F,F
+dengue2,DENV,Flaviviridae,T,RNA-dependent RNA polymerase NS5,RdRp,F,T,F,F
+enteroA71,EV,Picornaviridiae,F,2A,2A,F,F,T,F
+enteroA71,EV,Picornaviridiae,F,2B,2B,F,F,F,F
+enteroA71,EV,Picornaviridiae,F,2C,2C,F,F,F,F
+enteroA71,EV,Picornaviridiae,F,3AB,3AB,F,F,F,F
+enteroA71,EV,Picornaviridiae,F,3C,3C,F,F,T,F
+enteroA71,EV,Picornaviridiae,F,3D,3D,F,T,F,F
+enteroA71,EV,Picornaviridiae,F,VP1,VP1,T,F,F,T
+enteroA71,EV,Picornaviridiae,F,VP2,VP2,T,F,F,T
+enteroA71,EV,Picornaviridiae,F,VP3,VP3,T,F,F,T
+enteroA71,EV,Picornaviridiae,F,VP4,VP4,F,F,F,T
+Foveavirus,ASPV,Betaflexiviridae,F,coat protein,CP,F,F,F,T
+Foveavirus,ASPV,Betaflexiviridae,F,RNA polymerase,RdRp,F,T,F,F
+Foveavirus,ASPV,Betaflexiviridae,F,triple gene block 1,TGB1,F,F,F,F
+Foveavirus,ASPV,Betaflexiviridae,F,triple gene block 2,TGB2,F,F,F,F
+Foveavirus,ASPV,Betaflexiviridae,F,triple gene block 3,TGB3,F,F,F,F
+HCV1a,HCV,Flaviviridae,T,core,Core,F,F,F,T
+HCV1a,HCV,Flaviviridae,T,E1,E1,T,F,F,T
+HCV1a,HCV,Flaviviridae,T,E2,E2,T,F,F,T
+HCV1a,HCV,Flaviviridae,T,NS2,NS2,F,F,T,F
+HCV1a,HCV,Flaviviridae,T,NS3,NS3,F,F,T,F
+HCV1a,HCV,Flaviviridae,T,NS4A,NS4A,F,F,T,F
+HCV1a,HCV,Flaviviridae,T,NS4B,NS4B,F,F,F,F
+HCV1a,HCV,Flaviviridae,T,NS5A,NS5A,F,F,F,F
+HCV1a,HCV,Flaviviridae,T,NS5B,RdRp,F,T,F,F
+HCV1a,HCV,Flaviviridae,T,p7,p7,F,F,F,F
+HepA,HAV,Picornaviridiae,F,1B-VP2-mature-peptide,VP2,T,F,F,T
+HepA,HAV,Picornaviridiae,F,1C-VP3-mature-peptide,VP3,T,F,F,T
+HepA,HAV,Picornaviridiae,F,1D-VP1-mature-peptide,VP1,T,F,F,T
+HepA,HAV,Picornaviridiae,F,2A-mature-peptide,2A,F,F,F,T
+HepA,HAV,Picornaviridiae,F,2B-mature-peptide,2B,F,F,F,F
+HepA,HAV,Picornaviridiae,F,2C-mature-peptide,2C,F,F,F,F
+HepA,HAV,Picornaviridiae,F,3A-mature-peptide,3A,F,F,F,F
+HepA,HAV,Picornaviridiae,F,3C-mature-peptide,3C,F,F,T,F
+HepA,HAV,Picornaviridiae,F,3D-mature-peptide,RdRp,F,T,F,F
+HIV1A1,HIV1,Retroviridae,T,Gag,Gag,F,F,F,T
+HIV1A1,HIV1,Retroviridae,T,gp120,gp120,T,F,F,T
+HIV1A1,HIV1,Retroviridae,T,gp41,gp41,T,F,F,T
+HIV1A1,HIV1,Retroviridae,T,Integrase,Int,F,F,F,F
+HIV1A1,HIV1,Retroviridae,T,Nef,Nef,F,F,F,F
+HIV1A1,HIV1,Retroviridae,T,PR,PR,F,F,T,F
+HIV1A1,HIV1,Retroviridae,T,RNAse,RNAse,F,T,F,F
+HIV1A1,HIV1,Retroviridae,T,RT,RT,F,T,F,F
+HIV1A1,HIV1,Retroviridae,T,Tat,Tat,F,F,F,F
+HIV1A1,HIV1,Retroviridae,T,Vif,Vif,F,F,F,F
+HIV1A1,HIV1,Retroviridae,T,Vpr,Vpr,F,F,F,F
+HIV1A1,HIV1,Retroviridae,T,Vpu,Vpu,F,F,F,F
+HIV2,HIV2,Retroviridae,T,gag,Gag,F,F,F,T
+HIV2,HIV2,Retroviridae,T,gp120,gp120,T,F,F,T
+HIV2,HIV2,Retroviridae,T,gp41,gp41,T,F,F,T
+HIV2,HIV2,Retroviridae,T,Integrase,Int,F,F,F,F
+HIV2,HIV2,Retroviridae,T,nef,Nef,F,F,F,F
+HIV2,HIV2,Retroviridae,T,PR,PR,F,F,T,F
+HIV2,HIV2,Retroviridae,T,RNAse,RNAse,F,T,F,F
+HIV2,HIV2,Retroviridae,T,RT,RT,F,T,F,F
+HIV2,HIV2,Retroviridae,T,tat,Tat,F,F,F,F
+HIV2,HIV2,Retroviridae,T,vif,Vif,F,F,F,F
+HIV2,HIV2,Retroviridae,T,vpr,Vpr,F,F,F,F
+HIV2,HIV2,Retroviridae,T,vpx,Vpx,F,F,F,F
+IAVH9N2,IAV,Orthomyxoviridae,T,HA,HA,T,F,F,T
+IAVH9N2,IAV,Orthomyxoviridae,T,M1,M1,F,F,F,T
+IAVH9N2,IAV,Orthomyxoviridae,T,M2,M2,T,F,F,T
+IAVH9N2,IAV,Orthomyxoviridae,T,NA,NA,T,F,F,T
+IAVH9N2,IAV,Orthomyxoviridae,T,NP,NP,F,F,F,T
+IAVH9N2,IAV,Orthomyxoviridae,T,NS1,NS1,F,F,F,F
+IAVH9N2,IAV,Orthomyxoviridae,T,NS2,NS2,F,F,F,F
+IAVH9N2,IAV,Orthomyxoviridae,T,PA,PA,F,T,F,F
+IAVH9N2,IAV,Orthomyxoviridae,T,PB1,PB1,F,T,F,F
+IAVH9N2,IAV,Orthomyxoviridae,T,PB2,PB2,F,T,F,F
+IBV,IBV,Orthomyxoviridae,T,HA,HA,T,F,F,T
+IBV,IBV,Orthomyxoviridae,T,M1,M1,F,F,F,T
+IBV,IBV,Orthomyxoviridae,T,M2,M2,T,F,F,T
+IBV,IBV,Orthomyxoviridae,T,NA,NA,T,F,F,T
+IBV,IBV,Orthomyxoviridae,T,NP,NP,F,F,F,T
+IBV,IBV,Orthomyxoviridae,T,NS1,NS1,F,F,F,F
+IBV,IBV,Orthomyxoviridae,T,NS2,NS2,F,F,F,F
+IBV,IBV,Orthomyxoviridae,T,PA,PA,F,T,F,F
+IBV,IBV,Orthomyxoviridae,T,PB1,PB1,F,T,F,F
+IBV,IBV,Orthomyxoviridae,T,PB2,PB2,F,T,F,F
+lyssavirus,RABV,Rhabdoviridae,T,glycoprotein,G,T,F,F,T
+lyssavirus,RABV,Rhabdoviridae,T,matrix protein,M,F,F,F,T
+lyssavirus,RABV,Rhabdoviridae,T,nucleoprotein,F,F,F,F,T
+lyssavirus,RABV,Rhabdoviridae,T,phosphoprotein,P,F,F,F,T
+lyssavirus,RABV,Rhabdoviridae,T,polymerase,L,F,T,F,T
+Mastro1,MastV,Astroviridae,F,VP27,VP27,T,F,F,T
+Mastro1,MastV,Astroviridae,F,VP34,VP34,T,F,F,T
+Mastro1,MastV,Astroviridae,F,RdRp,RdRp,F,T,F,F
+Mastro1,MastV,Astroviridae,F,serine-protease,Pro,F,F,T,F
+measles,MeV,Paramyxoviridae,T,fusion protein,F,T,F,F,T
+measles,MeV,Paramyxoviridae,T,hemagglutinin protein,H,T,F,F,T
+measles,MeV,Paramyxoviridae,T,large polymerase protein,L,F,T,F,F
+measles,MeV,Paramyxoviridae,T,matrix protein,M,F,F,F,T
+measles,MeV,Paramyxoviridae,T,nucleocapsid protein,F,F,F,F,T
+measles,MeV,Paramyxoviridae,T,phosphoprotein,P,F,T,F,F
+mumps,MuV,Paramyxoviridae,T,fusion protein,F,T,F,F,T
+mumps,MuV,Paramyxoviridae,T,hemagglutinin,H,T,F,F,T
+mumps,MuV,Paramyxoviridae,T,large polymerase protein,L,F,T,F,F
+mumps,MuV,Paramyxoviridae,T,matrix protein,M,F,F,F,T
+mumps,MuV,Paramyxoviridae,T,nucleocapsid protein,F,F,F,F,T
+mumps,MuV,Paramyxoviridae,T,phosphoprotein,P,F,T,F,F
+mumps,MuV,Paramyxoviridae,T,small hydrophobic protein,SH,F,F,F,F
+orthobornavirus,BDV,Bornaviridae,T,glycoprotein,G,T,F,F,T
+orthobornavirus,BDV,Bornaviridae,T,matrix protein,M,F,F,F,T
+orthobornavirus,BDV,Bornaviridae,T,nucleoprotein,F,F,F,F,T
+orthobornavirus,BDV,Bornaviridae,T,phosphoprotein,P,F,T,F,F
+orthobornavirus,BDV,Bornaviridae,T,RNA dependent RNA polymerase,L,F,T,F,F
+polio,PV,Picornaviridiae,F,protein-2A,2A,F,F,T,F
+polio,PV,Picornaviridiae,F,protein-2B,2B,F,F,F,F
+polio,PV,Picornaviridiae,F,protein-2C,2C,F,F,F,F
+polio,PV,Picornaviridiae,F,protein-3AB,3AB,F,F,F,F
+polio,PV,Picornaviridiae,F,protein-3C,3C,F,F,T,F
+polio,PV,Picornaviridiae,F,protein-3D,3D,F,T,F,F
+polio,PV,Picornaviridiae,F,protein-VP1,VP1,T,F,F,T
+polio,PV,Picornaviridiae,F,protein-VP2,VP2,T,F,F,T
+polio,PV,Picornaviridiae,F,protein-VP3,VP3,T,F,F,T
+polio,PV,Picornaviridiae,F,protein-VP4,VP4,F,F,F,T
+Potato,PVX,Alphaflexiviridae,F,12 kD membrane-bound,TGB2,F,F,F,T
+Potato,PVX,Alphaflexiviridae,F,8 kD membrane-bound,TGB3,F,F,F,F
+Potato,PVX,Alphaflexiviridae,F,capsid protein,CP,F,F,F,F
+Potato,PVX,Alphaflexiviridae,F,NTP-binding helicase,TGB1,F,F,F,F
+Potato,PVX,Alphaflexiviridae,F,RNA-replicating protein,RdRp,F,T,F,F
+PotatoY,PVY,Potyviridae,F,6K1,6K1,F,F,F,F
+PotatoY,PVY,Potyviridae,F,6K2,6K2,F,F,F,F
+PotatoY,PVY,Potyviridae,F,CI,CI,F,F,F,F
+PotatoY,PVY,Potyviridae,F,coat,CP,F,F,F,T
+PotatoY,PVY,Potyviridae,F,HC-Pro,HC-Pro,F,F,F,F
+PotatoY,PVY,Potyviridae,F,NIa-Pro,NIa-Pro,F,F,T,F
+PotatoY,PVY,Potyviridae,F,NIa-VPg,NIa-VPg,F,F,F,F
+PotatoY,PVY,Potyviridae,F,NIb,NIb,F,T,F,F
+PotatoY,PVY,Potyviridae,F,P1,P1,F,F,T,F
+PotatoY,PVY,Potyviridae,F,P3,P3,F,F,F,F
+RhinoA,RV,Picornaviridiae,F,1A,VP4,F,F,F,T
+RhinoA,RV,Picornaviridiae,F,1B,VP2,T,F,F,T
+RhinoA,RV,Picornaviridiae,F,1C,VP3,T,F,F,T
+RhinoA,RV,Picornaviridiae,F,1D,VP1,T,F,F,T
+RhinoA,RV,Picornaviridiae,F,2A,2A,F,F,T,F
+RhinoA,RV,Picornaviridiae,F,2B,2B,F,F,F,F
+RhinoA,RV,Picornaviridiae,F,2C,2C,F,F,F,F
+RhinoA,RV,Picornaviridiae,F,3AB,3AB,F,F,F,F
+RhinoA,RV,Picornaviridiae,F,3C,3C,F,F,T,F
+RhinoA,RV,Picornaviridiae,F,3D,RdRp,F,T,F,F
+RotaA,RotV,Sedoreoviridae,F,NSP1,NSP1,F,F,F,F
+RotaA,RotV,Sedoreoviridae,F,NSP2,NSP2,F,F,F,F
+RotaA,RotV,Sedoreoviridae,F,NSP3,NSP3,F,F,F,F
+RotaA,RotV,Sedoreoviridae,F,NSP4,NSP4,F,F,F,F
+RotaA,RotV,Sedoreoviridae,F,NSP5,NSP5,F,F,F,F
+RotaA,RotV,Sedoreoviridae,F,VP1,RdRp,F,T,F,F
+RotaA,RotV,Sedoreoviridae,F,VP2,VP2,F,F,F,T
+RotaA,RotV,Sedoreoviridae,F,VP3,VP3,F,F,F,F
+RotaA,RotV,Sedoreoviridae,F,VP4,VP4,T,F,F,T
+RotaA,RotV,Sedoreoviridae,F,VP6,VP6,F,F,F,T
+RotaA,RotV,Sedoreoviridae,F,VP7,VP7,T,F,F,T
+rsv,RSV,Pneumoviridae,T,attachment protein,G,T,F,F,T
+rsv,RSV,Pneumoviridae,T,fusion protein,F,T,F,F,T
+rsv,RSV,Pneumoviridae,T,large protein,L,F,T,F,F
+rsv,RSV,Pneumoviridae,T,matrix protein,M,F,F,F,T
+rsv,RSV,Pneumoviridae,T,matrix protein 2-1,M2-1,F,F,F,F
+rsv,RSV,Pneumoviridae,T,matrix protein 2-2,M2-2,F,F,F,F
+rsv,RSV,Pneumoviridae,T,nonstructural protein 1,nsp1,F,F,F,F
+rsv,RSV,Pneumoviridae,T,nonstructural protein 2,nsp2,F,F,F,F
+rsv,RSV,Pneumoviridae,T,nucleoprotein,F,F,F,F,T
+rsv,RSV,Pneumoviridae,T,phosphoprotein,P,F,T,F,F
+rsv,RSV,Pneumoviridae,T,small hydrophobic protein,SH,T,F,F,T
+TBEV,TBEV,Flaviviridae,T,core protein,CP,F,F,F,T
+TBEV,TBEV,Flaviviridae,T,envelope protein E,E,T,F,F,T
+TBEV,TBEV,Flaviviridae,T,matrix protein M,M,F,F,F,T
+TBEV,TBEV,Flaviviridae,T,non-structural protein NS1,NS1,F,F,F,F
+TBEV,TBEV,Flaviviridae,T,non-structural protein NS2a,NS2a,F,F,F,F
+TBEV,TBEV,Flaviviridae,T,non-structural protein NS2b,NS2b,F,F,F,F
+TBEV,TBEV,Flaviviridae,T,non-structural protein NS3,NS3,F,F,T,F
+TBEV,TBEV,Flaviviridae,T,non-structural protein NS4a,NS4a,F,F,F,F
+TBEV,TBEV,Flaviviridae,T,non-structural protein NS4b,NS4b,F,F,F,F
+TBEV,TBEV,Flaviviridae,T,non-structural protein NS5,RdRp,F,T,F,F
+TBEV,TBEV,Flaviviridae,T,pre protein,pr,F,F,F,T
+Tobacco,TMV,Virgaviridae,F,coat protein,CP,F,F,F,T
+Tobacco,TMV,Virgaviridae,F,movement protein,MP,F,F,F,F
+Tobacco,TMV,Virgaviridae,F,RdRp,RdRp,F,T,F,F
+Tobacco,TMV,Virgaviridae,F,replication protein,RP,F,T,F,F
+VEEV,VEEV,Togaviridae,T,6K,6K,F,F,F,F
+VEEV,VEEV,Togaviridae,T,capsid,CA,F,F,F,F
+VEEV,VEEV,Togaviridae,T,E1,E1,T,F,F,T
+VEEV,VEEV,Togaviridae,T,E2,E2,T,F,F,T
+VEEV,VEEV,Togaviridae,T,E3,E3,F,F,F,F
+VEEV,VEEV,Togaviridae,T,nsp1,nsp1,F,F,F,F
+VEEV,VEEV,Togaviridae,T,nsp2,nsp2,F,F,T,F
+VEEV,VEEV,Togaviridae,T,nsp3,nsp3,F,F,F,F
+VEEV,VEEV,Togaviridae,T,nsp4,RdRp,F,T,F,F
+wnv,WNV,Flaviviridae,T,anchored capsid protein,CA,F,F,F,T
+wnv,WNV,Flaviviridae,T,envelope protein,E,T,F,F,T
+wnv,WNV,Flaviviridae,T,membrane protein,M,F,F,F,T
+wnv,WNV,Flaviviridae,T,nonstructural protein 1,NS1,F,F,F,F
+wnv,WNV,Flaviviridae,T,nonstructural protein 2A,NS2A,F,F,F,F
+wnv,WNV,Flaviviridae,T,nonstructural protein 2B,NS2B,F,F,F,F
+wnv,WNV,Flaviviridae,T,nonstructural protein 3,NS3,F,F,T,F
+wnv,WNV,Flaviviridae,T,nonstructural protein 4A,NS4A,F,F,F,F
+wnv,WNV,Flaviviridae,T,nonstructural protein 4B,NS4B,F,F,F,F
+wnv,WNV,Flaviviridae,T,nonstructural protein 5,RdRp,F,T,F,F
+wnv,WNV,Flaviviridae,T,pre-membrane protein,pr,F,F,F,T
+YFV,YFV,Flaviviridae,T,anchored core protein C,CA,F,F,F,T
+YFV,YFV,Flaviviridae,T,envelope protein,E,T,F,F,T
+YFV,YFV,Flaviviridae,T,M protein precursor,prM,F,F,F,T
+YFV,YFV,Flaviviridae,T,non-structural protein NS1,NS1,F,F,F,F
+YFV,YFV,Flaviviridae,T,non-structural protein NS2a,NS2a,F,F,F,F
+YFV,YFV,Flaviviridae,T,non-structural protein NS2b,NS2b,F,F,F,F
+YFV,YFV,Flaviviridae,T,non-structural protein NS3,NS3,F,F,T,F
+YFV,YFV,Flaviviridae,T,non-structural protein NS4a,NS4a,F,F,F,F
+YFV,YFV,Flaviviridae,T,non-structural protein NS4b,NS4b,F,F,F,F
+YFV,YFV,Flaviviridae,T,RNA-dependent RNA polymerase,RdRp,F,T,F,F
+zika,ZIKV,Flaviviridae,T,anchored capsid protein C,CA,F,F,F,T
+zika,ZIKV,Flaviviridae,T,envelope protein E,E,T,F,F,T
+zika,ZIKV,Flaviviridae,T,membrane glycoprotein precursor M,prM,F,F,F,T
+zika,ZIKV,Flaviviridae,T,nonstructural protein NS1,NS1,F,F,F,F
+zika,ZIKV,Flaviviridae,T,nonstructural protein NS2A,NS2A,F,F,F,F
+zika,ZIKV,Flaviviridae,T,nonstructural protein NS2B,NS2B,F,F,F,F
+zika,ZIKV,Flaviviridae,T,nonstructural protein NS3,NS3,F,F,T,F
+zika,ZIKV,Flaviviridae,T,nonstructural protein NS4A,NS4A,F,F,F,F
+zika,ZIKV,Flaviviridae,T,nonstructural protein NS4B,NS4B,F,F,F,F
+zika,ZIKV,Flaviviridae,T,RNA-dependent RNA polymerase NS5,RdRp,F,T,F,F

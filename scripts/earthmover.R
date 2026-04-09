@@ -5,7 +5,7 @@ ncodons <- 50  # set for step 8 data (L=50 codons)
 #ncodons <- 100  # set for step 9 data (L=100 codons)
 # ncodons <- Inf  # set for step 6 data (no down-sampling)
 
-outfile <- "L50.RData"
+outfile <- "L50_L1norm.RData"  #"L50.RData"
 
 ####################################################################
 
@@ -76,16 +76,18 @@ mdatx <- mdat[idx, ]  # expand metadata for replicates
 
 
 ## Uncomment to calculate Earth movers distance de novo
-# require(parallel)
-# res <- mclapply(0:(n*n-1), function(k) {
-#   i <- k %/% n + 1
-#   j <- k %% n + 1
-#   if (i < j) {
-#     wasserstein(wpps[[i]], wpps[[j]], p=2, prob=TRUE)
-#   } else {
-#     0
-#   }  # this takes a minute / an hour for replicate samples
-# }, mc.cores = 12)
+require(parallel)
+n <- length(wpps)
+res <- mclapply(0:(n*n-1), function(k) {
+  i <- k %/% n + 1
+  j <- k %% n + 1
+  if (i < j) {
+    #wasserstein(wpps[[i]], wpps[[j]], p=2, prob=TRUE)
+    wasserstein(wpps[[i]], wpps[[j]], p=1, prob=TRUE)
+  } else {
+    0
+  }  # this takes a minute / an hour for replicate samples
+}, mc.cores = 12)
 
 
 ## Used to store results
