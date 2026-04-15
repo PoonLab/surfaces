@@ -19,105 +19,7 @@ parse.json <- function(f) {
   list(virus=virus, protein=protein, values=values, grid=grid)
 }
 
-# removed overlapping sites
-files <- Sys.glob("7_clean/*.fubar.json")
-# load FUBAR grids - this takes a minute
-grids <- lapply(files, function(f) parse.json(f))
-
-mdat <- read.csv("metadata.csv", na.strings="")
-mdat$key <- paste(mdat$virus, mdat$protein)
-
-# import alignment stats
-astats <- read.csv("align_stats.csv")
-# unscramble the rows
-idx <- match(mdat$key, paste(astats$virus, astats$protein))
-astats <- astats[idx, ]
-
-# append alignment stats to metadata
-mdat$ncod <- astats$ncod
-mdat$nseq <- astats$nseq
-mdat$tree.len <- astats$treelen
-mdat$label <- paste(mdat$abbrv, mdat$short)
-
-
-# calculate weighted point pattern for each fingerprint
-coords <- expand.grid(1:20, 1:20)
-wpps <- lapply(grids, function(g) {
-  wpp(coords, mass=as.numeric(g$grid))
-})
-virus <- sapply(grids, function(g) g$virus)
-protein <- sapply(grids, function(g) gsub(" step[689]", "", g$protein))
-names(wpps) <- paste(virus, protein, sep='.')
-
-# these should be the same, but just make sure
-idx <- match(paste(virus, protein), mdat$key)
-
-sum(is.na(idx)) == 0  # check
-mdatx <- mdat[idx, ]  # expand metadata for replicates
-
-require(parallel)
-n <- length(wpps)
-res <- mclapply(0:(n*n-1), function(k) {
-  i <- k %/% n + 1
-  j <- k %% n + 1
-  if (i < j) {
-    wasserstein(wpps[[i]], wpps[[j]], p=2, prob=TRUE)
-  } else { 0 }
-}, mc.cores = 12)
-
-# convert list of distances into matrix
-wmat <- matrix(unlist(res), nrow=n, ncol=n, byrow=T)
-# reflect upper triangular portion of matrix
-ix <- lower.tri(wmat, diag=FALSE)
-wmat[ix] <- t(wmat)[ix]  
-keys <- gsub("\\.", " ", names(wpps))
-rownames(wmat) <- keys
-colnames(wmat) <- keys
-
-
-# do multidimensional scaling
-wdist <- as.dist(wmat)
-mds <- cmdscale(wdist, k=2, eig=T)
-
-labels <- paste(mdatx$abbrv, mdatx$short)
-
-par(mar=c(0,0,0,0))
-plot(mds$points, type='n')
-text(mds$points, label=labels, cex=0.5, col=ifelse(mdatx$exposed, 'red', 'blue'))
-
-par(mfrow=c(1,2), mar=c(0,0,0,0))
-plot(mds$points, cex=sqrt(mdatx$ncod)/10)
-plot(mdatx$ncod, mds$points[,1], log='x')
-
-# partial distance-based redundancy analysis
-fit.1 <- glm(mds$points[,1] ~ log(mdatx$ncod))
-z.1 <- residuals(fit.1)
-
-fit.2 <- glm(mds$points[,2] ~ log(mdatx$ncod))
-z.2 <- residuals(fit.2)
-
-plot(z.1, z.2, cex=sqrt(mdatx$ncod)/10)
-
-par(mar=c(0,0,0,0))
-plot(z.1, z.2, type='n')
-text(z.1, z.2, label=labels, cex=0.5, col=ifelse(mdatx$exposed, 'red', 'blue'))
-
-# recalculate distances
-dmx <- dist(cbind(z.1, z.2))
-m2 <- cmdscale(dmx)
-plot(m2, type='n')
-text(m2, label=labels, cex=0.5, col=ifelse(mdatx$exposed, 'red', 'blue'))
-
-plot(m2, col='grey', pch=19, cex=0.5)
-text(m2[!mdatx$enveloped,], label=labels[!mdatx$enveloped], 
-     cex=0.5, col=ifelse(mdatx$exposed[!mdatx$enveloped], 'red', 'blue'))
-
-##################################################################
-##################################################################
-##################################################################
-
 # re-ran analysis with full alignments (no normalization of tree lengths)
-setwd("~/git/surfaces/data")
 files <- Sys.glob("iss135/*.json")
 grids <- lapply(files, function(f) parse.json(f))
 
@@ -131,6 +33,8 @@ protein <- sapply(grids, function(g) gsub(" step[4689]", "", g$protein))
 names(wpps) <- paste(virus, protein, sep='.')
 keys <- paste(virus, protein)
 
+
+# import metadata
 mdat <- read.csv("iss135/metadata_iss135.csv", na.strings="")
 mdat$key <- paste(mdat$virus, mdat$protein)
 idx <- match(keys, mdat$key)
@@ -145,6 +49,11 @@ mdat$nseq <- astats$nseq[idx]
 mdat$ncod <- astats$ncod[idx]
 mdat$treelen <- astats$treelen[idx]
 
+dnds <- read.csv("iss135/dnds.csv")
+idx <- match(mdat$key, paste(dnds$virus, dnds$protein)) 
+mdat$dnds <- dnds$dnds[idx]
+mdat$n.pos <- dnds$n.pos[idx]
+mdat$n.neg <- dnds$n.neg[idx]
 
 
 #### re-do supplementary figure
@@ -171,6 +80,8 @@ corner <- function(px=-0.19, py=1) {
   dy <- usr[4] - usr[3]
   list(x=px*dx+usr[1], y=py*dy+usr[3])
 }
+
+
 
 pdf("~/papers/surfaces/img/align-stats.pdf", width=9, height=3)
 
@@ -245,6 +156,11 @@ dev.off()
 plot(mds$points, cex=sqrt(mdat$treelen)/1.5)
 text(mds$points, label=labels, cex=0.5)
 
+
+cor.test(mds$points[,1], mdat$ncod, method='spearman')
+cor.test(mds$points[,1], mdat$treelen, method='spearman')
+cor.test(mds$points[,2], mdat$treelen, method='spearman')
+
 fit.1 <- glm(mds$points[,1] ~ log(mdat$ncod) + log(mdat$treelen))
 z.1 <- residuals(fit.1)
 fit.2 <- glm(mds$points[,2] ~ log(mdat$ncod) + log(mdat$treelen))
@@ -252,12 +168,12 @@ z.2 <- residuals(fit.2)
 
 # recalculate distances
 dmx <- dist(cbind(z.1, z.2))
-m2 <- cmdscale(dmx, k=2)
+m2 <- cmdscale(dmx, k=2, eig=F)
 
 plot(m2, cex=sqrt(mdat$treelen), pch=21, bg=rgb(1,0,0,0.3))
 
 
-par(mar=c(0,0,0,0))
+par(mar=c(0,0,0,0), mfrow=c(1,1))
 plot(m2, col='grey', cex=sqrt(mdat$treelen), xaxt='n', yaxt='n', bty='n')
 text(m2, label=labels, cex=0.5, col=ifelse(mdat$exposed, 'red', 'blue'))
 
@@ -285,13 +201,51 @@ text(min(m2[,1]), max(m2[,2]), label="Polymerase", adj=0, cex=1.2)
 dev.off()
 
 
+# look at association between residualized MDS and gene-wide dN/dS
+par(mar=c(5,5,1,1))
+plot(m2[,1], mdat$dnds, log='y')
+plot(m2[,2], mdat$dnds)
+plot(m2[,2], mdat$n.pos/mdat$ncod)
+
+cor.test(m2[,1], mdat$dnds)
+cor.test(m2[,2], mdat$dnds)
+
+
+
+# display fingerprints at the extremes of either MDS coordinates
+left <- c(54, 132, 137) 
+right <- c(117, 176, 84)
+top <- c(24, 147, 19)
+bottom <- c(51, 232, 64)
+
+# change keywords ('top') to make all four components of plot
+pdf("~/papers/surfaces/img/grids-top.pdf", width=9, height=3)
+par(mfrow=c(1,3), mar=c(1,1,1,1))
+#pal <- colorRampPalette(c('white', 'midnightblue'))(18)
+pal <- colorRampPalette(c('white', 'red4'))(18)
+pal <- c('white', pal[3:18])
+for (i in top) {
+  image(grids[[i]]$grid, col=pal, xaxt='n', yaxt='n')
+  abline(a=0, b=1)
+  abline(v=0.5, lty=2)
+  abline(h=0.5, lty=2)
+  text(x=0.03, y=0.95, adj=0, label=paste(mdat$abbrv[i], mdat$short[i]), cex=2)
+}
+dev.off()
+
+
+
 
 idx <- which(!mdat$enveloped)
 plot(m2, type='n')
 text(m2[idx,], label=labels[idx], cex=0.6, col=ifelse(mdat$exposed[idx], 'red', 'blue'))
 
+
+### SAVE OUR WORK
 #save(m2, labels, mdat, dmx, mds, wmat, file="iss135_final3.RData")
 load("iss135_final3.RData")
+
+
 
 d.ncod <- as.matrix(dist(log(mdat$ncod)))
 x <- d.ncod[upper.tri(d.ncod)]
@@ -407,7 +361,7 @@ write.csv(as.matrix(wmat.avg), file="iss135-avgmat-L50.csv", quote=F)
 ###############################
 
 m1 <- as.matrix(read.csv("iss135-dmx2.csv", row.names=1))
-m2 <- as.matrix(read.csv("iss135-avgmat-L50.csv", row.names=1))
+m2 <- as.matrix(read.csv("iss135-avgmat-L100.csv", row.names=1))
 
 common <- intersect(colnames(m1), colnames(m2))
 idx <- match(common, colnames(m1))
@@ -417,8 +371,78 @@ m2c <- m2[idx, idx]
 
 require(ade4)
 res <- mantel.test(m1c, m2c, nperm=1e4, graph=TRUE)
+res <- mantel.randtest(as.dist(m1c), as.dist(m2c), nrepet=99999)
+
 
 x <- m1c[upper.tri(m1c)]
 y <- m2c[upper.tri(m2c)]
 plot(x, y, pch=19, cex=0.5, col=rgb(0,0,0,0.2))
 cor.test(x, y)
+
+
+#############################
+
+load("iss135_final3.RData")
+
+require(vegan)
+adonis2(dmx ~ exposed, data=mdat)
+adonis2(dmx ~ exposed * enveloped, data=mdat, permutations=99999, by='terms')
+
+
+
+pdf("~/papers/surfaces/img/mds-full.pdf", width=8, height=4)
+
+par(mfrow=c(1,2), mar=c(0,0,0,0))
+plot(m2, type='n', xaxt='n', yaxt='n', bty='n', xlab=NA, ylab=NA,
+     main=' Surface-exposed', font.main=1, adj=0, line=-1)
+abline(v=par('usr')[2])
+points(m2, cex=ifelse(mdat$exposed, 0, 0.3), pch=19, col='grey')
+text(m2, label=labels,
+     cex=ifelse(mdat$exposed, 0.6, 0.01),
+     font=ifelse(mdat$enveloped, 3, 2),
+     col=ifelse(!mdat$enveloped, 'cadetblue4', 'darkorange2')
+)
+
+text(x=-1.3, y=-1.05, label="Non-enveloped", cex=1,
+     col='cadetblue4', font=2)
+text(x=-0.1, y=-1.05, label="Enveloped", cex=1, col='darkorange2', font=3)
+
+plot(m2, type='n', xaxt='n', yaxt='n', bty='n', xlab=NA, ylab=NA,
+     main=' Non-exposed', font.main=1, adj=0, line=-1)
+points(m2, cex=ifelse(mdat$exposed, 0.3, 0), pch=19, col='grey')
+text(m2, label=labels,
+     cex=ifelse(!mdat$exposed, 0.6, 0.01),
+     font=ifelse(mdat$enveloped, 3, 2),
+     col=ifelse(!mdat$enveloped, 'cadetblue4', 'darkorange2')
+)
+dev.off()
+
+
+fam <- c("Flaviviridae", "Orthomyxoviridae", "Paramyxoviridae", 
+         "Picornaviridae", "Retroviridae", "Togaviridae")
+pal <- gg.rainbow(n=6, l=60)
+
+pdf("~/papers/surfaces/img/by-family.pdf", width=6, height=4)
+par(mfrow=c(2,3), mar=c(0,0,0,0))
+for (i in 1:6) {
+  f <- fam[i]
+  plot(m2, type='n', xaxt='n', yaxt='n', bty='n', xlab=NA, ylab=NA)
+  points(m2, pch=ifelse(mdat$exposed, 19, 21), 
+         cex=ifelse(mdat$family==f, 1.5, 0.3),
+         col=ifelse(mdat$family==f, pal[i], 'grey'))
+  title(main=paste(" ", f), font.main=1, adj=0, line=-1)
+}
+dev.off()
+
+
+adonis2(dmx~family + exposed + enveloped, data=mdat, by='terms', permutations=1e5)
+
+idx <- which(mdat$family=='Retroviridae')  #'Picornaviridae')
+temp <- as.dist(as.matrix(dmx)[idx, idx])
+adonis2(temp ~ exposed, data=mdat[idx,], permutations=1e5, by='terms')
+
+restrict <- how(blocks=mdat$family, nperm=1e4-1)
+adonis2(dmx ~ exposed*family, data=mdat, by='terms', permutations=restrict)
+
+
+

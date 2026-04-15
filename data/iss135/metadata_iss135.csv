@@ -6,16 +6,16 @@ chikv,CHIKV,Togaviridae,T,E2 envelope glycoprotein,E2,T,F,F,T
 chikv,CHIKV,Togaviridae,T,E3 protein,E3,T,F,F,T
 chikv,CHIKV,Togaviridae,T,mRNA-capping enzyme nsp1,nsp1,F,F,F,F
 chikv,CHIKV,Togaviridae,T,non-structural protein nsp3,nsp3,F,F,F,F
-coxsacki,CA16,Picornaviridiae,F,2A-protein,2A,F,F,T,F
-coxsacki,CA16,Picornaviridiae,F,2B-protein,2B,F,F,F,F
-coxsacki,CA16,Picornaviridiae,F,2C-protein,3C,F,F,F,F
-coxsacki,CA16,Picornaviridiae,F,3AB-protein,3AB,F,F,F,F
-coxsacki,CA16,Picornaviridiae,F,3C-protein,3C,F,F,T,F
-coxsacki,CA16,Picornaviridiae,F,3D-protein,3D,F,T,F,F
-coxsacki,CA16,Picornaviridiae,F,VP1-protein,VP1,T,F,F,T
-coxsacki,CA16,Picornaviridiae,F,VP2-protein,VP2,T,F,F,T
-coxsacki,CA16,Picornaviridiae,F,VP3-protein,VP3,T,F,F,T
-coxsacki,CA16,Picornaviridiae,F,VP4-protein,VP4,F,F,F,T
+coxsacki,CA16,Picornaviridae,F,2A-protein,2A,F,F,T,F
+coxsacki,CA16,Picornaviridae,F,2B-protein,2B,F,F,F,F
+coxsacki,CA16,Picornaviridae,F,2C-protein,3C,F,F,F,F
+coxsacki,CA16,Picornaviridae,F,3AB-protein,3AB,F,F,F,F
+coxsacki,CA16,Picornaviridae,F,3C-protein,3C,F,F,T,F
+coxsacki,CA16,Picornaviridae,F,3D-protein,3D,F,T,F,F
+coxsacki,CA16,Picornaviridae,F,VP1-protein,VP1,T,F,F,T
+coxsacki,CA16,Picornaviridae,F,VP2-protein,VP2,T,F,F,T
+coxsacki,CA16,Picornaviridae,F,VP3-protein,VP3,T,F,F,T
+coxsacki,CA16,Picornaviridae,F,VP4-protein,VP4,F,F,F,T
 dengue2,DENV,Flaviviridae,T,anchored capsid protein ancC,CA,F,F,F,T
 dengue2,DENV,Flaviviridae,T,envelope protein E,E,T,F,F,T
 dengue2,DENV,Flaviviridae,T,membrane glycoprotein precursor prM,prM,T,F,F,T
@@ -26,16 +26,16 @@ dengue2,DENV,Flaviviridae,T,nonstructural protein NS3,NS3,F,F,T,F
 dengue2,DENV,Flaviviridae,T,nonstructural protein NS4A,NS4A,F,F,F,F
 dengue2,DENV,Flaviviridae,T,nonstructural protein NS4B,NS4B,F,F,F,F
 dengue2,DENV,Flaviviridae,T,RNA-dependent RNA polymerase NS5,RdRp,F,T,F,F
-enteroA71,EV,Picornaviridiae,F,2A,2A,F,F,T,F
-enteroA71,EV,Picornaviridiae,F,2B,2B,F,F,F,F
-enteroA71,EV,Picornaviridiae,F,2C,2C,F,F,F,F
-enteroA71,EV,Picornaviridiae,F,3AB,3AB,F,F,F,F
-enteroA71,EV,Picornaviridiae,F,3C,3C,F,F,T,F
-enteroA71,EV,Picornaviridiae,F,3D,3D,F,T,F,F
-enteroA71,EV,Picornaviridiae,F,VP1,VP1,T,F,F,T
-enteroA71,EV,Picornaviridiae,F,VP2,VP2,T,F,F,T
-enteroA71,EV,Picornaviridiae,F,VP3,VP3,T,F,F,T
-enteroA71,EV,Picornaviridiae,F,VP4,VP4,F,F,F,T
+enteroA71,EV,Picornaviridae,F,2A,2A,F,F,T,F
+enteroA71,EV,Picornaviridae,F,2B,2B,F,F,F,F
+enteroA71,EV,Picornaviridae,F,2C,2C,F,F,F,F
+enteroA71,EV,Picornaviridae,F,3AB,3AB,F,F,F,F
+enteroA71,EV,Picornaviridae,F,3C,3C,F,F,T,F
+enteroA71,EV,Picornaviridae,F,3D,3D,F,T,F,F
+enteroA71,EV,Picornaviridae,F,VP1,VP1,T,F,F,T
+enteroA71,EV,Picornaviridae,F,VP2,VP2,T,F,F,T
+enteroA71,EV,Picornaviridae,F,VP3,VP3,T,F,F,T
+enteroA71,EV,Picornaviridae,F,VP4,VP4,F,F,F,T
 Foveavirus,ASPV,Betaflexiviridae,F,coat protein,CP,F,F,F,T
 Foveavirus,ASPV,Betaflexiviridae,F,RNA polymerase,RdRp,F,T,F,F
 Foveavirus,ASPV,Betaflexiviridae,F,triple gene block 1,TGB1,F,F,F,F
@@ -51,15 +51,15 @@ HCV1a,HCV,Flaviviridae,T,NS4B,NS4B,F,F,F,F
 HCV1a,HCV,Flaviviridae,T,NS5A,NS5A,F,F,F,F
 HCV1a,HCV,Flaviviridae,T,NS5B,RdRp,F,T,F,F
 HCV1a,HCV,Flaviviridae,T,p7,p7,F,F,F,F
-HepA,HAV,Picornaviridiae,F,1B-VP2-mature-peptide,VP2,T,F,F,T
-HepA,HAV,Picornaviridiae,F,1C-VP3-mature-peptide,VP3,T,F,F,T
-HepA,HAV,Picornaviridiae,F,1D-VP1-mature-peptide,VP1,T,F,F,T
-HepA,HAV,Picornaviridiae,F,2A-mature-peptide,2A,F,F,F,T
-HepA,HAV,Picornaviridiae,F,2B-mature-peptide,2B,F,F,F,F
-HepA,HAV,Picornaviridiae,F,2C-mature-peptide,2C,F,F,F,F
-HepA,HAV,Picornaviridiae,F,3A-mature-peptide,3A,F,F,F,F
-HepA,HAV,Picornaviridiae,F,3C-mature-peptide,3C,F,F,T,F
-HepA,HAV,Picornaviridiae,F,3D-mature-peptide,RdRp,F,T,F,F
+HepA,HAV,Picornaviridae,F,1B-VP2-mature-peptide,VP2,T,F,F,T
+HepA,HAV,Picornaviridae,F,1C-VP3-mature-peptide,VP3,T,F,F,T
+HepA,HAV,Picornaviridae,F,1D-VP1-mature-peptide,VP1,T,F,F,T
+HepA,HAV,Picornaviridae,F,2A-mature-peptide,2A,F,F,F,T
+HepA,HAV,Picornaviridae,F,2B-mature-peptide,2B,F,F,F,F
+HepA,HAV,Picornaviridae,F,2C-mature-peptide,2C,F,F,F,F
+HepA,HAV,Picornaviridae,F,3A-mature-peptide,3A,F,F,F,F
+HepA,HAV,Picornaviridae,F,3C-mature-peptide,3C,F,F,T,F
+HepA,HAV,Picornaviridae,F,3D-mature-peptide,RdRp,F,T,F,F
 HIV1A1,HIV1,Retroviridae,T,Gag,Gag,F,F,F,T
 HIV1A1,HIV1,Retroviridae,T,gp120,gp120,T,F,F,T
 HIV1A1,HIV1,Retroviridae,T,gp41,gp41,T,F,F,T
@@ -131,16 +131,16 @@ orthobornavirus,BDV,Bornaviridae,T,matrix protein,M,F,F,F,T
 orthobornavirus,BDV,Bornaviridae,T,nucleoprotein,F,F,F,F,T
 orthobornavirus,BDV,Bornaviridae,T,phosphoprotein,P,F,T,F,F
 orthobornavirus,BDV,Bornaviridae,T,RNA dependent RNA polymerase,L,F,T,F,F
-polio,PV,Picornaviridiae,F,protein-2A,2A,F,F,T,F
-polio,PV,Picornaviridiae,F,protein-2B,2B,F,F,F,F
-polio,PV,Picornaviridiae,F,protein-2C,2C,F,F,F,F
-polio,PV,Picornaviridiae,F,protein-3AB,3AB,F,F,F,F
-polio,PV,Picornaviridiae,F,protein-3C,3C,F,F,T,F
-polio,PV,Picornaviridiae,F,protein-3D,3D,F,T,F,F
-polio,PV,Picornaviridiae,F,protein-VP1,VP1,T,F,F,T
-polio,PV,Picornaviridiae,F,protein-VP2,VP2,T,F,F,T
-polio,PV,Picornaviridiae,F,protein-VP3,VP3,T,F,F,T
-polio,PV,Picornaviridiae,F,protein-VP4,VP4,F,F,F,T
+polio,PV,Picornaviridae,F,protein-2A,2A,F,F,T,F
+polio,PV,Picornaviridae,F,protein-2B,2B,F,F,F,F
+polio,PV,Picornaviridae,F,protein-2C,2C,F,F,F,F
+polio,PV,Picornaviridae,F,protein-3AB,3AB,F,F,F,F
+polio,PV,Picornaviridae,F,protein-3C,3C,F,F,T,F
+polio,PV,Picornaviridae,F,protein-3D,3D,F,T,F,F
+polio,PV,Picornaviridae,F,protein-VP1,VP1,T,F,F,T
+polio,PV,Picornaviridae,F,protein-VP2,VP2,T,F,F,T
+polio,PV,Picornaviridae,F,protein-VP3,VP3,T,F,F,T
+polio,PV,Picornaviridae,F,protein-VP4,VP4,F,F,F,T
 Potato,PVX,Alphaflexiviridae,F,12 kD membrane-bound,TGB2,F,F,F,T
 Potato,PVX,Alphaflexiviridae,F,8 kD membrane-bound,TGB3,F,F,F,F
 Potato,PVX,Alphaflexiviridae,F,capsid protein,CP,F,F,F,F
@@ -156,16 +156,16 @@ PotatoY,PVY,Potyviridae,F,NIa-VPg,NIa-VPg,F,F,F,F
 PotatoY,PVY,Potyviridae,F,NIb,NIb,F,T,F,F
 PotatoY,PVY,Potyviridae,F,P1,P1,F,F,T,F
 PotatoY,PVY,Potyviridae,F,P3,P3,F,F,F,F
-RhinoA,RV,Picornaviridiae,F,1A,VP4,F,F,F,T
-RhinoA,RV,Picornaviridiae,F,1B,VP2,T,F,F,T
-RhinoA,RV,Picornaviridiae,F,1C,VP3,T,F,F,T
-RhinoA,RV,Picornaviridiae,F,1D,VP1,T,F,F,T
-RhinoA,RV,Picornaviridiae,F,2A,2A,F,F,T,F
-RhinoA,RV,Picornaviridiae,F,2B,2B,F,F,F,F
-RhinoA,RV,Picornaviridiae,F,2C,2C,F,F,F,F
-RhinoA,RV,Picornaviridiae,F,3AB,3AB,F,F,F,F
-RhinoA,RV,Picornaviridiae,F,3C,3C,F,F,T,F
-RhinoA,RV,Picornaviridiae,F,3D,RdRp,F,T,F,F
+RhinoA,RV,Picornaviridae,F,1A,VP4,F,F,F,T
+RhinoA,RV,Picornaviridae,F,1B,VP2,T,F,F,T
+RhinoA,RV,Picornaviridae,F,1C,VP3,T,F,F,T
+RhinoA,RV,Picornaviridae,F,1D,VP1,T,F,F,T
+RhinoA,RV,Picornaviridae,F,2A,2A,F,F,T,F
+RhinoA,RV,Picornaviridae,F,2B,2B,F,F,F,F
+RhinoA,RV,Picornaviridae,F,2C,2C,F,F,F,F
+RhinoA,RV,Picornaviridae,F,3AB,3AB,F,F,F,F
+RhinoA,RV,Picornaviridae,F,3C,3C,F,F,T,F
+RhinoA,RV,Picornaviridae,F,3D,RdRp,F,T,F,F
 RotaA,RotV,Sedoreoviridae,F,NSP1,NSP1,F,F,F,F
 RotaA,RotV,Sedoreoviridae,F,NSP2,NSP2,F,F,F,F
 RotaA,RotV,Sedoreoviridae,F,NSP3,NSP3,F,F,F,F
