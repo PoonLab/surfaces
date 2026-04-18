@@ -7,7 +7,7 @@ from glob import glob
 
 
 description = """
-Compare sitewise SLAC estimates against INDELible simulated rates and write
+Compare sitewise HyPhy estimates against INDELible simulated rates and write
 one RMSE summary row per simulation.
 """
 
@@ -29,48 +29,22 @@ def parse_args():
     """Command line interface."""
     parser = argparse.ArgumentParser(description=description)
     parser.add_argument(
-        "slac_dir", type=str,
-        help="Path to directory containing .SLAC.json files"
+        "results_dir", type=str,
+        help="Path to directory containing method JSON files"
     )
     parser.add_argument(
         "rates_dir", type=str,
         help="Path to directory containing INDELible *_RATES.txt files"
     )
     parser.add_argument(
+        "--method", choices=["slac", "fel", "fubar"], required=True,
+        help="HyPhy method used to generate the JSON files"
+    )
+    parser.add_argument(
         "-o", "--outfile", type=argparse.FileType("w"), default=os.sys.stdout,
         help="File to write CSV output (default: stdout)"
     )
     return parser.parse_args()
-
-
-def load_slac_sitewise(path):
-    """
-    Extract sitewise dN/dS values from a HyPhy SLAC JSON file.
-
-    Rules:
-    - if dS > 0, use dN / dS
-    - if dS == 0 and dN == 0, use 0
-    - if dS == 0 and dN > 0, use None and drop from RMSE
-    """
-    with open(path) as handle:
-        data = json.load(handle)
-
-    rows = data["MLE"]["content"]["0"]["by-site"]["AVERAGED"]
-    out = []
-    for row in rows:
-        ds = row[5]
-        dn = row[6]
-        if ds is None or dn is None:
-            out.append(None)
-            continue
-        if ds > 0:
-            out.append(dn / ds)
-        elif ds == 0 and dn == 0:
-            out.append(0.0)
-        else:
-            out.append(None)
-
-    return out
 
 
 def load_true_omegas(path):
@@ -85,6 +59,87 @@ def load_true_omegas(path):
             omegas.append(OMEGAS[omega_class])
 
     return omegas
+
+
+def compute_ratio(numerator, denominator):
+    """
+    Convert method-specific sitewise rates to a comparable dN/dS-style value.
+    """
+    if numerator is None or denominator is None:
+        return None
+    if denominator > 0:
+        return numerator / denominator
+    if denominator == 0 and numerator == 0:
+        return 0.0
+    return None
+
+
+def load_slac_sitewise(path):
+    """
+    Extract sitewise dN/dS values from a HyPhy SLAC JSON file.
+    """
+    with open(path) as handle:
+        data = json.load(handle)
+
+    rows = data["MLE"]["content"]["0"]["by-site"]["AVERAGED"]
+    out = []
+    for row in rows:
+        ds = row[5]
+        dn = row[6]
+        out.append(compute_ratio(dn, ds))
+
+    return out
+
+
+def load_fel_sitewise(path):
+    """
+    Extract sitewise beta/alpha values from a HyPhy FEL JSON file.
+    """
+    with open(path) as handle:
+        data = json.load(handle)
+
+    headers = [header[0] for header in data["MLE"]["headers"]]
+    rows = data["MLE"]["content"]["0"]
+    alpha_idx = headers.index("alpha")
+    beta_idx = headers.index("beta")
+
+    out = []
+    for row in rows:
+        alpha = row[alpha_idx]
+        beta = row[beta_idx]
+        out.append(compute_ratio(beta, alpha))
+
+    return out
+
+
+def load_fubar_sitewise(path):
+    """
+    Extract sitewise beta/alpha values from a HyPhy FUBAR JSON file.
+    """
+    with open(path) as handle:
+        data = json.load(handle)
+
+    headers = [header[0] for header in data["MLE"]["headers"]]
+    rows = data["MLE"]["content"]["0"]
+    alpha_idx = headers.index("alpha")
+    beta_idx = headers.index("beta")
+
+    out = []
+    for row in rows:
+        alpha = row[alpha_idx]
+        beta = row[beta_idx]
+        out.append(compute_ratio(beta, alpha))
+
+    return out
+
+
+def load_sitewise_estimates(path, method):
+    """Dispatch to the parser for the chosen method."""
+    if method == "slac":
+        return load_slac_sitewise(path)
+    if method == "fel":
+        return load_fel_sitewise(path)
+    return load_fubar_sitewise(path)
 
 
 def compute_rmse(truth, estimate):
@@ -104,23 +159,25 @@ def compute_rmse(truth, estimate):
 if __name__ == "__main__":
     args = parse_args()
 
-    slac_files = sorted(glob(os.path.join(args.slac_dir, "*.SLAC.json")))
+    suffix = f".{args.method.upper()}.json"
+    result_files = sorted(glob(os.path.join(args.results_dir, "*" + suffix)))
+
     writer = csv.writer(args.outfile)
     writer.writerow([
         "file", "tree.length", "rep", "rmse",
         "n_sites_total", "n_sites_used", "n_sites_dropped"
     ])
 
-    for slac_path in slac_files:
-        filename = os.path.basename(slac_path)
-        prefix = filename.replace(".SLAC.json", "")
+    for result_path in result_files:
+        filename = os.path.basename(result_path)
+        prefix = filename.replace(suffix, "")
         rates_path = os.path.join(args.rates_dir, prefix + "_RATES.txt")
 
         if not os.path.exists(rates_path):
             os.sys.stderr.write(f"...skipping missing rates file for {prefix}\n")
             continue
 
-        inferred = load_slac_sitewise(slac_path)
+        inferred = load_sitewise_estimates(result_path, args.method)
         truth = load_true_omegas(rates_path)
 
         if len(inferred) != len(truth):

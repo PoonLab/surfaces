@@ -1,13 +1,13 @@
 import argparse
+import os
 import subprocess
 import sys
-import os
 from glob import glob
 
 
 description = """
-Run HyPhy SLAC on simulated tree-alignment pairs that have already been
-generated and cleaned.
+Run a HyPhy selection method on simulated tree-alignment pairs that have
+already been generated and cleaned.
 """
 
 
@@ -19,28 +19,16 @@ def parse_args():
         help="Path to directory containing simulation files"
     )
     parser.add_argument(
-        "--outdir", type=str, default="slac_outputs",
+        "--method", choices=["slac", "fel", "fubar"], default="slac",
+        help="HyPhy method to run"
+    )
+    parser.add_argument(
+        "--outdir", type=str, default=None,
         help="Name of output subdirectory to create inside indir"
     )
     parser.add_argument(
         "--hyphy", type=str, default="hyphy",
         help="Path to HyPhy executable"
-    )
-    parser.add_argument(
-        "--code", type=str, default="Universal",
-        help="Genetic code to pass to HyPhy SLAC"
-    )
-    parser.add_argument(
-        "--branches", type=str, default="All",
-        help="Branches setting for HyPhy SLAC"
-    )
-    parser.add_argument(
-        "--samples", type=int, default=0,
-        help="Number of samples for ancestral reconstruction uncertainty"
-    )
-    parser.add_argument(
-        "--pvalue", type=float, default=0.1,
-        help="p-value reporting threshold"
     )
     parser.add_argument(
         "--overwrite", action="store_true",
@@ -53,22 +41,23 @@ def parse_args():
     return parser.parse_args()
 
 
-def run_slac(aln, tree, json_file, hyphy_bin="hyphy", code="Universal",
-             branches="All", samples=0, pvalue=0.1, verbose=False):
+def run_method(aln, tree, json_file, method="slac", hyphy_bin="hyphy",
+               verbose=False):
     """
-    Run HyPhy SLAC on a cleaned alignment and matching tree.
+    Run a HyPhy selection method on a cleaned alignment and matching tree.
     """
     stderr = None if verbose else subprocess.DEVNULL
-    result = subprocess.run([
-        hyphy_bin, "slac",
-        "--code", code,
+    cmd = [
+        hyphy_bin, method,
         "--alignment", aln,
         "--tree", tree,
-        "--branches", str(branches),
-        "--samples", str(samples),
-        "--pvalue", str(pvalue),
         "--output", json_file
-    ], stdout=subprocess.PIPE, stderr=stderr)
+    ]
+
+    if method in {"slac", "fel"}:
+        cmd.extend(["--branches", "All"])
+
+    result = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=stderr)
 
     if verbose:
         sys.stdout.write(result.stdout.decode("utf-8"))
@@ -80,7 +69,9 @@ if __name__ == "__main__":
     args = parse_args()
 
     indir = os.path.abspath(args.indir)
-    outdir = os.path.join(indir, args.outdir)
+    method_label = args.method.upper()
+    outdir_name = args.outdir if args.outdir else f"{args.method}_outputs"
+    outdir = os.path.join(indir, outdir_name)
     os.makedirs(outdir, exist_ok=True)
 
     alignments = sorted(glob(os.path.join(indir, "*.cleaned.fa")))
@@ -93,7 +84,7 @@ if __name__ == "__main__":
     for aln in alignments:
         prefix = os.path.basename(aln).replace(".cleaned.fa", "")
         tree = os.path.join(indir, prefix + ".cleaned.nwk")
-        outfile = os.path.join(outdir, prefix + ".SLAC.json")
+        outfile = os.path.join(outdir, prefix + f".{method_label}.json")
 
         if not os.path.exists(tree):
             sys.stderr.write(f"...skipping incomplete pair for {prefix}\n")
@@ -101,29 +92,28 @@ if __name__ == "__main__":
             continue
 
         if os.path.exists(outfile) and not args.overwrite:
-            sys.stderr.write(f"...skipping existing output {os.path.basename(outfile)}\n")
+            sys.stderr.write(
+                f"...skipping existing output {os.path.basename(outfile)}\n"
+            )
             n_existing += 1
             continue
 
-        sys.stderr.write(f"...running SLAC on {prefix}\n")
+        sys.stderr.write(f"...running {method_label} on {prefix}\n")
         sys.stderr.flush()
 
-        code = run_slac(
+        code = run_method(
             aln=aln,
             tree=tree,
             json_file=outfile,
+            method=args.method,
             hyphy_bin=args.hyphy,
-            code=args.code,
-            branches=args.branches,
-            samples=args.samples,
-            pvalue=args.pvalue,
             verbose=args.verbose
         )
 
         if code == 0 and os.path.exists(outfile):
             n_success += 1
         else:
-            sys.stderr.write(f"...SLAC failed for {prefix}\n")
+            sys.stderr.write(f"...{method_label} failed for {prefix}\n")
             n_failed += 1
 
     sys.stderr.write(
