@@ -61,7 +61,7 @@ def load_true_omegas(path):
     return omegas
 
 
-def compute_ratio(numerator, denominator):
+def compute_ratio(numerator, denominator, zero_zero_value=0.0):
     """
     Convert method-specific sitewise rates to a comparable dN/dS-style value.
     """
@@ -70,7 +70,7 @@ def compute_ratio(numerator, denominator):
     if denominator > 0:
         return numerator / denominator
     if denominator == 0 and numerator == 0:
-        return 0.0
+        return zero_zero_value
     return None
 
 
@@ -102,12 +102,21 @@ def load_fel_sitewise(path):
     rows = data["MLE"]["content"]["0"]
     alpha_idx = headers.index("alpha")
     beta_idx = headers.index("beta")
+    tbl_idx = headers.index("Total branch length")
 
     out = []
     for row in rows:
         alpha = row[alpha_idx]
         beta = row[beta_idx]
-        out.append(compute_ratio(beta, alpha))
+        total_branch_length = row[tbl_idx]
+
+        # FEL reports alpha=beta=0 with total branch length 0 at invariant /
+        # uninformative sites. Treat those as missing rather than as dN/dS=0.
+        if total_branch_length == 0 and alpha == 0 and beta == 0:
+            out.append(None)
+            continue
+
+        out.append(compute_ratio(beta, alpha, zero_zero_value=None))
 
     return out
 
