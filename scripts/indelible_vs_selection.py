@@ -61,17 +61,15 @@ def load_true_omegas(path):
     return omegas
 
 
-def compute_ratio(numerator, denominator, zero_zero_value=0.0):
+def compute_ratio(numerator, denominator):
     """
     Convert method-specific sitewise rates to a comparable dN/dS-style value.
     """
     if numerator is None or denominator is None:
         return None
-    if denominator > 0:
-        return numerator / denominator
-    if denominator == 0 and numerator == 0:
-        return zero_zero_value
-    return None
+    if denominator == 0:
+        return None
+    return numerator / denominator
 
 
 def load_slac_sitewise(path):
@@ -116,7 +114,7 @@ def load_fel_sitewise(path):
             out.append(None)
             continue
 
-        out.append(compute_ratio(beta, alpha, zero_zero_value=None))
+        out.append(compute_ratio(beta, alpha))
 
     return out
 
@@ -170,6 +168,7 @@ if __name__ == "__main__":
 
     suffix = f".{args.method.upper()}.json"
     result_files = sorted(glob(os.path.join(args.results_dir, "*" + suffix)))
+    n_compared = 0
 
     writer = csv.writer(args.outfile)
     writer.writerow([
@@ -207,8 +206,16 @@ if __name__ == "__main__":
         n_total = len(truth)
         n_dropped = n_total - n_used
 
+        os.sys.stderr.write(
+            f"...compared {prefix}: used {n_used}/{n_total} sites, "
+            f"dropped {n_dropped}\n"
+        )
+
         writer.writerow([
             prefix, tree_length, replicate, rmse,
             n_total, n_used, n_dropped
         ])
         args.outfile.flush()
+        n_compared += 1
+
+    os.sys.stderr.write(f"Completed: compared {n_compared} simulations\n")
