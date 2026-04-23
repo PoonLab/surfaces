@@ -144,11 +144,19 @@ plot(mds$points[o,], cex=sqrt(mdat$ncod[o])/10,
      xaxt='n', yaxt='n', bty='n',
      xlab=NA, ylab=NA, pch=21, col='white', bg='cadetblue',
      main='Alignment length', font.main=1, adj=0, line=-1)
+points(x=c(-3, -2.5, -1.9, -1.2), y=rep(-2, 4), 
+       cex=sqrt(c(50, 100, 500, 1000))/10, pch=21, bg='white', col='black')
+text(x=c(-3, -2.5, -1.9, -1.2), y=c(-1.9, -1.88, -1.85, -1.81), 
+     labels=c(50, 100, 500, 1000), cex=0.6)
 
 o <- order(mdat$treelen, decreasing=TRUE)
 plot(mds$points[o,], cex=0.2+sqrt(mdat$treelen[o])/1.5, xaxt='n', yaxt='n', bty='n',
-     xlab=NA, ylab=NA, pch=21, col='white', bg='orange',
+     xlab=NA, ylab=NA, pch=21, col='white', bg='orange', xpd=NA,
      main='Tree length', font.main=1, adj=0, line=-1)
+points(x=c(-3, -2.6, -2.2, -1.7, -1.1, -0.3), y=rep(-2, 6), xpd=NA,
+       cex=0.2+sqrt(c(1, 2, 5, 10, 20, 50))/1.5, pch=21, bg='white', col='black')
+text(x=c(-3, -2.6, -2.2, -1.7, -1.1, -0.3), y=c(-1.9, -1.88, -1.86, -2, -2, -2), 
+     labels=c(1, 2, 5, 10, 20, 50), cex=0.6)
 dev.off()
 
 
@@ -172,33 +180,6 @@ m2 <- cmdscale(dmx, k=2, eig=F)
 
 plot(m2, cex=sqrt(mdat$treelen), pch=21, bg=rgb(1,0,0,0.3))
 
-
-par(mar=c(0,0,0,0), mfrow=c(1,1))
-plot(m2, col='grey', cex=sqrt(mdat$treelen), xaxt='n', yaxt='n', bty='n')
-text(m2, label=labels, cex=0.5, col=ifelse(mdat$exposed, 'red', 'blue'))
-
-
-
-pdf("~/papers/surfaces/img/mds-full.pdf", width=10, height=5)
-par(mar=c(0,0,0,0), mfrow=c(1,2))
-plot(m2, type='n', xaxt='n', yaxt='n', bty='n')
-text(m2, label=labels,
-     cex=ifelse(mdat$exposed, 0.7, 0.5),
-     font=ifelse(mdat$exposed, 2, 1),
-     col=ifelse(!mdat$exposed, 'cadetblue', 
-                ifelse(mdat$enveloped, 'firebrick', 'darkorange'))
-)
-text(min(m2[,1]), max(m2[,2]), label="Surface-exposed", adj=0, cex=1.2)
-abline(v=par('usr')[2])
-plot(m2, type='n', xaxt='n', yaxt='n', bty='n')
-text(m2, label=labels, 
-     cex=ifelse(mdat$polymerase, 0.7, 0.5), 
-     font=ifelse(mdat$polymerase, 2, 1),
-     col=ifelse(!mdat$polymerase, 'cadetblue',
-                ifelse(mdat$enveloped, 'firebrick', 'darkorange')), 
-)
-text(min(m2[,1]), max(m2[,2]), label="Polymerase", adj=0, cex=1.2)
-dev.off()
 
 
 # look at association between residualized MDS and gene-wide dN/dS
@@ -299,6 +280,7 @@ cents <- t(sapply(
 mdat2 <- mdatx[!duplicated(mdatx), ]
 
 
+
 # m2 should be loaded from above
 pdf("~/papers/surfaces/img/corrected-mds.pdf", width=7, height=7)
 par(mfrow=c(2,2), mar=c(1,2,2,1))
@@ -308,14 +290,22 @@ plot(m2[idx,], cex=sqrt(mdat$ncod[idx])/10,
      main="Alignment length", adj=0, font.main=1, 
      bty='n', xaxt='n', yaxt='n', xlab=NA, ylab=NA,
      pch=21, col='white', bg='cadetblue')
-
 title(ylab="Residualized", line=1, cex.lab=1.2)
+points(x=c(-2, -1.7, -1.35, -1), y=rep(-1, 4), xpd=NA, 
+       cex=sqrt(c(50, 100, 500, 1000))/10, pch=21, bg='white', col='black')
+text(x=c(-2, -1.7, -1.35, -1), y=c(-0.93, -.92, -.9, -.88), 
+     labels=c(50, 100, 500, 1000), cex=0.6, xpd=NA)
 
 idx <- order(mdat$treelen, decreasing=TRUE)
 plot(m2[idx,], cex=0.2+sqrt(mdat$treelen[idx])/1.5,
      main="Tree length", adj=0, font.main=1,
      pch=21, col='white', bg='orange',
      bty='n', xaxt='n', yaxt='n', xlab=NA, ylab=NA)
+points(x=c(-2, -1.7, -1.4, -1.1, -0.8, -0.4), y=rep(-1.1, 6), xpd=NA,
+       cex=0.2+sqrt(c(1, 2, 5, 10, 20, 50))/1.5, pch=21, bg='white', col='black')
+text(x=c(-2, -1.7, -1.4, -1.1, -0.8, -0.4), 
+     y=c(-1.04, -1.03, -1.02, -1.1, -1.1, -1.1), 
+     labels=c(1, 2, 5, 10, 20, 50), cex=0.6)
 
 par(mar=c(2,2,1,1))
 
@@ -323,7 +313,10 @@ idx <- order(mdat2$ncod, decreasing=TRUE)
 plot(cents[idx,], cex=sqrt(mdat2$ncod[idx])/10, 
      bty='n', xaxt='n', yaxt='n', xlab=NA, ylab=NA, 
      pch=21, col='white', bg='cadetblue')
-
+points(x=c(-1.4, -1.2, -0.98, -0.75), y=rep(-0.7, 4), xpd=NA, 
+       cex=sqrt(c(50, 100, 500, 1000))/10, pch=21, bg='white', col='black')
+text(x=c(-1.4, -1.2, -0.98, -0.75), y=c(-0.66, -.655, -.64, -.625), 
+     labels=c(50, 100, 500, 1000), cex=0.6, xpd=NA)
 abline(h=par('usr')[4]*1.1, xpd=NA, col='grey')
 title(ylab="Downsampled", line=1, cex.lab=1.2)
 
@@ -339,24 +332,92 @@ dev.off()
 
 # Compare distance matrices
 
-# average distances among replicates
+# average distances among replicates for L=50
 load("L50.RData")  # provides `wmat` and `mdatx`
-
 idxs <- sapply(split(1:nrow(mdatx), mdatx$key), function(x) {
-  if (length(x)==1) {
-    rep(x, 10)
-  } else { x }
+  if (length(x)==1) { rep(x, 10) } else { x }
 })
-
 # reconstitute distance matrices
 res <- lapply(1:10, function(z) {
   idx <- idxs[z, ]
   wmat[idx, idx]
 })
 
-wmat.avg <- Reduce("+", res) / length(res)
-write.csv(as.matrix(wmat.avg), file="iss135-avgmat-L50.csv", quote=F)
+wmat.50 <- Reduce("+", res) / length(res)  # averaged (centroids)
+#write.csv(as.matrix(wmat.avg), file="iss135-avgmat-L50.csv", quote=F)
+mdat.50 <- mdatx[idxs[1,], ]  # reduce metadata to match
 
+mds.50 <- cmdscale(wmat.50)
+
+
+pdf(file="~/papers/surfaces/img/mds50.pdf", width=8, height=4)
+par(mfrow=c(1,2), mar=c(0,0,0,0))
+plot(mds.50, type='n', xaxt='n', yaxt='n', bty='n', xlab=NA, ylab=NA)
+title(main='  Enveloped', font.main=1, adj=0, line=-1)
+title(main="50 codons ", font.main=1, adj=1, line=-1)
+abline(v=par('usr')[2])
+points(mds.50, cex=ifelse(mdat.50$enveloped, 0, 0.3), pch=19, col='grey')
+text(mds.50, label=mdat.50$label,
+     cex=ifelse(mdat.50$enveloped, 0.6, 0.01),
+     font=ifelse(!mdat.50$exposed, 3, 2),
+     col=ifelse(mdat.50$exposed, 'cadetblue4', 'darkorange2')
+)
+
+rect(xl=0.32, xr=1.3, yb=-0.42, yt=-0.37, xpd=NA, col='white')
+text(x=0.55, y=-0.4, label="Exposed", cex=1, col='cadetblue4', font=2, xpd=NA)
+text(x=1, y=-0.4, label="Non-exposed", cex=1, col='darkorange2', font=3, xpd=NA)
+
+plot(mds.50, type='n', xaxt='n', yaxt='n', bty='n', xlab=NA, ylab=NA)
+title(main=' Non-enveloped', font.main=1, adj=0, line=-1)
+title(main="50 codons ", font.main=1, adj=1, line=-1)
+points(mds.50, cex=ifelse(mdat.50$enveloped, 0.3, 0), pch=19, col='grey')
+text(mds.50, label=mdat.50$label,
+     cex=ifelse(!mdat.50$enveloped, 0.6, 0.01),
+     font=ifelse(!mdat.50$exposed, 3, 2),
+     col=ifelse(mdat.50$exposed, 'cadetblue4', 'darkorange2')
+)
+dev.off()
+
+
+# Do the same for L=100
+load("L100.RData")
+idxs <- sapply(split(1:nrow(mdatx), mdatx$key), function(x) {
+  if (length(x)==1) { rep(x, 10) } else { x }
+})
+res <- lapply(1:10, function(z) { idx <- idxs[z, ]; wmat[idx, idx] })
+wmat.100 <- Reduce("+", res) / length(res)
+mds.100 <- cmdscale(wmat.100)
+mdat.100 <- mdatx[idxs[1,], ]
+
+
+pdf(file="~/papers/surfaces/img/mds100.pdf", width=8, height=4)
+par(mfrow=c(1,2), mar=c(0,0,0,0))
+plot(mds.100, type='n', xaxt='n', yaxt='n', bty='n', xlab=NA, ylab=NA)
+title(main='  Enveloped', font.main=1, adj=0, line=-1)
+title(main="100 codons ", font.main=1, adj=1, line=-1)
+abline(v=par('usr')[2])
+points(mds.100, cex=ifelse(mdat.100$enveloped, 0, 0.3), pch=19, col='grey')
+text(mds.100, label=mdat.100$label,
+     cex=ifelse(mdat.100$enveloped, 0.6, 0.01),
+     font=ifelse(!mdat.100$exposed, 3, 2),
+     col=ifelse(mdat.100$exposed, 'cadetblue4', 'darkorange2')
+)
+
+plot(mds.100, type='n', xaxt='n', yaxt='n', bty='n', xlab=NA, ylab=NA)
+title(main=' Non-enveloped', font.main=1, adj=0, line=-1)
+title(main="100 codons ", font.main=1, adj=1, line=-1)
+points(mds.100, cex=ifelse(mdat.100$enveloped, 0.3, 0), pch=19, col='grey')
+text(mds.100, label=mdat.100$label,
+     cex=ifelse(!mdat.100$enveloped, 0.6, 0.01),
+     font=ifelse(!mdat.100$exposed, 3, 2),
+     col=ifelse(mdat.100$exposed, 'cadetblue4', 'darkorange2')
+)
+
+rect(xl=-0.28, xr=1, yb=-0.64, yt=-0.55, xpd=NA, col='white', lwd=0.5)
+text(x=0, y=-0.6, label="Exposed", cex=1, col='cadetblue4', font=2, xpd=NA)
+text(x=0.6, y=-0.6, label="Non-exposed", cex=1, col='darkorange2', font=3, xpd=NA)
+
+dev.off()
 
 ###############################
 
@@ -394,26 +455,27 @@ pdf("~/papers/surfaces/img/mds-full.pdf", width=8, height=4)
 
 par(mfrow=c(1,2), mar=c(0,0,0,0))
 plot(m2, type='n', xaxt='n', yaxt='n', bty='n', xlab=NA, ylab=NA,
-     main=' Surface-exposed', font.main=1, adj=0, line=-1)
+     main=' Enveloped', font.main=1, adj=0, line=-1)
 abline(v=par('usr')[2])
-points(m2, cex=ifelse(mdat$exposed, 0, 0.3), pch=19, col='grey')
+points(m2, cex=ifelse(mdat$enveloped, 0, 0.3), pch=19, col='grey')
 text(m2, label=labels,
-     cex=ifelse(mdat$exposed, 0.6, 0.01),
-     font=ifelse(mdat$enveloped, 3, 2),
-     col=ifelse(!mdat$enveloped, 'cadetblue4', 'darkorange2')
+     cex=ifelse(mdat$enveloped, 0.6, 0.01),
+     font=ifelse(!mdat$exposed, 3, 2),
+     col=ifelse(mdat$exposed, 'cadetblue4', 'darkorange2')
 )
 
-text(x=-1.3, y=-1.05, label="Non-enveloped", cex=1,
+text(x=-1.5, y=-1.05, label="Exposed", cex=1,
      col='cadetblue4', font=2)
-text(x=-0.1, y=-1.05, label="Enveloped", cex=1, col='darkorange2', font=3)
+text(x=-0.4, y=-1.05, label="Non-exposed", cex=1, col='darkorange2', font=3)
+rect(xl=-2, xr=0.3, yb=-1.12, yt=-0.975)
 
 plot(m2, type='n', xaxt='n', yaxt='n', bty='n', xlab=NA, ylab=NA,
-     main=' Non-exposed', font.main=1, adj=0, line=-1)
-points(m2, cex=ifelse(mdat$exposed, 0.3, 0), pch=19, col='grey')
+     main=' Non-enveloped', font.main=1, adj=0, line=-1)
+points(m2, cex=ifelse(mdat$enveloped, 0.3, 0), pch=19, col='grey')
 text(m2, label=labels,
-     cex=ifelse(!mdat$exposed, 0.6, 0.01),
-     font=ifelse(mdat$enveloped, 3, 2),
-     col=ifelse(!mdat$enveloped, 'cadetblue4', 'darkorange2')
+     cex=ifelse(!mdat$enveloped, 0.6, 0.01),
+     font=ifelse(!mdat$exposed, 3, 2),
+     col=ifelse(mdat$exposed, 'cadetblue4', 'darkorange2')
 )
 dev.off()
 
@@ -427,9 +489,12 @@ par(mfrow=c(2,3), mar=c(0,0,0,0))
 for (i in 1:6) {
   f <- fam[i]
   plot(m2, type='n', xaxt='n', yaxt='n', bty='n', xlab=NA, ylab=NA)
-  points(m2, pch=ifelse(mdat$exposed, 19, 21), 
-         cex=ifelse(mdat$family==f, 1.5, 0.3),
-         col=ifelse(mdat$family==f, pal[i], 'grey'))
+  points(m2[mdat$family!=f, ], col='grey', pch=19, cex=0.3)
+  
+  temp <- m2[mdat$family==f, ]
+  is.exposed <- mdat$exposed[mdat$family==f]
+  points(temp[is.exposed, ], pch=21, bg=pal[i], col='white', cex=2)
+  points(temp[!is.exposed, ], pch=21, col=pal[i], cex=1.5, lwd=1.5)
   title(main=paste(" ", f), font.main=1, adj=0, line=-1)
 }
 dev.off()
