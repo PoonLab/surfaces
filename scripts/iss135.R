@@ -236,7 +236,7 @@ require(MASS)
 
 png("~/papers/surfaces/img/logcodon.png", width=5*300, height=5*300, res=300)
 par(mar=c(5,5,1,1))
-plot(x, y, bty='n', xlab="log(codons)", ylab="Wasserstein distance",
+plot(x, y, bty='n', xlab="Abs. diff. log(codons)", ylab="Wasserstein distance",
      cex=0.5, col='black', lwd=2.5, xaxt='n')
 axis(side=1, )
 points(x, y, col='cadetblue3', pch=19, cex=0.5)
@@ -306,7 +306,7 @@ points(x=c(-2, -1.7, -1.4, -1.1, -0.8, -0.4), y=rep(-1.1, 6), xpd=NA,
 text(x=c(-2, -1.7, -1.4, -1.1, -0.8, -0.4), 
      y=c(-1.04, -1.03, -1.02, -1.1, -1.1, -1.1), 
      labels=c(1, 2, 5, 10, 20, 50), cex=0.6)
-
+ 
 par(mar=c(2,2,1,1))
 
 idx <- order(mdat2$ncod, decreasing=TRUE)
@@ -349,33 +349,44 @@ mdat.50 <- mdatx[idxs[1,], ]  # reduce metadata to match
 
 mds.50 <- cmdscale(wmat.50)
 
+idx <- order(mdat.50$exposed)
 
-pdf(file="~/papers/surfaces/img/mds50.pdf", width=8, height=4)
+
+pdf(file="~/papers/surfaces/img/mds50.pdf", width=7, height=3.5)
 par(mfrow=c(1,2), mar=c(0,0,0,0))
-plot(mds.50, type='n', xaxt='n', yaxt='n', bty='n', xlab=NA, ylab=NA)
-title(main='  Enveloped', font.main=1, adj=0, line=-1)
-title(main="50 codons ", font.main=1, adj=1, line=-1)
-abline(v=par('usr')[2])
-points(mds.50, cex=ifelse(mdat.50$enveloped, 0, 0.3), pch=19, col='grey')
-text(mds.50, label=mdat.50$label,
-     cex=ifelse(mdat.50$enveloped, 0.6, 0.01),
-     font=ifelse(!mdat.50$exposed, 3, 2),
-     col=ifelse(mdat.50$exposed, 'cadetblue4', 'darkorange2')
-)
-
-rect(xl=0.32, xr=1.3, yb=-0.42, yt=-0.37, xpd=NA, col='white')
-text(x=0.55, y=-0.4, label="Exposed", cex=1, col='cadetblue4', font=2, xpd=NA)
-text(x=1, y=-0.4, label="Non-exposed", cex=1, col='darkorange2', font=3, xpd=NA)
 
 plot(mds.50, type='n', xaxt='n', yaxt='n', bty='n', xlab=NA, ylab=NA)
 title(main=' Non-enveloped', font.main=1, adj=0, line=-1)
 title(main="50 codons ", font.main=1, adj=1, line=-1)
 points(mds.50, cex=ifelse(mdat.50$enveloped, 0.3, 0), pch=19, col='grey')
-text(mds.50, label=mdat.50$label,
-     cex=ifelse(!mdat.50$enveloped, 0.6, 0.01),
-     font=ifelse(!mdat.50$exposed, 3, 2),
-     col=ifelse(mdat.50$exposed, 'cadetblue4', 'darkorange2')
+text(mds.50[idx, ], label=mdat.50$label[idx],
+     cex=ifelse(!mdat.50$enveloped[idx], 0.6, 0.01),
+     font=ifelse(!mdat.50$exposed[idx], 3, 2),
+     col=ifelse(mdat.50$exposed[idx], 'darkorange3', 'orange')
 )
+abline(v=par('usr')[2], lwd=0.5)
+rect(xl=-1.03, xr=-0.51, yb=-0.42, yt=-0.33, xpd=NA, col='white', lwd=0.5)
+text(x=-1, y=-0.36, label="Exposed", cex=0.8, col='darkorange3', 
+     font=2, xpd=NA, adj=0)
+text(x=-1, y=-0.4, label="Non-exposed", cex=0.8, col='orange', 
+     font=3, xpd=NA, adj=0)
+
+plot(mds.50, type='n', xaxt='n', yaxt='n', bty='n', xlab=NA, ylab=NA)
+title(main='  Enveloped', font.main=1, adj=0, line=-1)
+title(main="50 codons ", font.main=1, adj=1, line=-1)
+points(mds.50, cex=ifelse(mdat.50$enveloped, 0, 0.3), pch=19, col='grey')
+text(mds.50[idx, ], label=mdat.50$label[idx],
+     cex=ifelse(mdat.50$enveloped[idx], 0.6, 0.01),
+     font=ifelse(!mdat.50$exposed[idx], 3, 2),
+     col=ifelse(mdat.50$exposed[idx], 'steelblue4', 'slategray3')
+)
+
+rect(xl=0.27, xr=0.79, yb=-0.42, yt=-0.33, xpd=NA, col='white', lwd=0.5)
+text(x=0.75, y=-0.36, label="Exposed", cex=0.8, col='steelblue4', 
+     font=2, xpd=NA, adj=1)
+text(x=0.75, y=-0.4, label="Non-exposed", cex=0.8, col='slategray3', 
+     font=3, xpd=NA, adj=1)
+
 dev.off()
 
 
@@ -388,40 +399,48 @@ res <- lapply(1:10, function(z) { idx <- idxs[z, ]; wmat[idx, idx] })
 wmat.100 <- Reduce("+", res) / length(res)
 mds.100 <- cmdscale(wmat.100)
 mdat.100 <- mdatx[idxs[1,], ]
+idx <- order(mdat.100$exposed)
 
-
-pdf(file="~/papers/surfaces/img/mds100.pdf", width=8, height=4)
+pdf(file="~/papers/surfaces/img/mds100.pdf", width=7, height=3.5)
 par(mfrow=c(1,2), mar=c(0,0,0,0))
-plot(mds.100, type='n', xaxt='n', yaxt='n', bty='n', xlab=NA, ylab=NA)
-title(main='  Enveloped', font.main=1, adj=0, line=-1)
-title(main="100 codons ", font.main=1, adj=1, line=-1)
-abline(v=par('usr')[2])
-points(mds.100, cex=ifelse(mdat.100$enveloped, 0, 0.3), pch=19, col='grey')
-text(mds.100, label=mdat.100$label,
-     cex=ifelse(mdat.100$enveloped, 0.6, 0.01),
-     font=ifelse(!mdat.100$exposed, 3, 2),
-     col=ifelse(mdat.100$exposed, 'cadetblue4', 'darkorange2')
-)
 
 plot(mds.100, type='n', xaxt='n', yaxt='n', bty='n', xlab=NA, ylab=NA)
+abline(v=par('usr')[2])
 title(main=' Non-enveloped', font.main=1, adj=0, line=-1)
 title(main="100 codons ", font.main=1, adj=1, line=-1)
 points(mds.100, cex=ifelse(mdat.100$enveloped, 0.3, 0), pch=19, col='grey')
-text(mds.100, label=mdat.100$label,
-     cex=ifelse(!mdat.100$enveloped, 0.6, 0.01),
-     font=ifelse(!mdat.100$exposed, 3, 2),
-     col=ifelse(mdat.100$exposed, 'cadetblue4', 'darkorange2')
+text(mds.100[idx,], label=mdat.100$label[idx],
+     cex=ifelse(!mdat.100$enveloped[idx], 0.6, 0.01),
+     font=ifelse(!mdat.100$exposed[idx], 3, 2),
+     col=ifelse(mdat.100$exposed[idx], 'darkorange3', 'orange')
 )
+rect(xl=0.29, xr=1.05, yb=-0.64, yt=-0.48, xpd=NA, col='white', lwd=0.5)
+text(x=1, y=-0.53, label="Exposed", cex=0.9, col='darkorange3', font=2, 
+     xpd=NA, adj=1)
+text(x=1, y=-0.6, label="Non-exposed", cex=0.9, col='orange', font=3,
+     xpd=NA, adj=1)
 
-rect(xl=-0.28, xr=1, yb=-0.64, yt=-0.55, xpd=NA, col='white', lwd=0.5)
-text(x=0, y=-0.6, label="Exposed", cex=1, col='cadetblue4', font=2, xpd=NA)
-text(x=0.6, y=-0.6, label="Non-exposed", cex=1, col='darkorange2', font=3, xpd=NA)
+plot(mds.100, type='n', xaxt='n', yaxt='n', bty='n', xlab=NA, ylab=NA)
+title(main='  Enveloped', font.main=1, adj=0, line=-1)
+title(main="100 codons ", font.main=1, adj=1, line=-1)
+points(mds.100, cex=ifelse(mdat.100$enveloped, 0, 0.3), pch=19, col='grey')
+text(mds.100[idx,], label=mdat.100$label[idx],
+     cex=ifelse(mdat.100$enveloped[idx], 0.6, 0.01),
+     font=ifelse(!mdat.100$exposed[idx], 3, 2),
+     col=ifelse(mdat.100$exposed[idx], 'steelblue4', 'slategray3')
+)
+rect(xl=0.29, xr=1.05, yb=-0.64, yt=-0.48, xpd=NA, col='white', lwd=0.5)
+text(x=1, y=-0.53, label="Exposed", cex=0.9, col='steelblue4', font=2, 
+     xpd=NA, adj=1)
+text(x=1, y=-0.6, label="Non-exposed", cex=0.9, col='slategray3', font=3,
+     xpd=NA, adj=1)
 
 dev.off()
 
 ###############################
 
-m1 <- as.matrix(read.csv("iss135-dmx2.csv", row.names=1))
+#m1 <- as.matrix(read.csv("iss135-dmx2.csv", row.names=1))
+m1 <- as.matrix(read.csv("iss135-avgmat-L50.csv", row.names=1))
 m2 <- as.matrix(read.csv("iss135-avgmat-L100.csv", row.names=1))
 
 common <- intersect(colnames(m1), colnames(m2))
@@ -437,7 +456,10 @@ res <- mantel.randtest(as.dist(m1c), as.dist(m2c), nrepet=99999)
 
 x <- m1c[upper.tri(m1c)]
 y <- m2c[upper.tri(m2c)]
-plot(x, y, pch=19, cex=0.5, col=rgb(0,0,0,0.2))
+plot(x, y, pch=19, cex=0.5, col=rgb(0,0,0,0.1))
+require(MASS)
+contour(kde2d(x,y,n=50), levels=c(2.5, 2, 1.5, 1, 0.5, 0.3, 0.2), add=T, col='white')
+
 cor.test(x, y)
 
 
@@ -451,32 +473,43 @@ adonis2(dmx ~ exposed * enveloped, data=mdat, permutations=99999, by='terms')
 
 
 
-pdf("~/papers/surfaces/img/mds-full.pdf", width=8, height=4)
+idx <- order(mdat$exposed)
+
+pdf("~/papers/surfaces/img/mds-full.pdf", width=7, height=3.5)
 
 par(mfrow=c(1,2), mar=c(0,0,0,0))
-plot(m2, type='n', xaxt='n', yaxt='n', bty='n', xlab=NA, ylab=NA,
-     main=' Enveloped', font.main=1, adj=0, line=-1)
-abline(v=par('usr')[2])
-points(m2, cex=ifelse(mdat$enveloped, 0, 0.3), pch=19, col='grey')
-text(m2, label=labels,
-     cex=ifelse(mdat$enveloped, 0.6, 0.01),
-     font=ifelse(!mdat$exposed, 3, 2),
-     col=ifelse(mdat$exposed, 'cadetblue4', 'darkorange2')
-)
-
-text(x=-1.5, y=-1.05, label="Exposed", cex=1,
-     col='cadetblue4', font=2)
-text(x=-0.4, y=-1.05, label="Non-exposed", cex=1, col='darkorange2', font=3)
-rect(xl=-2, xr=0.3, yb=-1.12, yt=-0.975)
 
 plot(m2, type='n', xaxt='n', yaxt='n', bty='n', xlab=NA, ylab=NA,
      main=' Non-enveloped', font.main=1, adj=0, line=-1)
-points(m2, cex=ifelse(mdat$enveloped, 0.3, 0), pch=19, col='grey')
+abline(v=par('usr')[2])
+points(m2, cex=ifelse(mdat$enveloped, 0.5, 0), pch=19, col='grey')
 text(m2, label=labels,
      cex=ifelse(!mdat$enveloped, 0.6, 0.01),
      font=ifelse(!mdat$exposed, 3, 2),
-     col=ifelse(mdat$exposed, 'cadetblue4', 'darkorange2')
+     col=ifelse(mdat$exposed, 'darkorange3', 'orange')
 )
+
+text(x=-1.5, y=-1.05, label="Exposed", cex=0.8,
+     col='darkorange3', font=2)
+text(x=-0.4, y=-1.05, label="Non-exposed", cex=0.8, 
+     col='orange', font=3)
+rect(xl=-1.95, xr=0.25, yb=-1.115, yt=-0.975, lwd=0.5)
+
+plot(m2, type='n', xaxt='n', yaxt='n', bty='n', xlab=NA, ylab=NA,
+     main=' Enveloped', font.main=1, adj=0, line=-1)
+points(m2, cex=ifelse(mdat$enveloped, 0, 0.5), pch=19, col='grey')
+text(m2[idx, ], label=labels[idx],
+     cex=ifelse(mdat$enveloped[idx], 0.6, 0.01),
+     font=ifelse(!mdat$exposed[idx], 3, 2),
+     col=ifelse(mdat$exposed[idx], 'steelblue4', 'slategray3')
+)
+
+text(x=-1.5, y=-1.05, label="Exposed", cex=0.8,
+     col='steelblue4', font=2)
+text(x=-0.4, y=-1.05, label="Non-exposed", cex=0.8, 
+     col='slategray3', font=3)
+rect(xl=-1.95, xr=0.25, yb=-1.115, yt=-0.975, lwd=0.5)
+
 dev.off()
 
 
@@ -500,7 +533,8 @@ for (i in 1:6) {
 dev.off()
 
 
-adonis2(dmx~family + exposed + enveloped, data=mdat, by='terms', permutations=1e5)
+adonis2(dmx~family + exposed + enveloped, data=mdat, by='terms', 
+        permutations=1e5)
 
 idx <- which(mdat$family=='Retroviridae')  #'Picornaviridae')
 temp <- as.dist(as.matrix(dmx)[idx, idx])
@@ -510,4 +544,158 @@ restrict <- how(blocks=mdat$family, nperm=1e4-1)
 adonis2(dmx ~ exposed*family, data=mdat, by='terms', permutations=restrict)
 
 
+###################################
+
+# NOTE: this requires reloading mdat after loading RData file
+load("iss135_final3.RData")
+
+# re-run mdat code at top of script
+
+require(vegan)
+
+mdat$trans.mode <- ifelse(
+  mdat$vector, 'vector', ifelse(
+    mdat$chronic, 'STBBI', ifelse(
+      mdat$fecaloral, 'fecal-oral', ifelse(
+        mdat$contact, 'contact', 'respiratory')
+    )))
+mdat$trans.mode[mdat$abbrv=='BDV'] <- NA
+mdat$respiratory <- (!is.na(mdat$trans.mode) & mdat$trans.mode=='respiratory')
+
+adonis2(dmx ~ trans.mode*exposed, data=mdat, by='terms', 
+        na.action=na.omit, permutations=99999)
+#adonis2(dmx ~ trans.mode+family, data=mdat, na.action=na.omit, 
+#        permutations=9999, by='margin')
+
+res1 <- adonis2(dmx ~ vector, data=mdat, by='terms', permutations=9999)
+idx <- mdat$chronic & !mdat$plant
+res2 <- adonis2(dmx ~ idx, by='terms', permutations=9999)
+res3 <- adonis2(dmx ~ mdat$emerging, by='terms', permutations=9999)
+res4 <- adonis2(dmx ~ mdat$respiratory, by='terms', permutations=9999)
+adonis2(dmx ~ mdat$contact, permutations=9999)
+
+ex <- order(mdat$exposed)
+
+
+pdf("~/papers/surfaces/img/transmission.pdf", width=5, height=5)
+
+par(mar=rep(0.5, 4), mfrow=c(2,2))
+plot(m2, type='n', xaxt='n', yaxt='n', bty='n', xlab=NA, ylab=NA)
+title(main="Vector-borne", font.main=1, cex.main=1.1, adj=0, line=-0.5)
+points(m2, col='grey', cex=ifelse(mdat$vector, 0.01, 0.5), pch=19)
+text(m2[ex,], label=labels[ex], cex=ifelse(mdat$vector[ex], 0.6, 0.01), 
+     font=ifelse(mdat$exposed[ex], 2, 3), 
+     col=ifelse(mdat$exposed[ex], 'darkgreen', rgb(0.05,0.7,0.)))
+text(0.99*par('usr')[1], 0.925*par('usr')[3], 
+     bquote(R^2 == .(round(100*res1$R2, 1))*"%, " ~ P == .(res1$`Pr(>F)`[1])), 
+     adj=0, cex=0.8)
+abline(v=par('usr')[2], lwd=0.5, xpd=NA)
+abline(h=par('usr')[3], lwd=0.5, xpd=NA)
+
+plot(m2, type='n', xaxt='n', yaxt='n', bty='n', xlab=NA, ylab=NA)
+title(main="Respiratory", font.main=1, cex.main=1.1, adj=0, line=-0.5)
+points(m2, col='grey', cex=ifelse(mdat$respiratory, 0.01, 0.5), pch=19)
+text(m2[ex, ], label=labels[ex], xpd=NA,
+     cex=ifelse(mdat$respiratory[ex], 0.6, 0.01), 
+     font=ifelse(mdat$exposed[ex], 2, 3), 
+     col=ifelse(mdat$exposed[ex], 'steelblue4', rgb(0.36,0.54,0.69)))
+text(0.99*par('usr')[1], 0.925*par('usr')[3], 
+     bquote(R^2 == .(round(100*res4$R2, 1))*"%, " ~ P == .(res4$`Pr(>F)`[1])), 
+     adj=0, cex=0.8)
+
+plot(m2, type='n', xaxt='n', yaxt='n', bty='n', xlab=NA, ylab=NA)
+title(main="Fecal-oral", font.main=1, cex.main=1.1, adj=0, line=-0.5)
+points(m2, col='grey', cex=ifelse(mdat$fecaloral, 0.01, 0.5), pch=19)
+text(m2[ex,], label=labels[ex], 
+     cex=ifelse(mdat$fecaloral[ex], 0.6, 0.01), 
+     font=ifelse(mdat$exposed[ex], 2, 3), 
+     col=ifelse(mdat$exposed[ex], 'purple4', rgb(0.53, 0.3, 0.74)))
+text(0.99*par('usr')[1], 0.925*par('usr')[3], 
+     bquote(R^2 == .(round(100*res3$R2, 1))*"%, " ~ P == .(res3$`Pr(>F)`[1])), 
+     adj=0, cex=0.8)
+
+plot(m2, type='n', xaxt='n', yaxt='n', bty='n', xlab=NA, ylab=NA)
+title(main="Chronic STBBI", font.main=1, cex.main=1.1, adj=0, line=-0.5)
+points(m2, col='grey', cex=ifelse(idx, 0.01, 0.5), pch=19)
+text(m2[ex,], label=labels[ex], cex=ifelse(idx[ex], 0.6, 0.01), 
+     font=ifelse(mdat$exposed[ex], 2, 3), 
+     col=ifelse(mdat$exposed[ex], 'firebrick4', rgb(0.7, 0.25, 0.25)))
+text(0.99*par('usr')[1], 0.925*par('usr')[3], 
+     bquote(R^2 == .(round(100*res2$R2, 1))*"%, " ~ P == .(res2$`Pr(>F)`[1])), 
+     adj=0, cex=0.8)
+
+dev.off()
+
+
+
+# supplementary figure
+pdf("~/papers/surfaces/img/mds-contact.pdf", width=5, height=2.5)
+tmodes <- c('vector', 'respiratory', 'fecal-oral', 'STBBI')
+pal <- c('forestgreen', 'steelblue', 'purple', 'firebrick')
+
+layout(matrix(c(1,2,5,5,3,4,5,5), nrow=2, byrow=T))
+par(mar=c(0,0,0,0))
+for (i in 1:4) {
+  idx <- (mdat$trans.mode == tmodes[i])
+  o <- order(idx, decreasing=F)
+  plot(m2[o,], bty='n', xaxt='n', yaxt='n',
+       pch=ifelse(idx[o], ifelse(mdat$exposed[o], 19, 1), 19),
+       col=ifelse(idx[o], pal[i], 'grey'),
+       cex=ifelse(idx[o], 1, 0.3))
+  title(main=tmodes[i], adj=0, font.main=1, line=-1, cex.main=0.9)
+}
+plot(m2, type='n', xaxt='n', yaxt='n', bty='n', xlab=NA, ylab=NA)
+abline(v=par('usr')[1], lwd=0.5)
+title(main=" Contact, plant", adj=0, font.main=2, line=-1)
+points(m2, col='grey', cex=ifelse(mdat$contact, 0.01, 0.5), pch=19)
+text(m2, label=labels, cex=ifelse(mdat$contact, 0.8, 0.01), 
+     font=2, col='salmon2')
+dev.off()
+
+i <- which(mdat$family=='Picornaviridae')
+temp.mdat <- mdat[i, ]
+temp.dmx <- as.dist(as.matrix(dmx)[i,i])
+adonis2(temp.dmx ~ (temp.mdat$abbrv=='RV'))
+
+# ======================================
+
+
+
+total.var <- sapply(grids, function(g) {
+  p.ds <- rowSums(g$grid)  # marginal probabilities
+  p.dn <- colSums(g$grid)
+  mean.ds <- sum((1:20)*p.ds)
+  mean.dn <- sum((1:20)*p.dn)
+  var.ds <- sum((1:20)^2*p.ds) - mean.ds^2
+  var.dn <- sum((1:20)^2*p.dn) - mean.dn^2
+  e.xy <- sum(outer(1:20, 1:20)*g$grid)
+  cov <- e.xy - mean.ds*mean.dn
+  cov.mx <- matrix(c(var.ds, cov, cov, var.dn), nrow=2)
+  det(cov.mx)  # generalized variance
+})
+
+plot(m2[,2], total.var)
+cor.test(m2[,2], total.var, method='spearman')
+
+
+
+######################################
+
+load("iss135_final3.RData")
+
+
+mdat$exposed[mdat$abbrv=="PVX" & mdat$short=="CP"] <- TRUE
+mdat$exposed[mdat$abbrv=="PVX" & mdat$short=="TGB1"] <- TRUE  # P25
+
+mdat$exposed[mdat$abbrv=="PVY" & mdat$short=="CP"] <- TRUE
+#mdat$exposed[mdat$abbrv=="PVY" & mdat$short=="NIb"] <- FALSE
+mdat$exposed[mdat$abbrv=="PVY" & mdat$short=="HC-Pro"] <- TRUE
+mdat$exposed[mdat$abbrv=="PVY" & mdat$short=="NIa-VPg"] <- TRUE
+
+mdat$exposed[mdat$abbrv=="TMV" & mdat$short=="CP"] <- TRUE
+mdat$exposed[mdat$abbrv=="TMV" & mdat$short=="RP"] <- TRUE 
+
+mdat$exposed[mdat$abbrv=="ASPV" & mdat$short=="CP"] <- TRUE  # is suppressor!
+
+adonis2(dmx ~ exposed * enveloped, data=mdat, permutations=9999, by='terms')
 
