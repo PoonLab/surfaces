@@ -46,7 +46,7 @@ files <- Sys.glob("9_longer/*.fubar.json")  # sample 100 codons
 grids <- lapply(files, function(f) parse.json(f))
 
 #save(grids, file="step9_grids.RData")  # can use this later in earthmover.R
-load("step9_grids.RData")
+#load("step9_grids.RData")
 
 ##################################
 # this later code is for visualization of individual fingerprints

@@ -1,0 +1,245 @@
+virus,protein,nseq,ncod,treelen
+dengue2,envelope protein E,733,495,1.74699
+IBV,M2,442,109,1.85897
+wnv,pre-membrane protein,172,92,1.01668
+IAVH9N2,HA,271,560,2.08273
+Foveavirus,triple gene block 3,63,40,1.86670
+HIV2,Integrase,50,270,1.18081
+HCV1a,p7,87,63,1.88345
+rsv,matrix protein 2-2,115,79,0.90647
+orthobornavirus,RNA dependent RNA polymerase,90,1691,0.90159
+zika,anchored capsid protein C,76,122,0.56938
+PotatoY,CI,139,634,2.28126
+chikv,mRNA-capping enzyme nsp1,338,535,0.72914
+zika,RNA-dependent RNA polymerase NS5,277,903,0.72423
+rsv,phosphoprotein,226,241,0.86612
+rsv,small hydrophobic protein,96,64,0.94589
+chikv,E3 protein,78,64,0.87297
+PotatoY,P3,126,291,2.03873
+RotaA,NSP3,74,310,1.51749
+PotatoY,HC-Pro,639,456,1.71231
+measles,phosphoprotein,264,250,0.83208
+coxsacki,2C-protein,251,329,2.08554
+chikv,6K protein,58,49,0.72514
+orthobornavirus,phosphoprotein,67,129,0.65072
+zika,nonstructural protein NS4A,87,127,0.67427
+RhinoA,3D,97,460,2.05933
+zika,nonstructural protein NS4B,158,251,0.74491
+chikv,capsid protein,202,261,0.69142
+HCV1a,NS4B,74,261,1.75848
+PotatoY,P1,532,284,2.00696
+rsv,nucleoprotein,257,391,0.75723
+VEEV,E1,109,426,1.89971
+enteroA71,VP1,450,297,2.11122
+rsv,large protein,492,2165,0.72910
+HCV1a,E2,41,362,1.75927
+rsv,matrix protein,222,256,0.96843
+zika,nonstructural protein NS2B,99,130,0.62832
+enteroA71,3C,285,183,1.81359
+HIV2,gp41,25,215,1.40814
+IBV,NS1,1106,229,2.36637
+measles,nucleocapsid protein,250,525,0.87693
+YFV,anchored core protein C,60,121,1.24831
+mumps,matrix protein,150,375,0.73189
+mumps,large polymerase protein,329,2261,0.71972
+wnv,nonstructural protein 2A,510,229,1.58543
+HIV2,vpr,41,54,1.99070
+Tobacco,coat protein,52,159,0.64026
+orthobornavirus,nucleoprotein,83,370,0.63871
+YFV,non-structural protein NS2b,96,130,1.36997
+HCV1a,NS4A,138,54,1.88256
+measles,large polymerase protein,394,2183,0.80620
+rsv,attachment protein,209,321,1.94490
+orthobornavirus,glycoprotein,92,474,0.83838
+TBEV,pre protein,224,93,1.95718
+rsv,nonstructural protein 2,174,124,1.20414
+rsv,matrix protein 2-1,183,186,0.72757
+HepA,3A-mature-peptide,120,74,1.94083
+HepA,1D-VP1-mature-peptide,307,300,2.01729
+coxsacki,VP2-protein,230,254,2.00861
+wnv,envelope protein,790,501,1.32934
+mumps,fusion protein,180,538,0.83908
+VEEV,nsp2,120,794,1.58672
+HepA,2A-mature-peptide,305,183,1.65677
+PotatoY,NIb,96,521,2.02071
+HCV1a,NS5A,73,446,1.94779
+dengue2,nonstructural protein NS4A,239,127,1.58555
+PotatoX,TGB2,236,87,1.66033
+IAVH9N2,M2,378,82,1.80804
+coxsacki,2A-protein,231,150,1.97319
+polio,protein-VP3,116,238,2.01456
+YFV,non-structural protein NS4a,74,126,1.17235
+coxsacki,VP1-protein,233,297,1.99078
+PotatoY,NIa-Pro,58,244,1.85320
+RotaA,VP7,73,326,2.03648
+HIV1A1,Nef,34,201,1.78839
+wnv,anchored capsid protein,237,123,0.92710
+RotaA,NSP1,227,486,1.97120
+HIV1A1,Vif,56,154,2.11923
+RhinoA,3AB,56,98,1.79714
+measles,fusion protein,229,550,0.76990
+IBV,M1,922,248,1.94149
+coxsacki,3C-protein,228,183,2.02932
+HIV2,gp120,25,465,1.95899
+zika,nonstructural protein NS1,213,352,1.01478
+Tobacco,RdRp,73,469,0.67335
+wnv,nonstructural protein 4B,506,255,1.48930
+TBEV,non-structural protein NS5,218,903,1.93447
+HepA,3C-mature-peptide,306,215,1.42936
+lyssavirus,matrix protein,289,202,1.85799
+zika,nonstructural protein NS2A,160,226,0.81410
+YFV,non-structural protein NS2a,146,224,1.62775
+Tobacco,replication protein,85,1116,0.73231
+TBEV,envelope protein E,219,496,1.93327
+RhinoA,2B,85,95,1.63170
+Foveavirus,RNA polymerase,23,2180,1.65607
+HepA,1B-VP2-mature-peptide,308,222,1.86777
+YFV,non-structural protein NS4b,114,250,0.85429
+RhinoA,2A,106,142,2.35484
+enteroA71,3AB,221,108,1.59967
+lyssavirus,phosphoprotein,317,297,1.95219
+RotaA,VP4,94,775,2.01424
+HIV1A1,Vpu,32,52,1.92793
+PotatoY,NIa-VPg,59,188,1.96053
+VEEV,E2,189,423,1.94278
+polio,protein-2A,42,149,1.95525
+Foveavirus,coat protein,21,396,1.71542
+chikv,non-structural protein nsp3,306,519,0.63533
+wnv,nonstructural protein 4A,251,122,1.22574
+Mastro1,serine-protease,76,919,1.97383
+coxsacki,3D-protein,229,462,2.07957
+mumps,hemagglutinin,184,582,0.86375
+IBV,PA,1945,726,2.20152
+IAVH9N2,PA,293,654,2.22651
+enteroA71,VP4,608,48,2.69489
+VEEV,nsp4,115,607,1.75952
+dengue2,nonstructural protein NS1,671,352,1.84766
+PotatoX,RdRp,227,1456,1.96200
+Mastro1,VP34,54,394,1.48638
+HepA,1C-VP3-mature-peptide,333,246,2.06447
+enteroA71,3D,343,462,2.02013
+IBV,NS2,511,65,1.83760
+PotatoY,6K1,145,51,2.40459
+coxsacki,VP4-protein,277,69,2.09865
+zika,nonstructural protein NS3,234,617,0.69150
+lyssavirus,glycoprotein,313,524,1.71635
+dengue2,membrane glycoprotein precursor prM,490,166,2.06847
+rsv,fusion protein,339,574,0.86950
+HIV1A1,RNAse,54,120,1.69415
+HIV2,PR,47,88,1.44123
+Foveavirus,triple gene block 1,32,223,1.97419
+wnv,nonstructural protein 2B,258,131,1.13103
+PotatoY,coat,411,267,1.98146
+mumps,phosphoprotein,149,321,0.89190
+HIV1A1,Integrase,54,270,1.20220
+HIV1A1,gp41,35,253,1.36538
+HIV2,RNAse,50,120,1.59731
+chikv,E2 envelope glycoprotein,295,421,0.73831
+IBV,PB1,1955,752,2.02490
+Tobacco,movement protein,63,262,0.75981
+enteroA71,2C,256,329,1.59157
+wnv,nonstructural protein 1,627,352,1.35173
+polio,protein-VP2,83,272,1.99100
+RotaA,VP1,90,1088,2.06398
+coxsacki,3AB-protein,199,108,1.94333
+dengue2,anchored capsid protein ancC,341,114,1.62161
+zika,envelope protein E,254,504,0.78589
+RotaA,NSP2,91,317,1.84995
+polio,protein-2C,47,329,2.08097
+wnv,nonstructural protein 5,842,905,1.21283
+RotaA,NSP4,55,175,1.48022
+YFV,envelope protein,207,493,1.45836
+VEEV,6K,33,46,1.69379
+enteroA71,VP2,363,254,2.43962
+dengue2,nonstructural protein NS2A,474,218,2.34016
+PotatoX,TGB1,236,220,1.94100
+VEEV,E3,40,55,1.99426
+polio,protein-VP1,71,302,1.99687
+Foveavirus,triple gene block 2,29,90,1.82720
+mumps,small hydrophobic protein,38,57,0.68602
+HIV2,vif,32,134,1.86231
+IBV,PB2,1994,770,2.01128
+chikv,E1 envelope glycoprotein,298,424,0.83868
+enteroA71,2A,358,150,2.36051
+measles,hemagglutinin protein,269,617,0.88435
+HCV1a,core,196,30,3.03723
+HCV1a,E1,73,192,1.94488
+enteroA71,VP3,326,242,1.96939
+wnv,nonstructural protein 3,685,619,1.22043
+polio,protein-2B,36,97,1.95429
+PotatoX,TGB3,235,48,1.39759
+TBEV,non-structural protein NS4a,219,149,2.09587
+YFV,non-structural protein NS1,153,352,1.32839
+mumps,nucleocapsid protein,169,549,0.79567
+dengue2,nonstructural protein NS3,754,618,1.74830
+coxsacki,2B-protein,231,99,1.78786
+dengue2,RNA-dependent RNA polymerase NS5,823,901,1.82968
+IBV,HA,1538,584,1.97590
+HepA,2B-mature-peptide,306,105,1.92667
+polio,protein-3AB,41,109,2.07994
+PotatoY,6K2,139,52,2.46243
+VEEV,nsp1,109,535,1.38201
+VEEV,capsid,95,280,1.98432
+YFV,RNA-dependent RNA polymerase,95,905,1.06042
+PotatoX,CP,236,237,1.86438
+RhinoA,1C,83,238,1.54217
+polio,protein-VP4,77,55,2.01682
+HIV1A1,RT,54,440,1.63099
+TBEV,non-structural protein NS3,221,621,1.97199
+HIV2,RT,50,439,1.75500
+YFV,M protein precursor,107,164,1.48946
+HIV2,gag,50,430,1.81183
+IAVH9N2,PB2,278,745,2.00496
+TBEV,non-structural protein NS1,221,352,1.97476
+dengue2,nonstructural protein NS2B,424,130,2.06045
+IAVH9N2,NP,274,498,2.01290
+RhinoA,3C,92,183,1.96030
+RotaA,VP3,97,835,1.99689
+IBV,NA,1203,367,1.66289
+Mastro1,RdRp,85,513,1.56985
+HIV1A1,PR,54,86,1.18118
+TBEV,matrix protein M,219,75,2.13215
+IAVH9N2,NS1,336,167,2.22500
+RhinoA,1B,83,264,1.55055
+coxsacki,VP3-protein,230,242,1.92472
+RotaA,VP6,100,397,1.90069
+IAVH9N2,NA,208,469,2.22911
+enteroA71,2B,435,99,2.27676
+polio,protein-3D,66,461,2.16014
+HIV2,tat,30,23,1.98436
+lyssavirus,polymerase,490,2127,2.18527
+IBV,NP,1634,560,2.02881
+HepA,3D-mature-peptide,303,483,1.56456
+VEEV,nsp3,88,330,1.77483
+HCV1a,NS5B,98,591,1.90846
+rsv,nonstructural protein 1,133,139,0.61465
+IAVH9N2,M1,364,234,1.97534
+zika,membrane glycoprotein precursor M,135,168,0.94738
+HIV1A1,Gag,51,429,1.73429
+TBEV,non-structural protein NS2a,276,230,2.78854
+RotaA,NSP5,161,106,2.68709
+orthobornavirus,matrix protein,55,114,0.59657
+RotaA,VP2,70,862,1.61342
+wnv,membrane protein,136,75,0.97915
+IAVH9N2,NS2,323,57,2.00124
+dengue2,nonstructural protein NS4B,590,248,1.82942
+HIV2,vpx,41,54,2.16324
+HIV1A1,Tat,45,39,1.79991
+TBEV,non-structural protein NS4b,216,252,1.86922
+TBEV,non-structural protein NS2b,219,131,1.79990
+polio,protein-3C,49,183,2.27820
+HepA,2C-mature-peptide,331,335,2.24986
+TBEV,core protein,238,111,1.98966
+Mastro1,VP27,54,381,2.79718
+HIV1A1,Vpr,64,69,1.98782
+measles,matrix protein,197,335,0.98341
+RhinoA,1D,83,286,1.59390
+lyssavirus,nucleoprotein,345,450,2.11873
+IAVH9N2,PB1,104,666,2.12426
+HCV1a,NS3,74,631,1.83891
+YFV,non-structural protein NS3,199,623,1.39692
+RhinoA,2C,85,322,1.80097
+RhinoA,1A,115,69,1.91539
+HIV1A1,gp120,35,420,2.03333
+HIV2,nef,20,200,1.82026
+HCV1a,NS2,105,217,1.95857

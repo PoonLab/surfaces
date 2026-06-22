@@ -1,21 +1,21 @@
 ############################# SETTINGS #############################
 
 ## uncomment one of the following:
-ncodons <- 50  # set for step 8 data (L=50 codons)
+ncodons <- 100  # set for step 8 data (L=50 codons)
 #ncodons <- 100  # set for step 9 data (L=100 codons)
 # ncodons <- Inf  # set for step 6 data (no down-sampling)
 
-outfile <- "L50_L1norm.RData"  #"L50.RData"
+#outfile <- "L50_L1norm.RData"  #"L50.RData"
 
 ####################################################################
 
 # load metadata
 setwd("~/git/surfaces/data/")
-mdat <- read.csv("metadata.csv", na.strings="")
+mdat <- read.csv("metadata-old.csv", na.strings="")
 mdat$key <- paste(mdat$virus, mdat$protein)
 
 # import alignment stats
-astats <- read.csv("align_stats.csv")
+astats <- read.csv("align_stats_old.csv")
 # unscramble the rows
 idx <- match(mdat$key, paste(astats$virus, astats$protein))
 astats <- astats[idx, ]
@@ -60,8 +60,10 @@ if (ncodons == 50) {
 
 # calculate weighted point pattern for each fingerprint
 require(transport)
-#breaks <- (50*(0:19)^5)/19^5  # from Murrell et al. 2016
-coords <- expand.grid(1:20, 1:20)
+breaks <- (50*(0:19)^5)/19^5  # from Murrell et al. 2016
+#coords <- expand.grid(1:20, 1:20)
+log.offset <- log(breaks+0.05)
+coords <- expand.grid(log.offset, log.offset)[c(2,1)]
 wpps <- lapply(grids, function(g) {
   wpp(coords, mass=as.numeric(g$grid))
 })
@@ -82,8 +84,8 @@ res <- mclapply(0:(n*n-1), function(k) {
   i <- k %/% n + 1
   j <- k %% n + 1
   if (i < j) {
-    #wasserstein(wpps[[i]], wpps[[j]], p=2, prob=TRUE)
-    wasserstein(wpps[[i]], wpps[[j]], p=1, prob=TRUE)
+    wasserstein(wpps[[i]], wpps[[j]], p=2, prob=TRUE)
+    #wasserstein(wpps[[i]], wpps[[j]], p=1, prob=TRUE)
   } else {
     0
   }  # this takes a minute / an hour for replicate samples
