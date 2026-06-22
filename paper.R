@@ -301,21 +301,26 @@ dev.off()
 
 
 
-## Supplementary Figure S7
-
-download.file("https://zenodo.org/records/20753078/files/L100.RData?download=1",
-              destfile="L100.RData")
-load("L100.RData")
-wdist <- as.dist(wmat)
-mds <- cmdscale(wdist, k=2, eig=T)
+# load down-sampled data
+download.file("https://zenodo.org/records/20801064/files/L100_logoffset.RData?download=1",
+              destfile="L100_logoffset.RData")
+load("L100_logoffset.RData")  # CAUTION: THIS OVERWRITES `wmat`!
+wdist.1 <- as.dist(wmat)
+mds.1 <- cmdscale(wdist.1, k=2, eig=T)
 cents <- t(sapply(
-  split(1:nrow(mds$points), factor(mdatx$key, levels=unique(mdatx$key))), 
+  split(1:nrow(mds.1$points), factor(mdatx$key, levels=unique(mdatx$key))), 
   function(i) {  # calculate centroids for each virus-protein combo
-    c(mean(mds$points[i, 1]), mean(mds$points[i, 2]))
+    c(mean(mds.1$points[i, 1]), mean(mds.1$points[i, 2]))
   }
 ))
 mdat2 <- mdatx[!duplicated(mdatx), ]  # reconstitute one-per-row metadata
+astat0 <- read.csv("https://raw.githubusercontent.com/PoonLab/surfaces/refs/heads/main/data/step7_align_stats.csv")
+idx <- match(mdat2$key, paste(astat0$virus, astat0$protein))
+mdat2$ncod <- astat0$ncod[idx]
+mdat2$tree.len <- astat0$treelen[idx]
 
+
+## Supplementary Figure S7
 pdf("corrected-mds.pdf", width=7, height=7)
 par(mfrow=c(2,2), mar=c(1,2,2,1))
 idx <- order(mdat$ncod, decreasing=TRUE)
@@ -324,37 +329,35 @@ plot(m2[idx,], cex=sqrt(mdat$ncod[idx])/10,
      bty='n', xaxt='n', yaxt='n', xlab=NA, ylab=NA,
      pch=21, col='white', bg='cadetblue')
 title(ylab="Residualized", line=1, cex.lab=1.2)
-points(x=c(-2, -1.7, -1.35, -1), y=rep(-1, 4), xpd=NA, 
+points(x=c(-0.97, -0.85, -0.7, -0.5), y=rep(0.45, 4), xpd=NA, 
        cex=sqrt(c(50, 100, 500, 1000))/10, pch=21, bg='white', col='black')
-text(x=c(-2, -1.7, -1.35, -1), y=c(-0.93, -.92, -.9, -.88), 
+text(x=c(-0.97, -0.85, -0.7, -0.5), y=c(.425, .42, .405, .395), 
      labels=c(50, 100, 500, 1000), cex=0.6, xpd=NA)
 idx <- order(mdat$treelen, decreasing=TRUE)
 plot(m2[idx,], cex=0.2+sqrt(mdat$treelen[idx])/1.5,
      main="Tree length", adj=0, font.main=1,
      pch=21, col='white', bg='orange',
      bty='n', xaxt='n', yaxt='n', xlab=NA, ylab=NA)
-points(x=c(-2, -1.7, -1.4, -1.1, -0.8, -0.4), y=rep(-1.1, 6), xpd=NA,
+points(x=c(-0.93, -0.83, -0.72, -0.61, -0.48, -0.3), y=rep(0.45, 6), xpd=NA,
        cex=0.2+sqrt(c(1, 2, 5, 10, 20, 50))/1.5, pch=21, bg='white', col='black')
-text(x=c(-2, -1.7, -1.4, -1.1, -0.8, -0.4), 
-     y=c(-1.04, -1.03, -1.02, -1.1, -1.1, -1.1), 
-     labels=c(1, 2, 5, 10, 20, 50), cex=0.6)
+text(x=c(-0.93, -0.83, -0.72, -0.61, -0.48, -0.3), 
+     y=c(0.415, 0.41, 0.405, 0.45, 0.45, 0.45), 
+     labels=c(1, 2, 5, 10, 20, 50), cex=0.6, xpd=NA)
 par(mar=c(2,2,1,1))
 idx <- order(mdat2$ncod, decreasing=TRUE)
 plot(cents[idx,], cex=sqrt(mdat2$ncod[idx])/10, 
      bty='n', xaxt='n', yaxt='n', xlab=NA, ylab=NA, 
      pch=21, col='white', bg='cadetblue')
-points(x=c(-1.4, -1.2, -0.98, -0.75), y=rep(-0.7, 4), xpd=NA, 
+points(x=c(0.25, 0.32, 0.4, 0.5), y=rep(0.3, 4), xpd=NA, 
        cex=sqrt(c(50, 100, 500, 1000))/10, pch=21, bg='white', col='black')
-text(x=c(-1.4, -1.2, -0.98, -0.75), y=c(-0.66, -.655, -.64, -.625), 
+text(x=c(0.25, 0.32, 0.4, 0.5), y=c(0.282, 0.278, 0.27, 0.26), 
      labels=c(50, 100, 500, 1000), cex=0.6, xpd=NA)
 abline(h=par('usr')[4]*1.1, xpd=NA, col='grey')
 title(ylab="Downsampled", line=1, cex.lab=1.2)
-
 idx <- order(mdat2$tree.len, decreasing=TRUE)
 plot(cents, cex=0.2+sqrt(mdat2$tree.len)/1.5, 
      pch=21, col='white', bg='orange',
      bty='n', xaxt='n', yaxt='n', xlab=NA, ylab=NA)
-
 dev.off()
 
 
@@ -369,10 +372,67 @@ mdat$trans.mode <- ifelse(
 mdat$trans.mode[mdat$abbrv=='BDV'] <- NA
 mdat$respiratory <- (!is.na(mdat$trans.mode) & mdat$trans.mode=='respiratory')
 
+# fingerprints are significantly separated by mode of transmission
 adonis2(wmat ~ log(ncod) + log(treelen) + trans.mode, data=mdat,
         by='terms', na.action=na.omit, permutations=99999)
 adonis2(wmat ~ log(ncod) + log(treelen) + trans.mode*exposed, data=mdat,
         by='terms', na.action=na.omit, permutations=99999)
+
+
+######################################################
+##      Supplementary Table S2
+load("L100_logoffset.RData")  # CAUTION: THIS OVERWRITES `wmat`!
+idxs <- sapply(split(1:nrow(mdatx), mdatx$key), function(x) {
+  if (length(x)==1) { rep(x, 10) } else { x }
+})
+# reconstitute distance matrices
+res <- lapply(1:10, function(z) {
+  idx <- idxs[z, ]
+  wmat[idx, idx]
+})
+wmat.100 <- Reduce("+", res) / length(res)  # averaged (centroids)
+adonis2(wmat.100 ~ exposed*enveloped, data=mdat2, permutations=9999, by='terms')
+adonis2(wmat.100 ~ family, data=mdat2, permutations=9999, by='terms')
+
+download.file("https://zenodo.org/records/20801064/files/L50_logoffset.RData?download=1",
+              destfile="L50_logoffset.RData")
+load("L50_logoffset.RData")
+res <- lapply(1:10, function(z) {idx <- idxs[z, ]; wmat[idx, idx] })
+wmat.50 <- Reduce("+", res) / length(res) 
+adonis2(wmat.50 ~ exposed*enveloped, data=mdat2, permutations=9999, by='terms')
+adonis2(wmat.50 ~ family, data=mdat2, permutations=9999, by='terms')
+
+
+######################################################
+##  Supplementary Table S3
+
+# 1. No plant proteins exposed = all FALSE
+# 2. coat proteins are exposed = T, F, T, F, F, T, F, T
+# 3. VSRs are exposed = F, T, F, T, T, F, T, T
+# 4. both coat and VSR exposed = all TRUE
+# 5. no plant viruses = all NA
+plants <- mdat
+plants$exposed[plants$abbrv=="PVX" & plants$short=="CP"] <- NA
+plants$exposed[plants$abbrv=="PVX" & plants$short=="TGB1"] <- NA  # P25
+
+plants$exposed[plants$abbrv=="PVY" & plants$short=="CP"] <- NA
+#plants$exposed[plants$abbrv=="PVY" & plants$short=="NIb"] <- FALSE
+plants$exposed[plants$abbrv=="PVY" & plants$short=="HC-Pro"] <- NA
+plants$exposed[plants$abbrv=="PVY" & plants$short=="NIa-VPg"] <- NA
+
+plants$exposed[mdat$abbrv=="TMV" & plants$short=="CP"] <- NA
+plants$exposed[mdat$abbrv=="TMV" & plants$short=="RP"] <- NA
+
+# CP is also the suppressor in ASPV!
+plants$exposed[mdat$abbrv=="ASPV" & plants$short=="CP"] <- NA  
+
+adonis2(wmat ~ log(ncod) + log(treelen) + exposed * enveloped, data=plants,
+        permutations=9999, by='terms', na.action=na.omit)
+
+
+####################
+##    FIGURE 5    ##
+####################
 
 # store mode-specific results
 res1 <- adonis2(wmat ~ log(ncod)+log(treelen)+vector, data=mdat, by='terms', permutations=9999)
@@ -380,9 +440,6 @@ res2 <- adonis2(wmat ~ log(ncod)+log(treelen)+idx, data=mdat, by='terms', permut
 res3 <- adonis2(wmat ~ log(ncod)+log(treelen)+fecaloral, data=mdat, by='terms', permutations=9999)
 res4 <- adonis2(wmat ~ log(ncod)+log(treelen)+respiratory, data=mdat, by='terms', permutations=9999)
 
-####################
-##    FIGURE 5    ##
-####################
 pdf("Figure5.pdf", width=5, height=5)
 par(mar=rep(0.5, 4), mfrow=c(2,2))
 plot(m2, type='n', xaxt='n', yaxt='n', bty='n', xlab=NA, ylab=NA)
