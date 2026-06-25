@@ -8,13 +8,12 @@ require(vegan)
 require(ggfree)
 require(MASS)
 
-dest.dir <- "~/Downloads/"
+dest.dir <- "~/Downloads/"  # change for your filesystem
+out.dir <- "~/Desktop/"     # where to write image files
 n.cores <- parallel::detectCores() - 1
+use.logoffset <- TRUE
 
-
-##########################
-##   CUSTOM FUNCTIONS   ##
-##########################
+# CUSTOM FUNCTIONS
 
 # locate upper left corner of plot region
 corner <- function(px=-0.19, py=1) {
@@ -40,43 +39,23 @@ parse.json <- function(f) {
 ##         LOAD DATA          ##
 ################################
 
-# Obtain FUBAR JSON files from Zenodo
+# Obtain FUBAR JSON files from Zenodo (>300MB)
 download.file("https://zenodo.org/records/20753078/files/step4_json.tar.gz?download=1",
-  destfile=file.path(dest.dir, "step4_json.tar.gz"))
+  destfile=file.path(dest.dir, "step4_json.tar.gz"), method='wget', quiet=T)
 untar(file.path(dest.dir, "step4_json.tar.gz"))
 files <- Sys.glob("*_step4.fubar.json")
 grids <- lapply(files, parse.json)
 
 
-# Generate components for Figure 3
-panels <- list(left = c(54, 132, 137), 
-               right = c(117, 176, 84),
-               top = c(24, 147, 19),
-               bottom = c(51, 232, 64))
-for (pname in names(panels)) {
-  if (pname %in% c("top", "right")) {
-    pal <- colorRampPalette(c('white', 'midnightblue'))(18)
-  } else {
-    pal <- colorRampPalette(c('white', 'red4'))(18)
-  }
-  pal <- c('white', pal[3:18])
-  
-  pdf(paste0("grids-", pname, ".pdf"), width=9, height=3)
-  par(mfrow=c(1, 3), mar=c(1, 1, 1, 1))
-  for (i in panels[[pname]]) {
-    image(grids[[i]]$grid, col=pal, xaxt='n', yaxt='n')
-    abline(a=0, b=1)
-    abline(v=0.5, lty=2)
-    abline(h=0.5, lty=2)
-    text(x=0.03, y=0.95, adj=0, label=paste(mdat$abbrv[i], mdat$short[i]), cex=2)
-  }
-  dev.off()
+# Construct weighted point patterns for fingerprints
+if (use.logoffset) {
+  log.offset <- log(grids[[1]]$values + 0.05)
+  coords <- expand.grid(log.offset, log.offset)[c(2,1)]  
+} else {
+  # NOTE: some plots generated below assume log-offset coordinates
+  coords <- expand.grid(1:20, 1:20)[c(2,1)]  
 }
 
-
-# Construct weighted point patterns for fingerprints
-log.offset <- log(grids[[1]]$values + 0.05)
-coords <- expand.grid(log.offset, log.offset)[c(2,1)]
 wpps <- lapply(grids, function(g) {
   wpp(coords, mass=as.numeric(g$grid))
 })
@@ -113,6 +92,42 @@ mdat$n.neg <- dnds$n.neg[idx]
 
 
 
+###################################################
+##  Figure 1 was drawn manually                  ##
+##  Use scripts/plot-dnds.R to generate Figure 2 ##
+###################################################
+
+
+#######################################
+#  Generate components for Figure 3  ##
+#######################################
+
+panels <- list(left = c(54, 132, 137), 
+               right = c(117, 176, 84),
+               top = c(24, 147, 19),
+               bottom = c(51, 232, 64))
+for (pname in names(panels)) {
+  if (pname %in% c("top", "right")) {
+    pal <- colorRampPalette(c('white', 'midnightblue'))(18)
+  } else {
+    pal <- colorRampPalette(c('white', 'red4'))(18)
+  }
+  pal <- c('white', pal[3:18])
+  
+  pdf(file.path(out.dir, paste0("grids-", pname, ".pdf")), width=9, height=3)
+  par(mfrow=c(1, 3), mar=c(1, 1, 1, 1))
+  for (i in panels[[pname]]) {
+    image(grids[[i]]$grid, col=pal, xaxt='n', yaxt='n')
+    abline(a=0, b=1)
+    abline(v=0.5, lty=2)
+    abline(h=0.5, lty=2)
+    text(x=0.03, y=0.95, adj=0, label=paste(mdat$abbrv[i], mdat$short[i]), cex=2)
+  }
+  dev.off()
+}
+
+
+
 #############################################
 ##     Calculate Wasserstein distances     ##
 #############################################
@@ -124,7 +139,7 @@ res <- mclapply(0:(n*n-1), function(k) {
   if (i < j) {
     wasserstein(wpps[[i]], wpps[[j]], p=2, prob=TRUE)
   } else { 0 }
-}, mc.cores = n.cores)  # this takes a minute
+}, mc.cores = n.cores)  # this takes a minute on an AMD Ryzen 9 7950X
 
 # convert list of distances into matrix
 wmat <- matrix(unlist(res), nrow=n, ncol=n, byrow=T)
@@ -138,12 +153,9 @@ colnames(wmat) <- keys
 wdist <- as.dist(wmat)
 mds <- cmdscale(wdist, k=2, eig=T)
 
-labels <- paste(mdat$abbrv, mdat$short)
-
 
 ##################################################
 # Fingerprints are confounded by alignment characteristics
-
 
 # correlation between Wasserstein distances and log-transformed alignment lengths
 d.ncod <- as.matrix(dist(log(mdat$ncod)))
@@ -152,7 +164,7 @@ y <- wmat[upper.tri(wmat)]
 cor.test(x, y)
 
 # Supplementary Figure S3
-png("logcodon.png", width=5*300, height=5*300, res=300)
+png(file.path(out.dir, "logcodon.png"), width=5*300, height=5*300, res=300)
 par(mar=c(5,5,1,1))
 plot(x, y, bty='n', xlab="Abs. diff. log(codons)", ylab="Wasserstein distance",
      cex=0.5, col='black', lwd=2.5, xaxt='n')
@@ -163,7 +175,7 @@ dev.off()
 
 
 # Supplementary Figure S5
-pdf("normalization.pdf", width=8, height=4)
+pdf(file.path(out.dir, "normalization.pdf"), width=8, height=4)
 par(mar=rep(0.5, 4), mfrow=c(1,2))
 o <- order(mdat$ncod, decreasing=T)
 plot(mds$points[o,], cex=sqrt(mdat$ncod[o])/10, 
@@ -174,7 +186,6 @@ points(x=c(-3, -2.5, -1.9, -1.2), y=rep(-2, 4),
        cex=sqrt(c(50, 100, 500, 1000))/10, pch=21, bg='white', col='black')
 text(x=c(-3, -2.5, -1.9, -1.2), y=c(-1.9, -1.88, -1.85, -1.81), 
      labels=c(50, 100, 500, 1000), cex=0.6)
-
 o <- order(mdat$treelen, decreasing=TRUE)
 plot(mds$points[o,], cex=0.2+sqrt(mdat$treelen[o])/1.5, xaxt='n', yaxt='n', bty='n',
      xlab=NA, ylab=NA, pch=21, col='white', bg='orange', xpd=NA)
@@ -191,8 +202,6 @@ cor.test(mds$points[,2], mdat$ncod, method='spearman')
 cor.test(mds$points[,1], mdat$treelen, method='spearman')
 cor.test(mds$points[,2], mdat$treelen, method='spearman')
 
-
-
 # residualization
 fit.1 <- glm(mds$points[,1] ~ log(mdat$ncod) + log(mdat$treelen))
 z.1 <- residuals(fit.1)
@@ -208,7 +217,8 @@ m2 <- cmdscale(dmx, k=2, eig=F)
 #     MAKE FIGURE 4      #
 ##########################
 
-pdf("Figure4.pdf", width=7, height=3.5)
+labels <- paste(mdat$abbrv, mdat$short)
+pdf(file.path(out.dir, "Figure4.pdf"), width=7, height=3.5)
 par(mfrow=c(1,2), mar=c(0,0,0,0))
 plot(m2, type='n', xaxt='n', yaxt='n', bty='n', xlab=NA, ylab=NA,
      main=' Non-enveloped', font.main=1, adj=0, line=-1)
@@ -284,7 +294,7 @@ within$R2 <- round(100*within$R2, 2)
 fam <- c("Flaviviridae", "Orthomyxoviridae", "Paramyxoviridae", 
          "Picornaviridae", "Retroviridae", "Togaviridae")
 pal <- gg.rainbow(n=6, l=60)
-pdf("by-family.pdf", width=6, height=4)
+pdf(file.path(out.dir, "by-family.pdf"), width=6, height=4)
 par(mfrow=c(2,3), mar=c(0,0,0,0))
 for (i in 1:6) {
   f <- fam[i]
@@ -318,10 +328,11 @@ astat0 <- read.csv("https://raw.githubusercontent.com/PoonLab/surfaces/refs/head
 idx <- match(mdat2$key, paste(astat0$virus, astat0$protein))
 mdat2$ncod <- astat0$ncod[idx]
 mdat2$tree.len <- astat0$treelen[idx]
+wmat <- as.matrix(wdist)  # restore previous `wmat`
 
 
 ## Supplementary Figure S7
-pdf("corrected-mds.pdf", width=7, height=7)
+pdf(file.path(out.dir, "corrected-mds.pdf"), width=7, height=7)
 par(mfrow=c(2,2), mar=c(1,2,2,1))
 idx <- order(mdat$ncod, decreasing=TRUE)
 plot(m2[idx,], cex=sqrt(mdat$ncod[idx])/10, 
@@ -391,16 +402,101 @@ res <- lapply(1:10, function(z) {
   wmat[idx, idx]
 })
 wmat.100 <- Reduce("+", res) / length(res)  # averaged (centroids)
-adonis2(wmat.100 ~ exposed*enveloped, data=mdat2, permutations=9999, by='terms')
-adonis2(wmat.100 ~ family, data=mdat2, permutations=9999, by='terms')
+mdat.100 <- mdatx[idxs[1,], ]
+wmat <- as.matrix(wdist)
+
+adonis2(wmat.100 ~ exposed*enveloped, data=mdat.100, permutations=9999, by='terms')
+adonis2(wmat.100 ~ family, data=mdat.100, permutations=9999, by='terms')
+
+
+mds.100 <- cmdscale(wmat.100)
+idx <- order(mdat.100$exposed)
+
+##  Supplementary Figure S8
+pdf(file.path(out.dir, "mds100.pdf"), width=7, height=3.5)
+par(mfrow=c(1,2), mar=c(0,0,0,0))
+plot(mds.100, type='n', xaxt='n', yaxt='n', bty='n', xlab=NA, ylab=NA)
+abline(v=par('usr')[2])
+title(main=' Non-enveloped', font.main=1, adj=0, line=-1)
+title(main="100 codons ", font.main=1, adj=1, line=-1)
+points(mds.100, cex=ifelse(mdat.100$enveloped, 0.3, 0), pch=19, col='grey')
+text(mds.100[idx,], label=mdat.100$label[idx],
+     cex=ifelse(!mdat.100$enveloped[idx], 0.6, 0.01),
+     font=ifelse(!mdat.100$exposed[idx], 3, 2),
+     col=ifelse(mdat.100$exposed[idx], 'darkorange3', 'orange'))
+rect(xl=0.29, xr=1.05, yb=-0.64, yt=-0.48, xpd=NA, col='white', lwd=0.5)
+text(x=1, y=-0.53, label="Exposed", cex=0.9, col='darkorange3', font=2, 
+     xpd=NA, adj=1)
+text(x=1, y=-0.6, label="Non-exposed", cex=0.9, col='orange', font=3,
+     xpd=NA, adj=1)
+plot(mds.100, type='n', xaxt='n', yaxt='n', bty='n', xlab=NA, ylab=NA)
+title(main='  Enveloped', font.main=1, adj=0, line=-1)
+title(main="100 codons ", font.main=1, adj=1, line=-1)
+points(mds.100, cex=ifelse(mdat.100$enveloped, 0, 0.3), pch=19, col='grey')
+text(mds.100[idx,], label=mdat.100$label[idx],
+     cex=ifelse(mdat.100$enveloped[idx], 0.6, 0.01),
+     font=ifelse(!mdat.100$exposed[idx], 3, 2),
+     col=ifelse(mdat.100$exposed[idx], 'steelblue4', 'slategray3'))
+rect(xl=0.29, xr=1.05, yb=-0.64, yt=-0.48, xpd=NA, col='white', lwd=0.5)
+text(x=1, y=-0.53, label="Exposed", cex=0.9, col='steelblue4', font=2, 
+     xpd=NA, adj=1)
+text(x=1, y=-0.6, label="Non-exposed", cex=0.9, col='slategray3', font=3,
+     xpd=NA, adj=1)
+dev.off()
+
+###################################################
 
 download.file("https://zenodo.org/records/20801064/files/L50_logoffset.RData?download=1",
               destfile="L50_logoffset.RData")
 load("L50_logoffset.RData")
+idxs <- sapply(split(1:nrow(mdatx), mdatx$key), function(x) {
+  if (length(x)==1) { rep(x, 10) } else { x }
+})
 res <- lapply(1:10, function(z) {idx <- idxs[z, ]; wmat[idx, idx] })
 wmat.50 <- Reduce("+", res) / length(res) 
-adonis2(wmat.50 ~ exposed*enveloped, data=mdat2, permutations=9999, by='terms')
-adonis2(wmat.50 ~ family, data=mdat2, permutations=9999, by='terms')
+mdat.50 <- mdatx[idxs[1,], ]
+wmat <- as.matrix(wdist)  # restore original matrix
+
+adonis2(wmat.50 ~ exposed*enveloped, data=mdat.50, permutations=9999, by='terms')
+adonis2(wmat.50 ~ family, data=mdat.50, permutations=9999, by='terms')
+
+
+## Supplementary Figure S9
+mds.50 <- cmdscale(wmat.50)
+idx <- order(mdat.50$exposed)
+
+pdf(file.path(out.dir, "mds50.pdf"), width=7, height=3.5)
+par(mfrow=c(1,2), mar=c(0,0,0,0))
+plot(mds.50, type='n', xaxt='n', yaxt='n', bty='n', xlab=NA, ylab=NA)
+title(main=' Non-enveloped', font.main=1, adj=0, line=-1)
+title(main="50 codons ", font.main=1, adj=1, line=-1)
+points(mds.50, cex=ifelse(mdat.50$enveloped, 0.3, 0), pch=19, col='grey')
+text(mds.50[idx, ], label=mdat.50$label[idx],
+     cex=ifelse(!mdat.50$enveloped[idx], 0.6, 0.01),
+     font=ifelse(!mdat.50$exposed[idx], 3, 2),
+     col=ifelse(mdat.50$exposed[idx], 'darkorange3', 'orange'))
+abline(v=par('usr')[2], lwd=0.5)
+rect(xl=-1.03, xr=-0.51, yb=-0.42, yt=-0.33, xpd=NA, col='white', lwd=0.5)
+text(x=-1, y=-0.36, label="Exposed", cex=0.8, col='darkorange3', 
+     font=2, xpd=NA, adj=0)
+text(x=-1, y=-0.4, label="Non-exposed", cex=0.8, col='orange', 
+     font=3, xpd=NA, adj=0)
+plot(mds.50, type='n', xaxt='n', yaxt='n', bty='n', xlab=NA, ylab=NA)
+title(main='  Enveloped', font.main=1, adj=0, line=-1)
+title(main="50 codons ", font.main=1, adj=1, line=-1)
+points(mds.50, cex=ifelse(mdat.50$enveloped, 0, 0.3), pch=19, col='grey')
+text(mds.50[idx, ], label=mdat.50$label[idx],
+     cex=ifelse(mdat.50$enveloped[idx], 0.6, 0.01),
+     font=ifelse(!mdat.50$exposed[idx], 3, 2),
+     col=ifelse(mdat.50$exposed[idx], 'steelblue4', 'slategray3'))
+rect(xl=0.27, xr=0.79, yb=-0.42, yt=-0.33, xpd=NA, col='white', lwd=0.5)
+text(x=0.75, y=-0.36, label="Exposed", cex=0.8, col='steelblue4', 
+     font=2, xpd=NA, adj=1)
+text(x=0.75, y=-0.4, label="Non-exposed", cex=0.8, col='slategray3', 
+     font=3, xpd=NA, adj=1)
+dev.off()
+
+
 
 
 ######################################################
@@ -411,36 +507,47 @@ adonis2(wmat.50 ~ family, data=mdat2, permutations=9999, by='terms')
 # 3. VSRs are exposed = F, T, F, T, T, F, T, T
 # 4. both coat and VSR exposed = all TRUE
 # 5. no plant viruses = all NA
+
 plants <- mdat
-plants$exposed[plants$abbrv=="PVX" & plants$short=="CP"] <- NA
-plants$exposed[plants$abbrv=="PVX" & plants$short=="TGB1"] <- NA  # P25
+opts <- list(
+  "No plant proteins exposed" = rep(F, 8),
+  "Coat proteins are exposed" = c(T, F, T, F, F, T, F, T),
+  "VSRs are exposed" = c(F, T, F, T, T, F, T, T),
+  "Both coat and VSR exposed" = rep(T, 8),
+  "No plant viruses" = rep(NA, 8))
+for (i in 1:length(opts)) {
+  print(names(opts)[i])
+  opt <- opts[[i]]
+  plants$exposed[plants$abbrv=="PVX" & plants$short=="CP"] <- opt[1]
+  plants$exposed[plants$abbrv=="PVX" & plants$short=="TGB1"] <- opt[2]  # P25
+  plants$exposed[plants$abbrv=="PVY" & plants$short=="CP"] <- opt[3]
+  plants$exposed[plants$abbrv=="PVY" & plants$short=="HC-Pro"] <- opt[4]
+  plants$exposed[plants$abbrv=="PVY" & plants$short=="NIa-VPg"] <- opt[5]
+  plants$exposed[mdat$abbrv=="TMV" & plants$short=="CP"] <- opt[6]
+  plants$exposed[mdat$abbrv=="TMV" & plants$short=="RP"] <- opt[7]
+  # CP is also the suppressor in ASPV!
+  plants$exposed[mdat$abbrv=="ASPV" & plants$short=="CP"] <- opt[8]
+  
+  prm <- adonis2(wmat ~ log(ncod) + log(treelen) + exposed * enveloped, 
+                 data=plants, permutations=9999, by='terms', na.action=na.omit)
+  print(prm)
+}
 
-plants$exposed[plants$abbrv=="PVY" & plants$short=="CP"] <- NA
-#plants$exposed[plants$abbrv=="PVY" & plants$short=="NIb"] <- FALSE
-plants$exposed[plants$abbrv=="PVY" & plants$short=="HC-Pro"] <- NA
-plants$exposed[plants$abbrv=="PVY" & plants$short=="NIa-VPg"] <- NA
-
-plants$exposed[mdat$abbrv=="TMV" & plants$short=="CP"] <- NA
-plants$exposed[mdat$abbrv=="TMV" & plants$short=="RP"] <- NA
-
-# CP is also the suppressor in ASPV!
-plants$exposed[mdat$abbrv=="ASPV" & plants$short=="CP"] <- NA  
-
-adonis2(wmat ~ log(ncod) + log(treelen) + exposed * enveloped, data=plants,
-        permutations=9999, by='terms', na.action=na.omit)
 
 
 ####################
 ##    FIGURE 5    ##
 ####################
 
+
 # store mode-specific results
 res1 <- adonis2(wmat ~ log(ncod)+log(treelen)+vector, data=mdat, by='terms', permutations=9999)
+idx <- mdat$chronic & !mdat$plant
 res2 <- adonis2(wmat ~ log(ncod)+log(treelen)+idx, data=mdat, by='terms', permutations=9999)
 res3 <- adonis2(wmat ~ log(ncod)+log(treelen)+fecaloral, data=mdat, by='terms', permutations=9999)
 res4 <- adonis2(wmat ~ log(ncod)+log(treelen)+respiratory, data=mdat, by='terms', permutations=9999)
 
-pdf("Figure5.pdf", width=5, height=5)
+pdf(file.path(out.dir, "Figure5.pdf"), width=5, height=5)
 par(mar=rep(0.5, 4), mfrow=c(2,2))
 plot(m2, type='n', xaxt='n', yaxt='n', bty='n', xlab=NA, ylab=NA)
 title(main="Vector-borne", font.main=1, cex.main=1.1, adj=0, line=-0.5)
@@ -488,7 +595,7 @@ dev.off()
 
 
 # Supplementary Figure S11
-pdf("mds-contact.pdf", width=5, height=2.5)
+pdf(file.path(out.dir, "mds-contact.pdf"), width=5, height=2.5)
 tmodes <- c('vector', 'respiratory', 'fecal-oral', 'STBBI')
 pal <- c('forestgreen', 'steelblue', 'purple', 'firebrick')
 layout(matrix(c(1,2,5,5,3,4,5,5), nrow=2, byrow=T))

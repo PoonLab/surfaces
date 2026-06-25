@@ -1,7 +1,7 @@
 setwd("~/git/surfaces/data")
 
 dnds <- read.csv("step7_dnds.csv")
-mdat <- read.csv("metadata.csv")
+mdat <- read.csv("step7_metadata.csv")
 
 idx <- match(paste(dnds$virus, dnds$protein), 
              paste(mdat$virus, mdat$protein)) 
