@@ -212,6 +212,30 @@ z.2 <- residuals(fit.2)
 dmx <- dist(cbind(z.1, z.2))
 m2 <- cmdscale(dmx, k=2, eig=F)
 
+cor.test(m2[,1], mdat$dnds, method='spearman')
+cor.test(m2[,2], mdat$dnds, method='spearman')
+
+# correlation test of generalized variance against 2nd MDS coord
+total.var <- sapply(grids, function(g) {
+  p.ds <- rowSums(g$grid)  # marginal probabilities
+  p.dn <- colSums(g$grid)
+  mean.ds <- sum((1:20)*p.ds)
+  mean.dn <- sum((1:20)*p.dn)
+  var.ds <- sum((1:20)^2*p.ds) - mean.ds^2
+  var.dn <- sum((1:20)^2*p.dn) - mean.dn^2
+  e.xy <- sum(outer(1:20, 1:20)*g$grid)
+  cov <- e.xy - mean.ds*mean.dn
+  cov.mx <- matrix(c(var.ds, cov, cov, var.dn), nrow=2)
+  det(cov.mx)
+})
+cor.test(m2[,2], total.var, method='spearman')
+
+# difference between HCV and other flaviviruses
+idx1 <- mdat$family=="Flaviviridae"
+idx2 <- mdat$virus=="HCV1a"
+wilcox.test(m2[idx2,2], m2[idx1&!idx2, 2])
+idx1 <- mdat$family=="Retroviridae"
+wilcox.test(m2[idx1,2], m2[idx2, 2])
 
 ##########################
 #     MAKE FIGURE 4      #
