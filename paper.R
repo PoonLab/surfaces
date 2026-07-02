@@ -44,7 +44,7 @@ download.file("https://zenodo.org/records/20753078/files/step4_json.tar.gz?downl
   destfile=file.path(dest.dir, "step4_json.tar.gz"), method='wget', quiet=T)
 untar(file.path(dest.dir, "step4_json.tar.gz"))
 files <- Sys.glob("*_step4.fubar.json")
-grids <- lapply(files, parse.json)
+grids <- lapply(files, parse.json)  # this takes a minute
 
 
 # Construct weighted point patterns for fingerprints
@@ -244,26 +244,26 @@ wilcox.test(m2[idx1,2], m2[idx2, 2])
 labels <- paste(mdat$abbrv, mdat$short)
 pdf(file.path(out.dir, "Figure4.pdf"), width=7, height=3.5)
 par(mfrow=c(1,2), mar=c(0,0,0,0))
-plot(m2, type='n', xaxt='n', yaxt='n', bty='n', xlab=NA, ylab=NA,
-     main=' Non-enveloped', font.main=1, adj=0, line=-1)
+plot(m2, type='n', xaxt='n', yaxt='n', bty='n', xlab=NA, ylab=NA)
+title(main=' Non-enveloped', font.main=1, adj=0, line=-1)
 abline(v=par('usr')[2])
 points(m2, cex=ifelse(mdat$enveloped, 0.5, 0), pch=19, col='grey')
 text(m2, label=labels, cex=ifelse(!mdat$enveloped, 0.6, 0.01),
      font=ifelse(!mdat$exposed, 3, 2),
      col=ifelse(mdat$exposed, 'darkorange3', 'orange'))
-text(x=-1.5, y=-1.05, label="Exposed", cex=0.8, col='darkorange3', font=2)
-text(x=-0.4, y=-1.05, label="Non-exposed", cex=0.8, col='orange', font=3)
-rect(xl=-1.95, xr=0.25, yb=-1.115, yt=-0.975, lwd=0.5)
-plot(m2, type='n', xaxt='n', yaxt='n', bty='n', xlab=NA, ylab=NA,
-     main=' Enveloped', font.main=1, adj=0, line=-1)
+text(x=-0.87, y=-0.4, label="Exposed", cex=0.8, col='darkorange3', font=2, adj=0)
+text(x=-0.51, y=-0.4, label="Non-exposed", cex=0.8, col='orange', font=3, adj=0)
+rect(xl=-0.91, xr=-0.05, yb=-0.43, yt=-0.36, lwd=0.5)
+plot(m2, type='n', xaxt='n', yaxt='n', bty='n', xlab=NA, ylab=NA)
+title(main=' Enveloped', font.main=1, adj=0, line=-1)
 points(m2, cex=ifelse(mdat$enveloped, 0, 0.5), pch=19, col='grey')
 idx <- order(mdat$exposed)
 text(m2[idx, ], label=labels[idx], cex=ifelse(mdat$enveloped[idx], 0.6, 0.01),
      font=ifelse(!mdat$exposed[idx], 3, 2),
      col=ifelse(mdat$exposed[idx], 'steelblue4', 'slategray3'))
-text(x=-1.5, y=-1.05, label="Exposed", cex=0.8, col='steelblue4', font=2)
-text(x=-0.4, y=-1.05, label="Non-exposed", cex=0.8, col='slategray3', font=3)
-rect(xl=-1.95, xr=0.25, yb=-1.115, yt=-0.975, lwd=0.5)
+text(x=-0.87, y=-0.4, label="Exposed", cex=0.8, col='steelblue4', font=2, adj=0)
+text(x=-0.51, y=-0.4, label="Non-exposed", cex=0.8, col='slategray3', font=3, adj=0)
+rect(xl=-0.91, xr=-0.05, yb=-0.43, yt=-0.36, lwd=0.5)
 dev.off()
 
 
@@ -338,7 +338,7 @@ dev.off()
 # load down-sampled data
 download.file("https://zenodo.org/records/20801064/files/L100_logoffset.RData?download=1",
               destfile="L100_logoffset.RData")
-load("L100_logoffset.RData")  # CAUTION: THIS OVERWRITES `wmat`!
+load("L100_logoffset.RData")  # CAUTION: this overwrites `wmat`!
 wdist.1 <- as.dist(wmat)
 mds.1 <- cmdscale(wdist.1, k=2, eig=T)
 cents <- t(sapply(
@@ -416,7 +416,7 @@ adonis2(wmat ~ log(ncod) + log(treelen) + trans.mode*exposed, data=mdat,
 
 ######################################################
 ##      Supplementary Table S2
-load("L100_logoffset.RData")  # CAUTION: THIS OVERWRITES `wmat`!
+load("L100_logoffset.RData")  # CAUTION: this overwrites `wmat`!
 idxs <- sapply(split(1:nrow(mdatx), mdatx$key), function(x) {
   if (length(x)==1) { rep(x, 10) } else { x }
 })
@@ -427,7 +427,7 @@ res <- lapply(1:10, function(z) {
 })
 wmat.100 <- Reduce("+", res) / length(res)  # averaged (centroids)
 mdat.100 <- mdatx[idxs[1,], ]
-wmat <- as.matrix(wdist)
+wmat <- as.matrix(wdist)  # restores the original `wmat` object
 
 adonis2(wmat.100 ~ exposed*enveloped, data=mdat.100, permutations=9999, by='terms')
 adonis2(wmat.100 ~ family, data=mdat.100, permutations=9999, by='terms')
@@ -448,10 +448,10 @@ text(mds.100[idx,], label=mdat.100$label[idx],
      cex=ifelse(!mdat.100$enveloped[idx], 0.6, 0.01),
      font=ifelse(!mdat.100$exposed[idx], 3, 2),
      col=ifelse(mdat.100$exposed[idx], 'darkorange3', 'orange'))
-rect(xl=0.29, xr=1.05, yb=-0.64, yt=-0.48, xpd=NA, col='white', lwd=0.5)
-text(x=1, y=-0.53, label="Exposed", cex=0.9, col='darkorange3', font=2, 
+rect(xl=0.1, xr=0.51, yb=-0.347, yt=-0.26, xpd=NA, col='white', lwd=0.5)
+text(x=0.48, y=-0.29, label="Exposed", cex=0.9, col='darkorange3', font=2, 
      xpd=NA, adj=1)
-text(x=1, y=-0.6, label="Non-exposed", cex=0.9, col='orange', font=3,
+text(x=0.48, y=-0.325, label="Non-exposed", cex=0.9, col='orange', font=3,
      xpd=NA, adj=1)
 plot(mds.100, type='n', xaxt='n', yaxt='n', bty='n', xlab=NA, ylab=NA)
 title(main='  Enveloped', font.main=1, adj=0, line=-1)
@@ -461,10 +461,10 @@ text(mds.100[idx,], label=mdat.100$label[idx],
      cex=ifelse(mdat.100$enveloped[idx], 0.6, 0.01),
      font=ifelse(!mdat.100$exposed[idx], 3, 2),
      col=ifelse(mdat.100$exposed[idx], 'steelblue4', 'slategray3'))
-rect(xl=0.29, xr=1.05, yb=-0.64, yt=-0.48, xpd=NA, col='white', lwd=0.5)
-text(x=1, y=-0.53, label="Exposed", cex=0.9, col='steelblue4', font=2, 
+rect(xl=0.1, xr=0.51, yb=-0.347, yt=-0.26, xpd=NA, col='white', lwd=0.5)
+text(x=0.48, y=-0.29, label="Exposed", cex=0.9, col='steelblue4', font=2, 
      xpd=NA, adj=1)
-text(x=1, y=-0.6, label="Non-exposed", cex=0.9, col='slategray3', font=3,
+text(x=0.48, y=-0.325, label="Non-exposed", cex=0.9, col='slategray3', font=3,
      xpd=NA, adj=1)
 dev.off()
 
@@ -492,7 +492,7 @@ idx <- order(mdat.50$exposed)
 pdf(file.path(out.dir, "mds50.pdf"), width=7, height=3.5)
 par(mfrow=c(1,2), mar=c(0,0,0,0))
 plot(mds.50, type='n', xaxt='n', yaxt='n', bty='n', xlab=NA, ylab=NA)
-title(main=' Non-enveloped', font.main=1, adj=0, line=-1)
+title(main=' Non-enveloped', font.main=1, adj=0, line=-17)
 title(main="50 codons ", font.main=1, adj=1, line=-1)
 points(mds.50, cex=ifelse(mdat.50$enveloped, 0.3, 0), pch=19, col='grey')
 text(mds.50[idx, ], label=mdat.50$label[idx],
@@ -500,23 +500,24 @@ text(mds.50[idx, ], label=mdat.50$label[idx],
      font=ifelse(!mdat.50$exposed[idx], 3, 2),
      col=ifelse(mdat.50$exposed[idx], 'darkorange3', 'orange'))
 abline(v=par('usr')[2], lwd=0.5)
-rect(xl=-1.03, xr=-0.51, yb=-0.42, yt=-0.33, xpd=NA, col='white', lwd=0.5)
-text(x=-1, y=-0.36, label="Exposed", cex=0.8, col='darkorange3', 
-     font=2, xpd=NA, adj=0)
-text(x=-1, y=-0.4, label="Non-exposed", cex=0.8, col='orange', 
-     font=3, xpd=NA, adj=0)
+rect(xl=0.12, xr=0.385, yb=-0.203, yt=-0.151, xpd=NA, col='white', lwd=0.5)
+text(x=0.373, y=-0.168, label="Exposed", cex=0.8, col='darkorange3', 
+     font=2, xpd=NA, adj=1)
+text(x=0.372, y=-0.19, label="Non-exposed", cex=0.8, col='orange', 
+     font=3, xpd=NA, adj=1)
 plot(mds.50, type='n', xaxt='n', yaxt='n', bty='n', xlab=NA, ylab=NA)
-title(main='  Enveloped', font.main=1, adj=0, line=-1)
+title(main='  Enveloped', font.main=1, adj=0, line=-17)
 title(main="50 codons ", font.main=1, adj=1, line=-1)
 points(mds.50, cex=ifelse(mdat.50$enveloped, 0, 0.3), pch=19, col='grey')
 text(mds.50[idx, ], label=mdat.50$label[idx],
      cex=ifelse(mdat.50$enveloped[idx], 0.6, 0.01),
      font=ifelse(!mdat.50$exposed[idx], 3, 2),
      col=ifelse(mdat.50$exposed[idx], 'steelblue4', 'slategray3'))
-rect(xl=0.27, xr=0.79, yb=-0.42, yt=-0.33, xpd=NA, col='white', lwd=0.5)
-text(x=0.75, y=-0.36, label="Exposed", cex=0.8, col='steelblue4', 
+rect(xl=0.1, xr=0.51, yb=-0.347, yt=-0.26, xpd=NA, col='white', lwd=0.5)
+rect(xl=0.12, xr=0.385, yb=-0.203, yt=-0.151, xpd=NA, col='white', lwd=0.5)
+text(x=0.373, y=-0.168, label="Exposed", cex=0.8, col='steelblue4', 
      font=2, xpd=NA, adj=1)
-text(x=0.75, y=-0.4, label="Non-exposed", cex=0.8, col='slategray3', 
+text(x=0.372, y=-0.19, label="Non-exposed", cex=0.8, col='slategray3', 
      font=3, xpd=NA, adj=1)
 dev.off()
 
