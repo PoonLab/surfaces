@@ -251,9 +251,9 @@ points(m2, cex=ifelse(mdat$enveloped, 0.5, 0), pch=19, col='grey')
 text(m2, label=labels, cex=ifelse(!mdat$enveloped, 0.6, 0.01),
      font=ifelse(!mdat$exposed, 3, 2),
      col=ifelse(mdat$exposed, 'darkorange3', 'orange'))
-text(x=-0.87, y=-0.4, label="Exposed", cex=0.8, col='darkorange3', font=2, adj=0)
-text(x=-0.51, y=-0.4, label="Non-exposed", cex=0.8, col='orange', font=3, adj=0)
-rect(xl=-0.91, xr=-0.05, yb=-0.43, yt=-0.36, lwd=0.5)
+text(x=-0.87, y=-0.36, label="Exposed", cex=0.8, col='darkorange3', font=2, adj=0)
+text(x=-0.87, y=-0.405, label="Non-exposed", cex=0.8, col='orange', font=3, adj=0)
+rect(xl=-0.91, xr=-0.34, yb=-0.43, yt=-0.33, lwd=0.5)
 plot(m2, type='n', xaxt='n', yaxt='n', bty='n', xlab=NA, ylab=NA)
 title(main=' Enveloped', font.main=1, adj=0, line=-1)
 points(m2, cex=ifelse(mdat$enveloped, 0, 0.5), pch=19, col='grey')
@@ -261,9 +261,9 @@ idx <- order(mdat$exposed)
 text(m2[idx, ], label=labels[idx], cex=ifelse(mdat$enveloped[idx], 0.6, 0.01),
      font=ifelse(!mdat$exposed[idx], 3, 2),
      col=ifelse(mdat$exposed[idx], 'steelblue4', 'slategray3'))
-text(x=-0.87, y=-0.4, label="Exposed", cex=0.8, col='steelblue4', font=2, adj=0)
-text(x=-0.51, y=-0.4, label="Non-exposed", cex=0.8, col='slategray3', font=3, adj=0)
-rect(xl=-0.91, xr=-0.05, yb=-0.43, yt=-0.36, lwd=0.5)
+text(x=-0.87, y=-0.36, label="Exposed", cex=0.8, col='steelblue4', font=2, adj=0)
+text(x=-0.87, y=-0.405, label="Non-exposed", cex=0.8, col='slategray3', font=3, adj=0)
+rect(xl=-0.91, xr=-0.34, yb=-0.43, yt=-0.33, lwd=0.5)
 dev.off()
 
 
